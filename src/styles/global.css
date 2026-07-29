@@ -351,90 +351,22 @@ button { cursor: pointer; }
   gap: var(--space-4);
 }
 
-/* Desktop-Navigation */
-.nav { display: none; }
-
-.nav__list {
+/* Rechte Header-Seite: CTA + Burger.
+   Die Navigation läuft auf allen Breiten über das Overlay — es gibt
+   bewusst keine zweite, davon abweichende Desktop-Leiste. */
+.header__actions {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  gap: var(--space-2);
 }
 
-.nav__link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35em;
-  min-height: 44px;
-  font-size: var(--fs-small);
-  font-weight: 500;
-  text-decoration: none;
-  transition: color var(--dur-fast) var(--ease-out);
+/* Auf sehr schmalen Geräten würde der CTA neben Logo und Burger
+   den Header sprengen — dort führt der Hero-Button zum Ziel. */
+.header__cta { display: none; }
+
+@media (min-width: 30rem) {
+  .header__cta { display: inline-flex; }
 }
-
-.nav__link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 6px;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--dur) var(--ease-out);
-}
-
-.nav__link:hover::after { transform: scaleX(1); }
-.nav__link[aria-current='page']::after { transform: scaleX(1); }
-.nav__link[aria-current='page'] { font-weight: 600; }
-
-/* Services-Flyout */
-.nav__item--has-sub { position: relative; }
-
-.nav__sub {
-  position: absolute;
-  top: 100%;
-  left: -1rem;
-  min-width: 15rem;
-  margin: 0;
-  padding: 0.5rem;
-  list-style: none;
-  background: var(--paper);
-  color: var(--ink);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 18px 40px rgba(4, 37, 44, 0.14);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-6px);
-  transition: opacity var(--dur) var(--ease-out),
-              transform var(--dur) var(--ease-out),
-              visibility var(--dur);
-}
-
-.nav__item--has-sub:hover .nav__sub,
-.nav__item--has-sub:focus-within .nav__sub {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.nav__sub a {
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius);
-  font-size: var(--fs-small);
-  text-decoration: none;
-  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
-}
-
-.nav__sub a:hover { background: var(--petrol-tint); color: var(--petrol); }
 
 /* Burger */
 .burger {
@@ -511,7 +443,9 @@ button { cursor: pointer; }
 
 .overlay__list {
   list-style: none;
-  margin: var(--space-5) 0;
+  /* Der Freiraum kommt aus dem auto-Margin des nav-Elements;
+     eigene große Abstände würden die Liste unnötig scrollen lassen. */
+  margin: var(--space-2) 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -531,7 +465,9 @@ button { cursor: pointer; }
 .overlay__link {
   font-family: var(--font-ui);
   font-weight: 800;
-  font-size: clamp(2rem, 9vw, 4.5rem);
+  /* Obergrenze so gewählt, dass alle sieben Punkte auf einem
+     900px hohen Desktop-Viewport ohne Scrollen Platz haben */
+  font-size: clamp(2rem, 9vw, 5rem);
   line-height: 1.12;
   letter-spacing: var(--track-display);
   text-transform: uppercase;
@@ -541,6 +477,12 @@ button { cursor: pointer; }
   transition: color var(--dur) var(--ease-out), -webkit-text-stroke-color var(--dur) var(--ease-out);
 }
 
+/* Bei größerem Schriftgrad wirkt eine 1px-Kontur zu dünn */
+@media (min-width: 62rem) {
+  .overlay__link { -webkit-text-stroke-width: 1.5px; }
+}
+
+/* Hover, Tastaturfokus und aktuelle Seite füllen die Kontur weiß */
 .overlay__link:hover,
 .overlay__link:focus-visible,
 .overlay__link[aria-current='page'] {
@@ -838,9 +780,6 @@ button { cursor: pointer; }
    10. Responsive
    -------------------------------------------------------------------------- */
 @media (min-width: 62rem) {
-  .nav { display: block; }
-  .burger { display: none; }
-
   .footer__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr)) 1.2fr;
     gap: var(--space-4);

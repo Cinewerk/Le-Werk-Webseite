@@ -12,7 +12,10 @@ interface Props {
 const { title, description, heroDark = false } = Astro.props;
 
 const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const isActive = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
+
+// Exakter Treffer: aria-current="page" darf pro Seite nur einmal vorkommen.
+// Auf /services/foto ist "Foto" die aktuelle Seite, nicht zusätzlich "Services".
+const isCurrent = (href: string) => path === href;
 
 const services = [
   { href: '/services/foto', label: 'Foto' },
@@ -70,51 +73,23 @@ const year = new Date().getFullYear();
           Le Werk
         </a>
 
-        <nav class="nav" aria-label="Hauptnavigation">
-          <ul class="nav__list">
-            <li class="nav__item nav__item--has-sub">
-              <a
-                class="nav__link"
-                href="/services"
-                aria-current={isActive('/services') ? 'page' : undefined}
-              >
-                Services
-                <svg width="10" height="7" viewBox="0 0 10 7" fill="none" aria-hidden="true">
-                  <path d="M1 1.5 5 5.5 9 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </a>
-              <ul class="nav__sub">
-                {services.map((s) => (
-                  <li>
-                    <a href={s.href} aria-current={isActive(s.href) ? 'page' : undefined}>{s.label}</a>
-                  </li>
-                ))}
-              </ul>
-            </li>
-            <li class="nav__item">
-              <a class="nav__link" href="/kontakt" aria-current={isActive('/kontakt') ? 'page' : undefined}>
-                Kontakt
-              </a>
-            </li>
-            <li class="nav__item">
-              <a class="btn" href="/kontakt">
-                Projekt anfragen
-                <span class="btn__arrow" aria-hidden="true">→</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <div class="header__actions">
+          <a class="btn header__cta" href="/kontakt">
+            Projekt anfragen
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
 
-        <button
-          class="burger"
-          id="nav-toggle"
-          type="button"
-          aria-label="Menü öffnen"
-          aria-expanded="false"
-          aria-controls="nav-overlay"
-        >
-          <span></span><span></span><span></span>
-        </button>
+          <button
+            class="burger"
+            id="nav-toggle"
+            type="button"
+            aria-label="Menü öffnen"
+            aria-expanded="false"
+            aria-controls="nav-overlay"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -136,7 +111,7 @@ const year = new Date().getFullYear();
               <a
                 class="overlay__link"
                 href={item.href}
-                aria-current={isActive(item.href) ? 'page' : undefined}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
               >
                 {item.label}
               </a>
@@ -262,12 +237,6 @@ const year = new Date().getFullYear();
 
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && overlay?.dataset.open === 'true') setOverlay(false);
-      });
-
-      // Beim Wechsel auf Desktop-Breite offenes Overlay schließen
-      const wide = window.matchMedia('(min-width: 62rem)');
-      wide.addEventListener('change', (e) => {
-        if (e.matches && overlay?.dataset.open === 'true') setOverlay(false);
       });
 
       // --- Scroll-Reveal ------------------------------------------------------
