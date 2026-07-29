@@ -62,6 +62,9 @@
   --space-7: 6rem;
   --section-y: clamp(4.5rem, 10vw, 9rem);
   --gutter: clamp(1.25rem, 4vw, 4rem);
+  /* Header und Overlay laufen bewusst randbreiter als der Inhalt und
+     ignorieren die Container-Maximalbreite — Logo links, Menü rechts. */
+  --edge: clamp(1.25rem, 2.5vw, 2.5rem);
   --container: 1440px;
   --measure: 62ch;
 
@@ -185,6 +188,21 @@ button { cursor: pointer; }
   letter-spacing: -0.03em;
   line-height: 1;
   text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Wortmarke im Fließtext.
+   "Le Werk" ist ein Logo und wird deshalb überall gleich gesetzt:
+   Poppins ExtraBold, exakt diese Schreibweise — nie in Versalien
+   (auch nicht in uppercase-Labels oder Headlines) und nie kursiv
+   (auch nicht innerhalb von Bodoni-Passagen). */
+.brand {
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-style: normal;
+  font-size: inherit;
+  letter-spacing: -0.03em;
+  text-transform: none;
   white-space: nowrap;
 }
 
@@ -344,28 +362,15 @@ button { cursor: pointer; }
   padding-block: var(--space-2);
 }
 
+/* Volle Breite statt Container-Maximalbreite: Logo sitzt am linken,
+   der Menü-Button am rechten Seitenrand. */
 .header__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-}
-
-/* Rechte Header-Seite: CTA + Burger.
-   Die Navigation läuft auf allen Breiten über das Overlay — es gibt
-   bewusst keine zweite, davon abweichende Desktop-Leiste. */
-.header__actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-/* Auf sehr schmalen Geräten würde der CTA neben Logo und Burger
-   den Header sprengen — dort führt der Hero-Button zum Ziel. */
-.header__cta { display: none; }
-
-@media (min-width: 30rem) {
-  .header__cta { display: inline-flex; }
+  width: 100%;
+  padding-inline: var(--edge);
 }
 
 /* Burger */
@@ -400,7 +405,9 @@ button { cursor: pointer; }
   z-index: var(--z-overlay);
   display: flex;
   flex-direction: column;
-  padding: var(--space-3) var(--gutter) var(--space-5);
+  /* gleicher Randabstand wie der Header, damit Logo und Schließen-Kreuz
+     beim Öffnen nicht springen */
+  padding: var(--space-3) var(--edge) var(--space-5);
   background: var(--petrol-deep);
   color: var(--on-dark);
   opacity: 0;

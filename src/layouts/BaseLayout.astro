@@ -64,28 +64,21 @@ const year = new Date().getFullYear();
     <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
     <header class="header" id="site-header" data-over-dark={heroDark ? 'true' : 'false'}>
-      <div class="container header__inner">
+      <div class="header__inner">
         <a class="logo" href="/" aria-label="Le Werk — zur Startseite">
           Le Werk
         </a>
 
-        <div class="header__actions">
-          <a class="btn header__cta" href="/kontakt">
-            Projekt anfragen
-            <span class="btn__arrow" aria-hidden="true">→</span>
-          </a>
-
-          <button
-            class="burger"
-            id="nav-toggle"
-            type="button"
-            aria-label="Menü öffnen"
-            aria-expanded="false"
-            aria-controls="nav-overlay"
-          >
-            <span></span><span></span><span></span>
-          </button>
-        </div>
+        <button
+          class="burger"
+          id="nav-toggle"
+          type="button"
+          aria-label="Menü öffnen"
+          aria-expanded="false"
+          aria-controls="nav-overlay"
+        >
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </header>
 
@@ -136,7 +129,7 @@ const year = new Date().getFullYear();
       </nav>
 
       <div class="overlay__foot">
-        <span>Le Werk — Visual Content Studio</span>
+        <span><span class="brand">Le Werk</span> — Visual Content Studio</span>
         <a class="link-underline" href="mailto:contact@lewerk.de">contact@lewerk.de</a>
       </div>
     </div>
@@ -191,7 +184,7 @@ const year = new Date().getFullYear();
 
         <div class="footer__legal">
           <span>
-            © {year} Le Werk (by <a href="https://cinewerk.de/">Cinewerk GmbH</a>).
+            © {year} <span class="brand">Le Werk</span> (by <a href="https://cinewerk.de/">Cinewerk GmbH</a>).
             Alle Rechte vorbehalten.
           </span>
           <span>Visual Content Studio</span>

@@ -26,8 +26,9 @@ const quotes = [
   { text: 'Craft auf Agenturniveau, Abstimmung auf Zuruf. Diese Kombination gab es vorher nicht.', name: 'David Okonkwo', role: 'Gründer, Superbloom', img: '/images/quote-03.jpg' },
 ];
 
+// q darf Markup enthalten (Wortmarke), wird unten mit set:html gerendert
 const faqs = [
-  { q: 'Was kostet eine Produktion bei Le Werk?', a: 'Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.' },
+  { q: 'Was kostet eine Produktion bei <span class="brand">Le Werk</span>?', a: 'Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.' },
   { q: 'Wie lange dauert es von der Anfrage bis zum fertigen Material?', a: 'Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.' },
   { q: 'Bekommen wir Foto und Video aus einer Produktion?', a: 'Ja, das ist der Kern unserer Arbeitsweise. Wir planen Sets so, dass bewegte und stehende Bilder parallel entstehen. Das spart einen kompletten Produktionstag und sorgt dafür, dass Foto und Video wie eine Kampagne aussehen — nicht wie zwei.' },
   { q: 'Wie ist das mit den Nutzungsrechten?', a: 'Ihr erhaltet standardmäßig zeitlich und räumlich unbegrenzte Nutzungsrechte für alle eigenen Kanäle. Für Paid Media, Out-of-Home oder TV klären wir Buyouts vorab transparent im Angebot — keine Nachforderungen.' },
@@ -53,7 +54,7 @@ const faqs = [
 
     <div class="container hero__inner">
       <p class="label label--accent hero__eyebrow">
-        <span class="mark" aria-hidden="true">✳</span>Le Werk — Visual Content Studio
+        <span class="mark" aria-hidden="true">✳</span><span class="brand">Le Werk</span> — Visual Content Studio
       </p>
 
       <h1 class="hero__title" id="hero-title">
@@ -82,7 +83,7 @@ const faqs = [
   <!-- ═══ 2 · TRUSTBAR (Logo-Marquee) ════════════════════════════════════ -->
   <section class="section section--tight trust" id="trust" aria-label="Auswahl unserer Kunden">
     <div class="container">
-      <p class="label trust__label">Vertrauen auf Le Werk</p>
+      <p class="label trust__label">Vertrauen auf <span class="brand">Le Werk</span></p>
     </div>
 
     <div class="marquee">
@@ -101,7 +102,7 @@ const faqs = [
   <section class="section statement" aria-labelledby="statement-title">
     <div class="container">
       <p class="statement__text" id="statement-title" data-reveal>
-        Le Werk ist ein <strong>Visual Content Studio</strong> für Marken, die
+        <span class="brand">Le Werk</span> ist ein <strong>Visual Content Studio</strong> für Marken, die
         Werbefilm-Craft brauchen — <span class="editorial">aber kein Werbefilm-Format.</span>
       </p>
     </div>
@@ -179,7 +180,7 @@ const faqs = [
   <section class="section benefits" aria-labelledby="benefits-title">
     <div class="container">
       <header class="sec-head" data-reveal>
-        <p class="label"><span class="mark" aria-hidden="true">✳</span>Warum Le Werk</p>
+        <p class="label"><span class="mark" aria-hidden="true">✳</span>Warum <span class="brand">Le Werk</span></p>
         <h2 class="headline" id="benefits-title">
           <span class="editorial editorial--kicker">Drei Gründe,</span>
           uns anzurufen
@@ -257,7 +258,7 @@ const faqs = [
         </h2>
         <div class="prose about__prose">
           <p>
-            Le Werk kommt aus der Werbefilmproduktion. Jahrelang haben wir Sets
+            <span class="brand">Le Werk</span> kommt aus der Werbefilmproduktion. Jahrelang haben wir Sets
             gefahren, an denen zwanzig Leute standen und drei entschieden haben.
             Das Handwerk daraus nehmen wir mit — den Apparat lassen wir zurück.
           </p>
@@ -314,7 +315,7 @@ const faqs = [
         {faqs.map((f) => (
           <details class="faq__item">
             <summary class="faq__q">
-              <span>{f.q}</span>
+              <span set:html={f.q} />
               <span class="faq__icon" aria-hidden="true"></span>
             </summary>
             <div class="faq__a"><p>{f.a}</p></div>
