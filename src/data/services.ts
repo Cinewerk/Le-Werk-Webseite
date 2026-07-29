@@ -1,10 +1,12 @@
 /**
- * Die Disziplinen an einer Stelle — genutzt von der Overlay-Navigation,
+ * Das Angebot an einer Stelle — genutzt von der Overlay-Navigation,
  * dem Teaser auf der Startseite, der Services-Übersicht und dem Footer.
  *
  * Reihenfolge ist nicht beliebig: Video ist laut Positionierung die
  * Hauptdisziplin, Fotografie die klare Zweitdisziplin, Konzept läuft
- * vorgeschaltet. Diese Rangfolge soll auch die Darstellung abbilden.
+ * vorgeschaltet. Workshops stehen bewusst am Ende — sie sind keine
+ * Produktionsdisziplin, sondern ein eigenes Format, in dem wir das
+ * Handwerk weitergeben.
  */
 export interface Service {
   href: string;
@@ -32,5 +34,11 @@ export const services: Service[] = [
     label: 'Konzept',
     img: '/images/service-konzept.jpg',
     text: 'Vorgeschaltet, bei Bedarf mit Content-Strategie. Vorbau der Produktion, kein Selbstzweck.',
+  },
+  {
+    href: '/services/workshops',
+    label: 'Workshops',
+    img: '/images/service-workshops.jpg',
+    text: 'Auftreten vor der Kamera, Social-Media-Grundlagen und Improtheater fürs Team. Wir geben weiter, was wir können.',
   },
 ];

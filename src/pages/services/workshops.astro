@@ -1,0 +1,134 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/paths';
+
+const workshops = [
+  {
+    title: 'Vor der Kamera auftreten und sprechen',
+    text: 'Für alle, die im eigenen Content selbst auftreten sollen — Geschäftsführung, Fachleute, Gesichter fürs Recruiting. Wir arbeiten an Haltung, Stimme und Blickführung, am Umgang mit dem Text und mit der eigenen Nervosität. Am Ende steht keine Theorie, sondern eine Aufnahme, die sich zeigen lässt.',
+  },
+  {
+    title: 'Social-Media Basistraining',
+    text: 'Wie Inhalte auf den Plattformen tatsächlich funktionieren: Formatlogik, vertikale Bildsprache, der Aufbau der ersten Sekunden, Rhythmus im Schnitt. Für Teams, die selbst produzieren und wissen wollen, worauf es ankommt, bevor die Kamera läuft.',
+  },
+  {
+    title: 'Teambuilding & Interne Kommunikation durch Improtheater-Training',
+    text: 'Improvisationstheater als Werkzeug: zuhören, annehmen, weiterbauen. Das stärkt die Zusammenarbeit im Team und die Sicherheit im Auftreten — vor der Kamera genauso wie im Meeting.',
+  },
+];
+---
+
+<BaseLayout
+  title="Workshops — Services | Le Werk"
+  description="Workshops von Le Werk: Auftreten und Sprechen vor der Kamera, Social-Media-Basistraining sowie Teambuilding und interne Kommunikation durch Improtheater."
+>
+  <section class="ws">
+    <div class="container">
+      <header class="ws__head">
+        <p class="label label--accent"><span class="mark" aria-hidden="true">✳</span><span class="brand">Le Werk</span></p>
+        <h1 class="ws__title">
+          <span class="editorial editorial--kicker">Wissen, das bleibt:</span>
+          <span class="headline headline--xl">Workshops</span>
+        </h1>
+        <p class="lead">
+          Drei Formate, in denen wir weitergeben, was wir können — praxisnah,
+          an euren echten Themen und mit dem Anspruch, den wir auch an unsere
+          Produktionen legen.
+        </p>
+      </header>
+
+      <ol class="ws__list">
+        {workshops.map((w, i) => (
+          <li class="ws__item">
+            <span class="ws__num editorial" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div class="ws__body">
+              <h2 class="ws__name">{w.title}</h2>
+              <p class="ws__text">{w.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div class="ws__foot">
+        <p class="ws__note">
+          Umfang, Dauer und Teilnehmerzahl stimmen wir auf euer Team ab.
+        </p>
+        <a class="btn" href={withBase('/kontakt')}>
+          Workshop anfragen <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ws { padding-block: clamp(8rem, 18vh, 12rem) var(--section-y); }
+
+  .ws__head {
+    max-width: 46rem;
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .ws__head .label { margin-bottom: var(--space-3); }
+  .ws__title { margin-bottom: var(--space-3); }
+  .ws__title .headline { display: block; }
+
+  .ws__list {
+    display: grid;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: ws;
+  }
+
+  .ws__item {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding-block: clamp(1.75rem, 4vw, 2.75rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .ws__item:last-child { border-bottom: 1px solid var(--line); }
+
+  .ws__num {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    line-height: 1;
+    color: var(--petrol);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ws__name {
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-2);
+    text-wrap: balance;
+  }
+
+  .ws__text {
+    color: var(--ink-muted);
+    max-width: 62ch;
+  }
+
+  .ws__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .ws__note { color: var(--ink-muted); }
+
+  @media (min-width: 48rem) {
+    .ws__item {
+      grid-template-columns: 6rem 1fr;
+      gap: var(--space-4);
+      align-items: start;
+    }
+    .ws__foot { justify-content: space-between; }
+  }
+</style>
