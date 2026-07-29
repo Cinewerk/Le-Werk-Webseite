@@ -3,10 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { services } from '../data/services';
 import { withBase } from '../lib/paths';
 
-const logos = [
-  'nordlicht', 'atlas-co', 'kraftfeld', 'superbloom',
-  'hafen', 'momentum', 'veritas', 'halbmond',
-];
+// Die Kundenlogos liegen als ein durchgehender Streifen vor. Für die
+// Endlosschleife läuft er zweimal hintereinander; der Track wandert um
+// exakt eine Streifenbreite, dadurch ist der Übergang nahtlos.
+const kundenlogos =
+  'Henkell Freixenet, ServiceNow, Douglas, Seven.One Entertainment Group, ' +
+  'Hugo Boss, Deutsche Welle, Shop Apotheke Europe, Street One, Siemens, ' +
+  'Zehnder Group, North Kiteboarding';
 
 // Tags spiegeln die Disziplinen-Rangfolge: Video zuerst, vertikal als Kern.
 const works = [
@@ -98,12 +101,19 @@ const faqs = [
 
     <div class="marquee">
       <div class="marquee__track">
-        {logos.map((l) => (
-          <img class="marquee__logo" src={withBase(`/logos/${l}.svg`)} alt={`Platzhalter-Logo ${l}`} width="230" height="48" loading="lazy" />
-        ))}
-        {logos.map((l) => (
-          <img class="marquee__logo" src={withBase(`/logos/${l}.svg`)} alt="" aria-hidden="true" width="230" height="48" loading="lazy" />
-        ))}
+        <img
+          class="marquee__strip"
+          src={withBase('/images/logokarusell.png')}
+          alt={`Kundenlogos: ${kundenlogos}`}
+          width="5000" height="400" loading="lazy" decoding="async"
+        />
+        <!-- zweite Kopie nur für die Schleife, für Screenreader unsichtbar -->
+        <img
+          class="marquee__strip"
+          src={withBase('/images/logokarusell.png')}
+          alt="" aria-hidden="true"
+          width="5000" height="400" loading="lazy" decoding="async"
+        />
       </div>
     </div>
   </section>
@@ -489,7 +499,10 @@ const faqs = [
   }
 
   /* ── 2 · Trustbar ─────────────────────────────────────────────────────── */
-  .trust__label { margin-bottom: var(--space-4); }
+  /* Der Logostreifen hat oben und unten eigenen Rand — deshalb hier
+     weniger Abstand, sonst reißt die Sektion auseinander. */
+  .trust__label { margin-bottom: 0; }
+  .trust .marquee { margin-block: calc(var(--space-2) * -1); }
 
   .marquee {
     position: relative;
@@ -501,9 +514,13 @@ const faqs = [
   .marquee__track {
     display: flex;
     align-items: center;
-    gap: clamp(2.5rem, 6vw, 5rem);
+    /* muss 0 bleiben: Der Track wandert um 50 % seiner Breite. Ein Abstand
+       zwischen den beiden Kopien würde diese Rechnung verschieben und die
+       Schleife sichtbar springen lassen. Der Streifen bringt seinen
+       Randabstand selbst mit. */
+    gap: 0;
     width: max-content;
-    animation: marquee 46s linear infinite;
+    animation: marquee 40s linear infinite;
     will-change: transform;
   }
 
@@ -515,13 +532,18 @@ const faqs = [
     to   { transform: translate3d(-50%, 0, 0); }
   }
 
-  .marquee__logo {
-    height: 34px;
+  /* Höhe steuert die Größe, die Breite folgt dem Seitenverhältnis 12,5:1.
+     Die Logos sitzen mit Luft im Streifen, deshalb ist er höher als die
+     Logos selbst wirken. */
+  .marquee__strip {
+    height: clamp(80px, 9vw, 128px);
     width: auto;
-    opacity: 0.42;
+    max-width: none;
+    opacity: 0.72;
     transition: opacity var(--dur) var(--ease-out);
   }
-  .marquee:hover .marquee__logo { opacity: 0.62; }
+
+  .marquee:hover .marquee__strip { opacity: 1; }
 
   /* ── 3 · Positionierung ───────────────────────────────────────────────── */
   .statement { padding-block: clamp(4rem, 9vw, 7.5rem); }
@@ -935,15 +957,15 @@ const faqs = [
 
   /* ── Reduced Motion ───────────────────────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
-    .marquee__track {
-      animation-name: none;
-      width: 100%;
-      flex-wrap: wrap;
-      justify-content: center;
-      row-gap: var(--space-3);
+    /* Ohne Laufband bliebe ein Großteil der Logos unsichtbar. Statt den
+       Streifen zu stauchen, wird er von Hand scrollbar. */
+    .marquee {
+      overflow-x: auto;
+      -webkit-mask-image: none;
+      mask-image: none;
     }
+    .marquee__track { animation-name: none; }
     .marquee__track img[aria-hidden='true'] { display: none; }
-    .marquee { -webkit-mask-image: none; mask-image: none; }
     .hero__cue { animation-name: none; }
   }
 </style>

@@ -22,8 +22,25 @@ die Platzhalter liegen in der Git-Historie und sind nicht verloren.
 | `service-workshops.jpg` | Karte „Workshops" | 4:3 | Platzhalter |
 | `about.jpg` | Über uns | 4:3, auf Desktop 3:4 beschnitten | Platzhalter |
 | `quote-01.jpg` – `quote-03.jpg` | Porträts bei den Stimmen | quadratisch | Platzhalter |
+| `logokarusell.png` | Kundenlogos in der Trustbar | ein durchgehender Streifen, 5000 × 400 | **echt** |
 
 Die Platzhalter stammen von Unsplash und sind nur zur Ansicht gedacht.
+
+## Kundenlogos ersetzen
+
+Die Trustbar zeigt **einen** Streifen, nicht einzelne Dateien. Für die
+Endlosschleife läuft er zweimal hintereinander und wandert um genau eine
+Streifenbreite. Damit der Übergang unsichtbar bleibt, muss ein neuer Streifen
+zwei Bedingungen erfüllen:
+
+1. **Links und rechts gleich viel Rand** — zusammengenommen ungefähr so viel
+   wie der Abstand zwischen zwei Logos im Streifen. Sonst entsteht beim
+   Rundenwechsel eine Lücke oder die Logos stoßen aneinander.
+2. **Transparenter Hintergrund**, Logos in Schwarz. Die Trustbar liegt auf
+   Weiß und regelt die Zurückhaltung über die Deckkraft.
+
+Die Höhe im Layout steuert `.marquee__strip` in `src/pages/index.astro`;
+die Breite folgt automatisch dem Seitenverhältnis.
 
 ## Worauf beim Bühnenbild zu achten ist
 
@@ -41,8 +58,8 @@ Nach dem Tausch gehören zwei Dinge geprüft:
    echten Pixelmaße setzen — sonst reserviert der Browser den falschen
    Platz und das Layout springt beim Laden.
 
-## Nicht hier ablegen
+## Hinweis zu den Kundenlogos
 
-Kundenlogos gehören nach `public/logos/`. Die dort liegenden SVGs sind
-erfundene Platzhalter-Marken; echte Fremdlogos erst einsetzen, wenn die
-Freigaben vorliegen.
+Der Streifen enthält echte Fremdmarken. Deren Verwendung als Referenz setzt
+voraus, dass die Zusammenarbeit belegbar ist und die jeweiligen Marken einer
+Nennung nicht widersprochen haben.
