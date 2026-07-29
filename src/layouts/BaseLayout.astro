@@ -1,4 +1,5 @@
 ---
+import '../styles/fonts.css';
 import '../styles/global.css';
 
 interface Props {
@@ -50,12 +51,12 @@ const year = new Date().getFullYear();
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Poppins:ital,wght@0,400;0,500;0,600;0,800;1,400&display=swap"
-    />
+    <!-- Schriften liegen lokal unter /fonts — keine Anfrage an Google.
+         Vorgeladen wird nur, was über der Falz sofort gebraucht wird. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="/fonts/poppins-800-normal-latin.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="/fonts/poppins-400-normal-latin.woff2" />
 
     <slot name="head" />
   </head>
