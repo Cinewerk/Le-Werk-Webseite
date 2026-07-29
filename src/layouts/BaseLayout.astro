@@ -213,6 +213,14 @@ const year = new Date().getFullYear();
       const overlay = document.getElementById('nav-overlay');
       const closeBtn = document.getElementById('nav-close');
 
+      // Alles außerhalb des Overlays wird bei geöffnetem Menü inert —
+      // sonst wandert der Tab-Fokus hinter die Ebene.
+      const behind = [
+        document.getElementById('site-header'),
+        document.getElementById('main'),
+        document.querySelector('.footer'),
+      ];
+
       const setOverlay = (open: boolean) => {
         if (!overlay || !toggle) return;
         if (open) overlay.hidden = false;
@@ -220,7 +228,17 @@ const year = new Date().getFullYear();
         toggle.setAttribute('aria-expanded', String(open));
         toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
         document.body.classList.toggle('is-locked', open);
+
+        behind.forEach((el) => {
+          if (!el) return;
+          if (open) el.setAttribute('inert', '');
+          else el.removeAttribute('inert');
+        });
+
         if (open) {
+          // Style-Recalc erzwingen, damit das Overlay sichtbar ist,
+          // bevor der Fokus hineinwandert.
+          void overlay.offsetHeight;
           closeBtn?.focus();
         } else {
           toggle.focus();

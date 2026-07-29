@@ -7,10 +7,10 @@ const logos = [
 ];
 
 const works = [
-  { img: '/images/work-01.jpg', w: 1600, h: 900,  tag: 'Brand Film', title: 'Zwischen den Schichten', client: 'Nordlicht',  format: '16:9' },
-  { img: '/images/work-02.jpg', w: 1600, h: 900,  tag: 'Kampagne',   title: 'Alles auf Anfang',       client: 'Atlas & Co', format: '16:9' },
-  { img: '/images/work-03.jpg', w: 900,  h: 1600, tag: 'Social',     title: 'Neun zu Sechzehn',       client: 'Superbloom', format: '9:16' },
-  { img: '/images/work-04.jpg', w: 1600, h: 900,  tag: 'Fotografie', title: 'Haus voller Licht',      client: 'Hafen',      format: '3:2'  },
+  { img: '/images/work-01.jpg', w: 1600, h: 900,  tag: 'Brand Film', title: 'Zwischen den Schichten', client: 'Nordlicht',  format: '16:9', alt: 'Filmklappe wird vor der Kamera bei einem Außendreh geschlossen' },
+  { img: '/images/work-02.jpg', w: 1600, h: 900,  tag: 'Kampagne',   title: 'Alles auf Anfang',       client: 'Atlas & Co', format: '16:9', alt: 'Schnittplatz mit Videospur und Timeline auf mehreren Monitoren' },
+  { img: '/images/work-03.jpg', w: 900,  h: 1600, tag: 'Social',     title: 'Neun zu Sechzehn',       client: 'Superbloom', format: '9:16', alt: 'Filmset mit Kamera auf Dolly und farbigem Licht, vertikal gedreht' },
+  { img: '/images/work-04.jpg', w: 1600, h: 900,  tag: 'Fotografie', title: 'Haus voller Licht',      client: 'Hafen',      format: '3:2',  alt: 'Abgedunkelter Kinosaal mit rot beleuchteten Sitzreihen' },
 ];
 
 const services = [
@@ -132,7 +132,7 @@ const faqs = [
           <article class={`work__item work__item--${i + 1}`} data-reveal data-reveal-delay={i * 80}>
             <a class="work__link" href="/services">
               <figure class="work__figure" data-format={w.format}>
-                <img src={w.img} alt={`${w.title} — ${w.client}`} width={w.w} height={w.h} loading="lazy" decoding="async" />
+                <img src={w.img} alt={w.alt} width={w.w} height={w.h} loading="lazy" decoding="async" />
                 <figcaption class="work__tag">{w.tag}</figcaption>
               </figure>
               <p class="work__caption">
@@ -258,8 +258,8 @@ const faqs = [
       <div class="about__body" data-reveal data-reveal-delay="90">
         <p class="label"><span class="mark" aria-hidden="true">✳</span>Über uns</p>
         <h2 class="headline" id="about-title">
-          <span class="editorial editorial--kicker">Aus der Werbefilm-</span>
-          Schule, neu sortiert
+          <span class="editorial editorial--kicker">Aus der Werbefilmschule,</span>
+          neu sortiert
         </h2>
         <div class="prose about__prose">
           <p>

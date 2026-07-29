@@ -475,19 +475,27 @@ button { cursor: pointer; }
   color: var(--on-dark);
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--dur-slow) var(--ease-out), visibility var(--dur-slow);
+  /* visibility erst am Ende der Ausblendung umschalten, beim Einblenden sofort —
+     sonst ist das Overlay zu Beginn noch unsichtbar und focus() greift ins Leere */
+  transition: opacity var(--dur-slow) var(--ease-out), visibility 0s linear var(--dur-slow);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
 
-.overlay[data-open='true'] { opacity: 1; visibility: visible; }
+.overlay[data-open='true'] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--dur-slow) var(--ease-out), visibility 0s linear 0s;
+}
 
 .overlay__top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: auto;
 }
+
+/* Navigationsblock vertikal zentrieren, Fußzeile bleibt unten */
+.overlay > nav { margin-block: auto; }
 
 .overlay__close {
   display: inline-flex;
