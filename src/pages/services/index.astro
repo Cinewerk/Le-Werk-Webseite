@@ -1,11 +1,164 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PlaceholderPage from '../../components/PlaceholderPage.astro';
+import { services } from '../../data/services';
 ---
 
 <BaseLayout
   title="Services — Le Werk"
-  description="Foto, Video, Konzept und Workshops: die Leistungen von Le Werk als Visual Content Studio im Überblick."
+  description="Foto, Video, Konzept und Workshops: die vier Leistungen von Le Werk als Visual Content Studio im Überblick."
 >
-  <PlaceholderPage kicker="Was wir" heading="Services" />
+  <section class="services-page">
+    <div class="container">
+      <header class="services-page__head">
+        <p class="label label--accent"><span class="mark" aria-hidden="true">✳</span>Was wir machen</p>
+        <h1 class="services-page__title">
+          <span class="editorial editorial--kicker">Vier Leistungen,</span>
+          <span class="headline headline--xl">eine Handschrift</span>
+        </h1>
+        <p class="lead">
+          Alles aus einem Haus und wo möglich aus einer Produktion. Wählt den
+          Bereich, der zu eurem Vorhaben passt — oder ruft an, wenn ihr euch
+          nicht sicher seid.
+        </p>
+      </header>
+
+      <ul class="services-page__grid">
+        {services.map((s, i) => (
+          <li class="service">
+            <a class="service__link" href={s.href}>
+              <span class="service__media">
+                <img src={s.img} alt="" width="1200" height="900" loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
+              </span>
+              <span class="service__body">
+                <span class="service__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <span class="service__title">{s.label}</span>
+                <span class="service__text">{s.text}</span>
+                <span class="service__cta" aria-hidden="true">Mehr erfahren →</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <div class="services-page__foot">
+        <p class="services-page__note">
+          Ausführliche Beschreibungen der einzelnen Leistungen folgen.
+        </p>
+        <a class="btn" href="/kontakt">
+          Projekt anfragen <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .services-page { padding-block: clamp(8rem, 18vh, 12rem) var(--section-y); }
+
+  .services-page__head {
+    max-width: 46rem;
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .services-page__head .label { margin-bottom: var(--space-3); }
+  .services-page__title { margin-bottom: var(--space-3); }
+  .services-page__title .headline { display: block; }
+
+  .services-page__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Kartenoptik wie im Teaser auf der Startseite */
+  .service__link {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--dur) var(--ease-out),
+                transform var(--dur) var(--ease-out),
+                box-shadow var(--dur) var(--ease-out);
+  }
+
+  .service__link:hover {
+    border-color: var(--petrol);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(4, 37, 44, 0.1);
+  }
+
+  .service__media { display: block; overflow: hidden; }
+
+  .service__media img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: grayscale(0.85);
+    transition: transform 600ms var(--ease-out), filter var(--dur-slow) var(--ease-out);
+  }
+
+  .service__link:hover .service__media img { transform: scale(1.04); filter: grayscale(0); }
+
+  .service__body { display: block; padding: clamp(1.25rem, 3vw, 1.875rem); }
+
+  .service__num {
+    display: block;
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-size: 1.125rem;
+    color: var(--petrol);
+    margin-bottom: 0.35rem;
+  }
+
+  .service__title {
+    display: block;
+    font-weight: 800;
+    font-size: var(--fs-h3);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .service__text {
+    display: block;
+    color: var(--ink-muted);
+    font-size: var(--fs-small);
+    margin-bottom: var(--space-2);
+  }
+
+  .service__cta {
+    display: block;
+    font-weight: 600;
+    font-size: var(--fs-small);
+    color: var(--petrol);
+  }
+
+  .services-page__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: clamp(3rem, 6vw, 4.5rem);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .services-page__note { color: var(--ink-muted); }
+
+  @media (min-width: 48rem) {
+    .services-page__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .services-page__foot { justify-content: space-between; }
+  }
+
+  @media (min-width: 75rem) {
+    .services-page__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+</style>

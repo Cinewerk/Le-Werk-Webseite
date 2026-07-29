@@ -1,6 +1,7 @@
 ---
 import '../styles/fonts.css';
 import '../styles/global.css';
+import { services } from '../data/services';
 
 interface Props {
   title: string;
@@ -17,19 +18,14 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
 // Auf /services/foto ist "Foto" die aktuelle Seite, nicht zusätzlich "Services".
 const isCurrent = (href: string) => path === href;
 
-const services = [
-  { href: '/services/foto', label: 'Foto' },
-  { href: '/services/video', label: 'Video' },
-  { href: '/services/konzept', label: 'Konzept' },
-  { href: '/services/workshops', label: 'Workshops' },
+// Services ist Oberpunkt, die vier Leistungen hängen darunter.
+const mainNav = [
+  { href: '/', label: 'Start', children: [] as typeof services },
+  { href: '/services', label: 'Services', children: services },
+  { href: '/kontakt', label: 'Kontakt', children: [] as typeof services },
 ];
 
-const overlayNav = [
-  { href: '/', label: 'Start' },
-  { href: '/services', label: 'Services' },
-  ...services,
-  { href: '/kontakt', label: 'Kontakt' },
-];
+const pad = (n: number) => String(n).padStart(2, '0');
 
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
 const year = new Date().getFullYear();
@@ -105,16 +101,35 @@ const year = new Date().getFullYear();
 
       <nav aria-label="Seitennavigation">
         <ul class="overlay__list">
-          {overlayNav.map((item, i) => (
+          {mainNav.map((item, i) => (
             <li class="overlay__item">
-              <span class="overlay__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-              <a
-                class="overlay__link"
-                href={item.href}
-                aria-current={isCurrent(item.href) ? 'page' : undefined}
-              >
-                {item.label}
-              </a>
+              <span class="overlay__row">
+                <span class="overlay__num" aria-hidden="true">{pad(i + 1)}</span>
+                <a
+                  class="overlay__link"
+                  href={item.href}
+                  aria-current={isCurrent(item.href) ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </span>
+
+              {item.children.length > 0 && (
+                <ul class="overlay__sub" aria-label={`${item.label} — Unterseiten`}>
+                  {item.children.map((child, j) => (
+                    <li>
+                      <a
+                        class="overlay__sublink"
+                        href={child.href}
+                        aria-current={isCurrent(child.href) ? 'page' : undefined}
+                      >
+                        <span class="overlay__subnum" aria-hidden="true">{pad(i + 1)}.{j + 1}</span>
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>

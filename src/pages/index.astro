@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { services } from '../data/services';
 
 const logos = [
   'nordlicht', 'atlas-co', 'kraftfeld', 'superbloom',
@@ -11,13 +12,6 @@ const works = [
   { img: '/images/work-02.jpg', w: 1600, h: 900,  tag: 'Kampagne',   title: 'Alles auf Anfang',       client: 'Atlas & Co', format: '16:9', alt: 'Schnittplatz mit Videospur und Timeline auf mehreren Monitoren' },
   { img: '/images/work-03.jpg', w: 900,  h: 1600, tag: 'Social',     title: 'Neun zu Sechzehn',       client: 'Superbloom', format: '9:16', alt: 'Filmset mit Kamera auf Dolly und farbigem Licht, vertikal gedreht' },
   { img: '/images/work-04.jpg', w: 1600, h: 900,  tag: 'Fotografie', title: 'Haus voller Licht',      client: 'Hafen',      format: '3:2',  alt: 'Abgedunkelter Kinosaal mit rot beleuchteten Sitzreihen' },
-];
-
-const services = [
-  { href: '/services/foto',      img: '/images/service-foto.jpg',      title: 'Foto',      text: 'Kampagnen-, Produkt- und Reportagefotografie. Ein Setup, alle Zuschnitte.' },
-  { href: '/services/video',     img: '/images/service-video.jpg',     title: 'Video',     text: 'Vom Brand Film bis zum vertikalen Cut — gedreht, geschnitten, gefinished.' },
-  { href: '/services/konzept',   img: '/images/service-konzept.jpg',   title: 'Konzept',   text: 'Idee, Storyline und Formatstrategie, bevor die erste Klappe fällt.' },
-  { href: '/services/workshops', img: '/images/service-workshops.jpg', title: 'Workshops', text: 'Wir bringen Content-Produktion in eure Teams — praxisnah, an echten Cases.' },
 ];
 
 const steps = [
@@ -170,7 +164,7 @@ const faqs = [
               </span>
               <span class="service__body">
                 <span class="service__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                <span class="service__title">{s.title}</span>
+                <span class="service__title">{s.label}</span>
                 <span class="service__text">{s.text}</span>
                 <span class="service__cta" aria-hidden="true">Mehr erfahren →</span>
               </span>

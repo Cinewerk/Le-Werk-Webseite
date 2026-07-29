@@ -452,8 +452,9 @@ button { cursor: pointer; }
   gap: 0.1em;
 }
 
-.overlay__item { display: flex; align-items: baseline; gap: 0.6rem; }
 .overlay__item:nth-child(even) { padding-left: 8%; }
+
+.overlay__row { display: flex; align-items: baseline; gap: 0.6rem; }
 
 .overlay__num {
   font-family: var(--font-ui);
@@ -462,12 +463,55 @@ button { cursor: pointer; }
   color: var(--on-dark-muted);
 }
 
+/* --- Unterpunkte (Services) ------------------------------------------------
+   Deutlich kleiner und ohne Kontur, damit die Rangfolge auf einen Blick
+   lesbar ist: Oberpunkte sind die großen Outline-Wörter, Unterpunkte
+   hängen eingerückt darunter. */
+.overlay__sub {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.75rem;
+  list-style: none;
+  margin: 0.35rem 0 0.9rem;
+  /* auf Höhe des Elternworts einrücken, nicht auf Höhe der Nummer */
+  padding-left: 2.4rem;
+  border-left: 1px solid var(--line-dark);
+  margin-left: 0.5rem;
+}
+
+.overlay__sublink {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding-block: 0.5rem;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: clamp(1rem, 2.2vw, 1.5rem);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.overlay__sublink:hover,
+.overlay__sublink:focus-visible,
+.overlay__sublink[aria-current='page'] { color: var(--on-dark); }
+
+.overlay__subnum {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.42);
+}
+
 .overlay__link {
   font-family: var(--font-ui);
   font-weight: 800;
-  /* Obergrenze so gewählt, dass alle sieben Punkte auf einem
-     900px hohen Desktop-Viewport ohne Scrollen Platz haben */
-  font-size: clamp(2rem, 9vw, 5rem);
+  /* Seit die vier Services Unterpunkte sind, stehen nur noch drei
+     Oberpunkte in der Liste — dadurch ist Platz für mehr Größe. */
+  font-size: clamp(2.25rem, 9vw, 6.5rem);
   line-height: 1.12;
   letter-spacing: var(--track-display);
   text-transform: uppercase;
