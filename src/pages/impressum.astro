@@ -6,18 +6,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Impressum — Le Werk"
   description="Impressum von Le Werk (by Cinewerk GmbH): Anbieterangaben, Kontaktdaten und Hinweise zur Streitschlichtung."
 >
-  <section class="legal">
-    <div class="container legal__grid">
-      <header class="legal__head">
+  <section class="legaldoc">
+    <div class="container legaldoc__grid">
+      <header class="legaldoc__head">
         <p class="label label--accent"><span class="mark" aria-hidden="true">✳</span>Rechtliches</p>
-        <h1 class="legal__title">
+        <h1 class="legaldoc__title">
           <span class="editorial editorial--kicker">Angaben zum</span>
           <span class="headline headline--xl">Impressum</span>
         </h1>
       </header>
 
-      <div class="legal__body">
-        <section class="legal__block">
+      <div class="legaldoc__body">
+        <section id="anbieter">
           <h2>Anbieter</h2>
           <address>
             Le Werk (by <a href="https://cinewerk.de/">Cinewerk GmbH</a>)<br />
@@ -27,9 +27,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </address>
         </section>
 
-        <section class="legal__block">
+        <section id="kontakt">
           <h2>Kontakt</h2>
-          <dl class="legal__dl">
+          <dl class="legaldoc__dl">
             <dt>Telefon</dt>
             <dd><a href="tel:+4917656774494">+49 176 5677 4494</a></dd>
             <dt>E-Mail</dt>
@@ -37,7 +37,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </dl>
         </section>
 
-        <section class="legal__block">
+        <section id="eu-streitschlichtung">
           <h2>EU-Streitschlichtung</h2>
           <p>
             Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS)
@@ -46,7 +46,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </p>
         </section>
 
-        <section class="legal__block">
+        <section id="verbraucherstreitbeilegung">
           <h2>Verbraucherstreitbeilegung / Universalschlichtungsstelle</h2>
           <p>
             Wir nehmen an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
@@ -57,86 +57,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </p>
         </section>
 
-        <p class="legal__source">
+        <p class="legaldoc__note">
           Quelle: <a href="https://www.e-recht24.de" rel="noopener nofollow">e-recht24.de</a>
         </p>
       </div>
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  .legal { padding-block: clamp(8rem, 18vh, 12rem) var(--section-y); }
-
-  .legal__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(2.5rem, 5vw, 4rem);
-    align-items: start;
-  }
-
-  .legal__head .label { margin-bottom: var(--space-3); }
-  .legal__title .headline { display: block; }
-
-  .legal__body { max-width: 60ch; }
-
-  .legal__block + .legal__block { margin-top: clamp(2rem, 4vw, 3rem); }
-
-  .legal__block h2 {
-    font-size: var(--fs-label);
-    font-weight: 700;
-    letter-spacing: var(--track-label);
-    text-transform: uppercase;
-    color: var(--petrol);
-    padding-bottom: var(--space-1);
-    margin-bottom: var(--space-2);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .legal__block p,
-  .legal__block address {
-    font-style: normal;
-    line-height: var(--lh-body);
-    color: var(--ink-muted);
-  }
-
-  .legal__block address { color: var(--ink); }
-
-  .legal__dl {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: var(--space-1) var(--space-3);
-    margin: 0;
-  }
-
-  .legal__dl dt { font-weight: 600; color: var(--ink); }
-  .legal__dl dd { margin: 0; }
-
-  .legal__body a {
-    color: var(--petrol);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
-    transition: color var(--dur-fast) var(--ease-out);
-    /* lange URLs dürfen umbrechen statt das Layout zu sprengen */
-    overflow-wrap: anywhere;
-  }
-
-  .legal__body a:hover { color: var(--petrol-dark); }
-
-  .legal__source {
-    margin-top: clamp(2.5rem, 5vw, 3.5rem);
-    padding-top: var(--space-3);
-    border-top: 1px solid var(--line);
-    font-size: var(--fs-small);
-    color: var(--ink-muted);
-  }
-
-  @media (min-width: 64rem) {
-    .legal__grid {
-      grid-template-columns: 0.85fr 1.15fr;
-      gap: clamp(3rem, 6vw, 6rem);
-    }
-    .legal__head { position: sticky; top: 7rem; }
-  }
-</style>
