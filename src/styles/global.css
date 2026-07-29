@@ -597,6 +597,14 @@ button { cursor: pointer; }
 }
 .footer__col li a:hover { color: var(--on-dark); }
 
+.footer__address {
+  margin-top: var(--space-2);
+  font-style: normal;
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--on-dark-muted);
+}
+
 .footer__brand {
   font-family: var(--font-ui);
   font-weight: 800;
@@ -616,6 +624,19 @@ button { cursor: pointer; }
   border-top: 1px solid var(--line-dark);
   font-size: var(--fs-small);
   color: var(--on-dark-muted);
+}
+
+.footer__legal a {
+  color: var(--on-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--line-dark);
+  transition: text-decoration-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.footer__legal a:hover {
+  color: var(--petrol-light);
+  text-decoration-color: currentColor;
 }
 
 /* --------------------------------------------------------------------------
