@@ -8,38 +8,39 @@ const logos = [
   'hafen', 'momentum', 'veritas', 'halbmond',
 ];
 
+// Tags spiegeln die Disziplinen-Rangfolge: Video zuerst, vertikal als Kern.
 const works = [
-  { img: '/images/work-01.jpg', w: 1600, h: 900,  tag: 'Brand Film', title: 'Zwischen den Schichten', client: 'Nordlicht',  format: '16:9', alt: 'Filmklappe wird vor der Kamera bei einem Außendreh geschlossen' },
-  { img: '/images/work-02.jpg', w: 1600, h: 900,  tag: 'Kampagne',   title: 'Alles auf Anfang',       client: 'Atlas & Co', format: '16:9', alt: 'Schnittplatz mit Videospur und Timeline auf mehreren Monitoren' },
-  { img: '/images/work-03.jpg', w: 900,  h: 1600, tag: 'Social',     title: 'Neun zu Sechzehn',       client: 'Superbloom', format: '9:16', alt: 'Filmset mit Kamera auf Dolly und farbigem Licht, vertikal gedreht' },
-  { img: '/images/work-04.jpg', w: 1600, h: 900,  tag: 'Fotografie', title: 'Haus voller Licht',      client: 'Hafen',      format: '3:2',  alt: 'Abgedunkelter Kinosaal mit rot beleuchteten Sitzreihen' },
+  { img: '/images/work-01.jpg', w: 1600, h: 900,  tag: 'Social Video', title: 'Zwischen den Schichten', client: 'Nordlicht',  format: '16:9', alt: 'Filmklappe wird vor der Kamera bei einem Außendreh geschlossen' },
+  { img: '/images/work-02.jpg', w: 1600, h: 900,  tag: 'Kampagne',     title: 'Alles auf Anfang',       client: 'Atlas & Co', format: '16:9', alt: 'Schnittplatz mit Videospur und Timeline auf mehreren Monitoren' },
+  { img: '/images/work-03.jpg', w: 900,  h: 1600, tag: 'Vertikal',     title: 'Neun zu Sechzehn',       client: 'Superbloom', format: '9:16', alt: 'Filmset mit Kamera auf Dolly und farbigem Licht, vertikal gedreht' },
+  { img: '/images/work-04.jpg', w: 1600, h: 900,  tag: 'Fotografie',   title: 'Haus voller Licht',      client: 'Hafen',      format: '3:2',  alt: 'Abgedunkelter Kinosaal mit rot beleuchteten Sitzreihen' },
 ];
 
 const steps = [
-  { n: '01', title: 'Briefing & Konzept', text: 'Wir klären Ziel, Kanäle und Formate. Am Ende steht ein Konzept, das die Produktion trägt — kein Moodboard, das niemand nutzt.' },
-  { n: '02', title: 'Produktion',         text: 'Kompaktes Team, klarer Plan, Werbefilm-Standard am Set. Foto und Video entstehen wo möglich in einem Durchgang.' },
-  { n: '03', title: 'Formate & Delivery', text: 'Ein Dreh, alle Ausspielwege: Landscape, Square, 9:16, Cutdowns, Stills. Sauber benannt und sofort einsetzbar.' },
+  { n: '01', title: 'Konzept',            text: 'Vorgeschaltet, bei Bedarf mit Content-Strategie. Ziel, Kanäle und Formate stehen fest, bevor die erste Klappe fällt.' },
+  { n: '02', title: 'Produktion',         text: 'Kompaktes Team, klarer Plan, Kampagnenniveau am Set. Interviewbasiert und dokumentarisch, mit Blick für Charaktere und Momente.' },
+  { n: '03', title: 'Formate & Delivery', text: 'Vertikal als Kern, Landscape als Ableitung. Cutdowns und Stills entstehen aus derselben Produktion, sauber benannt und sofort einsetzbar.' },
 ];
 
 const quotes = [
   { text: 'Wir haben aus einem Drehtag mehr Material bekommen als vorher aus drei — und es sah nach mehr aus, nicht nach weniger.', name: 'Marlene Kupfer', role: 'Head of Brand, Nordlicht', img: '/images/quote-01.jpg' },
   { text: 'Endlich ein Team, das versteht, dass ein vertikaler Cut kein Abfallprodukt ist.', name: 'Jonas Reuter', role: 'Marketing Lead, Atlas & Co', img: '/images/quote-02.jpg' },
-  { text: 'Craft auf Agenturniveau, Abstimmung auf Zuruf. Diese Kombination gab es vorher nicht.', name: 'David Okonkwo', role: 'Gründer, Superbloom', img: '/images/quote-03.jpg' },
+  { text: 'Unser Content sieht endlich nicht mehr aus, als wäre er nebenbei am Handy entstanden.', name: 'David Okonkwo', role: 'Gründer, Superbloom', img: '/images/quote-03.jpg' },
 ];
 
 // q darf Markup enthalten (Wortmarke), wird unten mit set:html gerendert
 const faqs = [
   { q: 'Was kostet eine Produktion bei <span class="brand">Le Werk</span>?', a: 'Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.' },
-  { q: 'Wie lange dauert es von der Anfrage bis zum fertigen Material?', a: 'Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.' },
+  { q: 'Macht ihr auch UGC- oder Handy-Content?', a: 'Nein. Das ist ein anderer Markt mit anderen Preisen und anderem Anspruch. Bei uns entstehen Visuals auf Kampagnenniveau — auch dann, wenn sie am Ende vertikal im Feed laufen. Wer schnellen, günstigen Durchsatz sucht, ist bei uns falsch.' },
   { q: 'Bekommen wir Foto und Video aus einer Produktion?', a: 'Ja, das ist der Kern unserer Arbeitsweise. Wir planen Sets so, dass bewegte und stehende Bilder parallel entstehen. Das spart einen kompletten Produktionstag und sorgt dafür, dass Foto und Video wie eine Kampagne aussehen — nicht wie zwei.' },
+  { q: 'Wie lange dauert es von der Anfrage bis zum fertigen Material?', a: 'Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.' },
   { q: 'Wie ist das mit den Nutzungsrechten?', a: 'Ihr erhaltet standardmäßig zeitlich und räumlich unbegrenzte Nutzungsrechte für alle eigenen Kanäle. Für Paid Media, Out-of-Home oder TV klären wir Buyouts vorab transparent im Angebot — keine Nachforderungen.' },
-  { q: 'Was passiert in einem Workshop?', a: 'Wir arbeiten einen Tag mit eurem Team an euren echten Cases: Bildsprache, Formatlogik, Licht, Schnitt-Rhythmus und ein Workflow, der ohne uns funktioniert. Ihr geht mit fertigem Material und einem Setup raus, das ihr am Montag nutzen könnt.' },
 ];
 ---
 
 <BaseLayout
-  title="Le Werk — Visual Content Studio für Foto- und Videoproduktion"
-  description="Le Werk ist ein Visual Content Studio: Foto- und Videoproduktion in allen Formaten, vom Brand Film bis zum vertikalen Social-Cut. Werbefilm-Craft, ohne Werbefilm-Format."
+  title="Le Werk — Visual Content Studio für Film und Foto"
+  description="Content Creation. Film und Foto. Für Marken mit Anspruch. Le Werk produziert Social Content und vertikale Formate auf Kampagnenniveau — mit redaktioneller Tiefe statt schnellem Knall."
   heroDark={true}
 >
   <!-- ═══ 1 · HERO ═══════════════════════════════════════════════════════ -->
@@ -59,13 +60,20 @@ const faqs = [
       </p>
 
       <h1 class="hero__title" id="hero-title">
-        <span class="editorial editorial--kicker">Werbefilm-Craft,</span>
-        <span class="headline headline--display">ohne Korsett</span>
+        <span class="editorial editorial--kicker">Auch Content</span>
+        <span class="headline headline--display">darf gut gemacht sein.</span>
       </h1>
 
+      <!-- Klartext-Erklärer: sagt, was Le Werk leistet, und filtert die
+           Zielgruppe. Sitzt direkt unter dem Positionierungs-Begriff. -->
+      <p class="hero__erklaerer">
+        Content Creation. Film und Foto. Für Marken mit Anspruch.
+      </p>
+
       <p class="lead hero__lead">
-        Foto und Video in allen Formaten — vom Brand Film bis zum vertikalen Social-Cut.
-        Dieselbe Präzision wie im klassischen Werbefilm, nur ohne dessen Apparat.
+        Hochwertig produzierte Visuals auf Kampagnenniveau — erzählt mit
+        redaktioneller Tiefe statt schnellem Knall. Video als Hauptdisziplin,
+        Fotografie als klare Zweite.
       </p>
 
       <div class="hero__actions">
@@ -103,8 +111,8 @@ const faqs = [
   <section class="section statement" aria-labelledby="statement-title">
     <div class="container">
       <p class="statement__text" id="statement-title" data-reveal>
-        <span class="brand">Le Werk</span> ist ein <strong>Visual Content Studio</strong> für Marken, die
-        Werbefilm-Craft brauchen — <span class="editorial">aber kein Werbefilm-Format.</span>
+        <span class="brand">Le Werk</span> ist ein <strong>Visual Content Studio</strong> für Marken
+        mit Anspruch — <span class="editorial">Handwerk auf Kampagnenniveau, erzählt mit Substanz.</span>
       </p>
     </div>
   </section>
@@ -118,8 +126,9 @@ const faqs = [
           Arbeiten
         </h2>
         <p class="lead">
-          Ein Auszug aus laufenden und abgeschlossenen Produktionen. Jedes Projekt
-          liefert Landscape, Square und 9:16 aus derselben Drehplanung.
+          Ein Auszug aus laufenden und abgeschlossenen Produktionen. Gedacht wird
+          vom vertikalen Format aus — Landscape entsteht als Ableitung, nicht
+          umgekehrt.
         </p>
       </header>
 
@@ -153,8 +162,11 @@ const faqs = [
   <section class="section section--sand services" aria-labelledby="services-title">
     <div class="container">
       <header class="sec-head" data-reveal>
-        <p class="label"><span class="mark" aria-hidden="true">✳</span>Leistungen</p>
-        <h2 class="headline" id="services-title">Vier Wege, eine Handschrift</h2>
+        <p class="label"><span class="mark" aria-hidden="true">✳</span>Was wir machen</p>
+        <h2 class="headline" id="services-title">
+          <span class="editorial editorial--kicker">Drei Disziplinen,</span>
+          eine Handschrift
+        </h2>
       </header>
 
       <ul class="services__grid">
@@ -191,26 +203,29 @@ const faqs = [
       <ol class="benefits__list">
         <li class="benefit" data-reveal>
           <span class="benefit__num" aria-hidden="true">01</span>
-          <h3 class="benefit__title">Craft-Level ohne Overhead</h3>
+          <h3 class="benefit__title">Handwerk auf Kampagnenniveau</h3>
           <p class="benefit__text">
-            Dieselben Maßstäbe an Licht, Bildgestaltung und Post wie im klassischen
-            Werbefilm — aber mit einem Team, das entscheidet statt abstimmt.
+            Hochwertig produzierte Visuals in Bild und Bewegtbild — mit den
+            Maßstäben an Licht, Bildgestaltung und Post, die eine Kampagne
+            verlangt. Kein Handy-Standard, kein UGC-Look.
           </p>
         </li>
         <li class="benefit" data-reveal data-reveal-delay="80">
           <span class="benefit__num" aria-hidden="true">02</span>
-          <h3 class="benefit__title">Alle Formate aus einer Produktion</h3>
+          <h3 class="benefit__title">Substanz statt Strohfeuer</h3>
           <p class="benefit__text">
-            Vertikal ist bei uns kein Beschnitt am Ende, sondern Teil der Planung.
-            Ein Dreh liefert Kampagnen-Asset und Social-Cut in gleicher Qualität.
+            Redaktionelle Tiefe, ehrlich erzählte Geschichten, menschliche
+            Momente. Kein Content, der schnell knallt und genauso schnell
+            wieder weg ist.
           </p>
         </li>
         <li class="benefit" data-reveal data-reveal-delay="160">
           <span class="benefit__num" aria-hidden="true">03</span>
-          <h3 class="benefit__title">Konzept und Umsetzung im Haus</h3>
+          <h3 class="benefit__title">Format-Vielfalt aus einem Auftrag</h3>
           <p class="benefit__text">
-            Wer die Idee entwickelt, steht auch am Set. Keine Übergabeverluste,
-            keine Interpretation aus zweiter Hand.
+            Vertikal ist bei uns kein Beschnitt am Ende, sondern der
+            Ausgangspunkt der Planung. Landscape, Square und Stills entstehen
+            als Ableitung derselben Produktion.
           </p>
         </li>
       </ol>
@@ -254,20 +269,22 @@ const faqs = [
       <div class="about__body" data-reveal data-reveal-delay="90">
         <p class="label"><span class="mark" aria-hidden="true">✳</span>Über uns</p>
         <h2 class="headline" id="about-title">
-          <span class="editorial editorial--kicker">Aus der Werbefilmschule,</span>
-          neu sortiert
+          <span class="editorial editorial--kicker">Handwerk trifft</span>
+          Substanz
         </h2>
         <div class="prose about__prose">
           <p>
-            <span class="brand">Le Werk</span> kommt aus der Werbefilmproduktion. Jahrelang haben wir Sets
-            gefahren, an denen zwanzig Leute standen und drei entschieden haben.
-            Das Handwerk daraus nehmen wir mit — den Apparat lassen wir zurück.
+            <span class="brand">Le Werk</span> produziert Visual Content für Marken, deren Inhalte
+            dort stattfinden, wo Menschen wirklich hinschauen: im Feed, auf der
+            Landingpage, im Store. Video ist unsere Hauptdisziplin, Fotografie
+            die klare Zweite.
           </p>
           <p>
-            Heute produzieren wir für Marken, deren Content dort stattfindet, wo
-            Menschen wirklich hinschauen: im Feed, auf der Landingpage, im Store.
-            Gleiche Sorgfalt, anderes Format, kürzere Wege.
+            Erzählt wird interviewbasiert und dokumentarisch — mit Blick für
+            Charaktere und Momente statt für den schnellen Effekt. Das kostet
+            mehr Zeit als ein Clip vom Handy und hält dafür länger.
           </p>
+          <p class="about__origin">Based in Köln, booked worldwide.</p>
         </div>
       </div>
     </div>
@@ -399,8 +416,8 @@ const faqs = [
      kräftiger als der senkrechte — Werte per Kontrastmessung ermittelt. */
   .hero__media::after {
     background:
-      linear-gradient(180deg, rgba(4, 37, 44, 0.72) 0%, rgba(4, 37, 44, 0.15) 38%, rgba(4, 37, 44, 0.9) 100%),
-      linear-gradient(90deg, rgba(4, 37, 44, 0.88) 0%, rgba(4, 37, 44, 0.6) 35%, rgba(4, 37, 44, 0) 75%);
+      linear-gradient(180deg, rgba(4, 37, 44, 0.75) 0%, rgba(4, 37, 44, 0.4) 35%, rgba(4, 37, 44, 0.92) 100%),
+      linear-gradient(90deg, rgba(4, 37, 44, 0.9) 0%, rgba(4, 37, 44, 0.7) 40%, rgba(4, 37, 44, 0) 80%);
   }
 
   .hero__inner { position: relative; z-index: 1; }
@@ -417,6 +434,22 @@ const faqs = [
   .hero__eyebrow .mark { color: var(--petrol-light); }
   .hero__title { margin-bottom: var(--space-3); }
   .hero__title .headline--display { display: block; }
+
+  /* Klartext-Erklärer: steht zwischen Claim und Fließtext und muss
+     eigenständig lesbar sein, ohne der Headline Rang abzulaufen. */
+  .hero__erklaerer {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    font-size: clamp(1.0625rem, 1.8vw, 1.375rem);
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+    color: var(--on-dark);
+    max-width: 30ch;
+    margin-bottom: var(--space-3);
+    padding-top: var(--space-1);
+    border-top: 2px solid var(--petrol-light);
+    display: inline-block;
+  }
 
   .hero__lead {
     /* Auf 375px lag der Fließtext mit den ursprünglichen 0.82 bei 4,27:1
@@ -750,6 +783,17 @@ const faqs = [
   .about__body .label { margin-bottom: var(--space-2); }
   .about__body .headline { margin-bottom: var(--space-3); }
   .about__prose { color: var(--ink-muted); }
+
+  .about__origin {
+    margin-top: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--line);
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--petrol);
+  }
 
   /* ── 9 · Stimmen ──────────────────────────────────────────────────────── */
   .voices__list { display: grid; gap: clamp(3rem, 7vw, 5.5rem); }

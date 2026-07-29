@@ -1,7 +1,10 @@
 /**
- * Die vier Services an einer Stelle — genutzt von der Overlay-Navigation,
+ * Die Disziplinen an einer Stelle — genutzt von der Overlay-Navigation,
  * dem Teaser auf der Startseite, der Services-Übersicht und dem Footer.
- * Wer hier etwas ergänzt, ergänzt es überall.
+ *
+ * Reihenfolge ist nicht beliebig: Video ist laut Positionierung die
+ * Hauptdisziplin, Fotografie die klare Zweitdisziplin, Konzept läuft
+ * vorgeschaltet. Diese Rangfolge soll auch die Darstellung abbilden.
  */
 export interface Service {
   href: string;
@@ -13,27 +16,21 @@ export interface Service {
 
 export const services: Service[] = [
   {
-    href: '/services/foto',
-    label: 'Foto',
-    img: '/images/service-foto.jpg',
-    text: 'Kampagnen-, Produkt- und Reportagefotografie. Ein Setup, alle Zuschnitte.',
-  },
-  {
     href: '/services/video',
     label: 'Video',
     img: '/images/service-video.jpg',
-    text: 'Vom Brand Film bis zum vertikalen Cut — gedreht, geschnitten, gefinished.',
+    text: 'Hauptdisziplin. Social Content und vertikale Formate, interviewbasiert und dokumentarisch erzählt.',
+  },
+  {
+    href: '/services/foto',
+    label: 'Foto',
+    img: '/images/service-foto.jpg',
+    text: 'Klare Zweitdisziplin. Für Content, Kampagne und Marken-Bildwelten.',
   },
   {
     href: '/services/konzept',
     label: 'Konzept',
     img: '/images/service-konzept.jpg',
-    text: 'Idee, Storyline und Formatstrategie, bevor die erste Klappe fällt.',
-  },
-  {
-    href: '/services/workshops',
-    label: 'Workshops',
-    img: '/images/service-workshops.jpg',
-    text: 'Wir bringen Content-Produktion in eure Teams — praxisnah, an echten Cases.',
+    text: 'Vorgeschaltet, bei Bedarf mit Content-Strategie. Vorbau der Produktion, kein Selbstzweck.',
   },
 ];
