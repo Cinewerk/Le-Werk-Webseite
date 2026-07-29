@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/paths';
 ---
 
 <BaseLayout
@@ -49,7 +50,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               Vertreten durch Philipp Maxhofer
             </p>
             <p class="contact__legal-link">
-              <a href="/impressum">Vollständiges Impressum</a>
+              <a href={withBase("/impressum")}>Vollständiges Impressum</a>
             </p>
           </section>
         </div>
