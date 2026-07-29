@@ -638,6 +638,82 @@ button { cursor: pointer; }
 }
 
 /* --------------------------------------------------------------------------
+   8a. Service-Karte
+   Genutzt vom Teaser auf der Startseite und von der Services-Übersicht.
+   Lag vorher doppelt in beiden Seiten — eine Änderung hätte sonst nur
+   die Hälfte erwischt. Das Raster bleibt Sache der jeweiligen Seite.
+   -------------------------------------------------------------------------- */
+.service__link {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--dur) var(--ease-out),
+              transform var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out);
+}
+
+.service__link:hover {
+  border-color: var(--petrol);
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(4, 37, 44, 0.1);
+}
+
+.service__media { display: block; overflow: hidden; }
+
+.service__media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  filter: grayscale(0.85);
+  transition: transform 600ms var(--ease-out), filter var(--dur-slow) var(--ease-out);
+}
+
+.service__link:hover .service__media img { transform: scale(1.04); filter: grayscale(0); }
+
+.service__body { display: block; padding: clamp(1.25rem, 3vw, 1.875rem); }
+
+.service__num {
+  display: block;
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: 1.125rem;
+  color: var(--petrol);
+  margin-bottom: 0.35rem;
+}
+
+/* Eigener Grad statt --fs-h3: In vierspaltigen Rastern blieben bei 30px
+   für "WORKSHOPS" nur wenige Pixel Luft, die Karte wirkte gequetscht. */
+.service__title {
+  display: block;
+  font-weight: 800;
+  font-size: clamp(1.125rem, 1.5vw, 1.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.service__text {
+  display: block;
+  color: var(--ink-muted);
+  font-size: var(--fs-small);
+  margin-bottom: var(--space-2);
+}
+
+.service__cta {
+  display: block;
+  font-weight: 600;
+  font-size: var(--fs-small);
+  color: var(--petrol);
+}
+
+/* --------------------------------------------------------------------------
    8b. Rechtstexte (Impressum, Datenschutz)
    -------------------------------------------------------------------------- */
 .legaldoc { padding-block: clamp(8rem, 18vh, 12rem) var(--section-y); }
