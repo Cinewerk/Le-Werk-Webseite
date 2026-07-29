@@ -1,0 +1,52 @@
+---
+interface Props {
+  /** Kleiner Bodoni-Kicker über der Überschrift */
+  kicker: string;
+  /** Seitenname als Überschrift */
+  heading: string;
+}
+
+const { kicker, heading } = Astro.props;
+---
+
+<section class="ph">
+  <div class="container">
+    <p class="label label--accent"><span class="mark" aria-hidden="true">✳</span>Le Werk</p>
+
+    <h1 class="ph__title">
+      <span class="editorial editorial--kicker">{kicker}</span>
+      <span class="headline headline--xl">{heading}</span>
+    </h1>
+
+    <p class="ph__note">Inhalt folgt.</p>
+
+    <div class="ph__actions">
+      <a class="btn" href="/kontakt">
+        Projekt anfragen <span class="btn__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="btn btn--ghost" href="/">Zurück zur Startseite</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ph {
+    display: flex;
+    align-items: center;
+    min-height: 78vh;
+    padding-block: clamp(9rem, 20vh, 13rem) var(--section-y);
+  }
+
+  .ph .label { margin-bottom: var(--space-3); }
+
+  .ph__title { margin-bottom: var(--space-3); }
+  .ph__title .headline { display: block; }
+
+  .ph__note {
+    font-size: var(--fs-lead);
+    color: var(--ink-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .ph__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+</style>

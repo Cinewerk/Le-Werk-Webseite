@@ -1,0 +1,270 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** true, wenn die Seite mit einer dunklen Bühne startet (Header startet transparent/hell) */
+  heroDark?: boolean;
+}
+
+const { title, description, heroDark = false } = Astro.props;
+
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isActive = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
+
+const services = [
+  { href: '/services/foto', label: 'Foto' },
+  { href: '/services/video', label: 'Video' },
+  { href: '/services/konzept', label: 'Konzept' },
+  { href: '/services/workshops', label: 'Workshops' },
+];
+
+const overlayNav = [
+  { href: '/', label: 'Start' },
+  { href: '/services', label: 'Services' },
+  ...services,
+  { href: '/kontakt', label: 'Kontakt' },
+];
+
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Le Werk" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="de_DE" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#006377" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Poppins:ital,wght@0,400;0,500;0,600;0,800;1,400&display=swap"
+    />
+
+    <slot name="head" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+    <header class="header" id="site-header" data-over-dark={heroDark ? 'true' : 'false'}>
+      <div class="container header__inner">
+        <a class="logo" href="/" aria-label="Le Werk — zur Startseite">
+          Le Werk<span class="header__logo-mark">.</span>
+        </a>
+
+        <nav class="nav" aria-label="Hauptnavigation">
+          <ul class="nav__list">
+            <li class="nav__item nav__item--has-sub">
+              <a
+                class="nav__link"
+                href="/services"
+                aria-current={isActive('/services') ? 'page' : undefined}
+              >
+                Services
+                <svg width="10" height="7" viewBox="0 0 10 7" fill="none" aria-hidden="true">
+                  <path d="M1 1.5 5 5.5 9 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+              <ul class="nav__sub">
+                {services.map((s) => (
+                  <li>
+                    <a href={s.href} aria-current={isActive(s.href) ? 'page' : undefined}>{s.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+            <li class="nav__item">
+              <a class="nav__link" href="/kontakt" aria-current={isActive('/kontakt') ? 'page' : undefined}>
+                Kontakt
+              </a>
+            </li>
+            <li class="nav__item">
+              <a class="btn" href="/kontakt">
+                Projekt anfragen
+                <span class="btn__arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <button
+          class="burger"
+          id="nav-toggle"
+          type="button"
+          aria-label="Menü öffnen"
+          aria-expanded="false"
+          aria-controls="nav-overlay"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="overlay" id="nav-overlay" data-open="false" hidden>
+      <div class="overlay__top">
+        <a class="logo" href="/">Le Werk<span style="color: var(--petrol-light)">.</span></a>
+        <button class="overlay__close" id="nav-close" type="button" aria-label="Menü schließen">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M1 1 17 17M17 1 1 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+
+      <nav aria-label="Seitennavigation">
+        <ul class="overlay__list">
+          {overlayNav.map((item, i) => (
+            <li class="overlay__item">
+              <span class="overlay__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <a
+                class="overlay__link"
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="overlay__foot">
+        <span>Le Werk — Visual Content Studio</span>
+        <a class="link-underline" href="mailto:hallo@le-werk.de">hallo@le-werk.de</a>
+      </div>
+    </div>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__grid">
+          <div class="footer__col">
+            <h2>Navigation</h2>
+            <ul>
+              <li><a href="/">Start</a></li>
+              <li><a href="/services">Services</a></li>
+              <li><a href="/kontakt">Kontakt</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__col">
+            <h2>Services</h2>
+            <ul>
+              {services.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+            </ul>
+          </div>
+
+          <div class="footer__col">
+            <h2>Kontakt</h2>
+            <ul>
+              <li><a href="mailto:hallo@le-werk.de">hallo@le-werk.de</a></li>
+              <li><a href="tel:+490000000000">+49 000 000 000</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__col">
+            <h2>Rechtliches</h2>
+            <ul>
+              <li><a href="/impressum">Impressum</a></li>
+              <li><a href="/datenschutz">Datenschutz</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__col" aria-hidden="true">
+            <p class="footer__brand">Le Werk</p>
+          </div>
+        </div>
+
+        <div class="footer__legal">
+          <span>© {year} Le Werk. Alle Rechte vorbehalten.</span>
+          <span>Visual Content Studio</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // --- Header: fest, wird beim Scrollen zur soliden Fläche ---------------
+      const header = document.getElementById('site-header');
+      const onScroll = () => header?.classList.toggle('is-solid', window.scrollY > 40);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // --- Overlay-Navigation ------------------------------------------------
+      const toggle = document.getElementById('nav-toggle');
+      const overlay = document.getElementById('nav-overlay');
+      const closeBtn = document.getElementById('nav-close');
+
+      const setOverlay = (open: boolean) => {
+        if (!overlay || !toggle) return;
+        if (open) overlay.hidden = false;
+        overlay.dataset.open = String(open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+        document.body.classList.toggle('is-locked', open);
+        if (open) {
+          closeBtn?.focus();
+        } else {
+          toggle.focus();
+          window.setTimeout(() => {
+            if (overlay.dataset.open === 'false') overlay.hidden = true;
+          }, 420);
+        }
+      };
+
+      toggle?.addEventListener('click', () => setOverlay(overlay?.dataset.open !== 'true'));
+      closeBtn?.addEventListener('click', () => setOverlay(false));
+      overlay?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOverlay(false)));
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay?.dataset.open === 'true') setOverlay(false);
+      });
+
+      // Beim Wechsel auf Desktop-Breite offenes Overlay schließen
+      const wide = window.matchMedia('(min-width: 62rem)');
+      wide.addEventListener('change', (e) => {
+        if (e.matches && overlay?.dataset.open === 'true') setOverlay(false);
+      });
+
+      // --- Scroll-Reveal ------------------------------------------------------
+      const reveals = document.querySelectorAll('[data-reveal]');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduce || !('IntersectionObserver' in window)) {
+        reveals.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const el = entry.target as HTMLElement;
+              const delay = Number(el.dataset.revealDelay ?? 0);
+              window.setTimeout(() => el.classList.add('is-in'), delay);
+              io.unobserve(el);
+            });
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0.08 }
+        );
+        reveals.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,883 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const logos = [
+  'nordlicht', 'atlas-co', 'kraftfeld', 'superbloom',
+  'hafen', 'momentum', 'veritas', 'halbmond',
+];
+
+const works = [
+  { img: '/images/work-01.jpg', w: 1600, h: 900,  tag: 'Brand Film', title: 'Zwischen den Schichten', client: 'Nordlicht',  format: '16:9' },
+  { img: '/images/work-02.jpg', w: 1600, h: 900,  tag: 'Kampagne',   title: 'Alles auf Anfang',       client: 'Atlas & Co', format: '16:9' },
+  { img: '/images/work-03.jpg', w: 900,  h: 1600, tag: 'Social',     title: 'Neun zu Sechzehn',       client: 'Superbloom', format: '9:16' },
+  { img: '/images/work-04.jpg', w: 1600, h: 900,  tag: 'Fotografie', title: 'Haus voller Licht',      client: 'Hafen',      format: '3:2'  },
+];
+
+const services = [
+  { href: '/services/foto',      img: '/images/service-foto.jpg',      title: 'Foto',      text: 'Kampagnen-, Produkt- und Reportagefotografie. Ein Setup, alle Zuschnitte.' },
+  { href: '/services/video',     img: '/images/service-video.jpg',     title: 'Video',     text: 'Vom Brand Film bis zum vertikalen Cut — gedreht, geschnitten, gefinished.' },
+  { href: '/services/konzept',   img: '/images/service-konzept.jpg',   title: 'Konzept',   text: 'Idee, Storyline und Formatstrategie, bevor die erste Klappe fällt.' },
+  { href: '/services/workshops', img: '/images/service-workshops.jpg', title: 'Workshops', text: 'Wir bringen Content-Produktion in eure Teams — praxisnah, an echten Cases.' },
+];
+
+const steps = [
+  { n: '01', title: 'Briefing & Konzept', text: 'Wir klären Ziel, Kanäle und Formate. Am Ende steht ein Konzept, das die Produktion trägt — kein Moodboard, das niemand nutzt.' },
+  { n: '02', title: 'Produktion',         text: 'Kompaktes Team, klarer Plan, Werbefilm-Standard am Set. Foto und Video entstehen wo möglich in einem Durchgang.' },
+  { n: '03', title: 'Formate & Delivery', text: 'Ein Dreh, alle Ausspielwege: Landscape, Square, 9:16, Cutdowns, Stills. Sauber benannt und sofort einsetzbar.' },
+];
+
+const quotes = [
+  { text: 'Wir haben aus einem Drehtag mehr Material bekommen als vorher aus drei — und es sah nach mehr aus, nicht nach weniger.', name: 'Marlene Kupfer', role: 'Head of Brand, Nordlicht', img: '/images/quote-01.jpg' },
+  { text: 'Endlich ein Team, das versteht, dass ein vertikaler Cut kein Abfallprodukt ist.', name: 'Jonas Reuter', role: 'Marketing Lead, Atlas & Co', img: '/images/quote-02.jpg' },
+  { text: 'Craft auf Agenturniveau, Abstimmung auf Zuruf. Diese Kombination gab es vorher nicht.', name: 'David Okonkwo', role: 'Gründer, Superbloom', img: '/images/quote-03.jpg' },
+];
+
+const faqs = [
+  { q: 'Was kostet eine Produktion bei Le Werk?', a: 'Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.' },
+  { q: 'Wie lange dauert es von der Anfrage bis zum fertigen Material?', a: 'Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.' },
+  { q: 'Bekommen wir Foto und Video aus einer Produktion?', a: 'Ja, das ist der Kern unserer Arbeitsweise. Wir planen Sets so, dass bewegte und stehende Bilder parallel entstehen. Das spart einen kompletten Produktionstag und sorgt dafür, dass Foto und Video wie eine Kampagne aussehen — nicht wie zwei.' },
+  { q: 'Wie ist das mit den Nutzungsrechten?', a: 'Ihr erhaltet standardmäßig zeitlich und räumlich unbegrenzte Nutzungsrechte für alle eigenen Kanäle. Für Paid Media, Out-of-Home oder TV klären wir Buyouts vorab transparent im Angebot — keine Nachforderungen.' },
+  { q: 'Was passiert in einem Workshop?', a: 'Wir arbeiten einen Tag mit eurem Team an euren echten Cases: Bildsprache, Formatlogik, Licht, Schnitt-Rhythmus und ein Workflow, der ohne uns funktioniert. Ihr geht mit fertigem Material und einem Setup raus, das ihr am Montag nutzen könnt.' },
+];
+---
+
+<BaseLayout
+  title="Le Werk — Visual Content Studio für Foto- und Videoproduktion"
+  description="Le Werk ist ein Visual Content Studio: Foto- und Videoproduktion in allen Formaten, vom Brand Film bis zum vertikalen Social-Cut. Werbefilm-Craft, ohne Werbefilm-Format."
+  heroDark={true}
+>
+  <!-- ═══ 1 · HERO ═══════════════════════════════════════════════════════ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__media">
+      <img
+        src="/images/hero.jpg"
+        alt="Filmprojektor wirft einen Lichtkegel in einen abgedunkelten Raum"
+        width="2400" height="1350"
+        fetchpriority="high" decoding="async"
+      />
+    </div>
+
+    <div class="container hero__inner">
+      <p class="label label--accent hero__eyebrow">
+        <span class="mark" aria-hidden="true">✳</span>Le Werk — Visual Content Studio
+      </p>
+
+      <h1 class="hero__title" id="hero-title">
+        <span class="editorial editorial--kicker">Werbefilm-Craft,</span>
+        <span class="headline headline--display">ohne Korsett</span>
+      </h1>
+
+      <p class="lead hero__lead">
+        Foto und Video in allen Formaten — vom Brand Film bis zum vertikalen Social-Cut.
+        Dieselbe Präzision wie im klassischen Werbefilm, nur ohne dessen Apparat.
+      </p>
+
+      <div class="hero__actions">
+        <a class="btn" href="/kontakt">
+          Projekt anfragen <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--ghost" href="#arbeiten">Arbeiten ansehen</a>
+      </div>
+    </div>
+
+    <a class="hero__cue" href="#trust" aria-label="Weiter zum Inhalt scrollen">
+      <span aria-hidden="true">↓</span>
+    </a>
+  </section>
+
+  <!-- ═══ 2 · TRUSTBAR (Logo-Marquee) ════════════════════════════════════ -->
+  <section class="section section--tight trust" id="trust" aria-label="Auswahl unserer Kunden">
+    <div class="container">
+      <p class="label trust__label">Vertrauen auf Le Werk</p>
+    </div>
+
+    <div class="marquee">
+      <div class="marquee__track">
+        {logos.map((l) => (
+          <img class="marquee__logo" src={`/logos/${l}.svg`} alt={`Platzhalter-Logo ${l}`} width="230" height="48" loading="lazy" />
+        ))}
+        {logos.map((l) => (
+          <img class="marquee__logo" src={`/logos/${l}.svg`} alt="" aria-hidden="true" width="230" height="48" loading="lazy" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 3 · POSITIONIERUNG (Ein-Zeilen-Sektion) ════════════════════════ -->
+  <section class="section statement" aria-labelledby="statement-title">
+    <div class="container">
+      <p class="statement__text" id="statement-title" data-reveal>
+        Le Werk ist ein <strong>Visual Content Studio</strong> für Marken, die
+        Werbefilm-Craft brauchen — <span class="editorial">aber kein Werbefilm-Format.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 4 · ARBEITEN ═══════════════════════════════════════════════════ -->
+  <section class="section section--dark work" id="arbeiten" aria-labelledby="work-title">
+    <div class="container">
+      <header class="work__head" data-reveal>
+        <h2 class="headline headline--xl" id="work-title">
+          <span class="editorial editorial--kicker">Ausgewählte</span>
+          Arbeiten
+        </h2>
+        <p class="lead">
+          Ein Auszug aus laufenden und abgeschlossenen Produktionen. Jedes Projekt
+          liefert Landscape, Square und 9:16 aus derselben Drehplanung.
+        </p>
+      </header>
+
+      <div class="work__grid">
+        {works.map((w, i) => (
+          <article class={`work__item work__item--${i + 1}`} data-reveal data-reveal-delay={i * 80}>
+            <a class="work__link" href="/services">
+              <figure class="work__figure" data-format={w.format}>
+                <img src={w.img} alt={`${w.title} — ${w.client}`} width={w.w} height={w.h} loading="lazy" decoding="async" />
+                <figcaption class="work__tag">{w.tag}</figcaption>
+              </figure>
+              <p class="work__caption">
+                <span class="work__title">{w.title}</span>
+                <span class="work__client">— {w.client}</span>
+                <span class="work__format">{w.format}</span>
+              </p>
+            </a>
+          </article>
+        ))}
+      </div>
+
+      <p class="work__more" data-reveal>
+        <a class="link-underline" href="/services">
+          Alle Leistungen ansehen <span aria-hidden="true">→</span>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 5 · SERVICES-TEASER ════════════════════════════════════════════ -->
+  <section class="section section--sand services" aria-labelledby="services-title">
+    <div class="container">
+      <header class="sec-head" data-reveal>
+        <p class="label"><span class="mark" aria-hidden="true">✳</span>Leistungen</p>
+        <h2 class="headline" id="services-title">Vier Wege, eine Handschrift</h2>
+      </header>
+
+      <ul class="services__grid">
+        {services.map((s, i) => (
+          <li class="service" data-reveal data-reveal-delay={i * 70}>
+            <a class="service__link" href={s.href}>
+              <span class="service__media">
+                <img src={s.img} alt="" width="1200" height="900" loading="lazy" decoding="async" />
+              </span>
+              <span class="service__body">
+                <span class="service__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <span class="service__title">{s.title}</span>
+                <span class="service__text">{s.text}</span>
+                <span class="service__cta" aria-hidden="true">Mehr erfahren →</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ 6 · VORTEILE ═══════════════════════════════════════════════════ -->
+  <section class="section benefits" aria-labelledby="benefits-title">
+    <div class="container">
+      <header class="sec-head" data-reveal>
+        <p class="label"><span class="mark" aria-hidden="true">✳</span>Warum Le Werk</p>
+        <h2 class="headline" id="benefits-title">
+          <span class="editorial editorial--kicker">Drei Gründe,</span>
+          uns anzurufen
+        </h2>
+      </header>
+
+      <ol class="benefits__list">
+        <li class="benefit" data-reveal>
+          <span class="benefit__num" aria-hidden="true">01</span>
+          <h3 class="benefit__title">Craft-Level ohne Overhead</h3>
+          <p class="benefit__text">
+            Dieselben Maßstäbe an Licht, Bildgestaltung und Post wie im klassischen
+            Werbefilm — aber mit einem Team, das entscheidet statt abstimmt.
+          </p>
+        </li>
+        <li class="benefit" data-reveal data-reveal-delay="80">
+          <span class="benefit__num" aria-hidden="true">02</span>
+          <h3 class="benefit__title">Alle Formate aus einer Produktion</h3>
+          <p class="benefit__text">
+            Vertikal ist bei uns kein Beschnitt am Ende, sondern Teil der Planung.
+            Ein Dreh liefert Kampagnen-Asset und Social-Cut in gleicher Qualität.
+          </p>
+        </li>
+        <li class="benefit" data-reveal data-reveal-delay="160">
+          <span class="benefit__num" aria-hidden="true">03</span>
+          <h3 class="benefit__title">Konzept und Umsetzung im Haus</h3>
+          <p class="benefit__text">
+            Wer die Idee entwickelt, steht auch am Set. Keine Übergabeverluste,
+            keine Interpretation aus zweiter Hand.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═══ 7 · SO FUNKTIONIERT ES ═════════════════════════════════════════ -->
+  <section class="section section--sand steps" aria-labelledby="steps-title">
+    <div class="container">
+      <header class="sec-head" data-reveal>
+        <p class="label"><span class="mark" aria-hidden="true">✳</span>Ablauf</p>
+        <h2 class="headline" id="steps-title">So funktioniert es</h2>
+      </header>
+
+      <ol class="steps__list">
+        {steps.map((s, i) => (
+          <li class="step" data-reveal data-reveal-delay={i * 90}>
+            <span class="step__num editorial" aria-hidden="true">{s.n}</span>
+            <h3 class="step__title">{s.title}</h3>
+            <p class="step__text">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="steps__cta" data-reveal>
+        <p class="steps__cta-text">Klingt nach eurem nächsten Projekt?</p>
+        <a class="btn" href="/kontakt">
+          Projekt anfragen <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 8 · ÜBER UNS ═══════════════════════════════════════════════════ -->
+  <section class="section about" aria-labelledby="about-title">
+    <div class="container about__grid">
+      <figure class="about__media" data-reveal>
+        <img src="/images/about.jpg" alt="Das Team von Le Werk bei der gemeinsamen Konzeptarbeit" width="1400" height="1050" loading="lazy" decoding="async" />
+      </figure>
+
+      <div class="about__body" data-reveal data-reveal-delay="90">
+        <p class="label"><span class="mark" aria-hidden="true">✳</span>Über uns</p>
+        <h2 class="headline" id="about-title">
+          <span class="editorial editorial--kicker">Aus der Werbefilm-</span>
+          Schule, neu sortiert
+        </h2>
+        <div class="prose about__prose">
+          <p>
+            Le Werk kommt aus der Werbefilmproduktion. Jahrelang haben wir Sets
+            gefahren, an denen zwanzig Leute standen und drei entschieden haben.
+            Das Handwerk daraus nehmen wir mit — den Apparat lassen wir zurück.
+          </p>
+          <p>
+            Heute produzieren wir für Marken, deren Content dort stattfindet, wo
+            Menschen wirklich hinschauen: im Feed, auf der Landingpage, im Store.
+            Gleiche Sorgfalt, anderes Format, kürzere Wege.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 9 · STIMMEN ════════════════════════════════════════════════════ -->
+  <section class="section section--dark voices" aria-labelledby="voices-title">
+    <div class="container">
+      <header class="sec-head" data-reveal>
+        <p class="label"><span class="mark" aria-hidden="true">✳</span>Stimmen</p>
+        <h2 class="headline" id="voices-title">Was Kunden sagen</h2>
+      </header>
+
+      <div class="voices__list">
+        {quotes.map((q, i) => (
+          <figure class={`voice voice--${i % 2 === 0 ? 'left' : 'right'}`} data-reveal>
+            <blockquote class="voice__quote editorial">„{q.text}“</blockquote>
+            <figcaption class="voice__cite">
+              <img class="voice__portrait" src={q.img} alt="" width="240" height="240" loading="lazy" decoding="async" />
+              <span>
+                <span class="voice__name">{q.name}</span>
+                <span class="voice__role">{q.role}</span>
+              </span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <p class="voices__more" data-reveal>
+        <a class="link-underline" href="/kontakt">
+          Euer Projekt als nächstes? <span aria-hidden="true">→</span>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 10 · FAQ ═══════════════════════════════════════════════════════ -->
+  <section class="section faq" aria-labelledby="faq-title">
+    <div class="container faq__grid">
+      <header class="faq__head" data-reveal>
+        <p class="label"><span class="mark" aria-hidden="true">✳</span>Häufige Fragen</p>
+        <h2 class="headline" id="faq-title">Kurz beantwortet</h2>
+      </header>
+
+      <div class="faq__list" data-reveal data-reveal-delay="80">
+        {faqs.map((f) => (
+          <details class="faq__item">
+            <summary class="faq__q">
+              <span>{f.q}</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__a"><p>{f.a}</p></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 11 · BOTTOM-CTA ════════════════════════════════════════════════ -->
+  <section class="section section--dark cta" aria-labelledby="cta-title">
+    <div class="container cta__inner" data-reveal>
+      <h2 class="headline headline--xl cta__title" id="cta-title">
+        <span class="editorial editorial--kicker">Erzählt uns</span>
+        von eurem Projekt
+      </h2>
+      <p class="lead cta__lead">
+        Ein Anruf, zwanzig Minuten, danach wisst ihr, ob wir passen —
+        und in welchem Rahmen sich euer Vorhaben bewegt.
+      </p>
+      <div class="cta__actions">
+        <a class="btn btn--on-dark" href="/kontakt">
+          Projekt anfragen <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--ghost" href="mailto:hallo@le-werk.de">hallo@le-werk.de</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ── Gemeinsamer Sektionskopf ─────────────────────────────────────────── */
+  .sec-head {
+    max-width: 46rem;
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  }
+  .sec-head .label { margin-bottom: var(--space-2); }
+
+  /* ── 1 · Hero ─────────────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-block: clamp(8rem, 18vh, 12rem) clamp(4rem, 10vh, 7rem);
+    background: var(--petrol-deep);
+    color: var(--on-dark);
+    overflow: hidden;
+  }
+
+  .hero__media { position: absolute; inset: 0; z-index: 0; }
+
+  .hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.08) brightness(0.78);
+  }
+
+  .hero__media::before,
+  .hero__media::after { content: ''; position: absolute; inset: 0; }
+
+  /* Duotone in Markenfarbe */
+  .hero__media::before {
+    background: var(--petrol);
+    mix-blend-mode: color;
+    opacity: 0.6;
+  }
+
+  /* Lesbarkeitsverlauf für die Typo */
+  .hero__media::after {
+    background:
+      linear-gradient(180deg, rgba(4, 37, 44, 0.72) 0%, rgba(4, 37, 44, 0.15) 38%, rgba(4, 37, 44, 0.9) 100%),
+      linear-gradient(90deg, rgba(4, 37, 44, 0.75) 0%, rgba(4, 37, 44, 0) 65%);
+  }
+
+  .hero__inner { position: relative; z-index: 1; }
+
+  .hero__eyebrow { margin-bottom: var(--space-3); }
+  .hero__title { margin-bottom: var(--space-3); }
+  .hero__title .headline--display { display: block; }
+
+  .hero__lead {
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: var(--space-4);
+  }
+
+  .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+  .hero__cue {
+    position: absolute;
+    right: var(--gutter);
+    bottom: clamp(2rem, 6vh, 3.5rem);
+    z-index: 1;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    color: #fff;
+    text-decoration: none;
+    animation: cue 2.4s var(--ease-out) infinite;
+  }
+
+  @keyframes cue {
+    0%, 100% { transform: translateY(0); opacity: 0.75; }
+    50%      { transform: translateY(6px); opacity: 1; }
+  }
+
+  /* ── 2 · Trustbar ─────────────────────────────────────────────────────── */
+  .trust__label { margin-bottom: var(--space-4); }
+
+  .marquee {
+    position: relative;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee__track {
+    display: flex;
+    align-items: center;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    width: max-content;
+    animation: marquee 46s linear infinite;
+    will-change: transform;
+  }
+
+  .marquee:hover .marquee__track,
+  .marquee:focus-within .marquee__track { animation-play-state: paused; }
+
+  @keyframes marquee {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+
+  .marquee__logo {
+    height: 34px;
+    width: auto;
+    opacity: 0.42;
+    transition: opacity var(--dur) var(--ease-out);
+  }
+  .marquee:hover .marquee__logo { opacity: 0.62; }
+
+  /* ── 3 · Positionierung ───────────────────────────────────────────────── */
+  .statement { padding-block: clamp(4rem, 9vw, 7.5rem); }
+
+  .statement__text {
+    max-width: 26ch;
+    font-size: var(--fs-statement);
+    font-weight: 500;
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .statement__text strong { font-weight: 600; color: var(--petrol); }
+  .statement__text .editorial { font-weight: 400; }
+
+  /* ── 4 · Arbeiten ─────────────────────────────────────────────────────── */
+  .work__head {
+    display: grid;
+    gap: var(--space-3);
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .work__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .work__link { display: block; text-decoration: none; color: inherit; }
+
+  .work__figure {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .work__figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 16 / 9;
+    transition: transform 600ms var(--ease-out);
+  }
+
+  .work__figure[data-format='9:16'] img { aspect-ratio: 9 / 16; }
+  .work__figure[data-format='3:2'] img { aspect-ratio: 3 / 2; }
+
+  .work__link:hover .work__figure img { transform: scale(1.035); }
+
+  .work__tag {
+    position: absolute;
+    left: clamp(1rem, 3vw, 2rem);
+    bottom: clamp(1rem, 3vw, 2rem);
+    font-family: var(--font-ui);
+    font-weight: 800;
+    font-size: clamp(1.25rem, 3vw, 2.25rem);
+    line-height: 1;
+    letter-spacing: var(--track-display);
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+  }
+
+  .work__caption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem;
+    margin-top: var(--space-2);
+    font-size: var(--fs-small);
+  }
+
+  .work__title { font-weight: 600; }
+  .work__client { color: var(--on-dark-muted); }
+
+  .work__format {
+    margin-left: auto;
+    padding: 0.15rem 0.55rem;
+    border: 1px solid var(--line-dark);
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+    color: var(--on-dark-muted);
+  }
+
+  .work__more { margin-top: clamp(2.5rem, 6vw, 4rem); }
+
+  /* ── 5 · Services ─────────────────────────────────────────────────────── */
+  .services__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .service__link {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--dur) var(--ease-out),
+                transform var(--dur) var(--ease-out),
+                box-shadow var(--dur) var(--ease-out);
+  }
+
+  .service__link:hover {
+    border-color: var(--petrol);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(4, 37, 44, 0.1);
+  }
+
+  .service__media { display: block; overflow: hidden; }
+
+  .service__media img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: grayscale(0.85);
+    transition: transform 600ms var(--ease-out), filter var(--dur-slow) var(--ease-out);
+  }
+
+  .service__link:hover .service__media img { transform: scale(1.04); filter: grayscale(0); }
+
+  .service__body { display: block; padding: clamp(1.25rem, 3vw, 1.875rem); }
+
+  .service__num {
+    display: block;
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-size: 1.125rem;
+    color: var(--petrol);
+    margin-bottom: 0.35rem;
+  }
+
+  .service__title {
+    display: block;
+    font-weight: 800;
+    font-size: var(--fs-h3);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .service__text {
+    display: block;
+    color: var(--ink-muted);
+    font-size: var(--fs-small);
+    margin-bottom: var(--space-2);
+  }
+
+  .service__cta {
+    display: block;
+    font-weight: 600;
+    font-size: var(--fs-small);
+    color: var(--petrol);
+  }
+
+  /* ── 6 · Vorteile ─────────────────────────────────────────────────────── */
+  .benefits__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 3.5rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .benefit { border-top: 1px solid var(--line); padding-top: var(--space-3); }
+
+  .benefit__num {
+    display: block;
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--petrol);
+    margin-bottom: var(--space-2);
+  }
+
+  .benefit__title {
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-1);
+    text-wrap: balance;
+  }
+
+  .benefit__text { color: var(--ink-muted); }
+
+  /* ── 7 · Ablauf ───────────────────────────────────────────────────────── */
+  .steps__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 3.5rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .step { border-top: 2px solid var(--petrol); padding-top: var(--space-3); }
+
+  .step__num {
+    display: block;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1;
+    color: var(--petrol);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: var(--space-2);
+  }
+
+  .step__title {
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-1);
+  }
+
+  .step__text { color: var(--ink-muted); }
+
+  .steps__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: clamp(3rem, 6vw, 4.5rem);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .steps__cta-text {
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* ── 8 · Über uns ─────────────────────────────────────────────────────── */
+  .about__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .about__media { margin: 0; }
+
+  .about__media img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+  }
+
+  .about__body .label { margin-bottom: var(--space-2); }
+  .about__body .headline { margin-bottom: var(--space-3); }
+  .about__prose { color: var(--ink-muted); }
+
+  /* ── 9 · Stimmen ──────────────────────────────────────────────────────── */
+  .voices__list { display: grid; gap: clamp(3rem, 7vw, 5.5rem); }
+
+  .voice { margin: 0; max-width: 34ch; }
+  .voice--right { margin-left: auto; text-align: right; }
+
+  .voice__quote {
+    font-size: clamp(1.375rem, 3.4vw, 2.5rem);
+    line-height: 1.25;
+    margin-bottom: var(--space-3);
+  }
+
+  .voice__cite {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    font-style: normal;
+  }
+
+  .voice--right .voice__cite { flex-direction: row-reverse; }
+
+  .voice__portrait {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: grayscale(1);
+    flex-shrink: 0;
+  }
+
+  .voice__name { display: block; font-size: var(--fs-small); font-weight: 600; }
+  .voice__role { display: block; font-size: var(--fs-small); color: var(--on-dark-muted); }
+
+  .voices__more { margin-top: clamp(3rem, 6vw, 4.5rem); }
+
+  /* ── 10 · FAQ ─────────────────────────────────────────────────────────── */
+  .faq__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .faq__head .label { margin-bottom: var(--space-2); }
+
+  .faq__item { border-top: 1px solid var(--line); }
+  .faq__item:last-child { border-bottom: 1px solid var(--line); }
+
+  .faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    min-height: 56px;
+    padding-block: var(--space-2);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq__q::-webkit-details-marker { display: none; }
+
+  .faq__icon { position: relative; flex-shrink: 0; width: 20px; height: 20px; }
+
+  .faq__icon::before,
+  .faq__icon::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto 0;
+    height: 2px;
+    background: var(--petrol);
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .faq__icon::after { transform: rotate(90deg); }
+  .faq__item[open] .faq__icon::after { transform: rotate(0deg); }
+
+  .faq__a {
+    padding-bottom: var(--space-3);
+    color: var(--ink-muted);
+    max-width: 58ch;
+  }
+
+  /* ── 11 · Bottom-CTA ──────────────────────────────────────────────────── */
+  .cta { text-align: center; }
+  .cta__inner { display: grid; justify-items: center; gap: var(--space-3); }
+  .cta__title { max-width: 16ch; }
+  .cta__lead { max-width: 44ch; }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+
+  /* ── Breakpoints ──────────────────────────────────────────────────────── */
+  @media (min-width: 48rem) {
+    .services__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .steps__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .steps__cta { justify-content: space-between; }
+    .hero__cue { display: inline-flex; }
+  }
+
+  @media (min-width: 64rem) {
+    .work__head {
+      grid-template-columns: 1.35fr 1fr;
+      align-items: end;
+      gap: var(--space-5);
+    }
+
+    .work__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+      row-gap: clamp(3rem, 6vw, 5rem);
+    }
+
+    .work__item--1 { grid-column: 1 / span 7; }
+    .work__item--2 { grid-column: 9 / span 4; align-self: end; }
+    .work__item--3 { grid-column: 2 / span 4; }
+    .work__item--4 { grid-column: 7 / span 6; align-self: end; }
+
+    .about__grid { grid-template-columns: 1fr 1fr; gap: clamp(3rem, 6vw, 6rem); }
+    .about__media img { aspect-ratio: 3 / 4; }
+
+    .faq__grid { grid-template-columns: 0.8fr 1.2fr; gap: clamp(3rem, 6vw, 6rem); }
+    .faq__head { position: sticky; top: 7rem; }
+  }
+
+  /* ── Reduced Motion ───────────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+      animation-name: none;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: var(--space-3);
+    }
+    .marquee__track img[aria-hidden='true'] { display: none; }
+    .marquee { -webkit-mask-image: none; mask-image: none; }
+    .hero__cue { animation-name: none; }
+  }
+</style>
