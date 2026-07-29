@@ -46,14 +46,14 @@ const faqs = [
     <div class="hero__media">
       <img
         src="/images/hero.jpg"
-        alt="Filmprojektor wirft einen Lichtkegel in einen abgedunkelten Raum"
-        width="2400" height="1350"
+        alt="Steinerne Figurengruppe mit erhobenem Speer vor freiem Himmel"
+        width="2500" height="1569"
         fetchpriority="high" decoding="async"
       />
     </div>
 
     <div class="container hero__inner">
-      <p class="label label--accent hero__eyebrow">
+      <p class="label hero__eyebrow">
         <span class="mark" aria-hidden="true">✳</span><span class="brand">Le Werk</span> — Visual Content Studio
       </p>
 
@@ -373,7 +373,14 @@ const faqs = [
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Das Motiv sitzt im Bild weit rechts. Beim Hochkant-Beschnitt auf
+       schmalen Schirmen fiele es aus dem mittigen Ausschnitt heraus. */
+    object-position: 70% center;
     filter: grayscale(1) contrast(1.08) brightness(0.78);
+  }
+
+  @media (min-width: 48rem) {
+    .hero__media img { object-position: center; }
   }
 
   .hero__media::before,
@@ -386,21 +393,35 @@ const faqs = [
     opacity: 0.6;
   }
 
-  /* Lesbarkeitsverlauf für die Typo */
+  /* Lesbarkeitsverlauf für die Typo.
+     Der waagerechte Verlauf trägt die Textspalte links und ist bewusst
+     kräftiger als der senkrechte — Werte per Kontrastmessung ermittelt. */
   .hero__media::after {
     background:
       linear-gradient(180deg, rgba(4, 37, 44, 0.72) 0%, rgba(4, 37, 44, 0.15) 38%, rgba(4, 37, 44, 0.9) 100%),
-      linear-gradient(90deg, rgba(4, 37, 44, 0.75) 0%, rgba(4, 37, 44, 0) 65%);
+      linear-gradient(90deg, rgba(4, 37, 44, 0.88) 0%, rgba(4, 37, 44, 0.6) 35%, rgba(4, 37, 44, 0) 75%);
   }
 
   .hero__inner { position: relative; z-index: 1; }
 
-  .hero__eyebrow { margin-bottom: var(--space-3); }
+  /* Weiß statt Petrol-Hell: Der Eyebrow liegt teils über dem hellen
+     Himmel des Bühnenbilds. Eine mittelhelle Textfarbe erreicht dort
+     nie 4,5:1, weil im Foto immer Pixel derselben Helligkeit vorkommen.
+     Der Asterisk ist rein dekorativ und darf farbig bleiben. */
+  .hero__eyebrow {
+    color: var(--on-dark);
+    margin-bottom: var(--space-3);
+  }
+
+  .hero__eyebrow .mark { color: var(--petrol-light); }
   .hero__title { margin-bottom: var(--space-3); }
   .hero__title .headline--display { display: block; }
 
   .hero__lead {
-    color: rgba(255, 255, 255, 0.82);
+    /* Auf 375px lag der Fließtext mit den ursprünglichen 0.82 bei 4,27:1
+       und damit unter der Anforderung. 0.95 ergibt 4,67:1 und bleibt der
+       Headline farblich trotzdem einen Schritt untergeordnet. */
+    color: rgba(255, 255, 255, 0.95);
     margin-bottom: var(--space-4);
   }
 
