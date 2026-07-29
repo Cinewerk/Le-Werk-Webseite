@@ -351,9 +351,6 @@ button { cursor: pointer; }
   gap: var(--space-4);
 }
 
-.header__logo-mark { color: var(--petrol); }
-.header[data-over-dark='true']:not(.is-solid) .header__logo-mark { color: var(--petrol-light); }
-
 /* Desktop-Navigation */
 .nav { display: none; }
 
