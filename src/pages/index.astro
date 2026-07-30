@@ -163,7 +163,7 @@ const faqs = [
   <section class="section section--sand services" aria-labelledby="services-title">
     <div class="container">
       <header class="sec-head" data-reveal>
-        <p class="label"><span class="mark" aria-hidden="true">✳</span>Was wir machen</p>
+        <p class="label">Was wir machen</p>
         <h2 class="headline" id="services-title">
           <span class="editorial editorial--kicker">Drei Disziplinen,</span>
           eine Handschrift
@@ -200,7 +200,7 @@ const faqs = [
   <section class="section section--dark team" aria-labelledby="team-title">
     <div class="container">
       <header class="sec-head" data-reveal>
-        <p class="label"><span class="mark" aria-hidden="true">✳</span>Wer dahintersteht</p>
+        <p class="label">Wer dahintersteht</p>
         <h2 class="headline" id="team-title">
           <span class="editorial editorial--kicker">Unser</span>
           Team
@@ -232,7 +232,7 @@ const faqs = [
   <section class="section benefits" aria-labelledby="benefits-title">
     <div class="container">
       <header class="sec-head" data-reveal>
-        <p class="label"><span class="mark" aria-hidden="true">✳</span>Warum <span class="brand">Le Werk</span></p>
+        <p class="label">Warum <span class="brand">Le Werk</span></p>
         <h2 class="headline" id="benefits-title">
           <span class="editorial editorial--kicker">Drei Gründe,</span>
           uns anzurufen
@@ -272,10 +272,12 @@ const faqs = [
   </section>
 
   <!-- ═══ 8 · FAQ ═══════════════════════════════════════════════════════ -->
-  <section class="section faq" aria-labelledby="faq-title">
+  <!-- Beige statt Weiß: Vorher grenzten zwei weiße Flächen aneinander und
+       der Abschnittswechsel war nicht zu erkennen. -->
+  <section class="section section--sand faq" aria-labelledby="faq-title">
     <div class="container faq__grid">
       <header class="faq__head" data-reveal>
-        <p class="label"><span class="mark" aria-hidden="true">✳</span>Häufige Fragen</p>
+        <p class="label">Häufige Fragen</p>
         <h2 class="headline" id="faq-title">Kurz beantwortet</h2>
       </header>
 
@@ -300,10 +302,6 @@ const faqs = [
         <span class="editorial editorial--kicker">Erzählt uns</span>
         von eurem Projekt
       </h2>
-      <p class="lead cta__lead">
-        Ein Anruf, zwanzig Minuten, danach wisst ihr, ob wir passen —
-        und in welchem Rahmen sich euer Vorhaben bewegt.
-      </p>
       <div class="cta__actions">
         <a class="btn btn--on-dark" href={withBase("/kontakt")}>
           Projekt anfragen <span class="btn__arrow" aria-hidden="true">→</span>
@@ -691,7 +689,6 @@ const faqs = [
   .cta { text-align: center; }
   .cta__inner { display: grid; justify-items: center; gap: var(--space-3); }
   .cta__title { max-width: 16ch; }
-  .cta__lead { max-width: 44ch; }
 
   .cta__actions {
     display: flex;

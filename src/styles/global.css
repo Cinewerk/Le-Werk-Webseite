@@ -220,14 +220,6 @@ button { cursor: pointer; }
 .label--accent { color: var(--petrol); }
 .section--dark .label--accent { color: var(--petrol-light); }
 
-/* Marker-Glyphe vor Labels */
-.label > .mark {
-  display: inline-block;
-  margin-right: 0.55em;
-  color: var(--petrol);
-}
-.section--dark .label > .mark { color: var(--petrol-light); }
-
 .headline {
   font-family: var(--font-ui);
   font-weight: 800;
@@ -596,19 +588,16 @@ button { cursor: pointer; }
   color: var(--on-dark-muted);
 }
 
-.footer__erklaerer {
-  margin-top: var(--space-2);
-  font-size: var(--fs-small);
-  line-height: 1.5;
-  color: var(--on-dark-muted);
-}
-
+/* Die Wortmarke ist ein Logo und darf nicht umbrechen. Bei 6rem passte
+   sie nicht in die Footer-Spalte und brach in "Le" / "Werk" — deshalb
+   kleiner und mit nowrap abgesichert. */
 .footer__brand {
   font-family: var(--font-ui);
   font-weight: 800;
-  font-size: clamp(3rem, 9vw, 6rem);
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  white-space: nowrap;
   line-height: 1;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.04em;
   color: rgba(255, 255, 255, 0.12);
 }
 
