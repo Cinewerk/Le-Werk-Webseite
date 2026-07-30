@@ -19,8 +19,9 @@ Die Bühne der Startseite ist inzwischen ein Video, siehe Abschnitt unten.
 | Datei | Wo es erscheint | Format | Status |
 |---|---|---|---|
 | `bts/bts-01.jpg` – `bts-09.jpg` | Team, Raster hinter den Kulissen | 3:2 quer / 2:3 hoch | **echt** |
-| `team-01.jpg`, `team-02.jpg` | Sektion „Unser Team", Porträts | 3:2 quer | **echt** |
-| `team-03.jpg`, `team-04.jpg` | — | 2:3 hoch | **ungenutzt** (Unsplash-Platzhalter) |
+| `team-02.jpg` | Team, Porträt 1 | quer, hochkant beschnitten | **echt** |
+| `team-01.jpg` | Team, Porträt 2 | quer, hochkant beschnitten | **echt** |
+| `team-03.jpg`, `team-04.jpg` | Team, Porträt 3 und 4 | 2:3 hoch | Platzhalter |
 | `hero.jpg` | — | quer | **ungenutzt** |
 | `about.jpg` | — | quer | **ungenutzt** (Über-uns-Sektion entfallen) |
 | `quote-01.jpg` – `quote-03.jpg` | — | quadratisch | **ungenutzt** (Stimmen-Sektion entfallen) |
@@ -96,13 +97,26 @@ die Breite folgt automatisch dem Seitenverhältnis.
 
 ## Team-Porträts
 
-`team-01.jpg` bis `team-04.jpg` sind **Platzhalter von Unsplash und zeigen
-nicht das Team**. Unter den Bildern steht derzeit „Name folgt / Rolle folgt".
+Vier Plätze, davon zwei echt:
 
-Zum Ersetzen: vier Porträts im Verhältnis 2:3 (etwa 800 × 1200) unter
-denselben Namen ablegen, dann Namen und Rollen im `team`-Array in
-`src/pages/index.astro` eintragen. Die Darstellung entsättigt die Bilder,
-damit die Reihe auch bei unterschiedlichen Lichtstimmungen ruhig bleibt.
+- **Platz 1 und 2** (`team-02.jpg`, `team-01.jpg`) sind echte Aufnahmen. Sie
+  liegen im Querformat und werden hochkant beschnitten — beide Personen
+  sitzen im mittigen 2:3-Ausschnitt sauber, das wurde nachgesehen.
+- **Platz 3 und 4** (`team-03.jpg`, `team-04.jpg`) sind noch Unsplash und
+  zeigen nicht das Team.
+
+Unter allen vier steht „Name folgt / Rolle folgt" — die Namen fehlen also
+noch komplett.
+
+Zum Ersetzen: Porträts im Verhältnis 2:3 (etwa 800 × 1200) unter denselben
+Namen ablegen, dann Namen und Rollen im `team`-Array in
+`src/pages/index.astro` eintragen. Die Reihenfolge im Array bestimmt die
+Reihenfolge auf der Seite.
+
+Die Darstellung entsättigt die Bilder. Das ist kein Selbstzweck, sondern
+hält die Reihe zusammen, solange echte und fremde Aufnahmen nebeneinander
+stehen. Sobald alle vier echt sind, lohnt es sich, den Graustufenfilter in
+`.team__portrait` zu entfernen — in Farbe zeigen Porträts mehr.
 
 ## Bühnenvideo
 
@@ -126,21 +140,21 @@ Ein Austausch braucht nur denselben Dateinamen (`lewerk-hero.mp4`). Danach den K
 Ecktexts prüfen: Bei Video wechselt der Hintergrund ständig, deshalb muss
 über mehrere Frames gemessen werden, nicht über einen.
 
-## Worauf beim Bühnenbild zu achten ist
+## Worauf beim Bühnenmotiv zu achten ist
 
-Über dem Bild steht weiße Schrift am **linken unteren Rand**. Motive mit
-ruhiger, dunkler Fläche links funktionieren am besten. Die Seite legt
-zusätzlich einen Graustufen-Filter, eine Petrol-Einfärbung und zwei dunkle
-Verläufe darüber (siehe `.hero__media` in `src/pages/index.astro`) — helle
-Motive werden dadurch abgedunkelt, aber nicht beliebig weit.
+Über dem Video steht weiße Schrift am **linken unteren Rand**. Motive mit
+ruhiger, dunkler Fläche links funktionieren am besten. Die Seite legt zwei
+neutral schwarze Verläufe darüber und dunkelt leicht ab (siehe
+`.hero__media` in `src/pages/index.astro`) — helle Motive werden dadurch
+abgedunkelt, aber nicht beliebig weit.
 
-Nach dem Tausch gehören zwei Dinge geprüft:
+Graustufen-Filter und Petrol-Einfärbung, die hier früher standen, gibt es
+nicht mehr: Ein farbiger Verlauf legt sich als Stich über das ganze Material
+und verfälscht die Aufnahme.
 
-1. **Kontrast** der weißen Headline gegen das Bild an dieser Stelle
-   (Ziel: mindestens 4,5:1).
-2. **`width` und `height`** am `<img>` in `src/pages/index.astro` auf die
-   echten Pixelmaße setzen — sonst reserviert der Browser den falschen
-   Platz und das Layout springt beim Laden.
+Nach einem Tausch gehört der **Kontrast** der weißen Schrift gegen das
+Motiv an dieser Stelle geprüft, Ziel mindestens 4,5:1. Bei Video wechselt
+der Hintergrund ständig, deshalb über mehrere Frames messen.
 
 ## Hinweis zu den Kundenlogos
 

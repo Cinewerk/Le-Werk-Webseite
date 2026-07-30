@@ -50,13 +50,15 @@ const bts = [
   { img: '/images/bts/bts-09.jpg', alt: 'Zwei Personen am Schnittplatz unter einem Flächenlicht' },
 ];
 
-// Echte Porträts. Die vier Unsplash-Platzhalter sind entfallen — es gibt
-// zwei richtige Aufnahmen, und zwei echte schlagen vier fremde.
-// OFFEN: Namen und Rollen. Bis dahin steht der Platzhaltertext, damit die
-// Lücke sichtbar bleibt und nicht übersehen wird.
+// Vier Plätze: die ersten beiden echt, die letzten beiden noch Unsplash.
+// team-01 und team-02 liegen im Querformat und werden hochkant beschnitten
+// — mittig geprüft, beide Personen sitzen sauber im Ausschnitt.
+// OFFEN: Namen und Rollen sowie zwei echte Porträts für Platz 3 und 4.
 const team = [
-  { img: '/images/team-01.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Porträt, sitzend im Studio' },
   { img: '/images/team-02.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Porträt im Studio' },
+  { img: '/images/team-01.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Porträt, sitzend im Studio' },
+  { img: '/images/team-03.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Platzhalter-Porträt' },
+  { img: '/images/team-04.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Platzhalter-Porträt' },
 ];
 
 // q darf Markup enthalten (Wortmarke), wird unten mit set:html gerendert.
@@ -269,7 +271,7 @@ const faqs = [
             <img
               class="team__portrait"
               src={withBase(m.img)} alt={m.alt}
-              width="1400" height="932" loading="lazy" decoding="async"
+              width="800" height="1200" loading="lazy" decoding="async"
             />
             <p class="team__name">{m.name}</p>
             <p class="team__role">{m.role}</p>
@@ -806,32 +808,31 @@ const faqs = [
      Porträts, deshalb hier weniger Abstand nach unten. */
   .sec-head--knapp { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
 
-  /* Zwei Porträts, zwei Spalten — ab 40rem nebeneinander, darunter
-     gestapelt, damit die Gesichter groß genug bleiben. */
+  /* Vier Porträts: zwei Spalten auf dem Handy, vier ab 48rem. */
   .team__grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(1.25rem, 3vw, 2.25rem);
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  @media (min-width: 40rem) {
-    .team__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-
   .team__member { margin: 0; }
 
-  /* 3:2 quer statt 2:3 hoch: Beide Aufnahmen liegen im Querformat und
-     zeigen die Person im Raum. Auf Hochkant beschnitten ginge genau das
-     verloren, was sie zeigen — Studio, Haltung, Situation.
-     Farbe statt Graustufen, weil es echte Menschen sind und nicht mehr
-     vier zusammengesuchte Fremde, die ein Filter zusammenhalten muss. */
+  /* 2:3 hoch, weil vier Porträts nebeneinander stehen — vier Querformate
+     in einer Reihe wären flache Streifen. Die beiden echten Aufnahmen
+     liegen quer und werden mittig beschnitten; nachgesehen, beide Personen
+     sitzen sauber im Ausschnitt.
+
+     Graustufen sind zurück: Solange zwei echte Aufnahmen neben zwei
+     fremden stehen, hält der Filter die Reihe zusammen. Sobald alle vier
+     echt sind, kann er weg — dann zeigt Farbe mehr. */
   .team__portrait {
     width: 100%;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 2 / 3;
     object-fit: cover;
+    filter: grayscale(1) contrast(1.06);
     border-radius: var(--radius);
     margin-bottom: var(--space-2);
   }
@@ -981,6 +982,7 @@ const faqs = [
   @media (min-width: 48rem) {
     .statement__text { text-wrap: balance; }
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .team__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .hero__cue { display: inline-flex; }
   }
 
