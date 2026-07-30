@@ -30,6 +30,20 @@ const works = [
 // Workshops bleiben über Menü, Footer und /services erreichbar.
 const disziplinen = services.filter((s) => s.disziplin);
 
+// PLATZHALTER — echte Aufnahmen vom Set einsetzen. Die drei Motive sind
+// vorhandene Dateien, die auf der Startseite sonst nirgends vorkommen:
+// hero.jpg und about.jpg waren ungenutzt, service-workshops.jpg erscheint
+// nur auf der Services-Seite. Dadurch keine Dopplung, aber es sind auch
+// keine echten Behind-the-Scenes-Bilder. ratio steuert den Beschnitt,
+// damit Quer- und Hochformat gemischt stehen.
+// Reihenfolge nach Motivqualität: Das größte Feld bekommt das Bild, das
+// einer Arbeitssituation am nächsten kommt, das kleinste das schwächste.
+const bts = [
+  { img: '/images/service-workshops.jpg', ratio: '3 / 2', alt: 'Platzhalter: Team bei der Arbeit' },
+  { img: '/images/about.jpg',             ratio: '3 / 4', alt: 'Platzhalter: Arbeitssituation, hochkant beschnitten' },
+  { img: '/images/hero.jpg',              ratio: '4 / 3', alt: 'Platzhalter: Aufnahme vor Ort' },
+];
+
 // PLATZHALTER — echte Porträts, Namen und Rollen einsetzen. Die Bilder
 // stammen von Unsplash und zeigen nicht das Team.
 const team = [
@@ -234,19 +248,15 @@ const faqs = [
   <!-- ═══ 6 · UNSER TEAM ═════════════════════════════════════════════════ -->
   <section class="section section--dark team" aria-labelledby="team-title">
     <div class="container">
-      <header class="sec-head" data-reveal>
+      <header class="sec-head sec-head--knapp" data-reveal>
         <p class="label">Wer dahintersteht</p>
         <h2 class="headline" id="team-title">
           <span class="editorial editorial--kicker">Unser</span>
           Team
         </h2>
-        <p class="lead">
-          Ein Team, das produziert — keine Account-Ebene, keine Weitergabe an
-          Dritte. Die Leute, mit denen ihr das Konzept besprecht, stehen später
-          auch am Set und sitzen im Schnitt.
-        </p>
       </header>
 
+      <!-- Erst die Gesichter … -->
       <ul class="team__grid">
         {team.map((m, i) => (
           <li class="team__member" data-reveal data-reveal-delay={i * 70}>
@@ -257,6 +267,29 @@ const faqs = [
             />
             <p class="team__name">{m.name}</p>
             <p class="team__role">{m.role}</p>
+          </li>
+        ))}
+      </ul>
+
+      <!-- … dann der Text über die volle Breite. Er stand vorher klein im
+           Sektionskopf; als breiter Absatz trägt er den Abschnitt. -->
+      <p class="team__manifest" data-reveal>
+        Ein Team, das produziert — keine Account-Ebene, keine Weitergabe an
+        Dritte. Die Leute, mit denen ihr das Konzept besprecht, stehen später
+        auch am Set und sitzen im Schnitt. Vom Studio im Rheinauhafen aus
+        drehen wir in Köln, bundesweit und auf Anfrage international.
+      </p>
+
+      <!-- … und zuletzt der Blick hinter die Kulissen, quer und hoch
+           gemischt und auf einer gemeinsamen Unterkante. -->
+      <ul class="bts" aria-label="Blick hinter die Kulissen">
+        {bts.map((b, i) => (
+          <li class={`bts__item bts__item--${i + 1}`} data-reveal data-reveal-delay={i * 80}>
+            <img
+              src={withBase(b.img)} alt={b.alt}
+              style={`--ratio:${b.ratio}`}
+              width="1200" height="900" loading="lazy" decoding="async"
+            />
           </li>
         ))}
       </ul>
@@ -767,6 +800,10 @@ const faqs = [
   .benefit__text { color: var(--ink-muted); }
 
   /* ── 6 · Unser Team ───────────────────────────────────────────────────── */
+  /* Kopf ohne Fließtext — der steht jetzt als breiter Absatz unter den
+     Porträts, deshalb hier weniger Abstand nach unten. */
+  .sec-head--knapp { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
+
   .team__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -799,6 +836,46 @@ const faqs = [
     font-size: var(--fs-small);
     color: var(--on-dark-muted);
   }
+
+  /* Breiter Absatz über die volle Spaltenbreite. Kein max-width in ch:
+     Der Satz soll die Fläche einnehmen. Weil der Grad mitwächst, bleibt
+     die Zeilenlänge trotzdem im lesbaren Bereich — gemessen rund 60
+     Zeichen je Zeile statt der 90, die derselbe Text in Fließtextgröße
+     über diese Breite ergäbe. */
+  .team__manifest {
+    margin-top: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(1.25rem, 2.6vw, 2.125rem);
+    line-height: 1.32;
+    letter-spacing: -0.015em;
+    color: var(--on-dark);
+    text-wrap: pretty;
+  }
+
+  /* Blick hinter die Kulissen: quer und hoch gemischt. Gemeinsame
+     Unterkante, ausgefranste Oberkante — dieselbe Ordnung wie im
+     Arbeiten-Raster. */
+  .bts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.25rem, 3vw, 2.25rem);
+    align-items: end;
+    margin-top: clamp(2.5rem, 6vw, 4.5rem);
+    list-style: none;
+    padding: 0;
+  }
+
+  .bts__item { margin: 0; overflow: hidden; border-radius: var(--radius); }
+
+  .bts img {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ratio);
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.06);
+    transition: filter var(--dur-slow) var(--ease-out);
+  }
+
+  .bts__item:hover img { filter: grayscale(0) contrast(1); }
 
   /* ── 10 · FAQ ─────────────────────────────────────────────────────────── */
   .faq__grid {
@@ -902,6 +979,13 @@ const faqs = [
     .disziplin--1 { grid-column: 1 / span 6; }
     .disziplin--2 { grid-column: 8 / span 5; align-self: end; }
     .disziplin--3 { grid-column: 3 / span 4; }
+
+    /* Die drei BTS-Bilder in ungleichen Breiten, damit die Reihe nicht
+       wie ein Raster wirkt: quer, hoch, quer. */
+    .bts { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    .bts__item--1 { grid-column: 1 / span 5; }
+    .bts__item--2 { grid-column: 6 / span 3; }
+    .bts__item--3 { grid-column: 9 / span 4; }
 
     .faq__grid { grid-template-columns: 0.8fr 1.2fr; gap: clamp(3rem, 6vw, 6rem); }
     .faq__head { position: sticky; top: 7rem; }

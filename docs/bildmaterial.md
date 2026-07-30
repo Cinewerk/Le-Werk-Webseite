@@ -18,10 +18,10 @@ Die Bühne der Startseite ist inzwischen ein Video, siehe Abschnitt unten.
 
 | Datei | Wo es erscheint | Format | Status |
 |---|---|---|---|
-| `hero.jpg` | — | quer | **ungenutzt** |
-| `about.jpg` | — | quer | **ungenutzt** (Über-uns-Sektion entfallen) |
+| `hero.jpg` | Team, drittes BTS-Bild | 4:3 beschnitten | **Notbehelf**, siehe unten |
+| `about.jpg` | Team, zweites BTS-Bild | 3:4 hoch beschnitten | **Notbehelf**, siehe unten |
 | `quote-01.jpg` – `quote-03.jpg` | — | quadratisch | **ungenutzt** (Stimmen-Sektion entfallen) |
-| `team-01.jpg` – `team-04.jpg` | Sektion „Unser Team" | 2:3 hoch | Platzhalter |
+| `team-01.jpg` – `team-04.jpg` | Sektion „Unser Team", Porträts | 2:3 hoch | Platzhalter |
 | `work-01.jpg` | Arbeiten, großes Tile links | 16:9 | Platzhalter |
 | `work-02.jpg` | Arbeiten, Tile rechts oben | 16:9 | Platzhalter |
 | `work-03.jpg` | Arbeiten, vertikales Tile | 9:16 | Platzhalter |
@@ -29,10 +29,30 @@ Die Bühne der Startseite ist inzwischen ein Video, siehe Abschnitt unten.
 | `service-foto.jpg` | Karte „Foto" | 4:3 | Platzhalter |
 | `service-video.jpg` | Karte „Video" | 4:3 | Platzhalter |
 | `service-konzept.jpg` | Karte „Konzept" | 4:3 | Platzhalter |
-| `service-workshops.jpg` | Karte „Workshops" — nur auf `/services` | 4:3 | Platzhalter |
+| `service-workshops.jpg` | Karte „Workshops" auf `/services` **und** erstes BTS-Bild | 4:3 / 3:2 beschnitten | **Notbehelf**, siehe unten |
 | `logokarusell.png` | Kundenlogos in der Trustbar | ein durchgehender Streifen, 5000 × 400 | **echt** |
 
 Die Platzhalter stammen von Unsplash und sind nur zur Ansicht gedacht.
+
+## Die drei BTS-Bilder sind dringend zu ersetzen
+
+Die Reihe unter dem Teamtext soll den Blick hinter die Kulissen zeigen —
+Kamerateam am Set, Licht, Aufbau. Dafür lag kein Material vor. Eingesetzt
+sind deshalb drei vorhandene Dateien, die auf der Startseite sonst nirgends
+vorkommen, damit sich kein Bild doppelt:
+
+| Feld | Datei | Was tatsächlich zu sehen ist |
+|---|---|---|
+| 1, quer, größtes | `service-workshops.jpg` | Besprechung am Whiteboard |
+| 2, hoch | `about.jpg` | Person am Schreibtisch |
+| 3, quer | `hero.jpg` | Aufnahme im Freien |
+
+Keines davon zeigt eine Filmproduktion. Die Reihenfolge ist nach
+Motivqualität sortiert — das schwächste Bild steht im kleinsten Feld.
+Sobald echte Set-Fotos vorliegen: als `bts-01.jpg` bis `bts-03.jpg`
+ablegen und das `bts`-Array in `src/pages/index.astro` umhängen. Das
+Seitenverhältnis steht dort pro Bild und darf zum Motiv passend geändert
+werden; gemischt quer und hoch ist Absicht.
 
 ## Kundenlogos ersetzen
 
