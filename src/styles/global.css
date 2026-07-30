@@ -354,6 +354,11 @@ button { cursor: pointer; }
   padding-block: var(--space-2);
 }
 
+/* Die Wortmarke trägt beim Scrollen die Markenfarbe. Vorher erbte sie das
+   Ink des Headers (#0E1E22) und wirkte dadurch fast schwarz. Der
+   Menü-Button bleibt Ink — er ist Bedienelement, nicht Marke. */
+.header.is-solid .logo { color: var(--petrol); }
+
 /* Volle Breite statt Container-Maximalbreite: Logo sitzt am linken,
    der Menü-Button am rechten Seitenrand. */
 .header__inner {
@@ -488,7 +493,6 @@ button { cursor: pointer; }
 .overlay__sublink {
   display: inline-flex;
   align-items: baseline;
-  gap: 0.6rem;
   min-height: 44px;
   font-family: var(--font-ui);
   font-weight: 800;
@@ -502,22 +506,17 @@ button { cursor: pointer; }
   transition: color var(--dur) var(--ease-out), -webkit-text-stroke-color var(--dur) var(--ease-out);
 }
 
+/* Die aktuelle Unterseite war vorher über ihre Nummer markiert. Ohne
+   Nummern übernimmt das die Konturfarbe: Petrol statt Weiß. Steht vor
+   der Hover-Regel, damit Hover bei gleicher Spezifität gewinnt. */
+.overlay__sublink[aria-current='page'] {
+  -webkit-text-stroke-color: var(--petrol-light);
+}
+
 .overlay__sublink:hover,
 .overlay__sublink:focus-visible {
   color: var(--on-dark);
   -webkit-text-stroke-color: transparent;
-}
-
-/* Die Nummer steht innerhalb des Links und würde die Kontur sonst
-   mitnehmen — sie bleibt klein, flächig und ungefüllt. */
-.overlay__subnum {
-  font-size: var(--fs-label);
-  font-weight: 500;
-  /* feste Breite aus demselben Grund wie bei .overlay__num */
-  min-width: 3.1em;
-  letter-spacing: 0;
-  color: var(--on-dark-muted);
-  -webkit-text-stroke: 0;
 }
 
 .overlay__link {
@@ -550,9 +549,9 @@ button { cursor: pointer; }
 
 /* Die aktuelle Seite darf trotzdem nicht unmarkiert bleiben, sonst geht
    die Orientierung verloren. Sie wird nicht über die Füllung angezeigt,
-   sondern über ihre Nummer — leuchtend statt gedeckt. */
-.overlay__row:has(.overlay__link[aria-current='page']) .overlay__num,
-.overlay__sublink[aria-current='page'] .overlay__subnum {
+   sondern über ihre Nummer — leuchtend statt gedeckt. Die Unterpunkte
+   haben keine Nummern mehr, dort trägt es die Konturfarbe (siehe oben). */
+.overlay__row:has(.overlay__link[aria-current='page']) .overlay__num {
   color: var(--petrol-light);
   font-weight: 700;
 }

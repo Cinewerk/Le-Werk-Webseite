@@ -122,14 +122,13 @@ const year = new Date().getFullYear();
 
               {item.children.length > 0 && (
                 <ul class="overlay__sub" aria-label={`${item.label} — Unterseiten`}>
-                  {item.children.map((child, j) => (
+                  {item.children.map((child) => (
                     <li>
                       <a
                         class="overlay__sublink"
                         href={withBase(child.href)}
                         aria-current={isCurrent(child.href) ? 'page' : undefined}
                       >
-                        <span class="overlay__subnum" aria-hidden="true">{pad(i + 1)}.{j + 1}</span>
                         {child.label}
                       </a>
                     </li>
