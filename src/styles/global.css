@@ -543,13 +543,6 @@ button { cursor: pointer; }
   transition: color var(--dur) var(--ease-out), -webkit-text-stroke-color var(--dur) var(--ease-out);
 }
 
-/* Die aktuelle Unterseite war vorher über ihre Nummer markiert. Ohne
-   Nummern übernimmt das die Konturfarbe: Petrol statt Weiß. Steht vor
-   der Hover-Regel, damit Hover bei gleicher Spezifität gewinnt. */
-.overlay__sublink[aria-current='page'] {
-  -webkit-text-stroke-color: var(--petrol-light);
-}
-
 .overlay__sublink:hover,
 .overlay__sublink:focus-visible {
   color: var(--on-dark);
@@ -576,15 +569,10 @@ button { cursor: pointer; }
   .overlay__link { -webkit-text-stroke-width: 1.5px; }
 }
 
-/* Die aktuelle Seite bleibt markiert, seit die Nummern weg sind über die
-   Konturfarbe: Petrol statt Weiß, auf beiden Ebenen gleich. Steht vor der
-   Hover-Regel, damit Hover bei gleicher Spezifität gewinnt. */
-.overlay__link[aria-current='page'] {
-  -webkit-text-stroke-color: var(--petrol-light);
-}
-
-/* Gefüllt wird ausschließlich bei Hover und Tastaturfokus. Beim Öffnen
-   ist bewusst nichts gefüllt — auch nicht die aktuelle Seite. */
+/* Die aktuelle Seite wird im Menü bewusst nicht hervorgehoben — alle
+   Einträge sehen gleich aus. Für Screenreader bleibt sie über
+   aria-current="page" im Markup weiterhin erkennbar.
+   Gefüllt wird ausschließlich bei Hover und Tastaturfokus. */
 .overlay__link:hover,
 .overlay__link:focus-visible {
   color: var(--on-dark);
