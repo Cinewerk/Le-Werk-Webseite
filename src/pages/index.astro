@@ -30,27 +30,33 @@ const works = [
 // Workshops bleiben über Menü, Footer und /services erreichbar.
 const disziplinen = services.filter((s) => s.disziplin);
 
-// PLATZHALTER — echte Aufnahmen vom Set einsetzen. Die drei Motive sind
-// vorhandene Dateien, die auf der Startseite sonst nirgends vorkommen:
-// hero.jpg und about.jpg waren ungenutzt, service-workshops.jpg erscheint
-// nur auf der Services-Seite. Dadurch keine Dopplung, aber es sind auch
-// keine echten Behind-the-Scenes-Bilder. ratio steuert den Beschnitt,
-// damit Quer- und Hochformat gemischt stehen.
-// Reihenfolge nach Motivqualität: Das größte Feld bekommt das Bild, das
-// einer Arbeitssituation am nächsten kommt, das kleinste das schwächste.
+// Echte Aufnahmen vom Set, ausgewählt aus dem gelieferten Ordner. Neun von
+// zwanzig — die Auswahl erzählt eine Produktion von vorn bis hinten: Team,
+// Set, Dreh, Detail, Schnitt. Aussortiert wurde alles, was keine
+// Produktion zeigt (Reise- und Straßenmotive) sowie doppelte Situationen.
+//
+// Die Reihenfolge steuert das Raster: Reihe 1 und 3 liegen quer, Reihe 2
+// steht hoch. Die Originale liegen unter quellbilder/bts und sind nicht
+// Teil des Repos; hier stehen auf Webmaß gerechnete Fassungen.
 const bts = [
-  { img: '/images/service-workshops.jpg', ratio: '3 / 2', alt: 'Platzhalter: Team bei der Arbeit' },
-  { img: '/images/about.jpg',             ratio: '3 / 4', alt: 'Platzhalter: Arbeitssituation, hochkant beschnitten' },
-  { img: '/images/hero.jpg',              ratio: '4 / 3', alt: 'Platzhalter: Aufnahme vor Ort' },
+  { img: '/images/bts/bts-01.jpg', alt: 'Fünf Personen aus dem Team nebeneinander, jede mit einer Kamera' },
+  { img: '/images/bts/bts-02.jpg', alt: 'Interviewsituation: ein Mann auf einem Hocker, Tonangel und Monitore im Vordergrund' },
+  { img: '/images/bts/bts-03.jpg', alt: 'Kameramann mit Easyrig in einem hellen Wohnraum' },
+  { img: '/images/bts/bts-04.jpg', alt: 'Aufgebautes Interviewset mit Softboxen, das Team sitzt davor' },
+  { img: '/images/bts/bts-05.jpg', alt: 'Person hält eine Brezel in die Kamera, Kamerarig im Vordergrund' },
+  { img: '/images/bts/bts-06.jpg', alt: 'Zwei Personen richten im Studio eine Kamera ein' },
+  { img: '/images/bts/bts-07.jpg', alt: 'Dreh in einer Küche, die Kamera fährt auf dem Slider mit' },
+  { img: '/images/bts/bts-08.jpg', alt: 'Kamera mit zwei Monitoren, Hände am Stativkopf' },
+  { img: '/images/bts/bts-09.jpg', alt: 'Zwei Personen am Schnittplatz unter einem Flächenlicht' },
 ];
 
-// PLATZHALTER — echte Porträts, Namen und Rollen einsetzen. Die Bilder
-// stammen von Unsplash und zeigen nicht das Team.
+// Echte Porträts. Die vier Unsplash-Platzhalter sind entfallen — es gibt
+// zwei richtige Aufnahmen, und zwei echte schlagen vier fremde.
+// OFFEN: Namen und Rollen. Bis dahin steht der Platzhaltertext, damit die
+// Lücke sichtbar bleibt und nicht übersehen wird.
 const team = [
-  { img: '/images/team-01.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Platzhalter-Porträt' },
-  { img: '/images/team-02.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Platzhalter-Porträt' },
-  { img: '/images/team-03.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Platzhalter-Porträt' },
-  { img: '/images/team-04.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Platzhalter-Porträt' },
+  { img: '/images/team-01.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Porträt, sitzend im Studio' },
+  { img: '/images/team-02.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Porträt im Studio' },
 ];
 
 // q darf Markup enthalten (Wortmarke), wird unten mit set:html gerendert.
@@ -263,7 +269,7 @@ const faqs = [
             <img
               class="team__portrait"
               src={withBase(m.img)} alt={m.alt}
-              width="800" height="1200" loading="lazy" decoding="async"
+              width="1400" height="932" loading="lazy" decoding="async"
             />
             <p class="team__name">{m.name}</p>
             <p class="team__role">{m.role}</p>
@@ -284,12 +290,8 @@ const faqs = [
            gemischt und auf einer gemeinsamen Unterkante. -->
       <ul class="bts" aria-label="Blick hinter die Kulissen">
         {bts.map((b, i) => (
-          <li class={`bts__item bts__item--${i + 1}`} data-reveal data-reveal-delay={i * 80}>
-            <img
-              src={withBase(b.img)} alt={b.alt}
-              style={`--ratio:${b.ratio}`}
-              width="1200" height="900" loading="lazy" decoding="async"
-            />
+          <li class="bts__item" data-reveal data-reveal-delay={(i % 3) * 80}>
+            <img src={withBase(b.img)} alt={b.alt} loading="lazy" decoding="async" />
           </li>
         ))}
       </ul>
@@ -804,24 +806,32 @@ const faqs = [
      Porträts, deshalb hier weniger Abstand nach unten. */
   .sec-head--knapp { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
 
+  /* Zwei Porträts, zwei Spalten — ab 40rem nebeneinander, darunter
+     gestapelt, damit die Gesichter groß genug bleiben. */
   .team__grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: clamp(1.25rem, 3vw, 2.25rem);
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
+  @media (min-width: 40rem) {
+    .team__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
   .team__member { margin: 0; }
 
-  /* Graustufen hält die Reihe ruhig, auch wenn die Porträts aus
-     unterschiedlichen Situationen und Lichtstimmungen stammen. */
+  /* 3:2 quer statt 2:3 hoch: Beide Aufnahmen liegen im Querformat und
+     zeigen die Person im Raum. Auf Hochkant beschnitten ginge genau das
+     verloren, was sie zeigen — Studio, Haltung, Situation.
+     Farbe statt Graustufen, weil es echte Menschen sind und nicht mehr
+     vier zusammengesuchte Fremde, die ein Filter zusammenhalten muss. */
   .team__portrait {
     width: 100%;
-    aspect-ratio: 2 / 3;
+    aspect-ratio: 3 / 2;
     object-fit: cover;
-    filter: grayscale(1) contrast(1.06);
     border-radius: var(--radius);
     margin-bottom: var(--space-2);
   }
@@ -851,31 +861,58 @@ const faqs = [
     text-wrap: pretty;
   }
 
-  /* Blick hinter die Kulissen: quer und hoch gemischt. Gemeinsame
-     Unterkante, ausgefranste Oberkante — dieselbe Ordnung wie im
-     Arbeiten-Raster. */
+  /* Blick hinter die Kulissen. Dreispaltiges Raster, in dem die mittlere
+     Reihe hoch steht und die äußeren quer liegen — dadurch bekommt der
+     Block eine Mitte, statt gleichförmig durchzulaufen. Die Reihenfolge im
+     Datenfeld bestimmt die Zuordnung: 1–3 quer, 4–6 hoch, 7–9 quer.
+
+     Bewusst in Farbe, anders als die Porträts darüber: Das sind echte
+     Aufnahmen von der Arbeit, und Graustufen würden Licht, Set und
+     Ausstattung gerade unkenntlich machen. Der Wechsel von ruhigen
+     Schwarzweiß-Porträts zu farbigen Setbildern trennt außerdem "wer wir
+     sind" von "wie wir arbeiten". */
   .bts {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(1.25rem, 3vw, 2.25rem);
-    align-items: end;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.5rem, 1.4vw, 1rem);
     margin-top: clamp(2.5rem, 6vw, 4.5rem);
     list-style: none;
     padding: 0;
   }
 
-  .bts__item { margin: 0; overflow: hidden; border-radius: var(--radius); }
+  .bts__item {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.06);
+  }
 
   .bts img {
     display: block;
     width: 100%;
-    aspect-ratio: var(--ratio);
+    height: 100%;
+    aspect-ratio: 3 / 2;
     object-fit: cover;
-    filter: grayscale(1) contrast(1.06);
-    transition: filter var(--dur-slow) var(--ease-out);
+    transition: transform 700ms var(--ease-out);
   }
 
-  .bts__item:hover img { filter: grayscale(0) contrast(1); }
+  .bts__item:hover img { transform: scale(1.04); }
+
+  /* Unterhalb der Dreispaltigkeit greift die Reihenlogik nicht: Bei zwei
+     Spalten landen quer und hoch in derselben Zeile, das quere Bild wird
+     auf die Zeilenhöhe gestreckt und hart beschnitten. Deshalb hier alle
+     quadratisch — und das neunte über beide Spalten, sonst bleibt es
+     allein in der letzten Zeile stehen. */
+  @media (max-width: 63.999rem) {
+    .bts img { aspect-ratio: 1 / 1; }
+    .bts__item:last-child { grid-column: 1 / -1; }
+    .bts__item:last-child img { aspect-ratio: 2 / 1; }
+  }
+
+  /* Ab drei Spalten steht die mittlere Reihe hoch */
+  @media (min-width: 64rem) {
+    .bts__item:nth-child(n + 4):nth-child(-n + 6) img { aspect-ratio: 2 / 3; }
+  }
 
   /* ── 10 · FAQ ─────────────────────────────────────────────────────────── */
   .faq__grid {
@@ -944,7 +981,6 @@ const faqs = [
   @media (min-width: 48rem) {
     .statement__text { text-wrap: balance; }
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .team__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .hero__cue { display: inline-flex; }
   }
 
@@ -980,12 +1016,9 @@ const faqs = [
     .disziplin--2 { grid-column: 8 / span 5; align-self: end; }
     .disziplin--3 { grid-column: 3 / span 4; }
 
-    /* Die drei BTS-Bilder in ungleichen Breiten, damit die Reihe nicht
-       wie ein Raster wirkt: quer, hoch, quer. */
-    .bts { grid-template-columns: repeat(12, minmax(0, 1fr)); }
-    .bts__item--1 { grid-column: 1 / span 5; }
-    .bts__item--2 { grid-column: 6 / span 3; }
-    .bts__item--3 { grid-column: 9 / span 4; }
+    /* Ab hier drei Spalten wie in der Referenz. Darunter zwei, damit die
+       Bilder auf dem Handy nicht zu Briefmarken werden. */
+    .bts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
     .faq__grid { grid-template-columns: 0.8fr 1.2fr; gap: clamp(3rem, 6vw, 6rem); }
     .faq__head { position: sticky; top: 7rem; }

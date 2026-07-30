@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Originaldateien der Bilder — bleiben lokal, gehören nicht ins Web-Repo
+/quellbilder/

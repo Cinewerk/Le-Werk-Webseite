@@ -18,10 +18,12 @@ Die Bühne der Startseite ist inzwischen ein Video, siehe Abschnitt unten.
 
 | Datei | Wo es erscheint | Format | Status |
 |---|---|---|---|
-| `hero.jpg` | Team, drittes BTS-Bild | 4:3 beschnitten | **Notbehelf**, siehe unten |
-| `about.jpg` | Team, zweites BTS-Bild | 3:4 hoch beschnitten | **Notbehelf**, siehe unten |
+| `bts/bts-01.jpg` – `bts-09.jpg` | Team, Raster hinter den Kulissen | 3:2 quer / 2:3 hoch | **echt** |
+| `team-01.jpg`, `team-02.jpg` | Sektion „Unser Team", Porträts | 3:2 quer | **echt** |
+| `team-03.jpg`, `team-04.jpg` | — | 2:3 hoch | **ungenutzt** (Unsplash-Platzhalter) |
+| `hero.jpg` | — | quer | **ungenutzt** |
+| `about.jpg` | — | quer | **ungenutzt** (Über-uns-Sektion entfallen) |
 | `quote-01.jpg` – `quote-03.jpg` | — | quadratisch | **ungenutzt** (Stimmen-Sektion entfallen) |
-| `team-01.jpg` – `team-04.jpg` | Sektion „Unser Team", Porträts | 2:3 hoch | Platzhalter |
 | `work-01.jpg` | Arbeiten, großes Tile links | 16:9 | Platzhalter |
 | `work-02.jpg` | Arbeiten, Tile rechts oben | 16:9 | Platzhalter |
 | `work-03.jpg` | Arbeiten, vertikales Tile | 9:16 | Platzhalter |
@@ -29,30 +31,52 @@ Die Bühne der Startseite ist inzwischen ein Video, siehe Abschnitt unten.
 | `service-foto.jpg` | Karte „Foto" | 4:3 | Platzhalter |
 | `service-video.jpg` | Karte „Video" | 4:3 | Platzhalter |
 | `service-konzept.jpg` | Karte „Konzept" | 4:3 | Platzhalter |
-| `service-workshops.jpg` | Karte „Workshops" auf `/services` **und** erstes BTS-Bild | 4:3 / 3:2 beschnitten | **Notbehelf**, siehe unten |
+| `service-workshops.jpg` | Karte „Workshops", nur auf `/services` | 4:3 | Platzhalter |
 | `logokarusell.png` | Kundenlogos in der Trustbar | ein durchgehender Streifen, 5000 × 400 | **echt** |
 
-Die Platzhalter stammen von Unsplash und sind nur zur Ansicht gedacht.
+Die verbliebenen Platzhalter stammen von Unsplash und sind nur zur Ansicht
+gedacht.
 
-## Die drei BTS-Bilder sind dringend zu ersetzen
+## Originale und Webfassungen
 
-Die Reihe unter dem Teamtext soll den Blick hinter die Kulissen zeigen —
-Kamerateam am Set, Licht, Aufbau. Dafür lag kein Material vor. Eingesetzt
-sind deshalb drei vorhandene Dateien, die auf der Startseite sonst nirgends
-vorkommen, damit sich kein Bild doppelt:
+Unter `quellbilder/` liegen die gelieferten Originaldateien. Der Ordner ist
+in `.gitignore` eingetragen und damit **nicht Teil des Repos** — die
+BTS-Originale wiegen zusammen 136 MB, im Web-Verzeichnis wären sie bei
+jedem Deploy mit ausgeliefert worden. Er liegt außerdem außerhalb von
+`public/`, weil Astro alles unterhalb von `public/` unverändert in den
+Build kopiert.
 
-| Feld | Datei | Was tatsächlich zu sehen ist |
+Für die Seite gerechnete Fassungen liegen in `public/images/`. Maßstab:
+Querformate 1100 px breit, Hochformate 760 px hoch, JPEG-Qualität 72 —
+das reicht für die tatsächlichen Anzeigegrößen samt Retina und hält die
+neun BTS-Bilder zusammen bei rund 1 MB.
+
+## Das BTS-Raster
+
+Neun von zwanzig gelieferten Aufnahmen. Die Auswahl folgt dem Ablauf einer
+Produktion, nicht der Reihenfolge im Ordner:
+
+| Feld | Datei | Motiv |
 |---|---|---|
-| 1, quer, größtes | `service-workshops.jpg` | Besprechung am Whiteboard |
-| 2, hoch | `about.jpg` | Person am Schreibtisch |
-| 3, quer | `hero.jpg` | Aufnahme im Freien |
+| 1 quer | `bts-01.jpg` | Fünf aus dem Team mit Kameras |
+| 2 quer | `bts-02.jpg` | Interviewset mit Angel und Monitoren |
+| 3 quer | `bts-03.jpg` | Kameramann mit Easyrig im Wohnraum |
+| 4 hoch | `bts-04.jpg` | Aufgebautes Set mit Softboxen |
+| 5 hoch | `bts-05.jpg` | Person mit Brezel vor der Kamera |
+| 6 hoch | `bts-06.jpg` | Zwei richten im Studio die Kamera ein |
+| 7 quer | `bts-07.jpg` | Dreh in einer Küche, Kamera auf dem Slider |
+| 8 quer | `bts-08.jpg` | Kamera mit Monitoren, Hände am Stativkopf |
+| 9 quer | `bts-09.jpg` | Zwei am Schnittplatz unter Flächenlicht |
 
-Keines davon zeigt eine Filmproduktion. Die Reihenfolge ist nach
-Motivqualität sortiert — das schwächste Bild steht im kleinsten Feld.
-Sobald echte Set-Fotos vorliegen: als `bts-01.jpg` bis `bts-03.jpg`
-ablegen und das `bts`-Array in `src/pages/index.astro` umhängen. Das
-Seitenverhältnis steht dort pro Bild und darf zum Motiv passend geändert
-werden; gemischt quer und hoch ist Absicht.
+Aussortiert wurden Motive ohne Produktionsbezug (Straßen-, Reise- und
+Architekturaufnahmen) sowie Situationen, die eine andere Aufnahme bereits
+besser zeigte.
+
+**Die Reihenfolge trägt das Layout:** Ab 64 rem stehen drei Spalten, die
+Bilder 4 bis 6 bilden die hohe Mittelreihe. Wer die Reihenfolge im
+`bts`-Array in `src/pages/index.astro` ändert, verschiebt damit auch, welche
+Bilder hochkant beschnitten werden. Darunter sind es zwei Spalten mit
+quadratischem Beschnitt, das neunte Bild läuft über beide.
 
 ## Kundenlogos ersetzen
 
