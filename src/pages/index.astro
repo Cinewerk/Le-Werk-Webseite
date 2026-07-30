@@ -108,7 +108,7 @@ const faqs = [
            Die Eleganz kommt jetzt aus drei Stimmen in einer Zeile: kursiver
            Einstieg, Roman als Körper, kursiver Schluss. -->
       <p class="statement__text" id="statement-title" data-reveal>
-        <em>Gegründet von Filmemachern.</em>{' '}
+        <em>Gegründet von Filmemachern.</em>{' '}
         <span class="brand">Le Werk</span> ist ein Visual Content Studio im
         Kölner Rheinauhafen, spezialisiert auf Storytelling, Film und Foto
         für <em>Social und Branded Content.</em>
@@ -505,7 +505,11 @@ const faqs = [
     max-width: 34ch;
     font-family: var(--font-editorial);
     font-weight: 400;
-    font-size: clamp(1.625rem, 4.2vw, 3.25rem);
+    /* Die Untergrenze ist auf 1.5rem gesetzt, damit "Filmemachern. Le Werk"
+       als unteilbarer Block auf schmalen Schirmen Luft in der Spalte hat.
+       Bei 1.625rem waren es gemessen 2px — ein Gerät mit etwas breiterer
+       Schriftwiedergabe hätte den Block aus der Spalte laufen lassen. */
+    font-size: clamp(1.5rem, 4.2vw, 3.25rem);
     /* 1.1 war der Display-Durchschuss des alten Kurzsatzes. Auf dem Handy
        stehen hier mehr Zeilen — das braucht etwas mehr Luft. */
     line-height: 1.16;
@@ -531,10 +535,12 @@ const faqs = [
      Satz seinen Fluss. Gilt nur hier — überall sonst bleibt .brand fett,
      siehe die Regel in global.css. */
   .statement__text .brand {
-    font-weight: 400;
+    /* 400 hob sich zu wenig ab, 800 wäre wieder ein Ausrufezeichen im
+       Satz. 600 setzt die Marke sichtbar ab und bleibt ruhig. */
+    font-weight: 600;
     /* Die -0.03em der Wortmarke sind auf ExtraBold abgestimmt und
-       stehen im leichten Schnitt zu eng. */
-    letter-spacing: -0.005em;
+       stehen im leichteren Schnitt zu eng. */
+    letter-spacing: -0.01em;
   }
 
   /* Gesperrte Versalzeile als Gegengewicht zur großen Serifenschrift */
