@@ -674,9 +674,11 @@ button { cursor: pointer; }
 
 /* --------------------------------------------------------------------------
    8a. Service-Karte
-   Genutzt vom Teaser auf der Startseite und von der Services-Übersicht.
-   Lag vorher doppelt in beiden Seiten — eine Änderung hätte sonst nur
-   die Hälfte erwischt. Das Raster bleibt Sache der jeweiligen Seite.
+   Nur noch von der Services-Übersicht genutzt. Die Startseite hatte
+   dieselben Karten und sah damit nach Baukasten aus — sie hat jetzt eine
+   eigene, redaktionelle Reihe (.disziplin in index.astro). Hier bleibt
+   die Karte, weil die Übersicht vier gleichrangige Einträge zeigt; dort
+   ist ein Raster richtig. Das Raster selbst liegt in der Seite.
    -------------------------------------------------------------------------- */
 .service__link {
   display: grid;
