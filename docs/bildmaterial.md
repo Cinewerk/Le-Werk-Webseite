@@ -116,10 +116,13 @@ Namen ablegen, dann Namen und Rollen im `team`-Array in
 `src/pages/index.astro` eintragen. Die Reihenfolge im Array bestimmt die
 Reihenfolge auf der Seite.
 
-Die Darstellung entsättigt die Bilder. Das ist kein Selbstzweck, sondern
-hält die Reihe zusammen, solange echte und fremde Aufnahmen nebeneinander
-stehen. Sobald alle vier echt sind, lohnt es sich, den Graustufenfilter in
-`.team__portrait` zu entfernen — in Farbe zeigen Porträts mehr.
+Porträts und BTS-Raster stehen in Farbe. Ein Graustufenfilter lag zwischen‑
+zeitlich auf beiden und hielt die Reihe zusammen, solange echte neben
+fremden Aufnahmen standen — er kostet aber Wärme, und die zählt bei
+Gesichtern und Setfotos mehr als eine glatte Reihe.
+
+Für Platz 3 und 4 heißt das: Die beiden Unsplash-Bilder fallen jetzt
+deutlicher auf. Das ist gewollt, es macht die Lücke sichtbar.
 
 ## Bühnenvideo
 
