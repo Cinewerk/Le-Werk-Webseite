@@ -22,7 +22,7 @@ const kundenlogos =
 const works = [
   { img: '/images/work-01.jpg', w: 1600, h: 900,  tag: 'Social Video', title: 'Zwischen den Schichten', client: 'Nordlicht',  ratio: '16:9', formats: '9:16 · 16:9', alt: 'Filmklappe wird vor der Kamera bei einem Außendreh geschlossen' },
   { img: '/images/work-02.jpg', w: 1600, h: 900,  tag: 'Kampagne',     title: 'Alles auf Anfang',       client: 'Atlas & Co', ratio: '16:9', formats: '9:16 · 4:5',  alt: 'Schnittplatz mit Videospur und Timeline auf mehreren Monitoren' },
-  { img: '/images/work-03.jpg', w: 900,  h: 1600, tag: 'Vertikal',     title: 'Neun zu Sechzehn',       client: 'Superbloom', ratio: '9:16', formats: '9:16',        alt: 'Filmset mit Kamera auf Dolly und farbigem Licht, vertikal gedreht' },
+  { img: '/images/work-03.jpg', w: 800,  h: 1000, tag: 'Vertikal',     title: 'Neun zu Sechzehn',       client: 'Superbloom', ratio: '9:16', formats: '9:16',        alt: 'Dreh im Hochformat: Blick über die Schulter der Kamerafrau auf den Monitor, im Bild zwei Models' },
   { img: '/images/work-04.jpg', w: 1600, h: 900,  tag: 'Fotografie',   title: 'Haus voller Licht',      client: 'Hafen',      ratio: '3:2',  formats: '3:2 · 4:5',   alt: 'Abgedunkelter Kinosaal mit rot beleuchteten Sitzreihen' },
 ];
 
@@ -54,8 +54,11 @@ const bts = [
 // team-01 und team-02 liegen im Querformat und werden hochkant beschnitten
 // — mittig geprüft, beide Personen sitzen sauber im Ausschnitt.
 // OFFEN: Namen und Rollen sowie zwei echte Porträts für Platz 3 und 4.
+// pos verschiebt den Bildausschnitt: Bei team-02 steht die Person rechts im
+// Querformat, ein mittiger Beschnitt hätte sie an den Rand gedrängt.
+// 70 % ist ausgemessen, nicht geschätzt.
 const team = [
-  { img: '/images/team-02.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Porträt im Studio' },
+  { img: '/images/team-02.jpg', name: 'Name folgt', role: 'Rolle folgt', pos: '70% center', alt: 'Porträt im Studio' },
   { img: '/images/team-01.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Porträt, sitzend im Studio' },
   { img: '/images/team-03.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Platzhalter-Porträt' },
   { img: '/images/team-04.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Platzhalter-Porträt' },
@@ -271,6 +274,7 @@ const faqs = [
             <img
               class="team__portrait"
               src={withBase(m.img)} alt={m.alt}
+              style={m.pos ? `object-position:${m.pos}` : undefined}
               width="800" height="1200" loading="lazy" decoding="async"
             />
             <p class="team__name">{m.name}</p>
@@ -627,6 +631,29 @@ const faqs = [
 
   .work__link:hover .work__figure img { transform: scale(1.035); }
 
+  /* Lesbarkeitsverlauf unter den Tags. Vorher trug der Schatten allein, und
+     der zählt für den Kontrast nicht — er ist weich, keine deckende Fläche.
+     Nachgemessen auf den Zeilenkästen der Schrift lagen drei von vier Tags
+     unter der Grenze: Kampagne 1.11:1, Vertikal 1.36:1, Social Video 2.05:1
+     bei 3.0 als Minimum für große fette Schrift.
+     Mit diesem Verlauf: Kampagne 4.51, Social Video 10.34, Vertikal 10.75,
+     Fotografie 16.39 — auch über der strengeren Schwelle von 4.5 und mit
+     Reserve für echte Projektbilder, die noch kommen. */
+  .work__figure::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      0deg,
+      rgba(4, 37, 44, 0.95) 0%,
+      rgba(4, 37, 44, 0.66) 32%,
+      rgba(4, 37, 44, 0) 60%
+    );
+  }
+
+  .work__tag { z-index: 1; }
+
   .work__tag {
     position: absolute;
     left: clamp(1rem, 3vw, 2rem);
@@ -867,11 +894,8 @@ const faqs = [
      Block eine Mitte, statt gleichförmig durchzulaufen. Die Reihenfolge im
      Datenfeld bestimmt die Zuordnung: 1–3 quer, 4–6 hoch, 7–9 quer.
 
-     Bewusst in Farbe, anders als die Porträts darüber: Das sind echte
-     Aufnahmen von der Arbeit, und Graustufen würden Licht, Set und
-     Ausstattung gerade unkenntlich machen. Der Wechsel von ruhigen
-     Schwarzweiß-Porträts zu farbigen Setbildern trennt außerdem "wer wir
-     sind" von "wie wir arbeiten". */
+     Graustufen, Farbe erst bei Hover — wie bei den Disziplinen. Der Block
+     bleibt dadurch ruhig und belohnt das Draufgehen. */
   .bts {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -894,10 +918,21 @@ const faqs = [
     height: 100%;
     aspect-ratio: 3 / 2;
     object-fit: cover;
-    transition: transform 700ms var(--ease-out);
+    filter: grayscale(1) contrast(1.06);
+    transition: transform 700ms var(--ease-out), filter var(--dur-slow) var(--ease-out);
   }
 
-  .bts__item:hover img { transform: scale(1.04); }
+  .bts__item:hover img {
+    transform: scale(1.04);
+    filter: grayscale(0) contrast(1);
+  }
+
+  /* Auf Geräten ohne Zeigegerät gibt es kein Hover — dort bliebe der ganze
+     Block dauerhaft grau und die Farbe wäre nie zu sehen. Deshalb stehen
+     die Bilder da von vornherein in Farbe. */
+  @media (hover: none) {
+    .bts img { filter: none; }
+  }
 
   /* Unterhalb der Dreispaltigkeit greift die Reihenlogik nicht: Bei zwei
      Spalten landen quer und hoch in derselben Zeile, das quere Bild wird
