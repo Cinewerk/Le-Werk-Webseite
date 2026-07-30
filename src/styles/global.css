@@ -451,66 +451,81 @@ button { cursor: pointer; }
   gap: 0.1em;
 }
 
-.overlay__item:nth-child(even) { padding-left: 8%; }
-
+/* Alle drei Oberpunkte beginnen auf derselben Achse. Die frühere
+   Treppe (jeder zweite Punkt eingerückt) ist entfallen, weil die
+   Einrückung jetzt die Rangfolge trägt: eingerückt heißt Unterpunkt. */
 .overlay__row { display: flex; align-items: baseline; gap: 0.6rem; }
 
+/* Die Ziffernbreiten sind unterschiedlich: "01" misst 11,9px, "03" 14,8px.
+   Dadurch stand START zwei Pixel links von SERVICES und KONTAKT.
+   font-variant-numeric hilft nicht — der Poppins-Subset bringt kein
+   tnum mit. Deshalb bekommt die Nummer eine feste Spaltenbreite. */
 .overlay__num {
   font-family: var(--font-ui);
   font-size: var(--fs-label);
   font-weight: 500;
+  min-width: 1.4em;
   color: var(--on-dark-muted);
 }
 
 /* --- Unterpunkte (Services) ------------------------------------------------
-   Deutlich kleiner und ohne Kontur, damit die Rangfolge auf einen Blick
-   lesbar ist: Oberpunkte sind die großen Outline-Wörter, Unterpunkte
-   hängen eingerückt darunter. */
+   Ebenfalls groß und als Kontur gesetzt, damit sie als vollwertige Ziele
+   lesbar sind. Die Rangfolge kommt aus drei Signalen: der Einrückung, dem
+   kleineren Schriftgrad und der Nummerierung 02.1 bis 02.4. */
 .overlay__sub {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1.75rem;
+  flex-direction: column;
+  gap: 0.02em;
   list-style: none;
-  margin: 0.35rem 0 0.9rem;
-  /* auf Höhe des Elternworts einrücken, nicht auf Höhe der Nummer */
-  padding-left: 2.4rem;
+  margin: 0.1em 0 0.25em;
+  /* Die Einrückung sitzt dort, wo vorher "Services" selbst stand.
+     Die Linie läuft mittig mit und verbindet die vier optisch. */
+  margin-left: 4%;
+  padding-left: 4%;
   border-left: 1px solid var(--line-dark);
-  margin-left: 0.5rem;
 }
 
 .overlay__sublink {
   display: inline-flex;
   align-items: baseline;
-  gap: 0.5rem;
+  gap: 0.6rem;
   min-height: 44px;
-  padding-block: 0.5rem;
   font-family: var(--font-ui);
-  font-weight: 600;
-  font-size: clamp(1rem, 2.2vw, 1.5rem);
-  letter-spacing: -0.01em;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 5vw, 3.25rem);
+  line-height: 1.12;
+  letter-spacing: var(--track-display);
   text-transform: uppercase;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.6);
-  transition: color var(--dur) var(--ease-out);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.45);
+  transition: color var(--dur) var(--ease-out), -webkit-text-stroke-color var(--dur) var(--ease-out);
 }
 
 .overlay__sublink:hover,
-.overlay__sublink:focus-visible,
-.overlay__sublink[aria-current='page'] { color: var(--on-dark); }
+.overlay__sublink:focus-visible {
+  color: var(--on-dark);
+  -webkit-text-stroke-color: transparent;
+}
 
+/* Die Nummer steht innerhalb des Links und würde die Kontur sonst
+   mitnehmen — sie bleibt klein, flächig und ungefüllt. */
 .overlay__subnum {
-  font-size: 0.6875rem;
+  font-size: var(--fs-label);
   font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  color: rgba(255, 255, 255, 0.42);
+  /* feste Breite aus demselben Grund wie bei .overlay__num */
+  min-width: 3.1em;
+  letter-spacing: 0;
+  color: var(--on-dark-muted);
+  -webkit-text-stroke: 0;
 }
 
 .overlay__link {
   font-family: var(--font-ui);
   font-weight: 800;
-  /* Seit die vier Services Unterpunkte sind, stehen nur noch drei
-     Oberpunkte in der Liste — dadurch ist Platz für mehr Größe. */
-  font-size: clamp(2.25rem, 9vw, 6.5rem);
+  /* Sieben große Zeilen müssen ohne Scrollen in die Höhe passen — die
+     vier Unterpunkte kosten Platz, deshalb etwas kleiner als zuvor. */
+  font-size: clamp(2.25rem, 8vw, 5.75rem);
   line-height: 1.12;
   letter-spacing: var(--track-display);
   text-transform: uppercase;
@@ -525,12 +540,21 @@ button { cursor: pointer; }
   .overlay__link { -webkit-text-stroke-width: 1.5px; }
 }
 
-/* Hover, Tastaturfokus und aktuelle Seite füllen die Kontur weiß */
+/* Gefüllt wird ausschließlich bei Hover und Tastaturfokus. Beim Öffnen
+   ist bewusst nichts gefüllt — auch nicht die aktuelle Seite. */
 .overlay__link:hover,
-.overlay__link:focus-visible,
-.overlay__link[aria-current='page'] {
+.overlay__link:focus-visible {
   color: var(--on-dark);
   -webkit-text-stroke-color: transparent;
+}
+
+/* Die aktuelle Seite darf trotzdem nicht unmarkiert bleiben, sonst geht
+   die Orientierung verloren. Sie wird nicht über die Füllung angezeigt,
+   sondern über ihre Nummer — leuchtend statt gedeckt. */
+.overlay__row:has(.overlay__link[aria-current='page']) .overlay__num,
+.overlay__sublink[aria-current='page'] .overlay__subnum {
+  color: var(--petrol-light);
+  font-weight: 700;
 }
 
 .overlay__foot {
