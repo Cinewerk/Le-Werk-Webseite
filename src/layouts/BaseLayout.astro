@@ -35,8 +35,6 @@ const mainNav = [
   { href: '/kontakt', label: 'Kontakt', children: [] as typeof services },
 ];
 
-const pad = (n: number) => String(n).padStart(2, '0');
-
 // Die Menüzeilen blenden beim Öffnen versetzt von oben nach unten ein. Der
 // Versatz muss der optischen Reihenfolge folgen, nicht der Verschachtelung —
 // die vier Unterpunkte liegen im DOM innerhalb von "Services". Deshalb hier
@@ -123,7 +121,6 @@ const year = new Date().getFullYear();
           {mainNav.map((item, i) => (
             <li class="overlay__item">
               <span class="overlay__row" style={`--stufe:${stufeVon(i)}`}>
-                <span class="overlay__num" aria-hidden="true">{pad(i + 1)}</span>
                 <a
                   class="overlay__link"
                   href={withBase(item.href)}

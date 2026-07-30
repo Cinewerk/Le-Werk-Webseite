@@ -474,7 +474,9 @@ button { cursor: pointer; }
 /* Alle drei Oberpunkte beginnen auf derselben Achse. Die frühere
    Treppe (jeder zweite Punkt eingerückt) ist entfallen, weil die
    Einrückung jetzt die Rangfolge trägt: eingerückt heißt Unterpunkt. */
-.overlay__row { display: flex; align-items: baseline; gap: 0.6rem; }
+/* Trägt seit dem Wegfall der Nummern nur noch den Link — bleibt als Zeile
+   erhalten, weil an ihr die Staffelung (--stufe) hängt. */
+.overlay__row { display: flex; align-items: baseline; }
 
 /* Die Zeilen blenden nach dem Panel versetzt von oben nach unten ein.
    --stufe kommt aus dem Template: der laufende Index über alle Zeilen,
@@ -497,17 +499,6 @@ button { cursor: pointer; }
   transition-delay: calc(120ms + var(--stufe, 0) * var(--versatz-zeile));
 }
 
-/* Die Ziffernbreiten sind unterschiedlich: "01" misst 11,9px, "03" 14,8px.
-   Dadurch stand START zwei Pixel links von SERVICES und KONTAKT.
-   font-variant-numeric hilft nicht — der Poppins-Subset bringt kein
-   tnum mit. Deshalb bekommt die Nummer eine feste Spaltenbreite. */
-.overlay__num {
-  font-family: var(--font-ui);
-  font-size: var(--fs-label);
-  font-weight: 500;
-  min-width: 1.4em;
-  color: var(--on-dark-muted);
-}
 
 /* --- Unterpunkte (Services) ------------------------------------------------
    Ebenfalls groß und als Kontur gesetzt, damit sie als vollwertige Ziele
@@ -585,21 +576,19 @@ button { cursor: pointer; }
   .overlay__link { -webkit-text-stroke-width: 1.5px; }
 }
 
+/* Die aktuelle Seite bleibt markiert, seit die Nummern weg sind über die
+   Konturfarbe: Petrol statt Weiß, auf beiden Ebenen gleich. Steht vor der
+   Hover-Regel, damit Hover bei gleicher Spezifität gewinnt. */
+.overlay__link[aria-current='page'] {
+  -webkit-text-stroke-color: var(--petrol-light);
+}
+
 /* Gefüllt wird ausschließlich bei Hover und Tastaturfokus. Beim Öffnen
    ist bewusst nichts gefüllt — auch nicht die aktuelle Seite. */
 .overlay__link:hover,
 .overlay__link:focus-visible {
   color: var(--on-dark);
   -webkit-text-stroke-color: transparent;
-}
-
-/* Die aktuelle Seite darf trotzdem nicht unmarkiert bleiben, sonst geht
-   die Orientierung verloren. Sie wird nicht über die Füllung angezeigt,
-   sondern über ihre Nummer — leuchtend statt gedeckt. Die Unterpunkte
-   haben keine Nummern mehr, dort trägt es die Konturfarbe (siehe oben). */
-.overlay__row:has(.overlay__link[aria-current='page']) .overlay__num {
-  color: var(--petrol-light);
-  font-weight: 700;
 }
 
 .overlay__foot {

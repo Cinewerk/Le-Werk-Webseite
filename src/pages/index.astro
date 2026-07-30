@@ -102,12 +102,12 @@ const faqs = [
            auf Deutsch steht noch aus. Dieser Absatz erklärt die Position,
            er behauptet sie nicht als Slogan. -->
       <p class="statement__text" id="statement-title" data-reveal>
-        <span class="brand">Le Werk</span> verbindet zwei Dinge, die selten
-        zusammenkommen: Handwerk auf Kampagnenniveau — und <em>Substanz, die
-        bleibt.</em>
+        Gegründet von Filmemachern. <span class="brand">Le Werk</span> ist ein
+        Visual Content Studio im Kölner Rheinauhafen, spezialisiert auf
+        Storytelling, Film und Foto für Social und Branded Content.
       </p>
       <p class="statement__meta" data-reveal data-reveal-delay="80">
-        Video &amp; Fotografie · Vertikal gedacht · Based in Köln, booked worldwide
+        Konzept · Produktion · Postproduktion · Based in Köln, Booked Worldwide
       </p>
     </div>
   </section>
@@ -479,13 +479,19 @@ const faqs = [
 
   /* Rollentrennung wie im Hero: Wortmarke Poppins ExtraBold (.brand),
      der Satz selbst Bodoni, der kursive Schluss trägt die Behauptung. */
+  /* Der Text ist ein Vorstellungssatz, keine Schlagzeile — bei 4rem und
+     28ch stand er als sechszeilige Wand da. Kleiner und breiter gesetzt
+     liest er sich als redaktionelle Einleitung: ab 38ch sind es vier
+     Zeilen, darunter fünf. */
   .statement__text {
     margin-inline: auto;
-    max-width: 28ch;
+    max-width: 38ch;
     font-family: var(--font-editorial);
     font-weight: 400;
-    font-size: clamp(1.875rem, 5vw, 4rem);
-    line-height: 1.1;
+    font-size: clamp(1.5rem, 3.6vw, 2.75rem);
+    /* 1.1 war der Display-Durchschuss des alten Kurzsatzes. Auf dem Handy
+       stehen hier sieben Zeilen — das braucht etwas mehr Luft. */
+    line-height: 1.18;
     letter-spacing: -0.005em;
     text-wrap: balance;
     /* In dieser Größe ist eine Silbentrennung deutlich sichtbar und wirkt
