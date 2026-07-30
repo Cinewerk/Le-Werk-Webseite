@@ -50,40 +50,28 @@ const faqs = [
   <!-- ═══ 1 · HERO ═══════════════════════════════════════════════════════ -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero__media">
-      <img
-        src={withBase("/images/hero.jpg")}
-        alt="Steinerne Figurengruppe mit erhobenem Speer vor freiem Himmel"
-        width="2500" height="1569"
-        fetchpriority="high" decoding="async"
-      />
+      <!-- muted und playsinline sind Bedingung dafür, dass mobile Browser
+           überhaupt selbst starten. Die Datei hat keine Tonspur.
+           Bei prefers-reduced-motion hält ein Skript das Video an. -->
+      <video
+        id="hero-video"
+        autoplay muted loop playsinline
+        preload="auto"
+        aria-hidden="true"
+        tabindex="-1"
+      >
+        <source src={withBase('/videos/cinewerk_filmproduktion_koeln_header_klein.mp4')} type="video/mp4" />
+      </video>
     </div>
 
-    <div class="container hero__inner">
-      <p class="label hero__eyebrow">
-        <span class="mark" aria-hidden="true">✳</span><span class="brand">Le Werk</span> — Visual Content Studio
-      </p>
-
-      <h1 class="hero__title" id="hero-title">
-        <span class="editorial editorial--kicker">Auch Content</span>
-        <span class="headline headline--display">darf gut gemacht sein.</span>
+    <!-- Text sitzt in der unteren linken Ecke und läuft bewusst nicht über
+         die ganze Breite. Randabstand = --edge, damit er mit dem Logo im
+         Header auf einer Achse liegt. -->
+    <div class="hero__inner">
+      <h1 class="hero__statement" id="hero-title" lang="en">
+        <span class="brand">Le Werk</span> is a visual content studio crafting
+        brand content worth watching.
       </h1>
-
-      <!-- Klartext-Erklärer: sagt, was Le Werk leistet, und filtert die
-           Zielgruppe. Sitzt direkt unter dem Positionierungs-Begriff. -->
-      <p class="hero__erklaerer">
-        Content Creation. Film und Foto. Für Marken mit Anspruch.
-      </p>
-
-      <p class="lead hero__lead">
-        Hochwertig produzierte Visuals auf Kampagnenniveau — erzählt mit
-        redaktioneller Tiefe statt schnellem Knall. Video als Hauptdisziplin,
-        Fotografie als klare Zweite.
-      </p>
-
-      <!-- Bewusst ohne Buttons: Der Einstieg soll zum Weiterlesen einladen,
-           nicht verkaufen. Zu den Arbeiten führt ein einziger Scroll, dafür
-           genügt der Pfeil unten rechts; die Anfrage-CTAs folgen weiter
-           unten, sobald die Seite etwas gezeigt hat. -->
     </div>
 
     <a class="hero__cue" href="#trust" aria-label="Weiter zum Inhalt scrollen">
@@ -400,76 +388,47 @@ const faqs = [
 
   .hero__media { position: absolute; inset: 0; z-index: 0; }
 
-  .hero__media img {
+  .hero__media video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Das Motiv sitzt im Bild weit rechts. Beim Hochkant-Beschnitt auf
-       schmalen Schirmen fiele es aus dem mittigen Ausschnitt heraus. */
-    object-position: 70% center;
-    filter: grayscale(1) contrast(1.08) brightness(0.78);
+    /* Bewusst ohne Graustufen-/Blend-Filter: Auf einem formatfüllenden
+       Video kosten die richtig Rechenzeit, und das Material ist von sich
+       aus dunkel und petrolstichig. Es bleibt beim Abdunkeln. */
+    filter: brightness(0.82) contrast(1.04);
   }
 
-  @media (min-width: 48rem) {
-    .hero__media img { object-position: center; }
-  }
-
-  .hero__media::before,
   .hero__media::after { content: ''; position: absolute; inset: 0; }
 
-  /* Duotone in Markenfarbe */
-  .hero__media::before {
-    background: var(--petrol);
-    mix-blend-mode: color;
-    opacity: 0.6;
-  }
-
-  /* Lesbarkeitsverlauf für die Typo.
-     Der waagerechte Verlauf trägt die Textspalte links und ist bewusst
-     kräftiger als der senkrechte — Werte per Kontrastmessung ermittelt. */
+  /* Lesbarkeitsverlauf. Da der Text jetzt nur unten links sitzt, trägt
+     vor allem der Verlauf von unten; die Werte sind über mehrere
+     Videoframes gemessen, nicht geschätzt. */
   .hero__media::after {
     background:
-      linear-gradient(180deg, rgba(4, 37, 44, 0.75) 0%, rgba(4, 37, 44, 0.4) 35%, rgba(4, 37, 44, 0.92) 100%),
-      linear-gradient(90deg, rgba(4, 37, 44, 0.9) 0%, rgba(4, 37, 44, 0.7) 40%, rgba(4, 37, 44, 0) 80%);
+      linear-gradient(0deg, rgba(4, 37, 44, 0.94) 0%, rgba(4, 37, 44, 0.55) 28%, rgba(4, 37, 44, 0.1) 55%, rgba(4, 37, 44, 0.45) 100%),
+      linear-gradient(90deg, rgba(4, 37, 44, 0.7) 0%, rgba(4, 37, 44, 0.25) 45%, rgba(4, 37, 44, 0) 70%);
   }
 
-  .hero__inner { position: relative; z-index: 1; }
-
-  /* Weiß statt Petrol-Hell: Der Eyebrow liegt teils über dem hellen
-     Himmel des Bühnenbilds. Eine mittelhelle Textfarbe erreicht dort
-     nie 4,5:1, weil im Foto immer Pixel derselben Helligkeit vorkommen.
-     Der Asterisk ist rein dekorativ und darf farbig bleiben. */
-  .hero__eyebrow {
-    color: var(--on-dark);
-    margin-bottom: var(--space-3);
+  /* Randabstand wie im Header, damit Text und Logo auf einer Achse sitzen */
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-inline: var(--edge);
   }
 
-  .hero__eyebrow .mark { color: var(--petrol-light); }
-  .hero__title { margin-bottom: var(--space-3); }
-  .hero__title .headline--display { display: block; }
-
-  /* Klartext-Erklärer: steht zwischen Claim und Fließtext und muss
-     eigenständig lesbar sein, ohne der Headline Rang abzulaufen. */
-  .hero__erklaerer {
+  /* Die Wortmarke darf laut Markenregel nicht in Versalien stehen —
+     deshalb bleibt der Satz gemischt gesetzt statt, wie in der Referenz,
+     durchgehend groß. */
+  .hero__statement {
+    max-width: 32ch;
     font-family: var(--font-ui);
-    font-weight: 600;
-    font-size: clamp(1.0625rem, 1.8vw, 1.375rem);
-    letter-spacing: -0.01em;
-    line-height: 1.4;
+    font-weight: 500;
+    font-size: clamp(1.375rem, 2.8vw, 2.375rem);
+    line-height: 1.22;
+    letter-spacing: -0.02em;
     color: var(--on-dark);
-    max-width: 30ch;
-    margin-bottom: var(--space-3);
-    padding-top: var(--space-1);
-    border-top: 2px solid var(--petrol-light);
-    display: inline-block;
-  }
-
-  .hero__lead {
-    /* Auf 375px lag der Fließtext mit den ursprünglichen 0.82 bei 4,27:1
-       und damit unter der Anforderung. 0.95 ergibt 4,67:1 und bleibt der
-       Headline farblich trotzdem einen Schritt untergeordnet. */
-    color: rgba(255, 255, 255, 0.95);
-    margin-bottom: var(--space-4);
+    text-wrap: pretty;
   }
 
 
@@ -900,3 +859,29 @@ const faqs = [
     .hero__cue { animation-name: none; }
   }
 </style>
+
+<script>
+  // Ein Video lässt sich per CSS nicht anhalten. Wer reduzierte Bewegung
+  // angefordert hat, bekommt deshalb ein Standbild statt der Schleife.
+  const heroVideo = document.getElementById('hero-video') as HTMLVideoElement | null;
+
+  if (heroVideo) {
+    const ruhig = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const anwenden = () => {
+      if (ruhig.matches) {
+        heroVideo.removeAttribute('autoplay');
+        heroVideo.loop = false;
+        heroVideo.pause();
+      } else {
+        heroVideo.loop = true;
+        // play() kann abgelehnt werden, etwa im Energiesparmodus —
+        // dann bleibt schlicht das erste Bild stehen.
+        void heroVideo.play().catch(() => {});
+      }
+    };
+
+    anwenden();
+    ruhig.addEventListener('change', anwenden);
+  }
+</script>

@@ -9,9 +9,11 @@ Datei mit **exakt dem Namen** hier ablegen, den das Bild ersetzen soll — im
 Code muss dann nichts geändert werden. Das alte Bild wird dabei überschrieben;
 die Platzhalter liegen in der Git-Historie und sind nicht verloren.
 
+Die Bühne der Startseite ist inzwischen ein Video, siehe Abschnitt unten.
+
 | Datei | Wo es erscheint | Format | Status |
 |---|---|---|---|
-| `hero.jpg` | Bühne der Startseite, formatfüllend | quer, ab 2000 px breit | Platzhalter |
+| `hero.jpg` | — | quer | **wird nicht mehr verwendet** |
 | `work-01.jpg` | Arbeiten, großes Tile links | 16:9 | Platzhalter |
 | `work-02.jpg` | Arbeiten, Tile rechts oben | 16:9 | Platzhalter |
 | `work-03.jpg` | Arbeiten, vertikales Tile | 9:16 | Platzhalter |
@@ -41,6 +43,25 @@ zwei Bedingungen erfüllen:
 
 Die Höhe im Layout steuert `.marquee__strip` in `src/pages/index.astro`;
 die Breite folgt automatisch dem Seitenverhältnis.
+
+## Bühnenvideo
+
+Die Startseite zeigt `public/videos/cinewerk_filmproduktion_koeln_header_klein.mp4`
+formatfüllend in Endlosschleife.
+
+- **Stumm und ohne Tonspur.** Beides ist Bedingung: Mobile Browser starten
+  ein Video nur selbstständig, wenn es stummgeschaltet ist.
+- **`playsinline`** verhindert, dass iOS in den Vollbildmodus springt.
+- **Bei `prefers-reduced-motion`** hält ein Skript in `index.astro` das Video
+  an und zeigt ein Standbild. CSS allein kann das nicht.
+- **Dateigröße im Blick behalten.** Die aktuelle Datei ist 11 MB groß und
+  wird beim Seitenaufruf vollständig geladen. Für ein Hintergrundvideo, das
+  ohnehin abgedunkelt und beschnitten läuft, genügt in der Regel eine
+  deutlich kleinere Fassung (etwa 1280 px breit, 2–3 MB).
+
+Ein Austausch braucht nur denselben Dateinamen. Danach den Kontrast des
+Ecktexts prüfen: Bei Video wechselt der Hintergrund ständig, deshalb muss
+über mehrere Frames gemessen werden, nicht über einen.
 
 ## Worauf beim Bühnenbild zu achten ist
 
