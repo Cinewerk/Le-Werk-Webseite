@@ -72,9 +72,6 @@ const faqs = [
         <span class="brand">Le Werk</span> is a visual content studio crafting
         brand content <em>worth watching.</em>
       </h1>
-      <p class="hero__meta" lang="en">
-        Video · Photo · Concept — based in Cologne, booked worldwide
-      </p>
     </div>
 
     <a class="hero__cue" href="#trust" aria-label="Weiter zum Inhalt scrollen">
@@ -436,22 +433,6 @@ const faqs = [
   }
 
   .hero__statement em { font-style: italic; }
-
-  /* Kleine Sachzeile als Gegengewicht zur großen Serifenschrift:
-     Poppins, gesperrt, in Versalien — trägt die harten Fakten. */
-  .hero__meta {
-    margin-top: clamp(0.875rem, 1.8vw, 1.375rem);
-    /* Gesperrte Versalien brauchen mehr Platz als die Zeichenzahl vermuten
-       lässt: Bei 44ch brach die Zeile auf dem Desktop unnötig um. */
-    max-width: 40rem;
-    font-family: var(--font-ui);
-    font-size: var(--fs-label);
-    font-weight: 600;
-    letter-spacing: var(--track-label);
-    line-height: 1.6;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.78);
-  }
 
 
   .hero__cue {
