@@ -70,8 +70,11 @@ const faqs = [
     <div class="hero__inner">
       <h1 class="hero__statement" id="hero-title" lang="en">
         <span class="brand">Le Werk</span> is a visual content studio crafting
-        brand content worth watching.
+        brand content <em>worth watching.</em>
       </h1>
+      <p class="hero__meta" lang="en">
+        Video · Photo · Concept — based in Cologne, booked worldwide
+      </p>
     </div>
 
     <a class="hero__cue" href="#trust" aria-label="Weiter zum Inhalt scrollen">
@@ -400,13 +403,14 @@ const faqs = [
 
   .hero__media::after { content: ''; position: absolute; inset: 0; }
 
-  /* Lesbarkeitsverlauf. Da der Text jetzt nur unten links sitzt, trägt
-     vor allem der Verlauf von unten; die Werte sind über mehrere
-     Videoframes gemessen, nicht geschätzt. */
+  /* Lesbarkeitsverlauf in neutralem Schwarz statt in Petrol: Ein farbiger
+     Verlauf legt sich als Stich über das ganze Material und verfälscht die
+     Farben der Aufnahme. Schwarz dunkelt ab, ohne einzufärben.
+     Die Werte sind über mehrere Videoframes gemessen, nicht geschätzt. */
   .hero__media::after {
     background:
-      linear-gradient(0deg, rgba(4, 37, 44, 0.94) 0%, rgba(4, 37, 44, 0.55) 28%, rgba(4, 37, 44, 0.1) 55%, rgba(4, 37, 44, 0.45) 100%),
-      linear-gradient(90deg, rgba(4, 37, 44, 0.7) 0%, rgba(4, 37, 44, 0.25) 45%, rgba(4, 37, 44, 0) 70%);
+      linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 28%, rgba(0, 0, 0, 0.08) 55%, rgba(0, 0, 0, 0.4) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.22) 45%, rgba(0, 0, 0, 0) 70%);
   }
 
   /* Randabstand wie im Header, damit Text und Logo auf einer Achse sitzen */
@@ -417,18 +421,36 @@ const faqs = [
     padding-inline: var(--edge);
   }
 
-  /* Die Wortmarke darf laut Markenregel nicht in Versalien stehen —
-     deshalb bleibt der Satz gemischt gesetzt statt, wie in der Referenz,
-     durchgehend groß. */
+  /* Rollentrennung wie im Rest der Seite: Die Wortmarke bleibt Poppins
+     ExtraBold (Klasse .brand, unverändert), der Satz selbst ist Redaktion
+     und damit Bodoni. Der kursive Schluss trägt die Behauptung. */
   .hero__statement {
-    max-width: 32ch;
-    font-family: var(--font-ui);
-    font-weight: 500;
-    font-size: clamp(1.375rem, 2.8vw, 2.375rem);
-    line-height: 1.22;
-    letter-spacing: -0.02em;
+    max-width: 30ch;
+    font-family: var(--font-editorial);
+    font-weight: 400;
+    font-size: clamp(1.625rem, 3.4vw, 3.125rem);
+    line-height: 1.14;
+    letter-spacing: -0.005em;
     color: var(--on-dark);
     text-wrap: pretty;
+  }
+
+  .hero__statement em { font-style: italic; }
+
+  /* Kleine Sachzeile als Gegengewicht zur großen Serifenschrift:
+     Poppins, gesperrt, in Versalien — trägt die harten Fakten. */
+  .hero__meta {
+    margin-top: clamp(0.875rem, 1.8vw, 1.375rem);
+    /* Gesperrte Versalien brauchen mehr Platz als die Zeichenzahl vermuten
+       lässt: Bei 44ch brach die Zeile auf dem Desktop unnötig um. */
+    max-width: 40rem;
+    font-family: var(--font-ui);
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--track-label);
+    line-height: 1.6;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.78);
   }
 
 
