@@ -1,11 +1,16 @@
-# Bilder
+# Bild- und Videomaterial
 
-Alle Bilder in diesem Ordner werden unter `/images/<dateiname>` ausgeliefert,
-z. B. `public/images/hero.jpg` → `<img src="/images/hero.jpg">`.
+Diese Notiz lag früher als `public/images/README.md` im Projekt und wurde
+damit selbst mit ausgeliefert — interne Dokumentation war unter
+`/images/README.md` öffentlich abrufbar. Deshalb liegt sie jetzt in `docs/`.
+
+Alle Bilder in `public/images/` werden unter `/images/<dateiname>`
+ausgeliefert, z. B. `public/images/hero.jpg` → `<img src="/images/hero.jpg">`.
 
 ## Eigenes Bild einsetzen
 
-Datei mit **exakt dem Namen** hier ablegen, den das Bild ersetzen soll — im
+Datei mit **exakt dem Namen** in `public/images/` ablegen, den das Bild
+ersetzen soll — im
 Code muss dann nichts geändert werden. Das alte Bild wird dabei überschrieben;
 die Platzhalter liegen in der Git-Historie und sind nicht verloren.
 
@@ -57,8 +62,11 @@ damit die Reihe auch bei unterschiedlichen Lichtstimmungen ruhig bleibt.
 
 ## Bühnenvideo
 
-Die Startseite zeigt `public/videos/cinewerk_filmproduktion_koeln_header_klein.mp4`
-formatfüllend in Endlosschleife.
+Die Startseite zeigt `public/videos/lewerk-hero.mp4` formatfüllend in
+Endlosschleife. Die Datei hieß ursprünglich
+`cinewerk_filmproduktion_koeln_header_klein.mp4` und wurde umbenannt: Der
+Dateiname steht im Quelltext jeder Seite, und laut Markenarchitektur wird
+Cinewerk ausschließlich im Impressum genannt.
 
 - **Stumm und ohne Tonspur.** Beides ist Bedingung: Mobile Browser starten
   ein Video nur selbstständig, wenn es stummgeschaltet ist.
@@ -70,7 +78,7 @@ formatfüllend in Endlosschleife.
   ohnehin abgedunkelt und beschnitten läuft, genügt in der Regel eine
   deutlich kleinere Fassung (etwa 1280 px breit, 2–3 MB).
 
-Ein Austausch braucht nur denselben Dateinamen. Danach den Kontrast des
+Ein Austausch braucht nur denselben Dateinamen (`lewerk-hero.mp4`). Danach den Kontrast des
 Ecktexts prüfen: Bei Video wechselt der Hintergrund ständig, deshalb muss
 über mehrere Frames gemessen werden, nicht über einen.
 

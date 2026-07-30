@@ -9,6 +9,10 @@ interface Props {
 }
 
 const { kicker, heading } = Astro.props;
+
+// Seiten mit Slot-Inhalt bekommen ihren Einleitungstext statt des
+// "Inhalt folgt" — der Hinweis erscheint nur, wo wirklich nichts steht.
+const hatEinleitung = Astro.slots.has('default');
 ---
 
 <section class="ph">
@@ -20,7 +24,9 @@ const { kicker, heading } = Astro.props;
       <span class="headline headline--xl">{heading}</span>
     </h1>
 
-    <p class="ph__note">Inhalt folgt.</p>
+    {hatEinleitung
+      ? <div class="ph__intro"><slot /></div>
+      : <p class="ph__note">Inhalt folgt.</p>}
 
     <div class="ph__actions">
       <a class="btn" href={withBase("/kontakt")}>
@@ -49,6 +55,19 @@ const { kicker, heading } = Astro.props;
     color: var(--ink-muted);
     margin-bottom: var(--space-4);
   }
+
+  .ph__intro { max-width: 46rem; margin-bottom: var(--space-4); }
+  .ph__intro :global(p) { color: var(--ink-muted); }
+  .ph__intro :global(p + p) { margin-top: var(--space-2); }
+
+  /* Erster Absatz als Lead — der Rest bleibt Fließtext */
+  .ph__intro :global(p:first-child) {
+    font-size: var(--fs-lead);
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .ph__intro :global(strong) { font-weight: 600; color: var(--ink); }
 
   .ph__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 </style>

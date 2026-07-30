@@ -5,7 +5,7 @@ import { withBase } from '../lib/paths';
 
 <BaseLayout
   title="Kontakt — Le Werk"
-  description="Le Werk erreicht ihr unter contact@lewerk.de oder +49 176 5677 4494. Studio im Rheinauhafen, Anna-Schneider-Steig 2, 50678 Köln."
+  description="Le Werk erreicht ihr unter contact@lewerk.de oder +49 176 5677 4494. Studio im Rheinauhafen, Anna-Schneider-Steig 2, 50678 Köln — Schwerpunkt Köln und NRW, gedreht wird bundesweit."
 >
   <section class="contact">
     <div class="container contact__grid">
@@ -17,8 +17,8 @@ import { withBase } from '../lib/paths';
         </h1>
         <p class="lead contact__lead">
           Ein Anruf, zwanzig Minuten, danach wisst ihr, ob wir passen — und in
-          welchem Rahmen sich euer Vorhaben bewegt. Schreibt uns gern vorab,
-          worum es geht.
+          welchem Rahmen sich euer Vorhaben bewegt. Wenn es nicht zu uns
+          gehört, sagen wir das auch. Schreibt uns gern vorab, worum es geht.
         </p>
       </header>
 
@@ -42,6 +42,9 @@ import { withBase } from '../lib/paths';
               Rheinauhafen<br />
               50678 Köln
             </address>
+            <p class="contact__radius">
+              Schwerpunkt Köln und NRW — gedreht wird bundesweit.
+            </p>
           </section>
 
           <!-- Anbieterangaben stehen laut Markenarchitektur nur im Impressum -->
@@ -139,6 +142,12 @@ import { withBase } from '../lib/paths';
   .contact__block a:hover { color: var(--petrol-dark); }
 
   .contact__legal-link { margin-top: var(--space-2); font-size: var(--fs-small); }
+
+  .contact__radius {
+    margin-top: var(--space-2);
+    font-size: var(--fs-small);
+    color: var(--ink-muted);
+  }
 
   @media (min-width: 40rem) {
     .contact__meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }

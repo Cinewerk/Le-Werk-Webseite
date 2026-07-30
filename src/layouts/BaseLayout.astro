@@ -37,6 +37,10 @@ const mainNav = [
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
+// Die Schwestermarke wird laut Markenarchitektur ausschließlich im Impressum
+// genannt — nicht im Footer, in der Navigation oder in Marketingtexten. Der
+// Hinweis steht hier im Frontmatter und nicht als HTML-Kommentar, weil der
+// im Quelltext jeder Seite ausgeliefert würde.
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
 const year = new Date().getFullYear();
 ---
@@ -192,8 +196,6 @@ const year = new Date().getFullYear();
           </div>
         </div>
 
-        <!-- Cinewerk wird laut Markenarchitektur ausschließlich im Impressum
-             genannt — nicht im Footer, in der Navigation oder in Marketingtexten. -->
         <div class="footer__legal">
           <span>© {year} <span class="brand">Le Werk</span>. Alle Rechte vorbehalten.</span>
           <span>Visual Content Studio</span>

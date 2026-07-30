@@ -3,6 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { services } from '../data/services';
 import { withBase } from '../lib/paths';
 
+// Der Dateiname des Bühnenvideos ist bewusst neutral gehalten: Er steht im
+// Quelltext jeder Seite, und laut Markenarchitektur wird die Schwestermarke
+// ausschließlich im Impressum genannt. Details in docs/bildmaterial.md.
+
 // Die Kundenlogos liegen als ein durchgehender Streifen vor. Für die
 // Endlosschleife läuft er zweimal hintereinander; der Track wandert um
 // exakt eine Streifenbreite, dadurch ist der Übergang nahtlos.
@@ -12,11 +16,14 @@ const kundenlogos =
   'Zehnder Group, North Kiteboarding';
 
 // Tags spiegeln die Disziplinen-Rangfolge: Video zuerst, vertikal als Kern.
+// ratio steuert den Bildbeschnitt, formats zeigt, welche Formate aus
+// derselben Produktion entstanden sind — das ist der Kern der Positionierung
+// ("Format-Vielfalt aus einem Auftrag"), deshalb zwei getrennte Felder.
 const works = [
-  { img: '/images/work-01.jpg', w: 1600, h: 900,  tag: 'Social Video', title: 'Zwischen den Schichten', client: 'Nordlicht',  format: '16:9', alt: 'Filmklappe wird vor der Kamera bei einem Außendreh geschlossen' },
-  { img: '/images/work-02.jpg', w: 1600, h: 900,  tag: 'Kampagne',     title: 'Alles auf Anfang',       client: 'Atlas & Co', format: '16:9', alt: 'Schnittplatz mit Videospur und Timeline auf mehreren Monitoren' },
-  { img: '/images/work-03.jpg', w: 900,  h: 1600, tag: 'Vertikal',     title: 'Neun zu Sechzehn',       client: 'Superbloom', format: '9:16', alt: 'Filmset mit Kamera auf Dolly und farbigem Licht, vertikal gedreht' },
-  { img: '/images/work-04.jpg', w: 1600, h: 900,  tag: 'Fotografie',   title: 'Haus voller Licht',      client: 'Hafen',      format: '3:2',  alt: 'Abgedunkelter Kinosaal mit rot beleuchteten Sitzreihen' },
+  { img: '/images/work-01.jpg', w: 1600, h: 900,  tag: 'Social Video', title: 'Zwischen den Schichten', client: 'Nordlicht',  ratio: '16:9', formats: '9:16 · 16:9', alt: 'Filmklappe wird vor der Kamera bei einem Außendreh geschlossen' },
+  { img: '/images/work-02.jpg', w: 1600, h: 900,  tag: 'Kampagne',     title: 'Alles auf Anfang',       client: 'Atlas & Co', ratio: '16:9', formats: '9:16 · 4:5',  alt: 'Schnittplatz mit Videospur und Timeline auf mehreren Monitoren' },
+  { img: '/images/work-03.jpg', w: 900,  h: 1600, tag: 'Vertikal',     title: 'Neun zu Sechzehn',       client: 'Superbloom', ratio: '9:16', formats: '9:16',        alt: 'Filmset mit Kamera auf Dolly und farbigem Licht, vertikal gedreht' },
+  { img: '/images/work-04.jpg', w: 1600, h: 900,  tag: 'Fotografie',   title: 'Haus voller Licht',      client: 'Hafen',      ratio: '3:2',  formats: '3:2 · 4:5',   alt: 'Abgedunkelter Kinosaal mit rot beleuchteten Sitzreihen' },
 ];
 
 // Auf der Startseite erscheinen nur die drei Produktionsdisziplinen.
@@ -32,20 +39,27 @@ const team = [
   { img: '/images/team-04.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Platzhalter-Porträt' },
 ];
 
-// q darf Markup enthalten (Wortmarke), wird unten mit set:html gerendert
+// q darf Markup enthalten (Wortmarke), wird unten mit set:html gerendert.
+// Die Fragen 2, 6 und 7 tragen die drei Punkte aus "Was wir nicht machen" —
+// im FAQ statt in einer eigenen Sektion, weil eine Abgrenzung als Antwort
+// auf eine echte Frage überzeugt und als Aufzählung nur abweist.
 const faqs = [
   { q: 'Was kostet eine Produktion bei <span class="brand">Le Werk</span>?', a: 'Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.' },
   { q: 'Macht ihr auch UGC- oder Handy-Content?', a: 'Nein. Das ist ein anderer Markt mit anderen Preisen und anderem Anspruch. Bei uns entstehen Visuals auf Kampagnenniveau — auch dann, wenn sie am Ende vertikal im Feed laufen. Wer schnellen, günstigen Durchsatz sucht, ist bei uns falsch.' },
   { q: 'Bekommen wir Foto und Video aus einer Produktion?', a: 'Ja, das ist der Kern unserer Arbeitsweise. Wir planen Sets so, dass bewegte und stehende Bilder parallel entstehen. Das spart einen kompletten Produktionstag und sorgt dafür, dass Foto und Video wie eine Kampagne aussehen — nicht wie zwei.' },
+  { q: 'Warum denkt ihr vom vertikalen Format aus?', a: 'Weil dort die Aufmerksamkeit liegt. Ein Bildaufbau, der als 16:9 entsteht und später hochkant beschnitten wird, verliert immer — Blickführung, Text und Rhythmus stimmen dann nicht mehr. Wir planen umgekehrt: vertikal als Kern, Landscape und Stills als Ableitung derselben Produktion.' },
   { q: 'Wie lange dauert es von der Anfrage bis zum fertigen Material?', a: 'Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.' },
+  { q: 'Produziert ihr auch klassische Werbefilm-Kampagnen in 16:9?', a: 'Als Hauptformat nicht — die cinematische 16:9-Kampagne ist nicht unsere Disziplin, und wir tun nicht so, als wäre sie es. Landscape bekommt ihr bei uns als Ableitung aus einer Content-Produktion. Wenn euer Vorhaben in Wahrheit ein Werbefilm ist, sagen wir das offen und nennen euch die passende Adresse.' },
+  { q: 'Übernehmt ihr Mediaplanung, SEO oder SEA?', a: 'Nein, wir sind kein Full-Service-Betrieb. Keine Media-Buchung, kein Suchmaschinen-Marketing, keine Account-Ebene zwischen euch und der Produktion. Wir liefern die Visuals und arbeiten dabei problemlos mit eurer Agentur oder eurem Marketing-Team zusammen.' },
+  { q: 'Arbeitet ihr nur in Köln?', a: 'Das Studio liegt im Rheinauhafen, der Verkaufsschwerpunkt ist Köln und NRW — gedreht wird da, wo euer Thema ist. Based in Köln, booked worldwide: bundesweite Produktionen sind Alltag, internationale Drehs gehen ebenfalls.' },
   { q: 'Wie ist das mit den Nutzungsrechten?', a: 'Ihr erhaltet standardmäßig zeitlich und räumlich unbegrenzte Nutzungsrechte für alle eigenen Kanäle. Für Paid Media, Out-of-Home oder TV klären wir Buyouts vorab transparent im Angebot — keine Nachforderungen.' },
   { q: 'Was bieten eure Workshops?', a: 'Drei Formate: Auftreten und Sprechen vor der Kamera, ein Social-Media-Basistraining zu Formatlogik und Bildsprache sowie Teambuilding und interne Kommunikation über Improtheater-Training. Umfang, Dauer und Teilnehmerzahl stimmen wir auf euer Team ab.' },
 ];
 ---
 
 <BaseLayout
-  title="Le Werk — Visual Content Studio für Film und Foto"
-  description="Content Creation. Film und Foto. Für Marken mit Anspruch. Le Werk produziert Social Content und vertikale Formate auf Kampagnenniveau — mit redaktioneller Tiefe statt schnellem Knall."
+  title="Le Werk — Visual Content Studio für Video und Fotografie"
+  description="Le Werk ist ein Visual Content Studio in Köln: Video und Fotografie auf Kampagnenniveau, vom vertikalen Format aus gedacht. Handwerk mit redaktioneller Substanz — kein UGC, kein Full-Service-Overhead."
   heroDark={true}
 >
   <!-- ═══ 1 · HERO ═══════════════════════════════════════════════════════ -->
@@ -61,7 +75,7 @@ const faqs = [
         aria-hidden="true"
         tabindex="-1"
       >
-        <source src={withBase('/videos/cinewerk_filmproduktion_koeln_header_klein.mp4')} type="video/mp4" />
+        <source src={withBase('/videos/lewerk-hero.mp4')} type="video/mp4" />
       </video>
     </div>
 
@@ -83,12 +97,17 @@ const faqs = [
   <!-- ═══ 2 · POSITIONIERUNG ═════════════════════════════════════════════ -->
   <section class="section statement" id="positionierung" aria-labelledby="statement-title">
     <div class="container statement__inner">
+      <!-- Bewusst kein deutscher Claim: Laut Positionierung trägt der
+           englische Positions-Satz im Hero diese Rolle, ein Manifest-Satz
+           auf Deutsch steht noch aus. Dieser Absatz erklärt die Position,
+           er behauptet sie nicht als Slogan. -->
       <p class="statement__text" id="statement-title" data-reveal>
-        <span class="brand">Le Werk</span> ist ein Visual Content Studio für Marken
-        mit Anspruch — <em>Handwerk auf Kampagnenniveau, erzählt mit Substanz.</em>
+        <span class="brand">Le Werk</span> verbindet zwei Dinge, die selten
+        zusammenkommen: Handwerk auf Kampagnenniveau — und <em>Substanz, die
+        bleibt.</em>
       </p>
       <p class="statement__meta" data-reveal data-reveal-delay="80">
-        Mittelstand bis Konzern · Köln &amp; bundesweit · Video, Foto, Konzept
+        Video &amp; Fotografie · Vertikal gedacht · Based in Köln, booked worldwide
       </p>
     </div>
   </section>
@@ -103,8 +122,8 @@ const faqs = [
         </h2>
         <p class="lead">
           Ein Auszug aus laufenden und abgeschlossenen Produktionen. Gedacht wird
-          vom vertikalen Format aus — Landscape entsteht als Ableitung, nicht
-          umgekehrt.
+          vom vertikalen Format aus — Landscape und Stills entstehen als
+          Ableitung, nicht umgekehrt. Ein Dreh, mehrere Formate.
         </p>
       </header>
 
@@ -112,14 +131,14 @@ const faqs = [
         {works.map((w, i) => (
           <article class={`work__item work__item--${i + 1}`} data-reveal data-reveal-delay={i * 80}>
             <a class="work__link" href={withBase("/services")}>
-              <figure class="work__figure" data-format={w.format}>
+              <figure class="work__figure" data-format={w.ratio}>
                 <img src={withBase(w.img)} alt={w.alt} width={w.w} height={w.h} loading="lazy" decoding="async" />
                 <figcaption class="work__tag">{w.tag}</figcaption>
               </figure>
               <p class="work__caption">
                 <span class="work__title">{w.title}</span>
                 <span class="work__client">— {w.client}</span>
-                <span class="work__format">{w.format}</span>
+                <span class="work__format">{w.formats}</span>
               </p>
             </a>
           </article>
@@ -170,7 +189,8 @@ const faqs = [
         </h2>
         <p class="lead">
           Video ist die Hauptdisziplin, Fotografie die klare Zweite, Konzept
-          läuft vorgeschaltet.
+          läuft vorgeschaltet — bei Bedarf mit Content-Strategie, nie als
+          Selbstzweck.
         </p>
       </header>
 
@@ -206,9 +226,9 @@ const faqs = [
           Team
         </h2>
         <p class="lead">
-          Hinter jedem starken Content steht ein starkes Team. Wir sind
-          Kreative und Content-Spezialisten mit tiefem Produktions-Know-how —
-          und arbeiten am liebsten partnerschaftlich auf Augenhöhe.
+          Ein Team, das produziert — keine Account-Ebene, keine Weitergabe an
+          Dritte. Die Leute, mit denen ihr das Konzept besprecht, stehen später
+          auch am Set und sitzen im Schnitt.
         </p>
       </header>
 
@@ -254,7 +274,8 @@ const faqs = [
           <h3 class="benefit__title">Substanz statt Strohfeuer</h3>
           <p class="benefit__text">
             Redaktionelle Tiefe, ehrlich erzählte Geschichten, menschliche
-            Momente. Kein Content, der schnell knallt und genauso schnell
+            Momente — interviewbasiert und dokumentarisch, mit Blick für
+            Charaktere. Kein Content, der schnell knallt und genauso schnell
             wieder weg ist.
           </p>
         </li>
@@ -264,7 +285,7 @@ const faqs = [
           <p class="benefit__text">
             Vertikal ist bei uns kein Beschnitt am Ende, sondern der
             Ausgangspunkt der Planung. Landscape, Square und Stills entstehen
-            als Ableitung derselben Produktion.
+            als Ableitung derselben Produktion — nicht als zweiter Dreh.
           </p>
         </li>
       </ol>
@@ -467,6 +488,9 @@ const faqs = [
     line-height: 1.1;
     letter-spacing: -0.005em;
     text-wrap: balance;
+    /* In dieser Größe ist eine Silbentrennung deutlich sichtbar und wirkt
+       wie ein Fehler — der Satz darf lieber eine Zeile länger werden. */
+    hyphens: none;
   }
 
   .statement__text em { font-style: italic; }
