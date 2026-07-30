@@ -14,6 +14,8 @@ export interface Service {
   img: string;
   /** Kurzbeschreibung für Teaser und Übersicht */
   text: string;
+  /** Produktionsdisziplin? Steuert, was auf der Startseite erscheint. */
+  disziplin: boolean;
 }
 
 export const services: Service[] = [
@@ -22,23 +24,27 @@ export const services: Service[] = [
     label: 'Video',
     img: '/images/service-video.jpg',
     text: 'Hauptdisziplin. Social Content und vertikale Formate, interviewbasiert und dokumentarisch erzählt.',
+    disziplin: true,
   },
   {
     href: '/services/foto',
     label: 'Foto',
     img: '/images/service-foto.jpg',
     text: 'Klare Zweitdisziplin. Für Content, Kampagne und Marken-Bildwelten.',
+    disziplin: true,
   },
   {
     href: '/services/konzept',
     label: 'Konzept',
     img: '/images/service-konzept.jpg',
     text: 'Vorgeschaltet, bei Bedarf mit Content-Strategie. Vorbau der Produktion, kein Selbstzweck.',
+    disziplin: true,
   },
   {
     href: '/services/workshops',
     label: 'Workshops',
     img: '/images/service-workshops.jpg',
     text: 'Auftreten vor der Kamera, Social-Media-Grundlagen und Improtheater fürs Team. Wir geben weiter, was wir können.',
+    disziplin: false,
   },
 ];

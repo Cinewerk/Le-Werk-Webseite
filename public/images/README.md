@@ -13,7 +13,10 @@ Die Bühne der Startseite ist inzwischen ein Video, siehe Abschnitt unten.
 
 | Datei | Wo es erscheint | Format | Status |
 |---|---|---|---|
-| `hero.jpg` | — | quer | **wird nicht mehr verwendet** |
+| `hero.jpg` | — | quer | **ungenutzt** |
+| `about.jpg` | — | quer | **ungenutzt** (Über-uns-Sektion entfallen) |
+| `quote-01.jpg` – `quote-03.jpg` | — | quadratisch | **ungenutzt** (Stimmen-Sektion entfallen) |
+| `team-01.jpg` – `team-04.jpg` | Sektion „Unser Team" | 2:3 hoch | Platzhalter |
 | `work-01.jpg` | Arbeiten, großes Tile links | 16:9 | Platzhalter |
 | `work-02.jpg` | Arbeiten, Tile rechts oben | 16:9 | Platzhalter |
 | `work-03.jpg` | Arbeiten, vertikales Tile | 9:16 | Platzhalter |
@@ -21,9 +24,7 @@ Die Bühne der Startseite ist inzwischen ein Video, siehe Abschnitt unten.
 | `service-foto.jpg` | Karte „Foto" | 4:3 | Platzhalter |
 | `service-video.jpg` | Karte „Video" | 4:3 | Platzhalter |
 | `service-konzept.jpg` | Karte „Konzept" | 4:3 | Platzhalter |
-| `service-workshops.jpg` | Karte „Workshops" | 4:3 | Platzhalter |
-| `about.jpg` | Über uns | 4:3, auf Desktop 3:4 beschnitten | Platzhalter |
-| `quote-01.jpg` – `quote-03.jpg` | Porträts bei den Stimmen | quadratisch | Platzhalter |
+| `service-workshops.jpg` | Karte „Workshops" — nur auf `/services` | 4:3 | Platzhalter |
 | `logokarusell.png` | Kundenlogos in der Trustbar | ein durchgehender Streifen, 5000 × 400 | **echt** |
 
 Die Platzhalter stammen von Unsplash und sind nur zur Ansicht gedacht.
@@ -43,6 +44,16 @@ zwei Bedingungen erfüllen:
 
 Die Höhe im Layout steuert `.marquee__strip` in `src/pages/index.astro`;
 die Breite folgt automatisch dem Seitenverhältnis.
+
+## Team-Porträts
+
+`team-01.jpg` bis `team-04.jpg` sind **Platzhalter von Unsplash und zeigen
+nicht das Team**. Unter den Bildern steht derzeit „Name folgt / Rolle folgt".
+
+Zum Ersetzen: vier Porträts im Verhältnis 2:3 (etwa 800 × 1200) unter
+denselben Namen ablegen, dann Namen und Rollen im `team`-Array in
+`src/pages/index.astro` eintragen. Die Darstellung entsättigt die Bilder,
+damit die Reihe auch bei unterschiedlichen Lichtstimmungen ruhig bleibt.
 
 ## Bühnenvideo
 
