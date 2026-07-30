@@ -28,7 +28,15 @@ const works = [
 
 // Auf der Startseite erscheinen nur die drei Produktionsdisziplinen.
 // Workshops bleiben über Menü, Footer und /services erreichbar.
-const disziplinen = services.filter((s) => s.disziplin);
+//
+// Eigene Reihenfolge, weil die Kästen hier anders liegen: Video groß links,
+// Idee & Konzept rechts oben, Foto rechts unten. Sie steht über die Adresse
+// und nicht über den Listenplatz — sonst würde eine Umsortierung in
+// services.ts das Layout still verschieben.
+const reihenfolge = ['/services/video', '/services/konzept', '/services/foto'];
+const disziplinen = services
+  .filter((s) => s.disziplin)
+  .sort((a, b) => reihenfolge.indexOf(a.href) - reihenfolge.indexOf(b.href));
 
 // Echte Aufnahmen vom Set, ausgewählt aus dem gelieferten Ordner. Neun von
 // zwanzig — die Auswahl erzählt eine Produktion von vorn bis hinten: Team,
@@ -149,7 +157,7 @@ const faqs = [
     <div class="container">
       <header class="work__head" data-reveal>
         <h2 class="headline headline--xl" id="work-title">
-          <span class="editorial editorial--kicker">Ausgewählte</span>
+          <span class="editorial editorial--kicker">Ausgewählte</span>{' '}
           Arbeiten
         </h2>
         <p class="lead">
@@ -216,31 +224,28 @@ const faqs = [
       <header class="sec-head" data-reveal>
         <p class="label">Was wir machen</p>
         <h2 class="headline" id="services-title">
-          <span class="editorial editorial--kicker">Drei Disziplinen,</span>
-          eine Handschrift
+          <span class="editorial editorial--kicker">Content</span>{' '}
+          holistisch gedacht
         </h2>
-        <p class="lead">
-          Video ist die Hauptdisziplin, Fotografie die klare Zweite, Konzept
-          läuft vorgeschaltet — bei Bedarf mit Content-Strategie, nie als
-          Selbstzweck.
-        </p>
+        <!-- Der frühere Fließtext ist entfallen. Er stufte die Disziplinen
+             ab ("Hauptdisziplin", "klare Zweite", "vorgeschaltet") und stand
+             damit gegen die neue Überschrift, die sie zusammendenkt. -->
       </header>
 
       <!-- Nur die drei Produktionsdisziplinen. Workshops sind bewusst nicht
            auf der Startseite und ausschließlich über das Menü erreichbar.
 
-           Bewusst keine Karten: Drei gleich große Kästen mit Rahmen und
-           Schatten behaupten Gleichrang, obwohl der Text daneben eine
-           Rangfolge nennt. Hier tragen Größe und Anordnung die Aussage —
-           Video am größten, Konzept am kleinsten, jede Disziplin in dem
-           Bildformat beschnitten, in dem sie arbeitet. -->
+           Bewusst keine Karten: Gleich große Kästen mit Rahmen und Schatten
+           sehen nach Baukasten aus. Hier trägt die Anordnung — Video groß
+           über die volle Höhe links, Idee & Konzept und Foto rechts
+           gestapelt. -->
       <ol class="disziplinen">
         {disziplinen.map((s, i) => (
           <li class={`disziplin disziplin--${i + 1}`} data-reveal data-reveal-delay={i * 90}>
             <a class="disziplin__link" href={withBase(s.href)}>
               <figure class="disziplin__bild" style={`--ratio:${s.ratio ?? '4 / 3'}`}>
                 <img src={withBase(s.img)} alt="" width="1200" height="900" loading="lazy" decoding="async" />
-                <figcaption class="disziplin__marke">{s.label}</figcaption>
+                <figcaption class="disziplin__marke">{s.titel ?? s.label}</figcaption>
               </figure>
 
               <p class="disziplin__zeile">
@@ -262,7 +267,7 @@ const faqs = [
       <header class="sec-head sec-head--knapp" data-reveal>
         <p class="label">Wer dahintersteht</p>
         <h2 class="headline" id="team-title">
-          <span class="editorial editorial--kicker">Unser</span>
+          <span class="editorial editorial--kicker">Unser</span>{' '}
           Team
         </h2>
       </header>
@@ -310,7 +315,7 @@ const faqs = [
       <header class="sec-head" data-reveal>
         <p class="label">Warum <span class="brand">Le Werk</span></p>
         <h2 class="headline" id="benefits-title">
-          <span class="editorial editorial--kicker">Drei Gründe,</span>
+          <span class="editorial editorial--kicker">Drei Gründe,</span>{' '}
           uns anzurufen
         </h2>
       </header>
@@ -376,7 +381,7 @@ const faqs = [
   <section class="section section--dark cta" aria-labelledby="cta-title">
     <div class="container cta__inner" data-reveal>
       <h2 class="headline headline--xl cta__title" id="cta-title">
-        <span class="editorial editorial--kicker">Erzählt uns</span>
+        <span class="editorial editorial--kicker">Erzählt uns</span>{' '}
         von eurem Projekt
       </h2>
       <div class="cta__actions">
@@ -736,10 +741,11 @@ const faqs = [
   /* Lesbarkeitsverlauf, auf den echten Motiven gemessen statt geschätzt:
      Bild im Cover-Zuschnitt samt Graustufenfilter im Canvas nachgebaut,
      Verlauf darüber, dann der schlechteste Wert auf den Zeilenkästen der
-     Schrift. Mit 0.82 im Fuß kam das Fotomotiv auf 4.09:1 — für 52px
-     fette Schrift zulässig, aber knapp; das Nebelband liegt genau hinter
-     dem Wort. Mit 0.88 sind es 5.18:1 (Video 12.73, Konzept 7.49) und
-     damit Reserve für hellere Motive, die später dazukommen. */
+     Schrift. Nach dem Umbau auf zwei Spalten sind die rechten Kästen
+     kleiner, die Schrift liegt über anderen Bildstellen und der Fuß von
+     0.88 reichte nur noch für 4.36:1 bei Foto. Mit 0.92 sind es
+     Foto 5.54, Idee & Konzept 7.87, Video 11.20 — wieder über der
+     strengeren Schwelle von 4.5 und mit Reserve für andere Motive. */
   .disziplin__bild::after {
     content: '';
     position: absolute;
@@ -747,8 +753,8 @@ const faqs = [
     pointer-events: none;
     background: linear-gradient(
       0deg,
-      rgba(4, 37, 44, 0.88) 0%,
-      rgba(4, 37, 44, 0.52) 28%,
+      rgba(4, 37, 44, 0.92) 0%,
+      rgba(4, 37, 44, 0.58) 30%,
       rgba(4, 37, 44, 0) 55%
     );
   }
@@ -1039,19 +1045,34 @@ const faqs = [
     .work__item--3 { grid-column: 2 / span 4; }
     .work__item--4 { grid-column: 7 / span 6; align-self: end; }
 
-    /* Versetztes Zwölfspaltenraster, im Rhythmus der Arbeiten: eine große
-       Fläche links, daneben eine kleinere auf gleicher Unterkante, in der
-       zweiten Reihe eingerückt weiter. Die Spaltenzahl trägt zusätzlich die
-       Rangfolge — Video sechs Spalten, Foto fünf, Konzept vier. */
+    /* Zwei Spalten: Video links über beide Zeilen, Idee & Konzept rechts
+       oben, Foto rechts unten. */
     .disziplinen {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: clamp(1.5rem, 3vw, 3rem);
-      row-gap: clamp(3rem, 6vw, 5rem);
+      row-gap: clamp(2rem, 4vw, 3rem);
     }
 
-    .disziplin--1 { grid-column: 1 / span 6; }
-    .disziplin--2 { grid-column: 8 / span 5; align-self: end; }
-    .disziplin--3 { grid-column: 3 / span 4; }
+    .disziplin--1 { grid-column: 1 / span 6; grid-row: 1 / span 2; }
+    .disziplin--2 { grid-column: 8 / span 5; grid-row: 1; }
+    .disziplin--3 { grid-column: 8 / span 5; grid-row: 2; }
+
+    /* Der linke Kasten bekommt keine feste Bildhöhe, sondern füllt exakt
+       das, was die beiden rechten zusammen hoch sind. Mit einem festen
+       Seitenverhältnis bliebe sonst je nach Textlänge unten ein Rest übrig
+       oder das Bild stünde über. */
+    .disziplin--1 .disziplin__link {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .disziplin--1 .disziplin__bild { flex: 1; min-height: 0; }
+
+    .disziplin--1 .disziplin__bild img {
+      height: 100%;
+      aspect-ratio: auto;
+    }
 
     /* Ab hier drei Spalten wie in der Referenz. Darunter zwei, damit die
        Bilder auf dem Handy nicht zu Briefmarken werden. */
