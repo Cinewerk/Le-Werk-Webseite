@@ -207,7 +207,11 @@ button { cursor: pointer; }
    "Le Werk" ist ein Logo und wird deshalb überall gleich gesetzt:
    Poppins ExtraBold, exakt diese Schreibweise — nie in Versalien
    (auch nicht in uppercase-Labels oder Headlines) und nie kursiv
-   (auch nicht innerhalb von Bodoni-Passagen). */
+   (auch nicht innerhalb von Bodoni-Passagen).
+
+   Eine bewusste Ausnahme: Im Positionierungsabsatz der Startseite steht
+   die Marke in normalem Poppins (siehe .statement__text .brand in
+   index.astro). Der Hero direkt darüber trägt sie schon fett. */
 .brand {
   font-family: var(--font-ui);
   font-weight: 800;

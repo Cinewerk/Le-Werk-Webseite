@@ -101,12 +101,14 @@ const faqs = [
            englische Positions-Satz im Hero diese Rolle, ein Manifest-Satz
            auf Deutsch steht noch aus. Dieser Absatz erklärt die Position,
            er behauptet sie nicht als Slogan. -->
-      <!-- Der Wortlaut ist unverändert, nur typografisch gestaffelt: Der
-           erste Satz steht als kursiver Auftakt über dem Block, der Schluss
-           trägt den kursiven Akzent. Dazwischen Roman — dieselbe Spannung
-           aus zwei Stimmen, die den Satz davor getragen hat. -->
+      <!-- Ein durchlaufender Absatz: Der Auftakt stand vorher auf eigener
+           Zeile, dadurch begann der Satz sichtbar mit "Le Werk ist ein
+           Visual Content Studio" — dieselbe Aussage wie im Hero darüber.
+           Inline gesetzt trägt er den Satzanfang und der Doppelklang ist weg.
+           Die Eleganz kommt jetzt aus drei Stimmen in einer Zeile: kursiver
+           Einstieg, Roman als Körper, kursiver Schluss. -->
       <p class="statement__text" id="statement-title" data-reveal>
-        <em class="statement__auftakt">Gegründet von Filmemachern.</em>{' '}
+        <em>Gegründet von Filmemachern.</em>{' '}
         <span class="brand">Le Werk</span> ist ein Visual Content Studio im
         Kölner Rheinauhafen, spezialisiert auf Storytelling, Film und Foto
         für <em>Social und Branded Content.</em>
@@ -508,7 +510,13 @@ const faqs = [
        stehen hier mehr Zeilen — das braucht etwas mehr Luft. */
     line-height: 1.16;
     letter-spacing: -0.005em;
-    text-wrap: balance;
+    /* Auf schmalen Schirmen sind es acht Zeilen. Dort greift balance nicht
+       mehr — Chrome wendet es nur bis etwa sechs Zeilen an, gemessen blieb
+       "Content." als Schusterjunge mit 28% Zeilenbreite allein stehen.
+       pretty kennt diese Grenze nicht und füllt die Schlusszeile auf 58%.
+       Ab 48rem übernimmt balance, weil es die vier Zeilen gleichmäßig
+       ausgleicht. */
+    text-wrap: pretty;
     /* In dieser Größe ist eine Silbentrennung deutlich sichtbar und wirkt
        wie ein Fehler — der Satz darf lieber eine Zeile länger werden. */
     hyphens: none;
@@ -516,18 +524,17 @@ const faqs = [
 
   .statement__text em { font-style: italic; }
 
-  /* Auftakt: eigene Zeile, kleiner und kursiv. Er nimmt dem Block die
-     Gleichförmigkeit und gibt dem Hauptsatz einen Einstieg — dieselbe
-     Rollenverteilung wie bei den Sektionsköpfen der Seite. */
-  .statement__auftakt {
-    display: block;
-    /* Eigene Skala statt em-Faktor: 0.52em ergab auf dem Handy 13,5px —
-       zu klein für eine kursive Serifenschrift in gedeckter Farbe. */
-    font-size: clamp(1rem, 2.1vw, 1.6875rem);
-    line-height: 1.3;
-    letter-spacing: 0.01em;
-    margin-bottom: 0.5em;
-    color: var(--ink-muted);
+  /* AUSNAHME von der Wortmarken-Regel, ausdrücklich so gewünscht: In
+     diesem einen Absatz steht "Le Werk" in normalem Poppins statt in
+     ExtraBold. Der Hero darüber trägt die Marke schon im fetten Schnitt;
+     hier wirkt der leichte Schnitt im Bodoni-Satz eleganter und lässt dem
+     Satz seinen Fluss. Gilt nur hier — überall sonst bleibt .brand fett,
+     siehe die Regel in global.css. */
+  .statement__text .brand {
+    font-weight: 400;
+    /* Die -0.03em der Wortmarke sind auf ExtraBold abgestimmt und
+       stehen im leichten Schnitt zu eng. */
+    letter-spacing: -0.005em;
   }
 
   /* Gesperrte Versalzeile als Gegengewicht zur großen Serifenschrift */
@@ -836,6 +843,7 @@ const faqs = [
 
   /* ── Breakpoints ──────────────────────────────────────────────────────── */
   @media (min-width: 48rem) {
+    .statement__text { text-wrap: balance; }
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .team__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .hero__cue { display: inline-flex; }
