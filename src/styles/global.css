@@ -78,6 +78,18 @@
   --dur: 240ms;
   --dur-slow: 420ms;
 
+  /* Menübewegung, aus der Referenzaufnahme Bild für Bild abgenommen:
+     Das Panel fährt in 380ms herein und braucht dabei genau die Kurve,
+     die oben schon als --ease-out steht. Zurück läuft es spiegelbildlich
+     mit einem Ease-in — langsam los, schnell weg. Die Zeilen blenden
+     versetzt ein (90ms Abstand, 280ms je Zeile) und beim Schließen alle
+     zusammen in 150ms. */
+  --ease-in: cubic-bezier(0.32, 0, 0.67, 0);
+  --dur-menu: 380ms;
+  --dur-zeile: 280ms;
+  --dur-zeile-aus: 150ms;
+  --versatz-zeile: 90ms;
+
   /* --- Ebenen --- */
   --z-base: 1;
   --z-sticky: 40;
@@ -407,19 +419,22 @@ button { cursor: pointer; }
   padding: var(--space-3) var(--edge) var(--space-5);
   background: var(--petrol-deep);
   color: var(--on-dark);
-  opacity: 0;
+  /* Das Panel fährt als Ganzes von oben herein — mitsamt Wortmarke, Kreuz
+     und Zeilen. Deshalb Transform statt Deckkraft: Der Inhalt steht über
+     dem Bildrand und schiebt sich mit hinein. */
+  transform: translateY(-100%);
   visibility: hidden;
   /* visibility erst am Ende der Ausblendung umschalten, beim Einblenden sofort —
      sonst ist das Overlay zu Beginn noch unsichtbar und focus() greift ins Leere */
-  transition: opacity var(--dur-slow) var(--ease-out), visibility 0s linear var(--dur-slow);
+  transition: transform var(--dur-menu) var(--ease-in), visibility 0s linear var(--dur-menu);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
 
 .overlay[data-open='true'] {
-  opacity: 1;
+  transform: translateY(0);
   visibility: visible;
-  transition: opacity var(--dur-slow) var(--ease-out), visibility 0s linear 0s;
+  transition: transform var(--dur-menu) var(--ease-out), visibility 0s linear 0s;
 }
 
 .overlay__top {
@@ -461,6 +476,27 @@ button { cursor: pointer; }
    Einrückung jetzt die Rangfolge trägt: eingerückt heißt Unterpunkt. */
 .overlay__row { display: flex; align-items: baseline; gap: 0.6rem; }
 
+/* Die Zeilen blenden nach dem Panel versetzt von oben nach unten ein.
+   --stufe kommt aus dem Template: der laufende Index über alle Zeilen,
+   Unterpunkte eingerechnet. Der Vorlauf von 120ms entspricht der
+   Referenz — die erste Zeile setzt ein, während das Panel noch fährt.
+   Beim Schließen fällt der Versatz weg: dort gehen alle Zeilen
+   gleichzeitig und schneller, ebenfalls wie in der Aufnahme. */
+.overlay__row,
+.overlay__sub > li,
+.overlay__foot {
+  opacity: 0;
+  transition: opacity var(--dur-zeile-aus) linear;
+}
+
+.overlay[data-open='true'] .overlay__row,
+.overlay[data-open='true'] .overlay__sub > li,
+.overlay[data-open='true'] .overlay__foot {
+  opacity: 1;
+  transition: opacity var(--dur-zeile) var(--ease-out);
+  transition-delay: calc(120ms + var(--stufe, 0) * var(--versatz-zeile));
+}
+
 /* Die Ziffernbreiten sind unterschiedlich: "01" misst 11,9px, "03" 14,8px.
    Dadurch stand START zwei Pixel links von SERVICES und KONTAKT.
    font-variant-numeric hilft nicht — der Poppins-Subset bringt kein
@@ -487,7 +523,17 @@ button { cursor: pointer; }
      Die Linie läuft mittig mit und verbindet die vier optisch. */
   margin-left: 4%;
   padding-left: 4%;
-  border-left: 1px solid var(--line-dark);
+  /* Farblos in der Ausgangslage: Die Linie stand sonst schon voll da,
+     während die Wörter daran noch fehlten. Sie kommt mit dem ersten
+     Unterpunkt — dessen Stufe trägt das ul selbst. */
+  border-left: 1px solid transparent;
+  transition: border-color var(--dur-zeile-aus) linear;
+}
+
+.overlay[data-open='true'] .overlay__sub {
+  border-left-color: var(--line-dark);
+  transition: border-color var(--dur-zeile) var(--ease-out);
+  transition-delay: calc(120ms + var(--stufe, 0) * var(--versatz-zeile));
 }
 
 .overlay__sublink {
@@ -956,6 +1002,24 @@ button { cursor: pointer; }
   }
 
   [data-reveal] { opacity: 1; transform: none; }
+
+  /* Der Regelblock oben setzt nur die Dauern auf 0, nicht die Verzögerungen.
+     Ohne das hier würden die Menüzeilen einzeln aufpoppen — über eine halbe
+     Sekunde verteilt, nur ohne Blende. Das Panel erscheint schlicht. */
+  .overlay,
+  .overlay[data-open='true'] { transform: none; }
+
+  .overlay__row,
+  .overlay__sub > li,
+  .overlay__foot {
+    opacity: 1;
+    transition-delay: 0ms !important;
+  }
+
+  /* Auch die Linie: Ihre Verzögerung liegt bei 300ms, sonst käme sie
+     deutlich nach ihren Wörtern. */
+  .overlay__sub { transition-delay: 0ms !important; }
+  .overlay[data-open='true'] .overlay__sub { border-left-color: var(--line-dark); }
 }
 
 /* --------------------------------------------------------------------------

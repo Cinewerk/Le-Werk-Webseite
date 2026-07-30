@@ -37,6 +37,14 @@ const mainNav = [
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
+// Die Menüzeilen blenden beim Öffnen versetzt von oben nach unten ein. Der
+// Versatz muss der optischen Reihenfolge folgen, nicht der Verschachtelung —
+// die vier Unterpunkte liegen im DOM innerhalb von "Services". Deshalb hier
+// ein laufender Index über alle Zeilen, den das CSS als --stufe ausliest.
+const stufeVon = (i: number) =>
+  mainNav.slice(0, i).reduce((n, item) => n + 1 + item.children.length, 0);
+const stufenGesamt = mainNav.reduce((n, item) => n + 1 + item.children.length, 0);
+
 // Die Schwestermarke wird laut Markenarchitektur ausschließlich im Impressum
 // genannt — nicht im Footer, in der Navigation oder in Marketingtexten. Der
 // Hinweis steht hier im Frontmatter und nicht als HTML-Kommentar, weil der
@@ -114,7 +122,7 @@ const year = new Date().getFullYear();
         <ul class="overlay__list">
           {mainNav.map((item, i) => (
             <li class="overlay__item">
-              <span class="overlay__row">
+              <span class="overlay__row" style={`--stufe:${stufeVon(i)}`}>
                 <span class="overlay__num" aria-hidden="true">{pad(i + 1)}</span>
                 <a
                   class="overlay__link"
@@ -126,9 +134,13 @@ const year = new Date().getFullYear();
               </span>
 
               {item.children.length > 0 && (
-                <ul class="overlay__sub" aria-label={`${item.label} — Unterseiten`}>
-                  {item.children.map((child) => (
-                    <li>
+                <ul
+                  class="overlay__sub"
+                  style={`--stufe:${stufeVon(i) + 1}`}
+                  aria-label={`${item.label} — Unterseiten`}
+                >
+                  {item.children.map((child, j) => (
+                    <li style={`--stufe:${stufeVon(i) + 1 + j}`}>
                       <a
                         class="overlay__sublink"
                         href={withBase(child.href)}
@@ -145,7 +157,7 @@ const year = new Date().getFullYear();
         </ul>
       </nav>
 
-      <div class="overlay__foot">
+      <div class="overlay__foot" style={`--stufe:${stufenGesamt}`}>
         <span><span class="brand">Le Werk</span> — Visual Content Studio</span>
         <a class="link-underline" href="mailto:contact@lewerk.de">contact@lewerk.de</a>
       </div>
@@ -227,9 +239,36 @@ const year = new Date().getFullYear();
         document.querySelector('.footer'),
       ];
 
+      // Das Overlay darf erst nach der Panelfahrt aus dem Baum genommen
+      // werden, sonst verschwindet es hart. Die Dauer kommt aus dem
+      // CSS-Token, damit sie nicht an zwei Stellen gepflegt werden muss.
+      //
+      // Die Einheit muss mitgelesen werden: Im Build schreibt der Minifier
+      // aus "380ms" ein ".38s". Ein reines parseFloat ergäbe daraus 0.38 —
+      // das Menü würde nach 40ms abgeschnitten, und zwar nur im gebauten
+      // Stand, nicht im Entwicklungsserver.
+      const panelDauer = () => {
+        const roh = getComputedStyle(document.documentElement)
+          .getPropertyValue('--dur-menu')
+          .trim();
+        const zahl = parseFloat(roh);
+        if (!Number.isFinite(zahl)) return 380;
+        return roh.endsWith('ms') ? zahl : zahl * 1000;
+      };
+
       const setOverlay = (open: boolean) => {
         if (!overlay || !toggle) return;
-        if (open) overlay.hidden = false;
+
+        if (open) {
+          overlay.hidden = false;
+          // Zwischen dem Sichtbarmachen und dem Öffnen muss der Browser den
+          // Stil einmal berechnen. Ohne diesen Zwischenschritt wechselt das
+          // Overlay im selben Task von display:none auf offen — es gibt dann
+          // keinen Ausgangswert, von dem aus die Fahrt laufen könnte, und das
+          // Panel steht auf einen Schlag da.
+          void overlay.offsetHeight;
+        }
+
         overlay.dataset.open = String(open);
         toggle.setAttribute('aria-expanded', String(open));
         toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
@@ -250,7 +289,7 @@ const year = new Date().getFullYear();
           toggle.focus();
           window.setTimeout(() => {
             if (overlay.dataset.open === 'false') overlay.hidden = true;
-          }, 420);
+          }, panelDauer() + 40);
         }
       };
 
