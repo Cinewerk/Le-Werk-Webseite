@@ -926,8 +926,12 @@ button { cursor: pointer; }
    10. Responsive
    -------------------------------------------------------------------------- */
 @media (min-width: 62rem) {
+  /* Die dritte Spalte (Kontakt) trägt E-Mail, Telefonnummer und Anschrift
+     und braucht mehr Platz als die Linklisten: Bei gleicher Breite war sie
+     ab 62rem nur 148px breit, die Nummer allein misst 151px. Die übrigen
+     Spalten kommen mit weniger aus, ihr längstes Wort ist "Datenschutz". */
   .footer__grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) 1.2fr;
+    grid-template-columns: 1fr 1fr 1.5fr 1fr 1.2fr;
     gap: var(--space-4);
   }
 }

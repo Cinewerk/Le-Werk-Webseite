@@ -41,6 +41,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
 // genannt — nicht im Footer, in der Navigation oder in Marketingtexten. Der
 // Hinweis steht hier im Frontmatter und nicht als HTML-Kommentar, weil der
 // im Quelltext jeder Seite ausgeliefert würde.
+// Anschrift und Telefonnummer enthalten geschützte Leerzeichen. Die
+// Footer-Spalte ist an der 62rem-Grenze nur 148px breit; ohne sie rutscht
+// die Hausnummer allein in die nächste Zeile und die Nummer bricht mitten
+// entzwei. Die Anschrift umbricht dann an einem Bindestrich, was richtig
+// ist. Gilt genauso in kontakt, impressum und datenschutz.
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
 const year = new Date().getFullYear();
 ---
@@ -173,10 +178,10 @@ const year = new Date().getFullYear();
             <h2>Kontakt</h2>
             <ul>
               <li><a href="mailto:contact@lewerk.de">contact@lewerk.de</a></li>
-              <li><a href="tel:+4917656774494">+49 176 5677 4494</a></li>
+              <li><a href="tel:+4922129256496">+49&nbsp;221&nbsp;29256496</a></li>
             </ul>
             <address class="footer__address">
-              Anna-Schneider-Steig 2<br />
+              Anna-Schneider-Steig&nbsp;2<br />
               Rheinauhafen<br />
               50678 Köln
             </address>
