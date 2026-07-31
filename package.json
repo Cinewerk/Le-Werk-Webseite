@@ -2,6 +2,13 @@
   "name": "le-werk-webseite",
   "type": "module",
   "version": "0.0.1",
+  "description": "Website des Kölner Studios Le Werk — Bewegtbild, Fotografie, Konzept, Workshops.",
+  "author": "Simon Liebermann <liebermannsimon@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Heutelaune/Le-Werk.git"
+  },
+  "private": true,
   "engines": {
     "node": ">=22.12.0"
   },
