@@ -23,15 +23,17 @@ export interface Arbeit {
   breite: number;
   hoehe: number;
   /** Beschnitt der Kachel */
-  ratio: '16:9' | '9:16' | '3:2';
+  ratio: '16:9' | '4:3' | '9:16' | '3:2';
   /**
    * Das Format, in dem die Arbeit entstanden ist — steht als Pille in der
    * Zeile unter der Kachel.
    *
    * Bewusst getrennt von ratio: Das ist der Beschnitt fürs Raster, hier
-   * steht die Angabe zur Arbeit. Bei Siemens gehen die beiden auseinander,
-   * 4:3 gedreht, 16:9 beschnitten. Wer die Felder zusammenlegt, kippt
-   * entweder das Raster oder sagt etwas Falsches über die Arbeit.
+   * steht die Angabe zur Arbeit. Zurzeit sind beide überall gleich — das
+   * ist ein Zustand, keine Regel. Siemens lief eine Weile als 4:3-Arbeit
+   * in einer 16:9-Kachel, und sobald ein Projekt in einem Format
+   * ausgeliefert wird, das der Kachelplatz nicht tragen kann, gehen sie
+   * wieder auseinander. Deshalb bleiben es zwei Felder.
    */
   format: '4:3' | '3:2' | '9:16';
   alt: string;
@@ -53,7 +55,7 @@ export const arbeiten: Arbeit[] = [
     bild: '/images/work/siemens.webp',
     breite: 1920,
     hoehe: 1080,
-    ratio: '16:9',
+    ratio: '4:3',
     format: '4:3',
     alt: 'Frau mit regenbogenbunt gefärbtem Haar und großflächigem Rückentattoo steht von hinten am Ufer eines Sees',
     art: 'Video',
