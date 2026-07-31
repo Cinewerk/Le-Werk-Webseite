@@ -4,13 +4,20 @@
  * Unterseiten unter /arbeiten/<slug>.
  *
  * Die Reihenfolge hier ist die Reihenfolge auf der Startseite. Sie wechselt
- * bewusst zwischen Video und Foto ab — Video, Foto, Video, Foto, Video —
- * damit die Fotostrecken nicht als Block am Ende hängen.
+ * so weit wie möglich zwischen Video und Foto ab: Video, Foto, Video, Foto,
+ * Video, Video. Bei vier Filmen und zwei Strecken geht es sauberer nicht —
+ * zwei Filme müssen aneinanderstoßen. Sie stehen am Ende, damit die beiden
+ * Strecken weit auseinanderliegen und nicht als Block hängen.
  *
- * Sie trägt außerdem das Raster, denn die Plätze sind auf Bildformate
- * zugeschnitten: 1 breit, 2 klein rechts, 3 hoch, 4 breit rechts, 5 hoch
- * rechts. Wer umsortiert, muss die Formate mitdenken — ein Hochformat auf
- * Platz 4 würde 1500px hoch.
+ * Die Reihenfolge trägt außerdem das Raster, denn die sechs Plätze in
+ * index.astro sind auf die Bildformate zugeschnitten:
+ *
+ *   1 groß links (4:5)   2 flach rechts (3:2)
+ *   3 hoch links (9:16)  4 breit rechts (3:2)
+ *   5 hoch mittig (9:16) 6 schmal rechts (9:16)
+ *
+ * Wer umsortiert, muss die Formate mitdenken — ein 9:16 auf Platz 4 wäre
+ * über 800px hoch, ein 3:2 auf Platz 6 nur 167px.
  */
 export interface Arbeit {
   /** Adresse der Unterseite: /arbeiten/<slug> */
@@ -23,7 +30,7 @@ export interface Arbeit {
   breite: number;
   hoehe: number;
   /** Beschnitt der Kachel */
-  ratio: '16:9' | '4:3' | '9:16' | '3:2';
+  ratio: '16:9' | '4:3' | '4:5' | '9:16' | '3:2';
   /**
    * Das Format, in dem die Arbeit entstanden ist — steht als Pille in der
    * Zeile unter der Kachel.
@@ -35,7 +42,7 @@ export interface Arbeit {
    * ausgeliefert wird, das der Kachelplatz nicht tragen kann, gehen sie
    * wieder auseinander. Deshalb bleiben es zwei Felder.
    */
-  format: '4:3' | '3:2' | '9:16';
+  format: '4:3' | '4:5' | '3:2' | '9:16';
   alt: string;
   /** Videoprojekt oder Fotostrecke — bestimmt später den Aufbau der Unterseite */
   art: 'Video' | 'Foto';
@@ -49,20 +56,24 @@ export interface Arbeit {
 
 export const arbeiten: Arbeit[] = [
   {
+    // ACHTUNG: Die Datei ist 1920x1080. Der 4:5-Beschnitt behält davon nur
+    // die mittleren 45 % der Breite — es passt, weil die Frau fast genau
+    // mittig steht, ist aber ein Beschnitt aus einem Beschnitt. Sobald eine
+    // echte 4:5-Fassung aus dem Schnitt vorliegt, die hier eintragen.
     slug: 'siemens-social-media-kampagne',
     kunde: 'Siemens',
     titel: 'Social Media Kampagne',
     bild: '/images/work/siemens.webp',
     breite: 1920,
     hoehe: 1080,
-    ratio: '4:3',
-    format: '4:3',
+    ratio: '4:5',
+    format: '4:5',
     alt: 'Frau mit regenbogenbunt gefärbtem Haar und großflächigem Rückentattoo steht von hinten am Ufer eines Sees',
     art: 'Video',
     eigeneSeite: true,
   },
   {
-    // Auf dem kleinsten Platz, deshalb hier und nicht Formel D: Das helle
+    // Auf dem flachen Platz, deshalb hier und nicht Formel D: Das helle
     // Wohnzimmer bleibt auch klein lesbar, die dunkle Werkhalle nicht.
     slug: 'revitive-fotogalerie',
     kunde: 'Revitive',
@@ -77,15 +88,15 @@ export const arbeiten: Arbeit[] = [
     eigeneSeite: true,
   },
   {
-    slug: 'allianz-instagram-reel',
-    kunde: 'Allianz',
-    titel: 'Instagram Reel',
-    bild: '/images/work/allianz.webp',
+    slug: 'bvb-ea-sports-social-ad',
+    kunde: 'BVB × EA Sports',
+    titel: 'Social Ad',
+    bild: '/images/work/bvb-ea-sports.webp',
     breite: 540,
     hoehe: 960,
     ratio: '9:16',
     format: '9:16',
-    alt: 'Lachende junge Frau vor einer Kletterwand, im Hochformat aufgenommen',
+    alt: 'Nahaufnahme eines Mannes mit hellblond gefärbtem Haar im gelben Trikot, leicht zur Kamera geneigt',
     art: 'Video',
     eigeneSeite: true,
   },
@@ -114,6 +125,22 @@ export const arbeiten: Arbeit[] = [
     ratio: '9:16',
     format: '9:16',
     alt: 'Model mit schwarzem Strohhut und gestreifter Bluse in einer Industriehalle, im Hochformat aufgenommen',
+    art: 'Video',
+    eigeneSeite: true,
+  },
+  {
+    // Steht auf dem schmalsten Platz und damit als einziges 9:16 kleiner
+    // als die beiden anderen — sonst läsen sich die drei Hochformate als
+    // Reihe gleicher Kacheln.
+    slug: 'allianz-instagram-reel',
+    kunde: 'Allianz',
+    titel: 'Instagram Reel',
+    bild: '/images/work/allianz.webp',
+    breite: 540,
+    hoehe: 960,
+    ratio: '9:16',
+    format: '9:16',
+    alt: 'Lachende junge Frau vor einer Kletterwand, im Hochformat aufgenommen',
     art: 'Video',
     eigeneSeite: true,
   },

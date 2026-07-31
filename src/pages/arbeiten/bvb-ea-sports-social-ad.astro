@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjektAbschluss from '../../components/ProjektAbschluss.astro';
+import Videowand from '../../components/Videowand.astro';
+import type { Clip } from '../../components/Videowand.astro';
+
+// Eigene Seite statt der Sammelroute — Kennzeichen eigeneSeite in
+// src/data/arbeiten.ts.
+//
+// ACHTUNG, die Texte sind ein Entwurf. Belegt ist nur, was am Film selbst
+// hängt: Titel "Instagram Ad for EA Sports x BVB", 19 Sekunden, 9:16,
+// veröffentlicht am 2. November 2023. Alles zum Auftrag — Briefing, Dreh,
+// Beteiligte — ist offen und deshalb hier nicht behauptet.
+//
+// Das Standbild ist kein Vimeo-Thumbnail, sondern die Kachel, die für
+// "Featured Work" geliefert wurde. Damit lädt die Seite nichts von einem
+// fremden Server, bevor jemand auf Play drückt.
+
+const clips: Clip[] = [
+  { id: '880446770', titel: 'Instagram Ad', zusatz: 'EA Sports × BVB', laenge: '0:19', ratio: '9 / 16' },
+];
+
+const eckdaten = [
+  { was: 'Format', wert: '9:16' },
+  { was: 'Länge', wert: '0:19' },
+  { was: 'Kanal', wert: 'Instagram' },
+  { was: 'Jahr', wert: '2023' },
+];
+---
+
+<BaseLayout
+  title="BVB × EA Sports — Social Ad | Le Werk"
+  description="Social Ad für EA Sports und Borussia Dortmund: Hochformat, neunzehn Sekunden, für den Feed gedacht — produziert von Le Werk in Köln."
+  heroDark={true}
+>
+  <!-- ═══ KOPF MIT FILM ══════════════════════════════════════════════════ -->
+  <section class="section section--dark kopf">
+    <div class="container kopf__grid">
+      <div class="kopf__text" data-reveal>
+        <p class="label label--accent">Arbeiten</p>
+        <h1 class="kopf__titel">
+          <span class="editorial editorial--kicker">BVB × EA Sports</span>{' '}
+          <span class="headline headline--xl">Social Ad</span>
+        </h1>
+        <p class="kopf__intro">
+          <strong>Neunzehn Sekunden</strong> im Hochformat — für den Feed
+          gedacht, nicht für die Leinwand nachträglich zurechtgeschnitten.
+        </p>
+
+        <dl class="eckdaten">
+          {eckdaten.map((e) => (
+            <div class="eckdaten__paar">
+              <dt>{e.was}</dt>
+              <dd>{e.wert}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div class="kopf__film" data-reveal data-reveal-delay="120">
+        <Videowand clips={clips} poster="/images/bvb-ea-sports/poster" spalten={1} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HALTUNG ════════════════════════════════════════════════════════ -->
+  <section class="section haltung" aria-labelledby="haltung-titel">
+    <div class="container">
+      <h2 class="visually-hidden" id="haltung-titel">Zum Format</h2>
+
+      <p class="haltung__satz" data-reveal>
+        Neunzehn Sekunden sind keine kurze Werbung.{' '}
+        <em>Sie sind ein anderes Handwerk.</em>
+      </p>
+
+      <div class="haltung__spalten">
+        <p class="haltung__text" data-reveal>
+          Was auf dreißig Sekunden noch atmen darf, muss hier sitzen: ein
+          Gesicht, eine Wendung, ein Schluss. Es gibt keine zweite Chance auf
+          die Aufmerksamkeit — im Feed entscheidet sich das vor dem ersten
+          Schnitt.
+        </p>
+        <p class="haltung__text" data-reveal data-reveal-delay="80">
+          Das Hochformat ist dabei der Ausgangspunkt und nicht das Ergebnis.
+          Bildaufbau, Blickachse und Textlage sind auf 9:16 gerechnet — ein
+          Querformat, dem man die Seiten wegnimmt, verliert genau das, was
+          die Einstellung getragen hat.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <ProjektAbschluss kicker="Sowas" heading="für eure Kampagne?" />
+</BaseLayout>
+
+<style>
+  /* Aufbau wie bei den anderen Ein-Film-Seiten: Der Film ist nicht Teil
+     einer Wand, er ist der Gegenstand — also steht er neben dem Titel und
+     nicht in einem eigenen Abschnitt weiter unten. */
+
+  /* ── Kopf ─────────────────────────────────────────────────────────────── */
+  .kopf { padding-block: clamp(9rem, 20vh, 13rem) var(--section-y); }
+
+  .kopf__grid { display: grid; gap: clamp(2.5rem, 6vw, 4rem); }
+  .kopf__text .label { margin-bottom: var(--space-3); }
+  .kopf__titel { margin-bottom: var(--space-3); }
+  .kopf__titel .headline { display: block; }
+
+  .kopf__intro {
+    font-size: var(--fs-lead);
+    line-height: 1.6;
+    color: var(--on-dark-muted);
+    max-width: 34rem;
+  }
+
+  .kopf__intro strong { font-weight: 600; color: var(--on-dark); }
+
+  /* ── Eckdaten ─────────────────────────────────────────────────────────── */
+  .eckdaten {
+    display: grid;
+    gap: 0;
+    margin-top: clamp(2rem, 5vw, 3rem);
+    border-top: 1px solid var(--line-dark);
+  }
+
+  .eckdaten__paar {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--line-dark);
+    font-size: var(--fs-small);
+  }
+
+  .eckdaten dt {
+    font-family: var(--font-ui);
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+    align-self: center;
+  }
+
+  .eckdaten dd { margin: 0; font-weight: 600; }
+
+  /* ── Haltung ──────────────────────────────────────────────────────────── */
+  .haltung__satz {
+    font-family: var(--font-editorial);
+    font-size: clamp(1.5rem, 4vw, 2.75rem);
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+    text-wrap: pretty;
+    max-width: 26ch;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .haltung__satz em { font-style: italic; }
+
+  .haltung__spalten { display: grid; gap: clamp(1.5rem, 4vw, 3rem); }
+
+  .haltung__text {
+    color: var(--ink-muted);
+    line-height: 1.65;
+    max-width: 34rem;
+  }
+
+  /* ── Breakpoints ──────────────────────────────────────────────────────── */
+  @media (min-width: 64rem) {
+    .kopf__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+      align-items: center;
+    }
+    .kopf__text { grid-column: 1 / span 6; }
+    .kopf__film { grid-column: 8 / span 5; }
+
+    .haltung__spalten {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: clamp(2rem, 5vw, 4rem);
+    }
+  }
+</style>

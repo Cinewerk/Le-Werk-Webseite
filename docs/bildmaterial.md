@@ -18,9 +18,9 @@ Ordnername sagt, wozu die Bilder gehören:
 | `bts/` | neun Setfotos, sechs davon im Einsatz | Team, Streublock 01 |
 | `krafthaus/` | sechs Aufnahmen unserer Räume | Team, Streublock 02 |
 | `team/` | vier Porträts, nach Personen benannt | Team, Porträtreihe |
-| `work/` | fünf Vorschaubilder der Projekte | Featured Work |
+| `work/` | sechs Vorschaubilder der Projekte | Featured Work |
 | `street-one/` | Fallstudie samt Video-Standbildern | `/arbeiten/street-one-…` |
-| `siemens/`, `allianz/` | nur Video-Standbilder | die beiden Videoseiten |
+| `siemens/`, `allianz/`, `bvb-ea-sports/` | nur Video-Standbilder | die drei Videoseiten |
 | `formel-d/`, `revitive/` | die beiden Fotostrecken | die beiden Galerieseiten |
 | `services/` | vier Motive der Disziplinen | Startseite und `/services` |
 | `kunden/` | der Logostreifen der Trustbar | Startseite |
@@ -78,17 +78,29 @@ Ebenfalls dort: `social_media.jpeg`, das Original für `services/video.jpg`
 machen", der die volle Höhe der beiden rechten Kästen füllt und deshalb
 mehr Pixel braucht als eine normale Kachel.
 
-Unter `quellbilder/featured-work/` liegen die fünf gelieferten
-Projektbilder. Zwei davon sind für das Web zu schwer und liegen deshalb
-gerechnet in `public/images/work/`:
+Unter `quellbilder/featured-work/` liegen die gelieferten Projektbilder.
+Zwei davon sind für das Web zu schwer und liegen deshalb gerechnet in
+`public/images/work/`:
 
 | Web | Quelle | Maß | Größe |
 |---|---|---|---|
 | `work/siemens.webp` | `SIEMENS_Social_Media_Kampagne.webp` | 1920 × 1080 | 40 KB, unverändert |
 | `work/allianz.webp` | `Allianz_Instagram_Reel.webp` | 540 × 960 | 40 KB, unverändert |
 | `work/street-one.webp` | `StreetOne_Instagram_Reel.webp` | 543 × 960 | 28 KB, unverändert |
+| `work/bvb-ea-sports.webp` | `Social_Media_reel_EASports.webp` | 540 × 960 | 39 KB, unverändert |
 | `work/formel-d.jpg` | `FormelD_Fotogalerie.jpg` | 1400 × 933 | 224 KB (von 471 KB) |
 | `work/revitive.jpg` | `Revitive_Fotogalerie.jpg` | 1400 × 933 | 260 KB (von 561 KB) |
+
+**Siemens braucht eine eigene Fassung.** Die Kachel läuft im ausgelieferten
+Format der Arbeit, also 4:5 — die Datei ist aber 1920 × 1080. Der Beschnitt
+behält davon nur die mittleren 45 % der Breite. Es geht auf, weil die Frau
+fast genau mittig steht, bleibt aber ein Beschnitt aus einem Beschnitt.
+Sobald eine echte 4:5-Fassung aus dem Schnitt vorliegt, gehört sie hierher.
+
+**Das BVB-Standbild dient doppelt**: als Kachel unter `work/` und als
+Standbild der Videoseite unter `bvb-ea-sports/poster/880446770.jpg`. Es ist
+kein Vimeo-Thumbnail — die Seite lädt nichts von einem fremden Server,
+bevor jemand auf Play drückt.
 
 **Die beiden Reel-Standbilder sind knapp bemessen.** Sie sind nur 540 px
 breit, die Kachel steht auf großen Schirmen 408 px breit — das reicht für
@@ -151,7 +163,7 @@ Fahrzeuge lassen sich kaum komprimieren.
 
 ### Video-Standbilder
 
-Drei Projektseiten binden Vimeo-Videos ein und haben dafür je einen
+Vier Projektseiten binden Vimeo-Videos ein und haben dafür je einen
 Ordner `poster/`, benannt nach der Vimeo-ID:
 
 | Ordner | Videos |
@@ -159,6 +171,7 @@ Ordner `poster/`, benannt nach der Vimeo-ID:
 | `street-one/poster/` | 12 |
 | `siemens/poster/` | 2 |
 | `allianz/poster/` | 1 |
+| `bvb-ea-sports/poster/` | 1 |
 
 Die Standbilder stammen einmalig von Vimeo und werden von unserem Server
 ausgeliefert — die Seiten binden den Player erst auf Klick ein, vorher
