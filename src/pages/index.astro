@@ -205,7 +205,12 @@ const faqs = [
                 <img src={withBase(a.bild)} alt={a.alt} width={a.breite} height={a.hoehe} loading="lazy" decoding="async" />
                 <figcaption class="work__tag">{a.kunde}</figcaption>
               </figure>
-              <p class="work__caption">{a.titel}</p>
+              <p class="work__caption">
+                <span class="work__titel">{a.titel}</span>
+                <span class="work__format">
+                  <span class="visually-hidden">Format </span>{a.format}
+                </span>
+              </p>
             </a>
           </article>
         ))}
@@ -738,12 +743,34 @@ const faqs = [
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
   }
 
-  /* Nur noch der Projektname — die Format-Chips (9:16, 3:2 …) sind raus.
-     Der Kunde steht groß im Bild darüber. */
+  /* Projektname links, Format rechts. Der Kunde steht groß im Bild darüber.
+     baseline statt center: Die Pille ist kleiner gesetzt als der Titel,
+     an der Mittelachse ausgerichtet stünde sie sichtbar zu hoch. */
   .work__caption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem;
     margin-top: var(--space-2);
     font-size: var(--fs-small);
-    font-weight: 600;
+  }
+
+  .work__titel { font-weight: 600; }
+
+  /* margin-left: auto drückt die Pille an die rechte Kante der Kachel —
+     dadurch steht sie über alle fünf Kacheln hinweg bündig, obwohl die
+     Titel unterschiedlich lang sind. */
+  .work__format {
+    margin-left: auto;
+    padding: 0.15rem 0.55rem;
+    border: 1px solid var(--line-dark);
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+    line-height: 1.6;
+    white-space: nowrap;
+    color: var(--on-dark-muted);
   }
 
   .work__more { margin-top: clamp(2.5rem, 6vw, 4rem); }

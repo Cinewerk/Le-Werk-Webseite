@@ -24,6 +24,16 @@ export interface Arbeit {
   hoehe: number;
   /** Beschnitt der Kachel */
   ratio: '16:9' | '9:16' | '3:2';
+  /**
+   * Das Format, in dem die Arbeit entstanden ist — steht als Pille in der
+   * Zeile unter der Kachel.
+   *
+   * Bewusst getrennt von ratio: Das ist der Beschnitt fürs Raster, hier
+   * steht die Angabe zur Arbeit. Bei Siemens gehen die beiden auseinander,
+   * 4:3 gedreht, 16:9 beschnitten. Wer die Felder zusammenlegt, kippt
+   * entweder das Raster oder sagt etwas Falsches über die Arbeit.
+   */
+  format: '4:3' | '3:2' | '9:16';
   alt: string;
   /** Videoprojekt oder Fotostrecke — bestimmt später den Aufbau der Unterseite */
   art: 'Video' | 'Foto';
@@ -44,6 +54,7 @@ export const arbeiten: Arbeit[] = [
     breite: 1920,
     hoehe: 1080,
     ratio: '16:9',
+    format: '4:3',
     alt: 'Frau mit regenbogenbunt gefärbtem Haar und großflächigem Rückentattoo steht von hinten am Ufer eines Sees',
     art: 'Video',
     eigeneSeite: true,
@@ -58,6 +69,7 @@ export const arbeiten: Arbeit[] = [
     breite: 1400,
     hoehe: 933,
     ratio: '3:2',
+    format: '3:2',
     alt: 'Frau auf einem hellen Sofa im Wohnzimmer, die Füße auf einem Durchblutungsgerät, daneben ein Hund vor der Terrassentür',
     art: 'Foto',
     eigeneSeite: true,
@@ -70,6 +82,7 @@ export const arbeiten: Arbeit[] = [
     breite: 540,
     hoehe: 960,
     ratio: '9:16',
+    format: '9:16',
     alt: 'Lachende junge Frau vor einer Kletterwand, im Hochformat aufgenommen',
     art: 'Video',
     eigeneSeite: true,
@@ -82,6 +95,7 @@ export const arbeiten: Arbeit[] = [
     breite: 1400,
     hoehe: 933,
     ratio: '3:2',
+    format: '3:2',
     alt: 'Dunkler SUV frontal unter einem aufgeklappten Lichtdach mit Leuchtstoffröhren in einer Werkhalle',
     art: 'Foto',
     eigeneSeite: true,
@@ -96,6 +110,7 @@ export const arbeiten: Arbeit[] = [
     breite: 543,
     hoehe: 960,
     ratio: '9:16',
+    format: '9:16',
     alt: 'Model mit schwarzem Strohhut und gestreifter Bluse in einer Industriehalle, im Hochformat aufgenommen',
     art: 'Video',
     eigeneSeite: true,
