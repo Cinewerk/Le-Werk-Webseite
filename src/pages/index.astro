@@ -1080,39 +1080,46 @@ const faqs = [
        grid-row-Angaben — sie würden nur brechen, sobald ein Projekt
        dazukommt.
 
-       Die Spaltenzahl ist nicht gegriffen, sondern auf gleiches Gewicht
-       gerechnet. Eine Kachel der Breite b im Format r ist b²/r groß, also
-       wächst die Fläche im Quadrat der Spannweite. Damit alle sechs
-       ungefähr gleich schwer wiegen, braucht jedes Format eine andere
-       Breite:
+       Der Abschnitt ist in drei Teile gebaut und nicht in drei Reihen zu
+       zwei. Zwei Fassungen davor waren Paarraster, und beide lasen sich
+       als Tabelle — erst mit wilden Größen, dann mit angeglichenen. Das
+       Problem war nie die Größe, sondern der gleichbleibende Takt.
 
-         9:16 auf 4 Spalten → 408 × 725 → 296.000
-         4:5  auf 5 Spalten → 521 × 651 → 339.000
-         3:2  auf 6 Spalten → 633 × 422 → 267.000
+       ANFANG (2 Kacheln)
+       Siemens auf fünf Spalten trägt die Sektion an, Revitive auf sechs
+       antwortet rechts unten. Zwei Bilder, ungleich im Format, gleich
+       weit unten — sie enden auf derselben Linie.
 
-       Zwischen der leichtesten und der schwersten Kachel liegt damit
-       Faktor 1,3. Vorher war es Faktor 3,2 — eine 4:5 auf sieben Spalten
-       gegen eine 9:16 auf dreien.
+       MITTE (3 Kacheln)
+       Die drei Hochformate nebeneinander, je vier Spalten, zusammen genau
+       die volle Breite. Sie fallen treppab: die zweite um einen, die
+       dritte um zwei Schritte tiefer. Ohne den Versatz wären sie ein
+       Zaun; mit ihm sind sie eine Bewegung nach rechts unten.
 
-       Zwei Regeln halten das Feld zusammen:
+       SCHLUSS (1 Kachel)
+       Formel D allein auf sieben Spalten, auf Spalte 3 eingerückt — mit
+       nichts bündig, weder links noch rechts. Eine einzelne Kachel, die
+       sich an keine Kante hängt, liest sich als Schlusspunkt und nicht
+       als angefangene Reihe.
 
-       Die linken Kanten treppen unregelmäßig — Spalte 1, 3, 2. Eine
-       gleichmäßige Treppe läse sich als System, eine Beinahe-Flucht wäre
-       noch schlimmer als eine deutliche Versetzung.
-
-       Die rechten Kacheln enden alle auf Spalte 12. Das ist die einzige
-       durchgehende Linie im Feld und hält es davon ab, in Einzelteile zu
-       zerfallen.
-
-       align-self: end trägt jeweils die flachere Kachel der Reihe, damit
-       das Paar unten auf einer Linie steht. In Reihe 3 ist das die linke —
-       dort liegt das Hochformat rechts. */
-    .work__item--1 { grid-column: 1 / span 4; }                   /* BVB 9:16 */
+       Die Reihen entstehen dabei von selbst: Astro setzt die Kacheln der
+       Reihe nach, und wo sich Spalten überschneiden, rutscht die nächste
+       eine Reihe tiefer. Es braucht kein grid-row — das würde nur brechen,
+       sobald ein Projekt dazukommt. */
+    .work__item--1 { grid-column: 1 / span 5; }                   /* Siemens 4:5 */
     .work__item--2 { grid-column: 7 / span 6; align-self: end; }  /* Revitive 3:2 */
-    .work__item--3 { grid-column: 3 / span 4; }                   /* Street One 9:16 */
-    .work__item--4 { grid-column: 8 / span 5; align-self: end; }  /* Siemens 4:5 */
-    .work__item--5 { grid-column: 2 / span 6; align-self: end; }  /* Formel D 3:2 */
-    .work__item--6 { grid-column: 9 / span 4; }                   /* Allianz 9:16 */
+
+    .work__item--3 { grid-column: 1 / span 4; }                   /* BVB 9:16 */
+    .work__item--4 { grid-column: 5 / span 4; }                   /* Street One 9:16 */
+    .work__item--5 { grid-column: 9 / span 4; }                   /* Allianz 9:16 */
+
+    .work__item--6 { grid-column: 3 / span 7; }                   /* Formel D 3:2 */
+
+    /* Der Versatz der Treppe. margin-top und nicht transform: Die Kacheln
+       sollen den Platz, den sie einnehmen, auch beanspruchen — sonst
+       liefe der Schlussteil in die dritte Kachel hinein. */
+    .work__item--4 { margin-top: clamp(2rem, 4vw, 4rem); }
+    .work__item--5 { margin-top: clamp(4rem, 8vw, 8rem); }
 
     /* Zwei Spalten: Video links über beide Zeilen, Idee & Konzept rechts
        oben, Foto rechts unten. */

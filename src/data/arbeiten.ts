@@ -3,30 +3,35 @@
  * Orten gebraucht werden: als Kacheln auf der Startseite und als
  * Unterseiten unter /arbeiten/<slug>.
  *
- * Die Reihenfolge hier ist die Reihenfolge auf der Startseite und folgt
- * zwei Regeln zugleich.
+ * Die Reihenfolge hier ist die Reihenfolge auf der Startseite. Sie folgt
+ * keiner Regel mehr, sondern einer Dramaturgie — zwei Anläufe davor sind
+ * an Regeln gescheitert:
  *
- * ERSTENS: In keiner Reihe stehen zwei Hochformate nebeneinander. Das geht
- * genau auf — es gibt drei 9:16 und drei andere Formate, also bekommt jede
- * der drei Reihen ein Hochformat und ein Querformat.
+ *   Erst wechselten Video und Foto stur ab. Ergebnis: drei Reihen zu zwei,
+ *   also eine Tabelle.
+ *   Dann bekam jede Reihe ein Hoch- und ein Querformat, alle Kacheln
+ *   gleich schwer. Ergebnis: dieselbe Tabelle, nur ohne Hierarchie.
  *
- * ZWEITENS: Video und Foto wechseln so weit ab, wie es bei vier Filmen und
- * zwei Strecken geht — Video, Foto, Video, Video, Foto, Video. Die beiden
- * Strecken liegen damit auf Platz 2 und 5 und damit so weit auseinander wie
- * überhaupt möglich.
+ * Jetzt hat der Abschnitt drei Teile:
  *
- * Die sechs Plätze in index.astro sind auf die Formate zugeschnitten und so
- * bemessen, dass alle Kacheln ungefähr gleich schwer wiegen — die Flächen
- * liegen zwischen 267.000 und 339.000 Bildpunkten, statt wie vorher zwischen
- * 155.000 und 501.000:
+ *   ANFANG   Siemens groß links, Revitive als leichtes Gegengewicht
+ *            rechts unten. Ein Bild, das trägt, und eines, das antwortet.
  *
- *   1 hoch links (9:16, 4 Sp.)   2 breit rechts (3:2, 6 Sp.)
- *   3 hoch eingerückt (9:16)     4 groß rechts (4:5, 5 Sp.)
- *   5 breit links (3:2, 6 Sp.)   6 hoch rechts (9:16, 4 Sp.)
+ *   MITTE    Die drei Hochformate nebeneinander, versetzt fallend — BVB,
+ *            Street One, Allianz. Vertikales Bewegtbild ist das, was das
+ *            Studio macht; drei davon nebeneinander sind eine Aussage und
+ *            kein Notbehelf. Hell, dunkel, hell — der Wechsel hält die
+ *            Reihe in Bewegung.
  *
- * Wer umsortiert, muss beides mitdenken: die Formatpaare je Reihe und die
- * Spaltenzahl. Ein 3:2 auf einem Vier-Spalten-Platz wäre nur 272px hoch und
- * fiele gegen die Hochformate ab.
+ *   SCHLUSS  Formel D allein, breit, aus der Flucht gerückt. Das dunkelste
+ *            Bild der Sammlung schließt den Abschnitt.
+ *
+ * Video und Foto stehen damit als V F V V V F. Die drei Filme in der Mitte
+ * sind keine Reihung, sondern eine Figur — sie werden als ein Block
+ * gelesen, nicht als drei gleiche Einträge.
+ *
+ * Die Spaltenzahl je Platz steht in index.astro und ist auf die Formate
+ * gerechnet. Wer umsortiert, muss beides mitdenken.
  */
 export interface Arbeit {
   /** Adresse der Unterseite: /arbeiten/<slug> */
@@ -65,23 +70,26 @@ export interface Arbeit {
 
 export const arbeiten: Arbeit[] = [
   {
-    slug: 'bvb-ea-sports-social-ad',
-    kunde: 'BVB × EA Sports',
-    titel: 'Social Ad',
-    bild: '/images/work/bvb-ea-sports.webp',
-    breite: 540,
-    hoehe: 960,
-    ratio: '9:16',
-    format: '9:16',
-    alt: 'Nahaufnahme eines Mannes mit hellblond gefärbtem Haar im gelben Trikot, leicht zur Kamera geneigt',
+    // ACHTUNG: Die Datei ist 1920x1080. Der 4:5-Beschnitt behält davon nur
+    // die mittleren 45 % der Breite — es passt, weil die Frau fast genau
+    // mittig steht, ist aber ein Beschnitt aus einem Beschnitt. Sobald eine
+    // echte 4:5-Fassung aus dem Schnitt vorliegt, die hier eintragen.
+    slug: 'siemens-social-media-kampagne',
+    kunde: 'Siemens',
+    titel: 'Social Media Kampagne',
+    bild: '/images/work/siemens.webp',
+    breite: 1920,
+    hoehe: 1080,
+    ratio: '4:5',
+    format: '4:5',
+    alt: 'Frau mit regenbogenbunt gefärbtem Haar und großflächigem Rückentattoo steht von hinten am Ufer eines Sees',
     art: 'Video',
     eigeneSeite: true,
   },
   {
-    // Auf dem breiten Platz neben dem Hochformat, deshalb hier und nicht
-    // Formel D: Das helle Wohnzimmer trägt den Kontrast zur dunklen
-    // BVB-Nahaufnahme daneben, die dunkle Werkhalle würde mit ihr
-    // verschwimmen.
+    // Das leichte Gegengewicht zu Siemens, deshalb hier und nicht Formel D:
+    // Die dunkle Werkhalle wäre kein Gegengewicht, sondern ein zweites
+    // schweres Bild — und sie wird am Schluss gebraucht.
     slug: 'revitive-fotogalerie',
     kunde: 'Revitive',
     titel: 'Fotogalerie',
@@ -92,6 +100,19 @@ export const arbeiten: Arbeit[] = [
     format: '3:2',
     alt: 'Frau auf einem hellen Sofa im Wohnzimmer, die Füße auf einem Durchblutungsgerät, daneben ein Hund vor der Terrassentür',
     art: 'Foto',
+    eigeneSeite: true,
+  },
+  {
+    slug: 'bvb-ea-sports-social-ad',
+    kunde: 'BVB × EA Sports',
+    titel: 'Social Ad',
+    bild: '/images/work/bvb-ea-sports.webp',
+    breite: 540,
+    hoehe: 960,
+    ratio: '9:16',
+    format: '9:16',
+    alt: 'Nahaufnahme eines Mannes mit hellblond gefärbtem Haar im gelben Trikot, leicht zur Kamera geneigt',
+    art: 'Video',
     eigeneSeite: true,
   },
   {
@@ -110,19 +131,15 @@ export const arbeiten: Arbeit[] = [
     eigeneSeite: true,
   },
   {
-    // ACHTUNG: Die Datei ist 1920x1080. Der 4:5-Beschnitt behält davon nur
-    // die mittleren 45 % der Breite — es passt, weil die Frau fast genau
-    // mittig steht, ist aber ein Beschnitt aus einem Beschnitt. Sobald eine
-    // echte 4:5-Fassung aus dem Schnitt vorliegt, die hier eintragen.
-    slug: 'siemens-social-media-kampagne',
-    kunde: 'Siemens',
-    titel: 'Social Media Kampagne',
-    bild: '/images/work/siemens.webp',
-    breite: 1920,
-    hoehe: 1080,
-    ratio: '4:5',
-    format: '4:5',
-    alt: 'Frau mit regenbogenbunt gefärbtem Haar und großflächigem Rückentattoo steht von hinten am Ufer eines Sees',
+    slug: 'allianz-instagram-reel',
+    kunde: 'Allianz',
+    titel: 'Instagram Reel',
+    bild: '/images/work/allianz.webp',
+    breite: 540,
+    hoehe: 960,
+    ratio: '9:16',
+    format: '9:16',
+    alt: 'Lachende junge Frau vor einer Kletterwand, im Hochformat aufgenommen',
     art: 'Video',
     eigeneSeite: true,
   },
@@ -137,19 +154,6 @@ export const arbeiten: Arbeit[] = [
     format: '3:2',
     alt: 'Dunkler SUV frontal unter einem aufgeklappten Lichtdach mit Leuchtstoffröhren in einer Werkhalle',
     art: 'Foto',
-    eigeneSeite: true,
-  },
-  {
-    slug: 'allianz-instagram-reel',
-    kunde: 'Allianz',
-    titel: 'Instagram Reel',
-    bild: '/images/work/allianz.webp',
-    breite: 540,
-    hoehe: 960,
-    ratio: '9:16',
-    format: '9:16',
-    alt: 'Lachende junge Frau vor einer Kletterwand, im Hochformat aufgenommen',
-    art: 'Video',
     eigeneSeite: true,
   },
 ];
