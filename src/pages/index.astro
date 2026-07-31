@@ -314,16 +314,14 @@ const faqs = [
   <!-- ═══ 7 · DREI GRÜNDE ════════════════════════════════════════════════ -->
   <section class="section benefits" aria-labelledby="benefits-title">
     <div class="container">
-      <!-- OFFEN: Kicker und Überschrift. "Drei Gründe, uns anzurufen" ist
-           verworfen, ein Ersatz steht noch aus. Bis dahin bleibt die alte
-           Zeile stehen — ohne sie hätte der Abschnitt keinen Kopf und
-           aria-labelledby kein Ziel. -->
-      <header class="sec-head" data-reveal>
-        <p class="label">Warum <span class="brand">Le Werk</span></p>
-        <h2 class="headline" id="benefits-title">
-          <span class="editorial editorial--kicker">Drei Gründe,</span>{' '}
-          uns anzurufen
-        </h2>
+      <!-- Ohne große Überschrift: "Drei Gründe, uns anzurufen" ist
+           verworfen, der Abschnitt trägt jetzt nur noch die Marginalie.
+           Sie steht als h2 und nicht als p — die drei Punkte darunter sind
+           h3, ohne h2 dazwischen bliebe eine Lücke in der Gliederung, und
+           aria-labelledby des Abschnitts braucht ein Ziel. Aussehen
+           unverändert, das trägt die Klasse .label. -->
+      <header class="sec-head sec-head--nur-marke" data-reveal>
+        <h2 class="label" id="benefits-title">Warum <span class="brand">Le Werk</span></h2>
       </header>
 
       <ol class="benefits__list">
@@ -406,6 +404,16 @@ const faqs = [
     margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
   }
   .sec-head .label { margin-bottom: var(--space-2); }
+
+  /* Kopf ohne große Überschrift: Der Abstand unter der Marginalie ist als
+     Zwischenraum zur Headline gedacht. Ohne sie stünde er zusätzlich zum
+     Abstand des Kopfes und der Abschnitt bekäme oben zu viel Luft. */
+  .sec-head--nur-marke .label { margin-bottom: 0; }
+
+  /* Auch der Abstand des Kopfes selbst ist auf eine große Überschrift
+     gerechnet. Unter einer 12px-Zeile wirken 72px wie ein Loch — die
+     Marginalie soll zu den Spalten gehören, nicht für sich stehen. */
+  .sec-head--nur-marke { margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
 
   /* ── 1 · Hero ─────────────────────────────────────────────────────────── */
   .hero {
