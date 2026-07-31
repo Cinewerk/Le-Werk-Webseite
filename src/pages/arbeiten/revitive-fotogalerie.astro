@@ -71,11 +71,13 @@ const kapitel = [
   description="Fotostrecke für Revitive: Lifestyle im Park, Anwendung im Wohnzimmer und Produktaufnahmen — fotografiert von Le Werk, Visual Content Studio in Köln."
 >
   <!-- ═══ KOPF ═══════════════════════════════════════════════════════════ -->
-  <!-- Anders als bei Formel D steht der Kopf mittig und die Auftaktbilder
-       liegen als Dreiklang darunter. Das Material ist hell und ruhig; ein
-       einzelnes dunkles Bannerbild hätte dagegen gearbeitet. -->
+  <!-- Aufbau wie bei Street One: Text links, Bild rechts auf gemeinsamer
+       Unterkante. Der Kopf stand zwischenzeitlich mittig und ganz ohne
+       Bild, danach mit einem breiten Banner darunter — beides trug nicht.
+       Ein Hochformat neben dem Titel hält die Seite kompakt und zeigt
+       sofort, worum es geht. -->
   <section class="kopf">
-    <div class="container">
+    <div class="container kopf__grid">
       <div class="kopf__text" data-reveal>
         <p class="label label--accent">Arbeiten</p>
         <h1 class="kopf__titel">
@@ -89,15 +91,11 @@ const kapitel = [
         <p class="kopf__leistungen">Fotoproduktion · Lifestyle · Produkt</p>
       </div>
 
-      <!-- Ein Bild direkt unter dem Titel. Der Kopf stand zuerst allein auf
-           Weiß — das war zu leise für eine Fotostrecke, die von Bildern
-           lebt. Ein breites, ruhiges Motiv statt eines Hochformats, damit
-           es die mittige Achse des Kopfes weiterträgt. -->
-      <figure class="kopf__banner" data-reveal data-reveal-delay="120">
+      <figure class="kopf__bild" data-reveal data-reveal-delay="120">
         <img
           src={withBase('/images/revitive/buehne.jpg')}
-          alt="Paar in Outdoorjacken geht im Gespräch einen Parkweg entlang"
-          width="1400" height="933" fetchpriority="high" decoding="async"
+          alt="Frau steht im Wohnzimmer und trägt das Gerät an der Hand, Blick über die Schulter zur Kamera"
+          width="1000" height="1500" fetchpriority="high" decoding="async"
         />
       </figure>
     </div>
@@ -136,9 +134,9 @@ const kapitel = [
 
 <style>
   /* ── Kopf ─────────────────────────────────────────────────────────────── */
-  .kopf { padding-block: clamp(9rem, 20vh, 13rem) clamp(1rem, 3vw, 2rem); }
+  .kopf { padding-block: clamp(9rem, 20vh, 13rem) var(--section-y); }
 
-  .kopf__text { max-width: 44rem; margin-inline: auto; text-align: center; }
+  .kopf__grid { display: grid; gap: clamp(2.5rem, 6vw, 4rem); }
   .kopf__text .label { margin-bottom: var(--space-3); }
   .kopf__titel { margin-bottom: var(--space-3); }
   .kopf__titel .headline { display: block; }
@@ -151,7 +149,6 @@ const kapitel = [
   }
 
   .kopf__leistungen {
-    display: inline-block;
     margin-top: var(--space-4);
     padding-top: var(--space-3);
     border-top: 1px solid var(--line);
@@ -159,16 +156,13 @@ const kapitel = [
     font-size: var(--fs-label);
     font-weight: 600;
     letter-spacing: var(--track-label);
+    line-height: 1.9;
     text-transform: uppercase;
     color: var(--ink-muted);
   }
 
-  .kopf__banner {
-    margin: clamp(2.5rem, 6vw, 4rem) 0 0;
-    overflow: hidden;
-    border-radius: var(--radius-lg);
-  }
-  .kopf__banner img { display: block; width: 100%; height: auto; }
+  .kopf__bild { margin: 0; overflow: hidden; border-radius: var(--radius-lg); }
+  .kopf__bild img { display: block; width: 100%; height: auto; }
 
   /* ── Kapitel ──────────────────────────────────────────────────────────── */
   .kapitel { padding-block: clamp(3rem, 7vw, 5rem); }
@@ -229,6 +223,14 @@ const kapitel = [
   }
 
   @media (min-width: 64rem) {
+    .kopf__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+      align-items: end;
+    }
+    .kopf__text { grid-column: 1 / span 6; }
+    .kopf__bild { grid-column: 8 / span 4; }
+
     /* Ruhiger als bei Formel D: Paare nebeneinander, die rechte Spalte
        versetzt. Das hält die helle Strecke luftig, ohne sie in ein
        gleichmäßiges Raster zu zwingen. */
