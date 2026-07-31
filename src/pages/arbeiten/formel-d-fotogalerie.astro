@@ -1,0 +1,254 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjektAbschluss from '../../components/ProjektAbschluss.astro';
+import { withBase } from '../../lib/paths';
+
+// Eigene Seite statt der Sammelroute — der Eintrag in src/data/arbeiten.ts
+// trägt dafür das Kennzeichen eigeneSeite.
+//
+// ACHTUNG, Texte sind ein Entwurf. Zum Projekt lagen keine Angaben vor,
+// deshalb beschreiben sie ausschließlich, was auf den Bildern zu sehen
+// ist. Keine Zahl, kein Ergebnis, keine Aussage über den Auftrag.
+
+// Die Reihenfolge trägt das Raster: Es läuft in einem Sechser-Rhythmus
+// (groß links, schmal rechts unten, eingerückt, breit rechts, halb, halb).
+// Hochformate gehören deshalb auf Platz 2 eines Blocks, dort ist die
+// Spalte schmal.
+const kapitel = [
+  {
+    nr: '01',
+    titel: 'Fläche',
+    text: 'Aus der Luft wird aus tausenden Fahrzeugen ein Muster. Nachts liegt das Licht der Masten darüber, bei Tag zeigt sich der Maßstab.',
+    bilder: [
+      { datei: 'flaeche-02.jpg', b: 1280, h: 719, alt: 'Luftaufnahme bei Nacht: Fahrzeuge in dichten Reihen auf einer beleuchteten Lagerfläche' },
+      { datei: 'flaeche-03.jpg', b: 1280, h: 719, alt: 'Luftaufnahme bei Nacht, schräg über den Reihen, im Hintergrund Hallen' },
+      { datei: 'flaeche-04.jpg', b: 1280, h: 719, alt: 'Luftaufnahme mit langen Lichtbändern zwischen den Fahrzeugreihen' },
+      { datei: 'flaeche-05.jpg', b: 1280, h: 853, alt: 'Lagerfläche bei Tag aus der Luft, daneben helle Hallenzelte' },
+      { datei: 'flaeche-06.jpg', b: 1280, h: 853, alt: 'Reihen abgestellter Neuwagen bei bedecktem Himmel' },
+      { datei: 'flaeche-07.jpg', b: 1280, h: 853, alt: 'Autotransporter mit mehreren Fahrzeugen auf der Ladefläche' },
+    ],
+  },
+  {
+    nr: '02',
+    titel: 'Halle',
+    text: 'Drinnen wird aus dem Muster wieder das einzelne Auto. Hallen, Hebebühnen, Lichttunnel — dazwischen viel Symmetrie.',
+    bilder: [
+      { datei: 'halle-01.jpg', b: 1280, h: 853, alt: 'Fahrzeug frontal unter einem aufgeklappten Lichtdach mit Leuchtstoffröhren' },
+      { datei: 'halle-02.jpg', b: 1280, h: 853, alt: 'Werkhalle in Symmetrie, Hebebühnen links und rechts, Fahrzeuge in der Flucht' },
+      { datei: 'halle-03.jpg', b: 1280, h: 854, alt: 'Werkstattbereich mit geöffneten Motorhauben, im Vordergrund ein gelber Sportwagen' },
+      { datei: 'halle-04.jpg', b: 1280, h: 854, alt: 'Gelber Sportwagen mit geöffneter Haube zwischen weiteren Fahrzeugen' },
+      { datei: 'halle-05.jpg', b: 1280, h: 853, alt: 'Nahaufnahme der Fahrzeugfront unter den Leuchtstoffröhren des Lichttunnels' },
+      { datei: 'halle-06.jpg', b: 1280, h: 719, alt: 'Weite Halle voller Fahrzeuge, Personen in Warnwesten dazwischen' },
+    ],
+  },
+  {
+    nr: '03',
+    titel: 'Handgriff',
+    text: 'Prüfen, messen, dokumentieren. Der eigentliche Vorgang passiert auf engem Raum, meist mit zwei Händen und einem Gerät.',
+    bilder: [
+      { datei: 'arbeit-01.jpg', b: 1000, h: 667, alt: 'Frau in Warnweste arbeitet mit einem Prüfgerät am Radkasten eines Fahrzeugs' },
+      { datei: 'arbeit-06.jpg', b: 667, h: 1000, alt: 'Person mit Ladekabel an einer Ladesäule, hochkant aufgenommen' },
+      { datei: 'arbeit-02.jpg', b: 1000, h: 667, alt: 'Mitarbeiter mit Werkzeug an einem geöffneten Fahrzeug in der Halle' },
+      { datei: 'arbeit-03.jpg', b: 1000, h: 667, alt: 'Hände bedienen ein Messgerät mit Display, im Hintergrund eine Warnweste' },
+      { datei: 'arbeit-04.jpg', b: 1000, h: 667, alt: 'Zwei Personen im Gespräch in der Halle, eine hält einen Stift in der Hand' },
+      { datei: 'arbeit-05.jpg', b: 1000, h: 667, alt: 'Mitarbeiter am geöffneten Motorraum, Blick von der Seite' },
+    ],
+  },
+  {
+    nr: '04',
+    titel: 'Detail',
+    text: 'Werkzeug, Anzeige, Lack. Zwischen den Szenen entstehen die Bilder, die eine Strecke zusammenhalten.',
+    bilder: [
+      { datei: 'detail-01.jpg', b: 1000, h: 667, alt: 'Drei Drehmomentschlüssel nebeneinander auf einer Werkbank' },
+      { datei: 'detail-02.jpg', b: 1000, h: 667, alt: 'Werkzeugwand mit gelben Halterungen und aufgereihten Werkzeugen' },
+      { datei: 'detail-03.jpg', b: 1000, h: 667, alt: 'Wasserperlen auf frisch gewaschenem Fahrzeuglack' },
+      { datei: 'detail-04.jpg', b: 1000, h: 667, alt: 'Prüfgerät mit grünem Häkchen auf dem Display' },
+    ],
+  },
+  {
+    nr: '05',
+    titel: 'Gesichter',
+    text: 'Aus derselben Produktion: Porträts, aufgenommen in der Halle statt vor grauem Hintergrund.',
+    bilder: [
+      { datei: 'portraet-01.jpg', b: 1000, h: 772, alt: 'Porträt eines Mannes im Sakko, im Hintergrund die Fensterfront der Halle' },
+      { datei: 'portraet-02.jpg', b: 1000, h: 772, alt: 'Porträt eines Mannes im hellen Sakko vor einer Ziegelwand' },
+      { datei: 'portraet-03.jpg', b: 1000, h: 666, alt: 'Zwei Männer nebeneinander an einem Tisch, im Gespräch' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Formel D — Fotogalerie | Le Werk"
+  description="Fotostrecke für Formel D: Luftbilder der Lagerflächen, Werkhallen, technische Details und Porträts — fotografiert von Le Werk, Visual Content Studio in Köln."
+  heroDark={true}
+>
+  <!-- ═══ KOPF ═══════════════════════════════════════════════════════════ -->
+  <section class="section section--dark kopf">
+    <div class="container">
+      <div class="kopf__text" data-reveal>
+        <p class="label label--accent">Arbeiten</p>
+        <h1 class="kopf__titel">
+          <span class="editorial editorial--kicker">Formel D</span>{' '}
+          <span class="headline headline--xl">Zwischen Halle und Fläche</span>
+        </h1>
+        <p class="kopf__leistungen">
+          Fotoproduktion · Reportage · Luftbild · Porträt
+        </p>
+        <p class="kopf__intro">
+          Ein Betrieb, der Fahrzeuge prüft, aufbereitet und bewegt —
+          fotografiert an der Stelle, an der beides zusammenkommt: die Fläche
+          draußen und die Halle drinnen.
+        </p>
+      </div>
+
+      <figure class="kopf__banner" data-reveal data-reveal-delay="120">
+        <img
+          src={withBase('/images/formel-d/flaeche-01.jpg')}
+          alt="Luftaufnahme bei Nacht über einer Lagerfläche: tausende Fahrzeuge in Reihen, dazwischen Lichtbänder"
+          width="1280" height="719" fetchpriority="high" decoding="async"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- ═══ KAPITEL ════════════════════════════════════════════════════════ -->
+  {kapitel.map((k) => (
+    <section class="section section--dark kapitel" aria-labelledby={`kap-${k.nr}`}>
+      <div class="container">
+        <header class="kapitel__kopf" data-reveal>
+          <p class="kapitel__nr" aria-hidden="true">{k.nr}</p>
+          <h2 class="kapitel__titel" id={`kap-${k.nr}`}>{k.titel}</h2>
+          <p class="kapitel__text">{k.text}</p>
+        </header>
+
+        <ul class="strecke">
+          {k.bilder.map((b, i) => (
+            <li class="strecke__feld" data-reveal data-reveal-delay={(i % 3) * 70}>
+              <img
+                src={withBase(`/images/formel-d/${b.datei}`)}
+                alt={b.alt} width={b.b} height={b.h}
+                loading="lazy" decoding="async"
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  <ProjektAbschluss kicker="Bilder" heading="für euren Betrieb?" />
+</BaseLayout>
+
+<style>
+  /* ── Kopf ─────────────────────────────────────────────────────────────── */
+  .kopf { padding-block: clamp(9rem, 20vh, 13rem) clamp(2rem, 5vw, 3.5rem); }
+
+  .kopf__text { max-width: 46rem; margin-bottom: clamp(2.5rem, 6vw, 4rem); }
+  .kopf__text .label { margin-bottom: var(--space-3); }
+  .kopf__titel { margin-bottom: var(--space-4); }
+  .kopf__titel .headline { display: block; }
+
+  .kopf__leistungen {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line-dark);
+    font-family: var(--font-ui);
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--track-label);
+    line-height: 1.9;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+  }
+
+  .kopf__intro {
+    margin-top: var(--space-3);
+    font-size: var(--fs-lead);
+    line-height: 1.6;
+    color: var(--on-dark-muted);
+  }
+
+  .kopf__banner { margin: 0; overflow: hidden; border-radius: var(--radius-lg); }
+  .kopf__banner img { display: block; width: 100%; height: auto; }
+
+  /* ── Kapitel ──────────────────────────────────────────────────────────── */
+  /* Die Kapitel liegen alle auf dunklem Grund und stoßen aneinander —
+     deshalb oben kein Abstand, sonst entstünde zwischen zwei gleich
+     dunklen Flächen eine doppelt hohe Lücke ohne erkennbare Kante. */
+  .kapitel { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(2.5rem, 6vw, 4rem); }
+
+  .kapitel__kopf {
+    display: grid;
+    gap: var(--space-1);
+    max-width: 46rem;
+    margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .kapitel__nr {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-size: 1.375rem;
+    color: var(--petrol-light);
+  }
+
+  .kapitel__titel {
+    font-family: var(--font-ui);
+    font-weight: 800;
+    font-size: var(--fs-h3);
+    letter-spacing: var(--track-display);
+    text-transform: uppercase;
+  }
+
+  .kapitel__text {
+    margin-top: var(--space-1);
+    color: var(--on-dark-muted);
+    line-height: 1.6;
+    max-width: 38rem;
+  }
+
+  /* ── Strecke ──────────────────────────────────────────────────────────── */
+  .strecke {
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .strecke__feld { overflow: hidden; border-radius: var(--radius); }
+
+  /* Kein Beschnitt: Jede Aufnahme behält ihr Format. Bei einer Fotostrecke
+     ist der Zuschnitt Teil der Arbeit — ein einheitliches Raster würde ihn
+     überschreiben. */
+  .strecke__feld img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 700ms var(--ease-out);
+  }
+
+  .strecke__feld:hover img { transform: scale(1.03); }
+
+  @media (min-width: 48rem) {
+    .strecke { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 64rem) {
+    /* Ein Rhythmus über sechs Plätze, der sich wiederholt: breit links,
+       schmal rechts an der Unterkante, eingerückt, breit rechts an der
+       Unterkante, dann zwei halbe. Als nth-child-Muster statt einzelner
+       Regeln — so trägt es jede Kapitellänge, von drei Bildern bis sieben. */
+    .strecke {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(1.5rem, 3vw, 2.5rem);
+      row-gap: clamp(2.5rem, 5vw, 4rem);
+    }
+
+    .strecke__feld:nth-child(6n + 1) { grid-column: 1 / span 8; }
+    .strecke__feld:nth-child(6n + 2) { grid-column: 10 / span 3; align-self: end; }
+    .strecke__feld:nth-child(6n + 3) { grid-column: 2 / span 5; }
+    .strecke__feld:nth-child(6n + 4) { grid-column: 8 / span 5; align-self: end; }
+    .strecke__feld:nth-child(6n + 5) { grid-column: 1 / span 6; }
+    .strecke__feld:nth-child(6n + 6) { grid-column: 7 / span 6; }
+  }
+</style>

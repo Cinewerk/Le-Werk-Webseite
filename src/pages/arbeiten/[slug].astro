@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PlaceholderPage from '../../components/PlaceholderPage.astro';
+import { arbeiten } from '../../data/arbeiten';
+
+// Auffangroute für Projekte ohne eigene Seite. Alle fünf tragen inzwischen
+// eigeneSeite, deshalb baut sie zurzeit nichts — sie bleibt trotzdem
+// stehen: Wer ein Projekt in src/data/arbeiten.ts einträgt und die Kachel
+// auf der Startseite verlinkt, bekommt sonst einen toten Link statt einer
+// Seite mit "Inhalt folgt".
+export function getStaticPaths() {
+  return arbeiten
+    .filter((arbeit) => !arbeit.eigeneSeite)
+    .map((arbeit) => ({
+      params: { slug: arbeit.slug },
+      props: { arbeit },
+    }));
+}
+
+const { arbeit } = Astro.props;
+
+// OFFEN: Videos und Galeriebilder. Bis sie vorliegen, steht hier der
+// "Inhalt folgt"-Hinweis der Platzhalterseite — die Adresse ist damit
+// aber schon vergeben und die Verlinkung von der Startseite trägt.
+const beschreibung =
+  arbeit.art === 'Video'
+    ? `${arbeit.titel} für ${arbeit.kunde} — produziert von Le Werk, Visual Content Studio in Köln.`
+    : `${arbeit.titel} für ${arbeit.kunde} — fotografiert von Le Werk, Visual Content Studio in Köln.`;
+---
+
+<BaseLayout title={`${arbeit.kunde} — ${arbeit.titel} | Le Werk`} description={beschreibung}>
+  <PlaceholderPage label="Arbeiten" kicker={arbeit.kunde} heading={arbeit.titel} />
+</BaseLayout>

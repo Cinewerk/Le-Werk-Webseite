@@ -25,10 +25,11 @@ Die Bühne der Startseite ist inzwischen ein Video, siehe Abschnitt unten.
 | `hero.jpg` | — | quer | **ungenutzt** |
 | `about.jpg` | — | quer | **ungenutzt** (Über-uns-Sektion entfallen) |
 | `quote-01.jpg` – `quote-03.jpg` | — | quadratisch | **ungenutzt** (Stimmen-Sektion entfallen) |
-| `work-01.jpg` | Featured Work, großes Tile links | 16:9 | Platzhalter |
-| `work-02.jpg` | Featured Work, Tile rechts oben | 16:9 | Platzhalter |
-| `work-03.jpg` | Featured Work, vertikales Tile | 4:5, auf 9:16 beschnitten | **echt** (aus `social_media.jpeg`) |
-| `work-04.jpg` | Featured Work, Tile rechts unten | 3:2 | Platzhalter |
+| `work/siemens.webp` | Featured Work, breite Kachel links oben | 16:9 | **echt** |
+| `work/allianz.webp` | Featured Work, Hochformat rechts oben | 9:16 | **echt** |
+| `work/street-one.webp` | Featured Work, Hochformat Reihe zwei | 9:16 | **echt** |
+| `work/formel-d.jpg` | Featured Work, Querformat Reihe zwei | 3:2 | **echt** |
+| `work/revitive.jpg` | Featured Work, Querformat Schluss | 3:2 | **echt** |
 | `service-foto.jpg` | Karte „Foto" | 4:3 | Platzhalter |
 | `service-video.jpg` | Kasten „Video" (Startseite) und Karte auf `/services` | 4:5 | **echt** (aus `social_media.jpeg`) |
 | `service-konzept.jpg` | Karte „Konzept" | 4:3 | Platzhalter |
@@ -52,15 +53,103 @@ Querformate 1100 px breit, Hochformate 760 px hoch, JPEG-Qualität 72 —
 das reicht für die tatsächlichen Anzeigegrößen samt Retina und hält die
 neun BTS-Bilder zusammen bei rund 1 MB.
 
-Ebenfalls dort: `social_media.jpeg`. Aus dieser einen Aufnahme entstehen
-**zwei** Webfassungen, weil sie an zwei Stellen unterschiedlich groß steht:
+Ebenfalls dort: `social_media.jpeg`, das Original für `service-video.jpg`
+(1100 × 1375, 174 KB) — den großen Kasten „Video" im Abschnitt „Was wir
+machen", der die volle Höhe der beiden rechten Kästen füllt und deshalb
+mehr Pixel braucht als eine normale Kachel.
 
-- `work-03.jpg` (800 × 1000, 112 KB) — die vertikale Kachel in „Featured Work"
-- `service-video.jpg` (1100 × 1375, 174 KB) — der große Kasten „Video" im
-  Abschnitt „Was wir machen", der dort die volle Höhe der beiden rechten
-  Kästen füllt und deshalb mehr Pixel braucht
+Unter `quellbilder/featured-work/` liegen die fünf gelieferten
+Projektbilder. Zwei davon sind für das Web zu schwer und liegen deshalb
+gerechnet in `public/images/work/`:
 
-Wer das Motiv tauscht, muss also an beide denken.
+| Web | Quelle | Maß | Größe |
+|---|---|---|---|
+| `work/siemens.webp` | `SIEMENS_Social_Media_Kampagne.webp` | 1920 × 1080 | 40 KB, unverändert |
+| `work/allianz.webp` | `Allianz_Instagram_Reel.webp` | 540 × 960 | 40 KB, unverändert |
+| `work/street-one.webp` | `StreetOne_Instagram_Reel.webp` | 543 × 960 | 28 KB, unverändert |
+| `work/formel-d.jpg` | `FormelD_Fotogalerie.jpg` | 1400 × 933 | 224 KB (von 471 KB) |
+| `work/revitive.jpg` | `Revitive_Fotogalerie.jpg` | 1400 × 933 | 260 KB (von 561 KB) |
+
+**Die beiden Reel-Standbilder sind knapp bemessen.** Sie sind nur 540 px
+breit, die Kachel steht auf großen Schirmen 408 px breit — das reicht für
+normale Displays, auf Retina fehlt Auflösung. Falls es die Standbilder in
+größer gibt, sind sie hier eine Verbesserung.
+
+## Die Street-One-Projektseite
+
+Originale in `quellbilder/street-one/`, Webfassungen in
+`public/images/street-one/`. Die Zuordnung steckt teils im Dateinamen,
+teils in `src/data/street-one.ts`:
+
+| Web | Quelle | Wo |
+|---|---|---|
+| `buehne.jpg` | `DSC6574` | Kopf der Seite, neben dem Titel |
+| `brand-01.jpg` | `DSC6706` | Abschnitt Brand |
+| `brand-02.jpg` | `DSC8159` | Abschnitt Challenge |
+| `action-01.jpg` | `STREETONE_May_BTS19` | Etappe 01 Work |
+| `action-02.jpg` | `STREETONE_May_BTS9` | Etappe 02 Kreation |
+| `action-03.jpg` | `STREETONE_May_BTS31` | Etappe 03 Produce, quer |
+| `ergebnis.jpg` | `StreetOne_SocialMedia_CampaignContent_Spring_1` | Abschnitt Result |
+| `galerie-01` … `galerie-09` | siehe unten | Fotostrecke |
+
+Die Strecke läuft in dieser Reihenfolge und mischt Location und Studio:
+`DSC6519`, `DSC6021`, `DSC6337`, `DSC6527`, `DSC6277`, `DSC6643`,
+`DSC6150`, `DSC8733`, `DSC6351`.
+
+**Neun Bilder, nicht zehn.** Bei drei Spalten füllen neun genau drei
+Reihen; ein zehntes stünde allein in einer vierten. `DSC6300` ist deshalb
+nicht in der Strecke.
+
+## Die Formel-D- und die Revitive-Seite
+
+Originale in `quellbilder/formel-d/` (82 Aufnahmen im Ordner `set`,
+36 Porträts in `portraits`) und `quellbilder/revitive/` (47 Aufnahmen).
+Zusammen rund 1 GB — sie lagen zuerst unter `public/images/` und wären in
+voller Größe mit ausgeliefert worden.
+
+In `public/images/formel-d/` und `public/images/revitive/` liegen die
+Webfassungen. Die Dateinamen benennen das Kapitel, in dem sie stehen:
+
+| Formel D | | Revitive | |
+|---|---|---|---|
+| `flaeche-01` … `-07` | Luftbilder, Lager, Transporter | `draussen-01` … `-08` | Park, Spaziergang, Hund |
+| `halle-01` … `-06` | Werkhallen, Lichttunnel | `anlass-01` … `-03` | Detailaufnahmen, hochkant |
+| `arbeit-01` … `-06` | Menschen bei der Arbeit | `drinnen-01` … `-06` | Anwendung im Wohnzimmer |
+| `detail-01` … `-04` | Werkzeug, Anzeige, Lack | `produkt-01` … `-06` | Gerät, App, Porträts |
+| `portraet-01` … `-03` | Porträts in der Halle | | |
+
+**Die Reihenfolge trägt das Raster.** Bei Formel D läuft ein Rhythmus über
+sechs Plätze (breit · schmal · eingerückt · breit · halb · halb), der sich
+wiederholt. Platz 2 ist der schmale — dort steht deshalb `arbeit-06`, das
+einzige Hochformat im Set. Wer umsortiert, muss das mitdenken.
+
+Die Bilder sind **nicht beschnitten**: Jede Aufnahme behält ihr Format,
+der Zuschnitt ist Teil der fotografischen Arbeit. Maßstab: 1280 px für
+große Plätze, 1000 px für kleine, Qualität 55 bis 58. Die Nacht-Luftbilder
+sind mit rund 250 KB die schwersten Dateien im Projekt — tausende kleine
+Fahrzeuge lassen sich kaum komprimieren.
+
+### Video-Standbilder
+
+Drei Projektseiten binden Vimeo-Videos ein und haben dafür je einen
+Ordner `poster/`, benannt nach der Vimeo-ID:
+
+| Ordner | Videos |
+|---|---|
+| `street-one/poster/` | 12 |
+| `siemens/poster/` | 2 |
+| `allianz/poster/` | 1 |
+
+Die Standbilder stammen einmalig von Vimeo und werden von unserem Server
+ausgeliefert — die Seiten binden den Player erst auf Klick ein, vorher
+geht keine Anfrage an Vimeo raus. Wer ein Video austauscht, braucht also
+auch ein neues Standbild unter der neuen ID: 640 px breit, Qualität 62,
+das ergibt rund 40 KB je Datei.
+
+Die Standbilder wählt Vimeo selbst. Bei den Siemens-Porträts ist deshalb
+ein Untertitel mit im Bild — auf einer Seite, die genau davon handelt,
+passt das; bei anderen Filmen kann es stören. Ein eigenes Standbild
+einfach unter derselben ID ablegen, dann gilt das.
 
 ## Das BTS-Raster
 

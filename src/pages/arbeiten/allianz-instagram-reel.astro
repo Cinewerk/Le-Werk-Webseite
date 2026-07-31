@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjektAbschluss from '../../components/ProjektAbschluss.astro';
+import Videowand from '../../components/Videowand.astro';
+import type { Clip } from '../../components/Videowand.astro';
+import { withBase } from '../../lib/paths';
+
+// Eigene Seite statt der Sammelroute — Kennzeichen eigeneSeite in
+// src/data/arbeiten.ts.
+//
+// ACHTUNG, Texte sind ein Entwurf. Belegt ist nur, was im Titel des Films
+// und im Film selbst steht: Format "24 Hours Before", Kletterin Hannah
+// Meul, Allianz × Olympia, 9:16, eine Minute, englische Untertitel.
+// Alles Weitere zum Auftrag ist offen und deshalb nicht behauptet.
+
+const clips: Clip[] = [
+  { id: '850172748', titel: '24 Hours Before', zusatz: 'Reel', laenge: '1:00', ratio: '9 / 16' },
+];
+
+// Eine Seite mit einem einzigen Film braucht ein anderes Gerüst als eine
+// mit zwölf: Der Film ist nicht Teil einer Wand, er ist der Gegenstand.
+// Deshalb steht er direkt neben dem Titel statt in einem eigenen Abschnitt
+// weiter unten.
+const eckdaten = [
+  { was: 'Format', wert: '9:16' },
+  { was: 'Länge', wert: '1:00' },
+  { was: 'Reihe', wert: '24 Hours Before' },
+  { was: 'Untertitel', wert: 'Englisch' },
+];
+---
+
+<BaseLayout
+  title="Allianz — Instagram Reel | Le Werk"
+  description="Instagram Reel für Allianz × Olympia mit der Kletterin Hannah Meul: Format „24 Hours Before“, Hochformat, eine Minute — produziert von Le Werk in Köln."
+  heroDark={true}
+>
+  <!-- ═══ KOPF MIT FILM ══════════════════════════════════════════════════ -->
+  <section class="section section--dark kopf">
+    <div class="container kopf__grid">
+      <div class="kopf__text" data-reveal>
+        <p class="label label--accent">Arbeiten</p>
+        <h1 class="kopf__titel">
+          <span class="editorial editorial--kicker">Allianz × Olympia</span>{' '}
+          <span class="headline headline--xl" lang="en">24 Hours Before</span>
+        </h1>
+        <p class="kopf__intro">
+          Ein Reel mit der Kletterin <strong>Hannah Meul</strong> — aufgenommen
+          dort, wo der Wettkampf entschieden wird: an der Wand, kurz davor.
+        </p>
+
+        <dl class="eckdaten">
+          {eckdaten.map((e) => (
+            <div class="eckdaten__paar">
+              <dt>{e.was}</dt>
+              <dd>{e.wert}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div class="kopf__film" data-reveal data-reveal-delay="120">
+        <Videowand clips={clips} poster="/images/allianz/poster" spalten={1} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HALTUNG ════════════════════════════════════════════════════════ -->
+  <section class="section haltung" aria-labelledby="haltung-titel">
+    <div class="container">
+      <h2 class="visually-hidden" id="haltung-titel">Zum Format</h2>
+
+      <p class="haltung__satz" data-reveal>
+        Ein Reel ist eine Minute lang.{' '}
+        <em>Es muss in der ersten Sekunde wissen, wovon es handelt.</em>
+      </p>
+
+      <div class="haltung__spalten">
+        <p class="haltung__text" data-reveal>
+          Das Format trägt seinen Rahmen im Namen und im Bild: eine Uhr, ein
+          Countdown, ein Titel. Wer das Reel im Feed erwischt, weiß nach
+          einem Wimpernschlag, worum es geht — ohne Ton, ohne Vorspann.
+        </p>
+        <p class="haltung__text" data-reveal data-reveal-delay="80">
+          Vertikal ist dabei kein Beschnitt am Ende, sondern der Ausgangs&shy;punkt:
+          Bildaufbau, Blickführung und Textlage sind auf das Hochformat
+          gerechnet, nicht hineingerettet.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <ProjektAbschluss kicker="Sowas" heading="für eure Kampagne?" />
+</BaseLayout>
+
+<style>
+  /* ── Kopf ─────────────────────────────────────────────────────────────── */
+  .kopf { padding-block: clamp(9rem, 20vh, 13rem) var(--section-y); }
+
+  .kopf__grid { display: grid; gap: clamp(2.5rem, 6vw, 4rem); }
+  .kopf__text .label { margin-bottom: var(--space-3); }
+  .kopf__titel { margin-bottom: var(--space-3); }
+  .kopf__titel .headline { display: block; }
+
+  .kopf__intro {
+    font-size: var(--fs-lead);
+    line-height: 1.6;
+    color: var(--on-dark-muted);
+    max-width: 34rem;
+  }
+
+  .kopf__intro strong { font-weight: 600; color: var(--on-dark); }
+
+  /* ── Eckdaten ─────────────────────────────────────────────────────────── */
+  /* Statt eines Fließtexts über Format und Länge eine kleine Tabelle: Die
+     vier Angaben sind Daten, keine Aussage — als Liste sind sie schneller
+     zu erfassen und blähen den Text nicht auf. */
+  .eckdaten {
+    display: grid;
+    gap: 0;
+    margin-top: clamp(2rem, 5vw, 3rem);
+    border-top: 1px solid var(--line-dark);
+  }
+
+  .eckdaten__paar {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--line-dark);
+    font-size: var(--fs-small);
+  }
+
+  .eckdaten dt {
+    font-family: var(--font-ui);
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+    align-self: center;
+  }
+
+  .eckdaten dd { margin: 0; font-weight: 600; }
+
+  /* ── Haltung ──────────────────────────────────────────────────────────── */
+  .haltung__satz {
+    font-family: var(--font-editorial);
+    font-size: clamp(1.5rem, 4vw, 2.75rem);
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+    text-wrap: pretty;
+    max-width: 26ch;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .haltung__satz em { font-style: italic; }
+
+  .haltung__spalten { display: grid; gap: clamp(1.5rem, 4vw, 3rem); }
+
+  .haltung__text {
+    color: var(--ink-muted);
+    line-height: 1.65;
+    max-width: 34rem;
+  }
+
+  /* ── Breakpoints ──────────────────────────────────────────────────────── */
+  @media (min-width: 64rem) {
+    .kopf__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+      align-items: center;
+    }
+    .kopf__text { grid-column: 1 / span 6; }
+    .kopf__film { grid-column: 8 / span 5; }
+
+    .haltung__spalten {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: clamp(2rem, 5vw, 4rem);
+    }
+  }
+</style>

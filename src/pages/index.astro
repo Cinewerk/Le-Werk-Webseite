@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { services } from '../data/services';
+import { arbeiten } from '../data/arbeiten';
 import { withBase } from '../lib/paths';
 
 // Der Dateiname des Bühnenvideos ist bewusst neutral gehalten: Er steht im
@@ -15,16 +16,8 @@ const kundenlogos =
   'Hugo Boss, Deutsche Welle, Shop Apotheke Europe, Street One, Siemens, ' +
   'Zehnder Group, North Kiteboarding';
 
-// Tags spiegeln die Disziplinen-Rangfolge: Video zuerst, vertikal als Kern.
-// ratio steuert den Bildbeschnitt, formats zeigt, welche Formate aus
-// derselben Produktion entstanden sind — das ist der Kern der Positionierung
-// ("Format-Vielfalt aus einem Auftrag"), deshalb zwei getrennte Felder.
-const works = [
-  { img: '/images/work-01.jpg', w: 1600, h: 900,  tag: 'Social Video', title: 'Zwischen den Schichten', client: 'Nordlicht',  ratio: '16:9', formats: '9:16 · 16:9', alt: 'Filmklappe wird vor der Kamera bei einem Außendreh geschlossen' },
-  { img: '/images/work-02.jpg', w: 1600, h: 900,  tag: 'Kampagne',     title: 'Alles auf Anfang',       client: 'Atlas & Co', ratio: '16:9', formats: '9:16 · 4:5',  alt: 'Schnittplatz mit Videospur und Timeline auf mehreren Monitoren' },
-  { img: '/images/work-03.jpg', w: 800,  h: 1000, tag: 'Vertikal',     title: 'Neun zu Sechzehn',       client: 'Superbloom', ratio: '9:16', formats: '9:16',        alt: 'Dreh im Hochformat: Blick über die Schulter der Kamerafrau auf den Monitor, im Bild zwei Models' },
-  { img: '/images/work-04.jpg', w: 1600, h: 900,  tag: 'Fotografie',   title: 'Haus voller Licht',      client: 'Hafen',      ratio: '3:2',  formats: '3:2 · 4:5',   alt: 'Abgedunkelter Kinosaal mit rot beleuchteten Sitzreihen' },
-];
+// Die fünf Projekte liegen in src/data/arbeiten.ts, weil die Unterseiten
+// unter /arbeiten/<slug> dieselben Angaben brauchen.
 
 // Auf der Startseite erscheinen nur die drei Produktionsdisziplinen.
 // Workshops bleiben über Menü, Footer und /services erreichbar.
@@ -167,19 +160,18 @@ const faqs = [
              den Format-Zeilen der Kacheln und im FAQ. -->
       </header>
 
+      <!-- Der Kundenname steht groß im Bild, das Projekt in der Zeile
+           darunter. Vorher trug das Bild eine Gattung ("Social Video") —
+           bei echten Arbeiten ist der Kunde die stärkere Angabe. -->
       <div class="work__grid">
-        {works.map((w, i) => (
-          <article class={`work__item work__item--${i + 1}`} data-reveal data-reveal-delay={i * 80}>
-            <a class="work__link" href={withBase("/services")}>
-              <figure class="work__figure" data-format={w.ratio}>
-                <img src={withBase(w.img)} alt={w.alt} width={w.w} height={w.h} loading="lazy" decoding="async" />
-                <figcaption class="work__tag">{w.tag}</figcaption>
+        {arbeiten.map((a, i) => (
+          <article class={`work__item work__item--${i + 1}`} data-reveal data-reveal-delay={(i % 2) * 80}>
+            <a class="work__link" href={withBase(`/arbeiten/${a.slug}`)}>
+              <figure class="work__figure" data-format={a.ratio}>
+                <img src={withBase(a.bild)} alt={a.alt} width={a.breite} height={a.hoehe} loading="lazy" decoding="async" />
+                <figcaption class="work__tag">{a.kunde}</figcaption>
               </figure>
-              <p class="work__caption">
-                <span class="work__title">{w.title}</span>
-                <span class="work__client">— {w.client}</span>
-                <span class="work__format">{w.formats}</span>
-              </p>
+              <p class="work__caption">{a.titel}</p>
             </a>
           </article>
         ))}
@@ -398,22 +390,9 @@ const faqs = [
 </BaseLayout>
 
 <style>
-  /* ── Gemeinsamer Sektionskopf ─────────────────────────────────────────── */
-  .sec-head {
-    max-width: 46rem;
-    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
-  }
-  .sec-head .label { margin-bottom: var(--space-2); }
-
-  /* Kopf ohne große Überschrift: Der Abstand unter der Marginalie ist als
-     Zwischenraum zur Headline gedacht. Ohne sie stünde er zusätzlich zum
-     Abstand des Kopfes und der Abschnitt bekäme oben zu viel Luft. */
-  .sec-head--nur-marke .label { margin-bottom: 0; }
-
-  /* Auch der Abstand des Kopfes selbst ist auf eine große Überschrift
-     gerechnet. Unter einer 12px-Zeile wirken 72px wie ein Loch — die
-     Marginalie soll zu den Spalten gehören, nicht für sich stehen. */
-  .sec-head--nur-marke { margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
+  /* Der gemeinsame Sektionskopf .sec-head steht in global.css — er wird
+     inzwischen auch von den Projektseiten gebraucht, und Astro-Styles
+     gelten nur in der Datei, in der sie stehen. */
 
   /* ── 1 · Hero ─────────────────────────────────────────────────────────── */
   .hero {
@@ -622,6 +601,11 @@ const faqs = [
      Spalte offen geblieben. */
   .work__head { margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
 
+  /* Eine Spalte. Zwischenzeitlich standen die beiden Hochformate hier zu
+     zweit nebeneinander, weil sie über die volle Breite je 690px hoch
+     sind und direkt hintereinander lagen. Seit Video und Foto abwechseln,
+     liegt zwischen ihnen ein Querformat — der Scrollweg ist damit
+     gebrochen und jedes Reel darf voll stehen. */
   .work__grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -688,27 +672,12 @@ const faqs = [
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
   }
 
+  /* Nur noch der Projektname — die Format-Chips (9:16, 3:2 …) sind raus.
+     Der Kunde steht groß im Bild darüber. */
   .work__caption {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.4rem;
     margin-top: var(--space-2);
     font-size: var(--fs-small);
-  }
-
-  .work__title { font-weight: 600; }
-  .work__client { color: var(--on-dark-muted); }
-
-  .work__format {
-    margin-left: auto;
-    padding: 0.15rem 0.55rem;
-    border: 1px solid var(--line-dark);
-    border-radius: 999px;
-    font-size: 0.6875rem;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.06em;
-    color: var(--on-dark-muted);
+    font-weight: 600;
   }
 
   .work__more { margin-top: clamp(2.5rem, 6vw, 4rem); }
@@ -854,6 +823,8 @@ const faqs = [
   /* ── 6 · Unser Team ───────────────────────────────────────────────────── */
   /* Kopf ohne Fließtext — der steht jetzt als breiter Absatz unter den
      Porträts, deshalb hier weniger Abstand nach unten. */
+  /* Der Team-Kopf steht enger, weil "UNSER TEAM" kurz ist und die
+     Porträts direkt darunter die Fläche übernehmen. */
   .sec-head--knapp { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
 
   /* Vier Porträts: zwei Spalten auf dem Handy, vier ab 48rem. */
@@ -1038,10 +1009,23 @@ const faqs = [
       row-gap: clamp(3rem, 6vw, 5rem);
     }
 
+    /* Fünf Kacheln, versetzt. Die Plätze sind auf die Bildformate der
+       Projekte in src/data/arbeiten.ts zugeschnitten — beim Umsortieren
+       mitdenken, ein Hochformat auf Platz 4 würde 1500px hoch.
+
+       1 breit links · 2 klein rechts an der Unterkante · 3 hoch, eingerückt
+       · 4 breit rechts an der Unterkante · 5 hoch, zur Mitte gerückt.
+
+       Platz 5 stand zuerst auf Spalte 9 und damit auf derselben rechten
+       Kante wie 2 und 4 — das las sich als angefangene Spalte. Spalte 6
+       ist bewusst mit nichts bündig: nicht mit der linken Kante von 4
+       (Spalte 7) und nicht mit 3 (Spalte 2). Eine Beinahe-Flucht wäre
+       schlimmer als eine deutliche Versetzung. */
     .work__item--1 { grid-column: 1 / span 7; }
     .work__item--2 { grid-column: 9 / span 4; align-self: end; }
     .work__item--3 { grid-column: 2 / span 4; }
     .work__item--4 { grid-column: 7 / span 6; align-self: end; }
+    .work__item--5 { grid-column: 6 / span 4; }
 
     /* Zwei Spalten: Video links über beide Zeilen, Idee & Konzept rechts
        oben, Foto rechts unten. */

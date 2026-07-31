@@ -1,0 +1,262 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjektAbschluss from '../../components/ProjektAbschluss.astro';
+import { withBase } from '../../lib/paths';
+
+// Eigene Seite statt der Sammelroute — der Eintrag in src/data/arbeiten.ts
+// trägt dafür das Kennzeichen eigeneSeite.
+//
+// ACHTUNG, Texte sind ein Entwurf. Zum Projekt lagen keine Angaben vor,
+// deshalb beschreiben sie nur, was auf den Bildern zu sehen ist. Bewusst
+// keine Aussage zur Wirkung des Produkts: Das wäre eine Gesundheits-
+// aussage und gehört nicht in einen Referenztext.
+
+const kapitel = [
+  {
+    nr: '01',
+    titel: 'Draußen',
+    text: 'Spaziergang, Hund, Frisbee. Aufnahmen aus dem Park, bei Tageslicht und ohne Studio.',
+    bilder: [
+      { datei: 'draussen-01.jpg', b: 1280, h: 853, alt: 'Frau in blauer Jacke geht einen Parkweg entlang auf die Kamera zu' },
+      { datei: 'draussen-02.jpg', b: 1280, h: 853, alt: 'Frau wirft im Park eine Frisbeescheibe, Bewegung im Bild' },
+      { datei: 'draussen-03.jpg', b: 1280, h: 853, alt: 'Paar mit Hund auf einer Wiese, der Mann wirft eine Scheibe' },
+      { datei: 'draussen-04.jpg', b: 1280, h: 853, alt: 'Paar geht lachend nebeneinander durch den Park' },
+      { datei: 'draussen-05.jpg', b: 1280, h: 853, alt: 'Drei Personen und ein Hund auf einem Weg im Park' },
+      { datei: 'draussen-06.jpg', b: 1280, h: 853, alt: 'Paar sitzt mit Hund auf einer Parkbank' },
+      { datei: 'draussen-07.jpg', b: 1280, h: 853, alt: 'Frau hockt neben einem Border Collie und krault ihn' },
+      { datei: 'draussen-08.jpg', b: 1280, h: 853, alt: 'Frau mit Hund an der Leine auf einem Weg zwischen Bäumen' },
+    ],
+  },
+  {
+    nr: '02',
+    titel: 'Anlass',
+    text: 'Drei Aufnahmen, die zeigen, worum es geht — nah, ohne Gesicht, ohne Dramatik.',
+    bilder: [
+      { datei: 'anlass-01.jpg', b: 666, h: 1000, alt: 'Person greift sich im Gehen an die Wade, Detailaufnahme im Hochformat' },
+      { datei: 'anlass-02.jpg', b: 666, h: 1000, alt: 'Person hält sich das Knie, Aufnahme von der Seite' },
+      { datei: 'anlass-03.jpg', b: 666, h: 1000, alt: 'Hände am Unterschenkel, im Hintergrund unscharfes Grün' },
+    ],
+  },
+  {
+    nr: '03',
+    titel: 'Drinnen',
+    text: 'Wohnzimmer statt Studio. Das Gerät steht da, wo es benutzt wird.',
+    bilder: [
+      { datei: 'drinnen-01.jpg', b: 1280, h: 853, alt: 'Mann sitzt auf dem Sofa, die Füße auf dem Gerät, Fernbedienung in der Hand' },
+      { datei: 'drinnen-02.jpg', b: 1280, h: 853, alt: 'Nahaufnahme zweier Füße auf dem Gerät vor dem Sofa' },
+      { datei: 'drinnen-03.jpg', b: 1280, h: 853, alt: 'Frau auf dem Sofa im hellen Wohnzimmer, die Füße auf dem Gerät' },
+      { datei: 'drinnen-04.jpg', b: 1280, h: 853, alt: 'Mann nimmt das Gerät aus der Verpackung, Wohnzimmer mit Treppe im Hintergrund' },
+      { datei: 'drinnen-05.jpg', b: 1280, h: 853, alt: 'Füße auf dem Gerät, im Hintergrund Wohnzimmer und Pflanzen' },
+      { datei: 'drinnen-06.jpg', b: 1280, h: 853, alt: 'Paar sitzt nebeneinander auf dem Sofa, beide mit den Füßen auf Geräten' },
+    ],
+  },
+  {
+    nr: '04',
+    titel: 'Produkt',
+    text: 'Zum Schluss das Gerät selbst: in der Hand, am Bein, in der App.',
+    bilder: [
+      { datei: 'produkt-01.jpg', b: 1000, h: 666, alt: 'Mann hält das runde Gerät in beiden Händen' },
+      { datei: 'produkt-02.jpg', b: 1000, h: 666, alt: 'Hand hält ein Smartphone mit der zugehörigen App vor dem Gerät' },
+      { datei: 'produkt-03.jpg', b: 1000, h: 666, alt: 'Manschetten am Bein, daneben ein Smartphone mit der App' },
+      { datei: 'produkt-04.jpg', b: 1000, h: 666, alt: 'Das Gerät wird an der Seite getragen, im Hintergrund das Wohnzimmer' },
+      { datei: 'produkt-05.jpg', b: 1000, h: 666, alt: 'Lachende Frau mit heller Bluse, Porträt in warmem Licht' },
+      { datei: 'produkt-06.jpg', b: 1000, h: 666, alt: 'Porträt einer Frau in rosafarbener Jacke im Park' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Revitive — Fotogalerie | Le Werk"
+  description="Fotostrecke für Revitive: Lifestyle im Park, Anwendung im Wohnzimmer und Produktaufnahmen — fotografiert von Le Werk, Visual Content Studio in Köln."
+>
+  <!-- ═══ KOPF ═══════════════════════════════════════════════════════════ -->
+  <!-- Anders als bei Formel D steht der Kopf mittig und die Auftaktbilder
+       liegen als Dreiklang darunter. Das Material ist hell und ruhig; ein
+       einzelnes dunkles Bannerbild hätte dagegen gearbeitet. -->
+  <section class="kopf">
+    <div class="container">
+      <div class="kopf__text" data-reveal>
+        <p class="label label--accent">Arbeiten</p>
+        <h1 class="kopf__titel">
+          <span class="editorial editorial--kicker">Revitive</span>{' '}
+          <span class="headline headline--xl">Draußen und drinnen</span>
+        </h1>
+        <p class="kopf__intro">
+          Zwei Schauplätze, eine Handschrift: draußen der Alltag, drinnen die
+          Anwendung — mit denselben Gesichtern und derselben Bildsprache.
+        </p>
+        <p class="kopf__leistungen">Fotoproduktion · Lifestyle · Produkt</p>
+      </div>
+
+      <!-- Ein Bild direkt unter dem Titel. Der Kopf stand zuerst allein auf
+           Weiß — das war zu leise für eine Fotostrecke, die von Bildern
+           lebt. Ein breites, ruhiges Motiv statt eines Hochformats, damit
+           es die mittige Achse des Kopfes weiterträgt. -->
+      <figure class="kopf__banner" data-reveal data-reveal-delay="120">
+        <img
+          src={withBase('/images/revitive/buehne.jpg')}
+          alt="Paar in Outdoorjacken geht im Gespräch einen Parkweg entlang"
+          width="1400" height="933" fetchpriority="high" decoding="async"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- ═══ KAPITEL ════════════════════════════════════════════════════════ -->
+  {kapitel.map((k, ki) => (
+    <section
+      class={`section kapitel kapitel--${k.nr} ${ki % 2 === 1 ? 'section--sand' : ''}`}
+      aria-labelledby={`kap-${k.nr}`}
+    >
+      <div class="container">
+        <header class="kapitel__kopf" data-reveal>
+          <p class="kapitel__nr" aria-hidden="true">{k.nr}</p>
+          <h2 class="kapitel__titel" id={`kap-${k.nr}`}>{k.titel}</h2>
+          <p class="kapitel__text">{k.text}</p>
+        </header>
+
+        <ul class={`strecke ${k.nr === '02' ? 'strecke--dreiklang' : ''}`}>
+          {k.bilder.map((b, i) => (
+            <li class="strecke__feld" data-reveal data-reveal-delay={(i % 2) * 80}>
+              <img
+                src={withBase(`/images/revitive/${b.datei}`)}
+                alt={b.alt} width={b.b} height={b.h}
+                loading={ki === 0 && i === 0 ? 'eager' : 'lazy'} decoding="async"
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  <ProjektAbschluss kicker="Bilder" heading="für euer Produkt?" />
+</BaseLayout>
+
+<style>
+  /* ── Kopf ─────────────────────────────────────────────────────────────── */
+  .kopf { padding-block: clamp(9rem, 20vh, 13rem) clamp(1rem, 3vw, 2rem); }
+
+  .kopf__text { max-width: 44rem; margin-inline: auto; text-align: center; }
+  .kopf__text .label { margin-bottom: var(--space-3); }
+  .kopf__titel { margin-bottom: var(--space-3); }
+  .kopf__titel .headline { display: block; }
+
+  .kopf__intro {
+    font-size: var(--fs-lead);
+    line-height: 1.6;
+    color: var(--ink-muted);
+    text-wrap: pretty;
+  }
+
+  .kopf__leistungen {
+    display: inline-block;
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line);
+    font-family: var(--font-ui);
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .kopf__banner {
+    margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+  }
+  .kopf__banner img { display: block; width: 100%; height: auto; }
+
+  /* ── Kapitel ──────────────────────────────────────────────────────────── */
+  .kapitel { padding-block: clamp(3rem, 7vw, 5rem); }
+
+  .kapitel__kopf {
+    display: grid;
+    gap: var(--space-1);
+    max-width: 46rem;
+    margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .kapitel__nr {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-size: 1.375rem;
+    color: var(--petrol);
+  }
+
+  .kapitel__titel {
+    font-family: var(--font-ui);
+    font-weight: 800;
+    font-size: var(--fs-h3);
+    letter-spacing: var(--track-display);
+    text-transform: uppercase;
+  }
+
+  .kapitel__text {
+    margin-top: var(--space-1);
+    color: var(--ink-muted);
+    line-height: 1.6;
+    max-width: 38rem;
+  }
+
+  /* ── Strecke ──────────────────────────────────────────────────────────── */
+  .strecke {
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .strecke__feld { overflow: hidden; border-radius: var(--radius); }
+
+  /* Kein Beschnitt — jede Aufnahme behält ihr Format. */
+  .strecke__feld img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 700ms var(--ease-out);
+  }
+
+  .strecke__feld:hover img { transform: scale(1.03); }
+
+  @media (min-width: 48rem) {
+    .strecke { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .strecke--dreiklang { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 64rem) {
+    /* Ruhiger als bei Formel D: Paare nebeneinander, die rechte Spalte
+       versetzt. Das hält die helle Strecke luftig, ohne sie in ein
+       gleichmäßiges Raster zu zwingen. */
+    .strecke {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+      row-gap: clamp(2rem, 4vw, 3rem);
+    }
+
+    .strecke__feld:nth-child(odd) { grid-column: 1 / span 6; }
+    .strecke__feld:nth-child(even) {
+      grid-column: 8 / span 5;
+      transform: translateY(clamp(2rem, 5vw, 4rem));
+    }
+
+    /* Der Dreiklang bleibt eine Reihe: drei Hochformate auf gleicher
+       Grundlinie, mittig eingerückt. */
+    .strecke--dreiklang .strecke__feld:nth-child(n) {
+      grid-column: span 4;
+      transform: none;
+    }
+
+    /* Die Verschiebung der rechten Spalte darf den Abschnitt unten nicht
+       überlaufen — der letzte versetzte Kasten braucht seinen Platz. */
+    .strecke:not(.strecke--dreiklang) { padding-bottom: clamp(2rem, 5vw, 4rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .strecke__feld:nth-child(even) { transform: none; }
+  }
+</style>

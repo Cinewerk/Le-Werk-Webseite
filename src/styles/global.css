@@ -188,6 +188,22 @@ button { cursor: pointer; }
 
 .skip-link:focus { top: var(--space-2); }
 
+/* Nur für Screenreader. Nicht display:none und nicht visibility:hidden —
+   beides nimmt den Text auch aus der Sprachausgabe. Gebraucht für
+   Überschriften, die die Gliederung braucht, das Layout aber nicht, und
+   für Beschriftungen von Schaltflächen, die nur ein Bild zeigen. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* --------------------------------------------------------------------------
    4. Typografie-Bausteine
    -------------------------------------------------------------------------- */
@@ -276,6 +292,23 @@ button { cursor: pointer; }
 
 .prose { max-width: var(--measure); }
 .prose p + p { margin-top: var(--space-2); }
+
+/* Gemeinsamer Sektionskopf: Marginalie, große Überschrift, optional ein
+   Fließtext. Stand früher in index.astro — dort galt er aber nur für die
+   Startseite, weil Astro-Styles die Datei nicht verlassen. Die
+   Projektseiten brauchen ihn ebenfalls. */
+.sec-head {
+  max-width: 46rem;
+  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.sec-head .label { margin-bottom: var(--space-2); }
+
+/* Kopf ohne große Überschrift: Beide Abstände sind auf eine Headline
+   gerechnet. Unter einer 12px-Zeile wirken 72px wie ein Loch — die
+   Marginalie soll zum Inhalt darunter gehören, nicht für sich stehen. */
+.sec-head--nur-marke { margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
+.sec-head--nur-marke .label { margin-bottom: 0; }
 
 /* --------------------------------------------------------------------------
    5. Buttons & Links

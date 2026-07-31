@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjektAbschluss from '../../components/ProjektAbschluss.astro';
+import Videowand from '../../components/Videowand.astro';
+import type { Clip } from '../../components/Videowand.astro';
+import { withBase } from '../../lib/paths';
+
+// Eigene Seite statt der Sammelroute — Kennzeichen eigeneSeite in
+// src/data/arbeiten.ts.
+//
+// ACHTUNG, Texte sind ein Entwurf. Zum Projekt lagen keine Angaben vor.
+// Was hier steht, stammt aus dem, was in den Filmen selbst zu sehen ist:
+// zwei Porträts, Hochformat 4:5, rund 50 Sekunden, deutsche Untertitel
+// fest im Bild. Keine Zahl, kein Ergebnis, keine Aussage über den Auftrag.
+
+const clips: Clip[] = [
+  { id: '999442059', titel: 'Lydia', laenge: '0:49', ratio: '4 / 5' },
+  { id: '1022788421', hash: '9b0829c0b7', titel: 'Vedad', laenge: '0:54', ratio: '4 / 5' },
+];
+---
+
+<BaseLayout
+  title="Siemens — Social Media Kampagne | Le Werk"
+  description="Porträtfilme für Siemens: zwei Menschen erzählen von ihrer Arbeit. Interviewbasiert, dokumentarisch, im Hochformat für Social Media — produziert von Le Werk in Köln."
+  heroDark={true}
+>
+  <!-- ═══ KOPF ═══════════════════════════════════════════════════════════ -->
+  <section class="section section--dark kopf">
+    <div class="container kopf__grid">
+      <div class="kopf__text" data-reveal>
+        <p class="label label--accent">Arbeiten</p>
+        <h1 class="kopf__titel">
+          <span class="editorial editorial--kicker">Siemens</span>{' '}
+          <span class="headline headline--xl">Zwei Porträts, ein Format</span>
+        </h1>
+        <p class="kopf__leistungen">
+          Konzept · Interview · Kamera · Postproduktion · Untertitel
+        </p>
+      </div>
+
+      <figure class="kopf__bild" data-reveal data-reveal-delay="120">
+        <img
+          src={withBase('/images/work/siemens.webp')}
+          alt="Frau mit regenbogenbunt gefärbtem Haar und großflächigem Rückentattoo am Ufer eines Sees"
+          width="1920" height="1080" fetchpriority="high" decoding="async"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- ═══ HALTUNG ════════════════════════════════════════════════════════ -->
+  <section class="section section--sand haltung" aria-labelledby="haltung-titel">
+    <div class="container haltung__grid">
+      <h2 class="visually-hidden" id="haltung-titel">Ansatz</h2>
+
+      <p class="haltung__satz" data-reveal>
+        Kein Imagefilm über ein Unternehmen.{' '}
+        <em>Zwei Menschen, die erzählen, woran sie arbeiten.</em>
+      </p>
+
+      <div class="haltung__spalten">
+        <p class="haltung__text" data-reveal>
+          Interviewbasiert und dokumentarisch: keine Sprecherstimme, kein
+          Skript im Mund der Beteiligten. Was im Film steht, haben sie selbst
+          gesagt — der Schnitt sortiert, er legt niemandem etwas hinein.
+        </p>
+        <p class="haltung__text" data-reveal data-reveal-delay="80">
+          Gedreht im Hochformat 4:5 und untertitelt, weil im Feed ohne Ton
+          geschaut wird. Die Untertitel sind kein Nachtrag, sondern von
+          Anfang an Teil der Gestaltung.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DIE FILME ══════════════════════════════════════════════════════ -->
+  <section class="section section--dark filme" aria-labelledby="filme-titel">
+    <div class="container">
+      <header class="sec-head" data-reveal>
+        <p class="label">Die Filme</p>
+        <h2 class="headline" id="filme-titel">
+          <span class="editorial editorial--kicker">Lydia</span>{' '}
+          und Vedad
+        </h2>
+      </header>
+
+      <!-- Datenschutz: Vor dem Klick steht nur ein Standbild von unserem
+           eigenen Server, es geht keine Anfrage an Vimeo raus. -->
+      <Videowand clips={clips} poster="/images/siemens/poster" spalten={2} />
+    </div>
+  </section>
+
+  <ProjektAbschluss kicker="Menschen" heading="in eurem Unternehmen?" />
+</BaseLayout>
+
+<style>
+  /* ── Kopf ─────────────────────────────────────────────────────────────── */
+  .kopf { padding-block: clamp(9rem, 20vh, 13rem) var(--section-y); }
+
+  .kopf__grid { display: grid; gap: clamp(2.5rem, 6vw, 4rem); }
+  .kopf__text .label { margin-bottom: var(--space-3); }
+  .kopf__titel { margin-bottom: var(--space-4); }
+  .kopf__titel .headline { display: block; }
+
+  .kopf__leistungen {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line-dark);
+    font-family: var(--font-ui);
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--track-label);
+    line-height: 1.9;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+  }
+
+  .kopf__bild { margin: 0; overflow: hidden; border-radius: var(--radius-lg); }
+  .kopf__bild img { display: block; width: 100%; height: auto; }
+
+  /* ── Haltung ──────────────────────────────────────────────────────────── */
+  /* Ein großer Satz in Bodoni, darunter zwei schmale Spalten Fließtext —
+     dasselbe Muster wie der Positionierungsabsatz auf der Startseite. Es
+     trägt hier, weil es um eine Haltung geht und nicht um Leistungen. */
+  .haltung__satz {
+    font-family: var(--font-editorial);
+    font-size: clamp(1.5rem, 4vw, 2.75rem);
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+    text-wrap: pretty;
+    max-width: 30ch;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .haltung__satz em { font-style: italic; }
+
+  .haltung__spalten { display: grid; gap: clamp(1.5rem, 4vw, 3rem); }
+
+  .haltung__text {
+    color: var(--ink-muted);
+    line-height: 1.65;
+    max-width: 34rem;
+  }
+
+  /* ── Breakpoints ──────────────────────────────────────────────────────── */
+  @media (min-width: 64rem) {
+    .kopf__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+      align-items: end;
+    }
+    .kopf__text { grid-column: 1 / span 5; }
+    .kopf__bild { grid-column: 7 / span 6; }
+
+    .haltung__grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+    }
+    .haltung__satz { grid-column: 1 / span 7; margin-bottom: 0; }
+    .haltung__spalten { grid-column: 9 / span 4; align-content: end; }
+  }
+</style>

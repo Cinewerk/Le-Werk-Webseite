@@ -1,0 +1,365 @@
+---
+import { withBase } from '../lib/paths';
+
+export interface Clip {
+  /** Vimeo-ID */
+  id: string;
+  /** Hash für nicht gelistete Videos, sonst leer */
+  hash?: string;
+  titel: string;
+  /** Zusatz hinter dem Titel, kursiv */
+  zusatz?: string;
+  laenge: string;
+  ratio: '9 / 16' | '3 / 4' | '4 / 5';
+}
+
+interface Props {
+  clips: Clip[];
+  /** Ordner der Standbilder, z. B. "/images/street-one/poster" */
+  poster: string;
+  /** Kacheln je Reihe ab 48rem. Bei ein bis zwei Videos weniger. */
+  spalten?: 1 | 2 | 4;
+}
+
+const { clips, poster, spalten = 4 } = Astro.props;
+
+// Höhe des Standbilds aus dem Format, damit der Platz vor dem Laden steht
+// und die Seite beim Nachladen nicht springt.
+const hoehe = (ratio: Clip['ratio']) =>
+  ratio === '9 / 16' ? 1138 : ratio === '3 / 4' ? 853 : 800;
+---
+
+<div class="videowand">
+  <ul class={`clips clips--${spalten}`}>
+    {clips.map((c, i) => (
+      <li
+        class="clip"
+        style={`--ratio:${c.ratio}`}
+        data-id={c.id}
+        data-hash={c.hash ?? ''}
+        data-titel={c.titel}
+        data-laenge={c.laenge}
+        data-ratio={c.ratio}
+        data-r={c.ratio === '9 / 16' ? '0.5625' : c.ratio === '3 / 4' ? '0.75' : '0.8'}
+        data-reveal
+        data-reveal-delay={(i % 4) * 70}
+      >
+        <div class="clip__rahmen">
+          <button class="clip__start" type="button">
+            <img
+              src={withBase(`${poster}/${c.id}.jpg`)}
+              alt="" width="640" height={hoehe(c.ratio)}
+              loading="lazy" decoding="async"
+            />
+            <span class="clip__play" aria-hidden="true"></span>
+            <span class="visually-hidden">Video abspielen: {c.titel}</span>
+          </button>
+        </div>
+        <p class="clip__zeile">
+          <span class="clip__titel">{c.titel}</span>
+          {c.zusatz && <span class="clip__zusatz">{c.zusatz}</span>}
+          <span class="clip__laenge">{c.laenge}</span>
+        </p>
+      </li>
+    ))}
+  </ul>
+
+  <!-- Der Player öffnet groß in der Bildschirmmitte. <dialog> statt eigenem
+       Overlay, weil Fokusfalle, Escape, der abgedunkelte Hintergrund und
+       die oberste Ebene damit vom Browser kommen — selbst gebaut ist das
+       erfahrungsgemäß die Stelle, an der die Tastaturbedienung kaputtgeht. -->
+  <dialog class="leuchtkasten">
+    <button class="leuchtkasten__zu" type="button" aria-label="Video schließen">
+      <span aria-hidden="true">×</span>
+    </button>
+    <div class="leuchtkasten__mitte">
+      <div class="leuchtkasten__buehne"></div>
+      <p class="leuchtkasten__zeile"></p>
+    </div>
+  </dialog>
+</div>
+
+<script>
+  // Zwei-Klick-Lösung: Der Player wird erst auf Klick nachgeladen. Vorher
+  // gibt es keine Verbindung zu Vimeo — das Standbild kommt vom eigenen
+  // Server. dnt=1 bittet Vimeo zusätzlich, keine Sitzungsdaten zu sammeln;
+  // title, byline und portrait sind aus, damit im Player kein fremder
+  // Kontoname steht.
+  document.querySelectorAll<HTMLElement>('.videowand').forEach((wand) => {
+    const kasten = wand.querySelector<HTMLDialogElement>('.leuchtkasten');
+    const buehne = kasten?.querySelector<HTMLElement>('.leuchtkasten__buehne');
+    const zeile = kasten?.querySelector<HTMLElement>('.leuchtkasten__zeile');
+    if (!kasten || !buehne || !zeile) return;
+
+    // Woher der Klick kam — dorthin geht der Fokus beim Schließen zurück.
+    let auslöser: HTMLElement | null = null;
+
+    // Aufräumen in einer eigenen Funktion und nicht am close-Ereignis des
+    // Dialogs: Das feuert nicht überall zuverlässig, und daran hängt, dass
+    // die Wiedergabe endet und die Seite wieder scrollen darf.
+    const schliessen = () => {
+      if (kasten.open) kasten.close();
+      buehne.replaceChildren(); // beendet Wiedergabe und Verbindung
+      zeile.textContent = '';
+      document.body.style.overflow = '';
+      auslöser?.focus();
+      auslöser = null;
+    };
+
+    wand.querySelectorAll<HTMLElement>('.clip').forEach((clip) => {
+      const knopf = clip.querySelector<HTMLButtonElement>('.clip__start');
+      if (!knopf) return;
+
+      knopf.addEventListener('click', () => {
+        const { id, hash, titel, laenge, ratio, r } = clip.dataset;
+
+        const params = new URLSearchParams({
+          autoplay: '1',
+          title: '0',
+          byline: '0',
+          portrait: '0',
+          dnt: '1',
+        });
+        if (hash) params.set('h', hash);
+
+        const rahmen = document.createElement('iframe');
+        rahmen.src = `https://player.vimeo.com/video/${id}?${params}`;
+        rahmen.title = titel ?? 'Video';
+        rahmen.allow = 'autoplay; fullscreen; picture-in-picture';
+        rahmen.setAttribute('allowfullscreen', '');
+
+        // Zwei Angaben zum Format: aspect-ratio für die Form, die Zahl für
+        // die Höhenrechnung. Ohne die Zahl könnte CSS nicht ausrechnen, ab
+        // wann die Breite und nicht mehr die Höhe das Maß vorgibt.
+        buehne.style.setProperty('--ratio', ratio ?? '9 / 16');
+        buehne.style.setProperty('--r', r ?? '0.5625');
+        buehne.replaceChildren(rahmen);
+
+        zeile.textContent = laenge ? `${titel} · ${laenge}` : (titel ?? '');
+        kasten.setAttribute('aria-label', titel ?? 'Video');
+
+        auslöser = knopf;
+        kasten.showModal();
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    kasten.querySelector('.leuchtkasten__zu')?.addEventListener('click', schliessen);
+
+    // Klick auf die Fläche neben dem Video. Das Ziel ist genau dann der
+    // Dialog selbst, wenn daneben getroffen wurde.
+    kasten.addEventListener('click', (e) => {
+      if (e.target === kasten) schliessen();
+    });
+
+    // Escape selbst abfangen, statt es dem Browser zu überlassen — sonst
+    // schließt der Dialog, ohne dass aufgeräumt wird. Am document, damit es
+    // auch greift, wenn der Fokus daneben gewandert ist. Steckt der Fokus
+    // im Vimeo-Player, kommt die Taste nicht bei uns an; dafür gibt es den
+    // Knopf und die Fläche daneben.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && kasten.open) {
+        e.preventDefault();
+        schliessen();
+      }
+    });
+
+    kasten.addEventListener('close', schliessen);
+  });
+</script>
+
+<style>
+  .clips {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Ein einzelnes Video steht auch auf dem Handy allein — sonst wäre es
+     halb so breit wie nötig und die Kachel verlöre ihre Wirkung. */
+  .clips--1 { grid-template-columns: minmax(0, 1fr); }
+
+  .clip__rahmen {
+    position: relative;
+    aspect-ratio: var(--ratio);
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .clip__start {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .clip__start img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms var(--ease-out), filter 400ms var(--ease-out);
+  }
+
+  /* Der Knopf deckt das ganze Bild ab; ein sichtbarer Fokusrahmen muss
+     deshalb innen liegen, sonst schneidet ihn das overflow der Kachel ab. */
+  .clip__start:focus-visible { outline: none; }
+  .clip__start:focus-visible::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 2px solid var(--petrol-light);
+    border-radius: calc(var(--radius) - 3px);
+  }
+
+  .clip__play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: clamp(3rem, 7vw, 4rem);
+    height: clamp(3rem, 7vw, 4rem);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: rgba(4, 37, 44, 0.55);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    transition: transform 300ms var(--ease-out), background 300ms var(--ease-out);
+  }
+
+  /* Dreieck aus Rändern statt Zeichen: Ein ▶ aus der Schrift sitzt je nach
+     Font unterschiedlich hoch und lässt sich nicht optisch zentrieren. */
+  .clip__play::before {
+    content: '';
+    position: absolute;
+    left: 54%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-style: solid;
+    border-width: 0.5rem 0 0.5rem 0.85rem;
+    border-color: transparent transparent transparent #fff;
+  }
+
+  .clip__start:hover img { transform: scale(1.04); filter: brightness(0.85); }
+  .clip__start:hover .clip__play {
+    transform: translate(-50%, -50%) scale(1.08);
+    background: rgba(4, 37, 44, 0.75);
+  }
+
+  .clip__zeile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 0.6rem;
+    margin-top: var(--space-2);
+    font-size: var(--fs-small);
+  }
+
+  .clip__titel { font-weight: 600; }
+
+  .clip__zusatz {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    color: var(--petrol-light);
+  }
+
+  .clip__laenge {
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+    color: var(--on-dark-muted);
+  }
+
+  /* ── Leuchtkasten ───────────────────────────────────────────────────── */
+  .leuchtkasten {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  /* Nur im geöffneten Zustand setzen — sonst überschreibt das Raster das
+     display:none, das ein geschlossener dialog von Haus aus mitbringt. */
+  .leuchtkasten[open] { display: grid; place-items: center; }
+
+  .leuchtkasten::backdrop {
+    background: rgba(4, 37, 44, 0.94);
+    backdrop-filter: blur(8px);
+  }
+
+  .leuchtkasten__mitte { display: grid; justify-items: center; gap: var(--space-2); }
+
+  /* Die Höhe gibt das Maß vor, weil alle Videos hochkant stehen. Wird der
+     Schirm zu schmal, übernimmt die Breite: 92vw geteilt durch das
+     Seitenverhältnis ist die Höhe, die dann noch passt. */
+  .leuchtkasten__buehne {
+    aspect-ratio: var(--ratio, 9 / 16);
+    height: min(80dvh, calc(92vw / var(--r, 0.5625)));
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: #000;
+  }
+
+  /* :global ist hier Pflicht: Den iframe erzeugt das Skript erst beim
+     Klick, er trägt deshalb kein data-astro-cid — eine normale Regel würde
+     ihn nicht treffen und der Player stünde in seiner Standardhöhe von
+     150px. Der Vorfahre steht im Markup und hält die Regel trotzdem
+     zusammen. */
+  .leuchtkasten__buehne :global(iframe) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .leuchtkasten__zeile {
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    color: var(--on-dark-muted);
+    text-align: center;
+  }
+
+  .leuchtkasten__zu {
+    position: fixed;
+    top: clamp(0.75rem, 2vw, 1.5rem);
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--on-dark);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--line-dark);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+
+  .leuchtkasten__zu:hover,
+  .leuchtkasten__zu:focus-visible {
+    border-color: var(--petrol-light);
+    color: var(--petrol-light);
+  }
+
+  @media (min-width: 48rem) {
+    .clips--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .clips--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    /* Ein einzelnes Video bekommt Rand statt voller Breite: In 9:16 über
+       die ganze Spalte wäre die Kachel höher als jeder Bildschirm. */
+    .clips--1 { max-width: 26rem; margin-inline: auto; }
+  }
+</style>

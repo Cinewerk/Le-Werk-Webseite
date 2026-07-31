@@ -6,9 +6,15 @@ interface Props {
   kicker: string;
   /** Seitenname als Überschrift */
   heading: string;
+  /**
+   * Marginalie ganz oben. Ohne Angabe steht dort die Wortmarke — auf den
+   * Projektseiten ist "Arbeiten" die nützlichere Ortsangabe, weil der
+   * Kunde schon im Kicker steht.
+   */
+  label?: string;
 }
 
-const { kicker, heading } = Astro.props;
+const { kicker, heading, label } = Astro.props;
 
 // Seiten mit Slot-Inhalt bekommen ihren Einleitungstext statt des
 // "Inhalt folgt" — der Hinweis erscheint nur, wo wirklich nichts steht.
@@ -17,7 +23,7 @@ const hatEinleitung = Astro.slots.has('default');
 
 <section class="ph">
   <div class="container">
-    <p class="label label--accent"><span class="brand">Le Werk</span></p>
+    <p class="label label--accent">{label ?? <span class="brand">Le Werk</span>}</p>
 
     <h1 class="ph__title">
       <span class="editorial editorial--kicker">{kicker}</span>{' '}
