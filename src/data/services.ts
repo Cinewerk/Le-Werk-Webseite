@@ -37,7 +37,10 @@ export const services: Service[] = [
     img: '/images/service-video.jpg',
     text: 'Vertikale und horizontale Formate. Visuell ansprechend, mit inhaltlicher Tiefe.',
     disziplin: true,
-    ratio: '3 / 4',
+    /* 4:5 ist das Eigenformat der Aufnahme — so steht sie ungeschnitten.
+       Das gilt nur unterhalb von 64rem; darüber füllt der Kasten die Höhe
+       der beiden rechten und beschneidet ohnehin. */
+    ratio: '4 / 5',
   },
   {
     href: '/services/foto',

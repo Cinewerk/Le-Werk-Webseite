@@ -25,12 +25,12 @@ Die Bühne der Startseite ist inzwischen ein Video, siehe Abschnitt unten.
 | `hero.jpg` | — | quer | **ungenutzt** |
 | `about.jpg` | — | quer | **ungenutzt** (Über-uns-Sektion entfallen) |
 | `quote-01.jpg` – `quote-03.jpg` | — | quadratisch | **ungenutzt** (Stimmen-Sektion entfallen) |
-| `work-01.jpg` | Arbeiten, großes Tile links | 16:9 | Platzhalter |
-| `work-02.jpg` | Arbeiten, Tile rechts oben | 16:9 | Platzhalter |
-| `work-03.jpg` | Arbeiten, vertikales Tile | 4:5, auf 9:16 beschnitten | **echt** (aus `social_media.jpeg`) |
-| `work-04.jpg` | Arbeiten, Tile rechts unten | 3:2 | Platzhalter |
+| `work-01.jpg` | Featured Work, großes Tile links | 16:9 | Platzhalter |
+| `work-02.jpg` | Featured Work, Tile rechts oben | 16:9 | Platzhalter |
+| `work-03.jpg` | Featured Work, vertikales Tile | 4:5, auf 9:16 beschnitten | **echt** (aus `social_media.jpeg`) |
+| `work-04.jpg` | Featured Work, Tile rechts unten | 3:2 | Platzhalter |
 | `service-foto.jpg` | Karte „Foto" | 4:3 | Platzhalter |
-| `service-video.jpg` | Karte „Video" | 4:3 | Platzhalter |
+| `service-video.jpg` | Kasten „Video" (Startseite) und Karte auf `/services` | 4:5 | **echt** (aus `social_media.jpeg`) |
 | `service-konzept.jpg` | Karte „Konzept" | 4:3 | Platzhalter |
 | `service-workshops.jpg` | Karte „Workshops", nur auf `/services` | 4:3 | Platzhalter |
 | `logokarusell.png` | Kundenlogos in der Trustbar | ein durchgehender Streifen, 5000 × 400 | **echt** |
@@ -52,8 +52,15 @@ Querformate 1100 px breit, Hochformate 760 px hoch, JPEG-Qualität 72 —
 das reicht für die tatsächlichen Anzeigegrößen samt Retina und hält die
 neun BTS-Bilder zusammen bei rund 1 MB.
 
-Ebenfalls dort: `social_media.jpeg`, das Original der vertikalen
-Arbeiten-Kachel. Die Webfassung heißt `work-03.jpg` (800 × 1000, 112 KB).
+Ebenfalls dort: `social_media.jpeg`. Aus dieser einen Aufnahme entstehen
+**zwei** Webfassungen, weil sie an zwei Stellen unterschiedlich groß steht:
+
+- `work-03.jpg` (800 × 1000, 112 KB) — die vertikale Kachel in „Featured Work"
+- `service-video.jpg` (1100 × 1375, 174 KB) — der große Kasten „Video" im
+  Abschnitt „Was wir machen", der dort die volle Höhe der beiden rechten
+  Kästen füllt und deshalb mehr Pixel braucht
+
+Wer das Motiv tauscht, muss also an beide denken.
 
 ## Das BTS-Raster
 

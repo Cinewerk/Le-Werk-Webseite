@@ -155,16 +155,16 @@ const faqs = [
   <!-- ═══ 3 · ARBEITEN ═══════════════════════════════════════════════════ -->
   <section class="section section--dark work" id="arbeiten" aria-labelledby="work-title">
     <div class="container">
+      <!-- Englisch wie der Positions-Satz im Hero, deshalb lang="en": Ohne
+           die Angabe liest eine Sprachausgabe "Featured Work" deutsch vor. -->
       <header class="work__head" data-reveal>
-        <h2 class="headline headline--xl" id="work-title">
-          <span class="editorial editorial--kicker">Ausgewählte</span>{' '}
-          Arbeiten
+        <h2 class="headline headline--xl" id="work-title" lang="en">
+          <span class="editorial editorial--kicker">Featured</span>{' '}
+          Work
         </h2>
-        <p class="lead">
-          Ein Auszug aus laufenden und abgeschlossenen Produktionen. Gedacht wird
-          vom vertikalen Format aus — Landscape und Stills entstehen als
-          Ableitung, nicht umgekehrt. Ein Dreh, mehrere Formate.
-        </p>
+        <!-- Der frühere Einleitungstext ist entfallen. Er erklärte die
+             Formatlogik ("vom vertikalen Format aus") — die steht jetzt in
+             den Format-Zeilen der Kacheln und im FAQ. -->
       </header>
 
       <div class="work__grid">
@@ -196,7 +196,9 @@ const faqs = [
   <!-- ═══ 4 · TRUSTBAR (Logo-Marquee) ════════════════════════════════════ -->
   <section class="section section--tight trust" id="trust" aria-label="Auswahl unserer Kunden">
     <div class="container">
-      <p class="label trust__label">Vertrauen auf <span class="brand">Le Werk</span></p>
+      <!-- Vorher "Vertrauen auf Le Werk" — als Imperativ lesbar und
+           werblich. Die Zeile benennt jetzt nur noch, was zu sehen ist. -->
+      <p class="label trust__label">Ausgewählte Kunden</p>
     </div>
 
     <div class="marquee">
@@ -224,7 +226,7 @@ const faqs = [
       <header class="sec-head" data-reveal>
         <p class="label">Was wir machen</p>
         <h2 class="headline" id="services-title">
-          <span class="editorial editorial--kicker">Content</span>{' '}
+          <span class="editorial editorial--kicker">Content,</span>{' '}
           holistisch gedacht
         </h2>
         <!-- Der frühere Fließtext ist entfallen. Er stufte die Disziplinen
@@ -312,6 +314,10 @@ const faqs = [
   <!-- ═══ 7 · DREI GRÜNDE ════════════════════════════════════════════════ -->
   <section class="section benefits" aria-labelledby="benefits-title">
     <div class="container">
+      <!-- OFFEN: Kicker und Überschrift. "Drei Gründe, uns anzurufen" ist
+           verworfen, ein Ersatz steht noch aus. Bis dahin bleibt die alte
+           Zeile stehen — ohne sie hätte der Abschnitt keinen Kopf und
+           aria-labelledby kein Ziel. -->
       <header class="sec-head" data-reveal>
         <p class="label">Warum <span class="brand">Le Werk</span></p>
         <h2 class="headline" id="benefits-title">
@@ -323,30 +329,29 @@ const faqs = [
       <ol class="benefits__list">
         <li class="benefit" data-reveal>
           <span class="benefit__num" aria-hidden="true">01</span>
-          <h3 class="benefit__title">Handwerk auf Kampagnenniveau</h3>
+          <h3 class="benefit__title">Content darf gut aussehen</h3>
           <p class="benefit__text">
             Hochwertig produzierte Visuals in Bild und Bewegtbild — mit den
-            Maßstäben an Licht, Bildgestaltung und Post, die eine Kampagne
-            verlangt. Kein Handy-Standard, kein UGC-Look.
+            Maßstäben an Licht, Bildgestaltung und Postproduktion, die eine
+            Kampagne verlangt.
           </p>
         </li>
         <li class="benefit" data-reveal data-reveal-delay="80">
           <span class="benefit__num" aria-hidden="true">02</span>
-          <h3 class="benefit__title">Substanz statt Strohfeuer</h3>
+          <h3 class="benefit__title">Inhaltlicher Impact</h3>
           <p class="benefit__text">
             Redaktionelle Tiefe, ehrlich erzählte Geschichten, menschliche
             Momente — interviewbasiert und dokumentarisch, mit Blick für
-            Charaktere. Kein Content, der schnell knallt und genauso schnell
-            wieder weg ist.
+            Charaktere.
           </p>
         </li>
         <li class="benefit" data-reveal data-reveal-delay="160">
           <span class="benefit__num" aria-hidden="true">03</span>
-          <h3 class="benefit__title">Format-Vielfalt aus einem Auftrag</h3>
+          <h3 class="benefit__title">Social First</h3>
           <p class="benefit__text">
-            Vertikal ist bei uns kein Beschnitt am Ende, sondern der
-            Ausgangspunkt der Planung. Landscape, Square und Stills entstehen
-            als Ableitung derselben Produktion — nicht als zweiter Dreh.
+            Social ist bei uns der Anfang der Planung und nicht der letzte
+            Schritt der Verwertung. Was im Feed läuft, ist dafür gemacht —
+            nicht dafür übriggeblieben.
           </p>
         </li>
       </ol>
@@ -574,18 +579,20 @@ const faqs = [
   .statement__text em { font-style: italic; }
 
   /* AUSNAHME von der Wortmarken-Regel, ausdrücklich so gewünscht: In
-     diesem einen Absatz steht "Le Werk" in normalem Poppins statt in
-     ExtraBold. Der Hero darüber trägt die Marke schon im fetten Schnitt;
-     hier wirkt der leichte Schnitt im Bodoni-Satz eleganter und lässt dem
-     Satz seinen Fluss. Gilt nur hier — überall sonst bleibt .brand fett,
-     siehe die Regel in global.css. */
+     diesem einen Absatz läuft "Le Werk" komplett in der Schrift des
+     Absatzes mit — Bodoni Moda, aufrecht, im selben Schnitt und derselben
+     Laufweite wie der Text drumherum. Der Hero direkt darüber trägt die
+     Marke bereits in Poppins ExtraBold; hier soll der Satz ohne Bruch
+     durchlaufen. Der Weg war Poppins 800 → 600 → 400 → Absatzschrift.
+     Gilt nur in diesem Absatz — überall sonst bleibt .brand die Wortmarke
+     in Poppins ExtraBold, siehe die Regel in global.css.
+     Was aus .brand bleibt: white-space: nowrap, damit "Le" und "Werk"
+     nie auf zwei Zeilen fallen. */
   .statement__text .brand {
-    /* 400 hob sich zu wenig ab, 800 wäre wieder ein Ausrufezeichen im
-       Satz. 600 setzt die Marke sichtbar ab und bleibt ruhig. */
-    font-weight: 600;
-    /* Die -0.03em der Wortmarke sind auf ExtraBold abgestimmt und
-       stehen im leichteren Schnitt zu eng. */
-    letter-spacing: -0.01em;
+    font-family: inherit;
+    font-weight: inherit;
+    font-style: inherit;
+    letter-spacing: inherit;
   }
 
   /* Gesperrte Versalzeile als Gegengewicht zur großen Serifenschrift */
@@ -601,11 +608,11 @@ const faqs = [
   }
 
   /* ── 4 · Arbeiten ─────────────────────────────────────────────────────── */
-  .work__head {
-    display: grid;
-    gap: var(--space-3);
-    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
-  }
+  /* Nur noch die Überschrift im Kopf: Der Kasten war zweispaltig angelegt
+     (Überschrift links, Einleitung rechts). Ohne die Einleitung hätte die
+     Überschrift in einer 1,35fr-Spalte gesessen und rechts wäre eine leere
+     Spalte offen geblieben. */
+  .work__head { margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
 
   .work__grid {
     display: grid;
@@ -1017,12 +1024,6 @@ const faqs = [
   }
 
   @media (min-width: 64rem) {
-    .work__head {
-      grid-template-columns: 1.35fr 1fr;
-      align-items: end;
-      gap: var(--space-5);
-    }
-
     .work__grid {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: clamp(1.5rem, 3vw, 3rem);
