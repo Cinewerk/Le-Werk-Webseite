@@ -403,10 +403,19 @@ button { cursor: pointer; }
   padding-block: var(--space-2);
 }
 
-/* Die Wortmarke trägt beim Scrollen die Markenfarbe. Vorher erbte sie das
-   Ink des Headers (#0E1E22) und wirkte dadurch fast schwarz. Der
-   Menü-Button bleibt Ink — er ist Bedienelement, nicht Marke. */
-.header.is-solid .logo { color: var(--petrol); }
+/* Die Wortmarke trägt die Markenfarbe, sobald sie auf hellem Grund steht:
+   auf jeder Seite ohne dunkle Bühne von Anfang an, und auf den dunklen
+   Seiten, sobald der Header beim Scrollen weiß wird.
+
+   Vorher galt das nur für den gescrollten Header. Am Seitenanfang erbte
+   die Marke das Ink des Headers (#0E1E22) und wirkte fast schwarz — auf
+   allen Unterseiten sichtbar, weil die keine dunkle Bühne haben.
+
+   Die eine Ausnahme bleibt: über der dunklen Bühne ist sie weiß. Petrol
+   auf dunklem Video wäre nicht lesbar. Der Menü-Button bleibt in beiden
+   Fällen Ink beziehungsweise weiß — er ist Bedienelement, nicht Marke. */
+.header.is-solid .logo,
+.header:not([data-over-dark='true']) .logo { color: var(--petrol); }
 
 /* Volle Breite statt Container-Maximalbreite: Logo sitzt am linken,
    der Menü-Button am rechten Seitenrand. */
@@ -671,17 +680,25 @@ button { cursor: pointer; }
   color: var(--on-dark-muted);
 }
 
-/* Die Wortmarke ist ein Logo und darf nicht umbrechen. Bei 6rem passte
-   sie nicht in die Footer-Spalte und brach in "Le" / "Werk" — deshalb
-   kleiner und mit nowrap abgesichert. */
+/* Die Wortmarke schließt die Spaltenreihe ab: über die ganze Breite,
+   rechtsbündig, direkt über der Rechtezeile. Als eigene Spalte stand sie
+   auf Höhe der Rubrik-Überschriften und hatte nichts unter sich.
+   Rechtsbündig spannt sie jetzt eine Diagonale zu "Navigation" oben links.
+
+   Sie ist ein Logo und darf nicht umbrechen — daher nowrap. Die Laufweite
+   bleibt bei -0.04em: Über die volle Breite gezogen wäre der Schriftzug
+   ein anderer, und die Wortmarke wird nicht verändert. */
 .footer__brand {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin-top: var(--space-3);
   font-family: var(--font-ui);
   font-weight: 800;
-  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-size: clamp(2.25rem, 6vw, 4rem);
   white-space: nowrap;
   line-height: 1;
   letter-spacing: -0.04em;
-  color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.1);
 }
 
 .footer__legal {
@@ -993,13 +1010,21 @@ button { cursor: pointer; }
      ab 62rem nur 148px breit, die Nummer allein misst 151px. Die übrigen
      Spalten kommen mit weniger aus, ihr längstes Wort ist "Datenschutz". */
   .footer__grid {
-    grid-template-columns: 1fr 1fr 1.5fr 1fr 1.2fr;
+    grid-template-columns: 1fr 1fr 1.5fr 1fr;
     gap: var(--space-4);
   }
 }
 
 @media (min-width: 40rem) and (max-width: 61.99rem) {
   .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Rechtsbündig erst, sobald der Footer Spalten hat: Die Wortmarke schließt
+   die Reihe unten rechts ab und spannt die Diagonale zu "Navigation" oben
+   links. Einspaltig gäbe es nichts abzuschließen — dort steht sie linksbündig
+   wie alles andere, sonst sähe sie verrutscht aus. */
+@media (min-width: 40rem) {
+  .footer__brand { justify-self: end; }
 }
 
 /* --------------------------------------------------------------------------

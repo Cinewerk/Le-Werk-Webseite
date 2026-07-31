@@ -1,0 +1,160 @@
+---
+/**
+ * Vergrößert Bilder auf Klick, in derselben Sprache wie der Videoplayer:
+ * groß in der Bildschirmmitte, abgedunkelter Hintergrund, Schließkreuz.
+ *
+ * Die Komponente rendert nur den Dialog. Die Bilder selbst bleiben in
+ * ihrer Seite; sie melden sich über data-gross an. Das hält die Strecken
+ * frei von Kastenlogik und funktioniert für beliebig viele Bilder.
+ */
+---
+
+<dialog class="bildkasten">
+  <button class="bildkasten__zu" type="button" aria-label="Bild schließen">
+    <span aria-hidden="true">×</span>
+  </button>
+  <figure class="bildkasten__mitte">
+    <img class="bildkasten__bild" src="" alt="" />
+    <figcaption class="bildkasten__zeile"></figcaption>
+  </figure>
+</dialog>
+
+<script>
+  const kasten = document.querySelector<HTMLDialogElement>('.bildkasten');
+  const bild = kasten?.querySelector<HTMLImageElement>('.bildkasten__bild');
+  const zeile = kasten?.querySelector<HTMLElement>('.bildkasten__zeile');
+  const knoepfe = document.querySelectorAll<HTMLButtonElement>('[data-gross]');
+
+  if (kasten && bild && zeile && knoepfe.length) {
+    // Woher der Klick kam — dorthin geht der Fokus beim Schließen zurück.
+    let auslöser: HTMLElement | null = null;
+
+    // Aufräumen in einer eigenen Funktion und nicht am close-Ereignis des
+    // Dialogs: Das feuert nicht überall zuverlässig, und daran hängt, dass
+    // die Seite wieder scrollen darf.
+    const schliessen = () => {
+      if (kasten.open) kasten.close();
+      bild.removeAttribute('src');
+      bild.alt = '';
+      zeile.textContent = '';
+      document.body.style.overflow = '';
+      auslöser?.focus();
+      auslöser = null;
+    };
+
+    knoepfe.forEach((knopf) => {
+      knopf.addEventListener('click', () => {
+        const innen = knopf.querySelector('img');
+        if (!innen) return;
+        // currentSrc statt src: Es ist die Fassung, die der Browser
+        // tatsächlich geladen hat — im Kasten ist sie damit sofort da.
+        bild.src = innen.currentSrc || innen.src;
+        bild.alt = innen.alt;
+        zeile.textContent = innen.alt;
+        kasten.setAttribute('aria-label', innen.alt || 'Bild');
+
+        auslöser = knopf;
+        kasten.showModal();
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    kasten.querySelector('.bildkasten__zu')?.addEventListener('click', schliessen);
+
+    // Klick auf die Fläche neben dem Bild. Das Ziel ist genau dann der
+    // Dialog selbst, wenn daneben getroffen wurde.
+    kasten.addEventListener('click', (e) => {
+      if (e.target === kasten) schliessen();
+    });
+
+    // Escape selbst abfangen, statt es dem Browser zu überlassen — sonst
+    // schließt der Dialog, ohne dass aufgeräumt wird.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && kasten.open) {
+        e.preventDefault();
+        schliessen();
+      }
+    });
+
+    kasten.addEventListener('close', schliessen);
+  }
+</script>
+
+<style>
+  .bildkasten {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  /* Nur im geöffneten Zustand setzen — sonst überschreibt das Raster das
+     display:none, das ein geschlossener dialog von Haus aus mitbringt. */
+  .bildkasten[open] { display: grid; place-items: center; }
+
+  .bildkasten::backdrop {
+    background: rgba(4, 37, 44, 0.94);
+    backdrop-filter: blur(8px);
+  }
+
+  .bildkasten__mitte {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    padding: clamp(1rem, 4vw, 2rem);
+  }
+
+  /* Anders als beim Videoplayer steht das Format nicht vorher fest: Die
+     Strecken mischen quer, hoch und Breitformat. Deshalb beide Achsen
+     begrenzen und das Bild selbst entscheiden lassen, welche zuerst
+     greift — object-fit bleibt außen vor, es wird nichts beschnitten. */
+  .bildkasten__bild {
+    display: block;
+    max-width: min(92vw, 1400px);
+    max-height: 82dvh;
+    width: auto;
+    height: auto;
+    border-radius: var(--radius);
+    background: #000;
+  }
+
+  .bildkasten__zeile {
+    max-width: min(92vw, 44rem);
+    font-family: var(--font-ui);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    color: var(--on-dark-muted);
+    text-align: center;
+  }
+
+  .bildkasten__zu {
+    position: fixed;
+    top: clamp(0.75rem, 2vw, 1.5rem);
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--on-dark);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--line-dark);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+
+  .bildkasten__zu:hover,
+  .bildkasten__zu:focus-visible {
+    border-color: var(--petrol-light);
+    color: var(--petrol-light);
+  }
+</style>

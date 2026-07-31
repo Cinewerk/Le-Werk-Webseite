@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjektAbschluss from '../../components/ProjektAbschluss.astro';
+import Bildkasten from '../../components/Bildkasten.astro';
 import { withBase } from '../../lib/paths';
 
 // Eigene Seite statt der Sammelroute — der Eintrag in src/data/arbeiten.ts
@@ -125,17 +126,22 @@ const kapitel = [
         <ul class="strecke">
           {k.bilder.map((b, i) => (
             <li class="strecke__feld" data-reveal data-reveal-delay={(i % 3) * 70}>
-              <img
-                src={withBase(`/images/formel-d/${b.datei}`)}
-                alt={b.alt} width={b.b} height={b.h}
-                loading="lazy" decoding="async"
-              />
+              <button class="strecke__knopf" type="button" data-gross>
+                <img
+                  src={withBase(`/images/formel-d/${b.datei}`)}
+                  alt={b.alt} width={b.b} height={b.h}
+                  loading="lazy" decoding="async"
+                />
+                <span class="visually-hidden">Bild vergrößern</span>
+              </button>
             </li>
           ))}
         </ul>
       </div>
     </section>
   ))}
+
+  <Bildkasten />
 
   <ProjektAbschluss kicker="Bilder" heading="für euren Betrieb?" />
 </BaseLayout>
@@ -216,6 +222,29 @@ const kapitel = [
   }
 
   .strecke__feld { overflow: hidden; border-radius: var(--radius); }
+
+  /* Jedes Bild sitzt in einem Knopf, damit es sich auch per Tastatur
+     vergrößern lässt. Der Knopf bringt eigene Browserstile mit — die
+     müssen weg, sonst steht ein Rahmen um jedes Bild der Strecke. */
+  .strecke__knopf {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: zoom-in;
+    position: relative;
+  }
+
+  .strecke__knopf:focus-visible { outline: none; }
+  .strecke__knopf:focus-visible::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 2px solid var(--petrol-light);
+    border-radius: calc(var(--radius) - 3px);
+  }
+
 
   /* Kein Beschnitt: Jede Aufnahme behält ihr Format. Bei einer Fotostrecke
      ist der Zuschnitt Teil der Arbeit — ein einheitliches Raster würde ihn

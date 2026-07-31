@@ -7,9 +7,11 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && npm run aufraeumen",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "//aufraeumen": "Astro kopiert public/ unverändert in den Build. .DS_Store steht zwar in .gitignore, wird aber von macOS immer wieder angelegt und landete so im Deploy. Der Schritt räumt es nach dem Bauen weg.",
+    "aufraeumen": "find dist -name '.DS_Store' -delete"
   },
   "dependencies": {
     "astro": "^7.1.5"

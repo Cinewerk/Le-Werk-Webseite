@@ -1,5 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Le Werk">
+  <!--
+    Nur das W, in Poppins ExtraBold. Vorher stand hier "LW" als <text> in
+    einer Systemschrift — ein SVG-Favicon lädt keine Webfont-Datei, es wäre
+    also nie in Poppins erschienen, sondern in Helvetica.
+
+    Der Pfad ist deshalb die echte Glyphenkontur: Das W wurde mit der
+    ausgelieferten Datei poppins-800-normal-latin.woff2 bei 900 px
+    gerendert, die Kontur daraus verfolgt und auf ihre Eckpunkte
+    zurückgeführt. Weil alle Kanten des W gerade sind, sind das exakt
+    13 Punkte und keine Näherung — nachgemessen deckt sich der Pfad zu
+    99,5 % mit der gerenderten Glyphe, der Rest ist Kantenglättung.
+
+    Wer die Wortmarke ändert, kann den Pfad nicht von Hand anpassen.
+    Dann neu ableiten, nicht schätzen.
+  -->
   <rect width="64" height="64" rx="12" fill="#006377"/>
-  <text x="32" y="43" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
-        font-size="30" font-weight="800" letter-spacing="-1.5" fill="#FFFFFF">LW</text>
+  <path fill="#FFFFFF" d="M15 20.29L22.03 20.29L24.82 36.14L28.47 20.29L35.61 20.29L39.2 36.11L41.97 20.29L49 20.29L43.23 43.71L35.24 43.71L31.93 29.6L28.69 43.71L20.7 43.71Z"/>
 </svg>

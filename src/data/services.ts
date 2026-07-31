@@ -34,7 +34,7 @@ export const services: Service[] = [
   {
     href: '/services/video',
     label: 'Video',
-    img: '/images/service-video.jpg',
+    img: '/images/services/video.jpg',
     text: 'Vertikale und horizontale Formate. Visuell ansprechend, mit inhaltlicher Tiefe.',
     disziplin: true,
     /* 4:5 ist das Eigenformat der Aufnahme — so steht sie ungeschnitten.
@@ -45,7 +45,7 @@ export const services: Service[] = [
   {
     href: '/services/foto',
     label: 'Foto',
-    img: '/images/service-foto.jpg',
+    img: '/images/services/foto.jpg',
     text: 'Aus derselben Produktion oder als eigener Shoot. Für Content, Kampagne und Marken-Bildwelten.',
     disziplin: true,
     ratio: '3 / 2',
@@ -54,7 +54,7 @@ export const services: Service[] = [
     href: '/services/konzept',
     label: 'Konzept',
     titel: 'Idee & Konzept',
-    img: '/images/service-konzept.jpg',
+    img: '/images/services/konzept.jpg',
     text: 'Wenn die Richtung noch offen ist, entwickeln wir sie mit euch.',
     disziplin: true,
     ratio: '3 / 2',
@@ -62,7 +62,7 @@ export const services: Service[] = [
   {
     href: '/services/workshops',
     label: 'Workshops',
-    img: '/images/service-workshops.jpg',
+    img: '/images/services/workshops.jpg',
     text: 'Auftreten vor der Kamera, Social-Media-Grundlagen und Improtheater fürs Team. Wir geben weiter, was wir können.',
     disziplin: false,
   },

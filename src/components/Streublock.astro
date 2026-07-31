@@ -1,0 +1,278 @@
+---
+import { withBase } from '../lib/paths';
+
+export interface Streubild {
+  img: string;
+  alt: string;
+  /** Position und Breite in Prozent der Haufenfläche */
+  x: number;
+  y: number;
+  w: number;
+  /** Seitenverhältnis des Ausschnitts, z. B. "3 / 2" */
+  ar: string;
+  /** Stapelreihenfolge */
+  z: number;
+}
+
+interface Props {
+  /** Marke links über dem Text */
+  nr: string;
+  /** Auf welcher Seite die Bilder liegen */
+  seite: 'links' | 'rechts';
+  bilder: Streubild[];
+  /** Beschriftung der Bildgruppe für Screenreader */
+  label: string;
+  /**
+   * Höhe der Haufenfläche im Verhältnis zu ihrer Breite. An der Referenz
+   * gemessen: Die Fläche steht dort hochkant.
+   */
+  hoehe?: number;
+}
+
+const { nr, seite, bilder, label, hoehe = 1.1 } = Astro.props;
+
+// Wie weit die Stücke beim Eintreten auseinanderliegen, in Pixeln für ein
+// Stück ganz am Rand der Fläche. An der Referenz gemessen: Zwischen zwei
+// Frames der Eintrittsphase wanderte das Bild oben links 27px nach rechts,
+// das Bild rechts 20px nach links, das mittige gar nicht. Die Stücke
+// laufen also radial auf die Mitte des Haufens zu — je weiter außen, desto
+// weiter der Weg.
+const WEITE = 100;
+
+// Der Streuvektor jedes Stücks, ausgerechnet aus seiner Lage: Mitte des
+// Stücks minus Mitte der Fläche. Damit muss beim Umsortieren niemand
+// Bewegungswerte von Hand pflegen — die Bewegung folgt der Anordnung.
+const gestreut = bilder.map((b) => {
+  const [za, ne] = b.ar.split('/').map((t) => Number(t.trim()));
+  const verhaeltnis = za / ne;
+  // Höhe des Stücks in Prozent der Flächenhöhe: erst in Prozent der
+  // Breite rechnen, dann durch das Format der Fläche teilen.
+  const hProzent = b.w / verhaeltnis / hoehe;
+  const mx = b.x + b.w / 2;
+  const my = b.y + hProzent / 2;
+  return {
+    ...b,
+    dx: Math.round(((mx - 50) / 50) * WEITE),
+    dy: Math.round(((my - 50) / 50) * WEITE),
+  };
+});
+---
+
+<article class={`streu streu--${seite}`} data-streu>
+  <div class="streu__text">
+    <p class="streu__nr" aria-hidden="true">[{nr}]</p>
+    <div class="streu__satz"><slot /></div>
+  </div>
+
+  <ul class="haufen" aria-label={label} style={`--hoehe:${hoehe}`}>
+    {gestreut.map((b) => (
+      <li
+        class="haufen__stueck"
+        style={`--x:${b.x}; --y:${b.y}; --w:${b.w}; --ar:${b.ar}; --z:${b.z}; --dx:${b.dx}; --dy:${b.dy}`}
+      >
+        <img src={withBase(b.img)} alt={b.alt} loading="lazy" decoding="async" />
+      </li>
+    ))}
+  </ul>
+</article>
+
+<script>
+  // Scrollgebundenes Zusammenlaufen.
+  //
+  // --q läuft von 0 (Block kommt von unten herein) bis 1 (Block steht) und
+  // bleibt danach bei 1. Bei 0 liegen die Stücke auseinander und der Text
+  // steht draußen, bei 1 ist der Haufen zusammen und der Text da. Weil der
+  // Wert nur an der Scrollposition hängt, läuft alles beim Zurückscrollen
+  // von selbst rückwärts.
+  //
+  // Gerechnet wird nur, solange ein Block sichtbar ist. Geschrieben wird
+  // ausschließlich eine Custom Property, die in transform und opacity
+  // mündet: kein Layout, kein Repaint der Bilder, nur Compositing.
+  const bloecke = document.querySelectorAll<HTMLElement>('[data-streu]');
+
+  if (bloecke.length) {
+    const ruhig = matchMedia('(prefers-reduced-motion: reduce)');
+    const sichtbar = new Set<HTMLElement>();
+    let angefordert = false;
+
+    const fuerBlock = (block: HTMLElement) => {
+      const r = block.getBoundingClientRect();
+      const H = window.innerHeight;
+      // 0, wenn die Oberkante gerade unten hereinkommt. 1, sobald sie bei
+      // 20 % der Fensterhöhe steht — dann ist der Block im Blick und der
+      // Haufen zusammengelaufen.
+      const q = (H - r.top) / (H * 0.8);
+      block.style.setProperty('--q', Math.min(1, Math.max(0, q)).toFixed(4));
+    };
+
+    const rechnen = () => {
+      angefordert = false;
+      sichtbar.forEach(fuerBlock);
+    };
+
+    const anfordern = () => {
+      if (angefordert) return;
+      angefordert = true;
+      requestAnimationFrame(rechnen);
+    };
+
+    // Ab hier übernimmt --q die Darstellung. Die Klasse wird gesetzt,
+    // bevor der erste Wert steht — deshalb direkt danach einmal
+    // synchron rechnen, sonst blitzt ein Block auf, der beim Laden schon
+    // im Bild steht, kurz im Ausgangszustand auf.
+    bloecke.forEach((b) => {
+      b.classList.add('is-aktiv');
+      if (ruhig.matches) b.style.setProperty('--q', '1');
+      else fuerBlock(b);
+    });
+
+    if (!ruhig.matches) {
+      const beobachter = new IntersectionObserver(
+        (eintraege) => {
+          for (const e of eintraege) {
+            const block = e.target as HTMLElement;
+            if (e.isIntersecting) sichtbar.add(block);
+            else {
+              sichtbar.delete(block);
+              // Beim Verlassen nach oben den Endzustand festhalten, damit
+              // ein Block, der oben rausläuft, nicht halb gestreut bleibt.
+              if (block.getBoundingClientRect().bottom < 0) {
+                block.style.setProperty('--q', '1');
+              }
+            }
+          }
+          anfordern();
+        },
+        { rootMargin: '15% 0px' }
+      );
+
+      bloecke.forEach((b) => beobachter.observe(b));
+      addEventListener('scroll', anfordern, { passive: true });
+      addEventListener('resize', anfordern, { passive: true });
+    }
+  }
+</script>
+
+<style>
+  .streu { display: grid; gap: clamp(2rem, 5vw, 3rem); }
+
+  /* ── Text ─────────────────────────────────────────────────────────────── */
+  .streu__nr {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-size: 1.125rem;
+    color: var(--petrol-light);
+    padding-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
+    border-bottom: 1px solid var(--line-dark);
+  }
+
+  .streu__satz {
+    font-size: clamp(1.0625rem, 1.4vw, 1.1875rem);
+    line-height: 1.65;
+    color: var(--on-dark-muted);
+  }
+
+  .streu__satz :global(p + p) { margin-top: var(--space-2); }
+  .streu__satz :global(strong) { font-weight: 600; color: var(--on-dark); }
+
+  /* Der Text kommt von seiner Seite herein und geht beim Zurückscrollen
+     wieder hinaus — beides hängt an derselben Scrollposition wie der
+     Haufen. Ohne Skript bleibt er stehen und sichtbar: Die Regeln greifen
+     erst mit .is-aktiv. */
+  .streu.is-aktiv .streu__text {
+    opacity: var(--q, 1);
+    transform: translateX(calc(var(--aus, -4rem) * (1 - var(--q, 1))));
+  }
+
+  .streu--links { --aus: 4rem; }
+
+  /* ── Der Haufen ───────────────────────────────────────────────────────── */
+  /* Unterhalb der Zweispaltigkeit ein normales Raster: Überlappende,
+     absolut gesetzte Bilder werden auf einem Telefon zu Briefmarken, die
+     sich gegenseitig verdecken. */
+  .haufen {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.5rem, 1.5vw, 0.875rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .haufen__stueck {
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .haufen__stueck img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  /* Bei ungerader Anzahl bliebe das letzte Stück allein in der Zeile
+     stehen. :last-child:nth-child(odd) trifft genau diesen Fall — es läuft
+     dann über beide Spalten und wird dafür flacher. */
+  .haufen__stueck:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .haufen__stueck:last-child:nth-child(odd) img { aspect-ratio: 2 / 1; }
+
+  @media (min-width: 64rem) {
+    .streu {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+      align-items: center;
+    }
+
+    .streu--rechts .streu__text { grid-column: 1 / span 4; grid-row: 1; }
+    .streu--rechts .haufen { grid-column: 6 / span 7; grid-row: 1; }
+
+    .streu--links .haufen { grid-column: 1 / span 7; grid-row: 1; }
+    .streu--links .streu__text { grid-column: 9 / span 4; grid-row: 1; }
+
+    /* Die Fläche gibt das Maß vor: Alle Stücke liegen absolut darin, ihre
+       Werte sind Prozente davon. Dadurch skaliert der ganze Haufen mit
+       der Spaltenbreite, statt bei jeder Fenstergröße neu zu zerfallen. */
+    .haufen {
+      position: relative;
+      display: block;
+      aspect-ratio: 1 / var(--hoehe, 1.1);
+    }
+
+    .haufen__stueck {
+      position: absolute;
+      left: calc(var(--x) * 1%);
+      top: calc(var(--y) * 1%);
+      width: calc(var(--w) * 1%);
+      z-index: var(--z);
+      /* Kräftiger Schatten, weil die Stücke sich stark überlappen: Ohne
+         ihn verschmelzen zwei dunkle Setfotos zu einer Fläche und der
+         Stapel verliert seine Tiefe. */
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Bei --q = 0 steht jedes Stück um seinen Streuvektor nach außen
+       versetzt, bei 1 an seinem Platz. Der Vektor zeigt von der Mitte der
+       Fläche weg — deshalb wandert ein mittiges Stück kaum und ein Stück
+       am Rand am weitesten. */
+    .streu.is-aktiv .haufen__stueck {
+      transform: translate3d(
+        calc(var(--dx) * 1px * (1 - var(--q, 1))),
+        calc(var(--dy) * 1px * (1 - var(--q, 1))),
+        0
+      );
+    }
+
+    .haufen__stueck img { aspect-ratio: var(--ar); }
+
+    /* Die Ausnahme für die ungerade Anzahl gilt nur im Raster darunter. */
+    .haufen__stueck:last-child:nth-child(odd) { grid-column: auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .streu.is-aktiv .streu__text { opacity: 1; transform: none; }
+    .streu.is-aktiv .haufen__stueck { transform: none; }
+  }
+</style>

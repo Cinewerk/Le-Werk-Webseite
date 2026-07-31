@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Streublock from '../components/Streublock.astro';
 import { services } from '../data/services';
 import { arbeiten } from '../data/arbeiten';
 import { withBase } from '../lib/paths';
@@ -39,30 +40,63 @@ const disziplinen = services
 // Die Reihenfolge steuert das Raster: Reihe 1 und 3 liegen quer, Reihe 2
 // steht hoch. Die Originale liegen unter quellbilder/bts und sind nicht
 // Teil des Repos; hier stehen auf Webmaß gerechnete Fassungen.
+//
+// x und w sind Prozente der Haufenbreite, y ist Prozent der Haufenhöhe.
+// Wie weit ein Stück beim Scrollen wandert, steht hier bewusst nicht: Das
+// rechnet Streublock.astro aus der Lage aus — der Weg zeigt von der Mitte
+// der Fläche weg, ein mittiges Stück wandert kaum, ein äußeres am weitesten.
+//
+// Die Anordnung ist an der Referenz nachgemessen und nicht geschätzt: Dort
+// überlappen sich sechs Bilder kräftig, die Größen reichen von 30 bis 45
+// Prozent der Breite, und die Fläche steht hochkant. Genau das macht den
+// Haufen aus — meine erste Fassung lag zu weit auseinander und las sich
+// als Collage statt als Stapel.
+//
+// Beim Umsortieren gilt: y (in Höhenprozent) mal Höhe plus die aus w und
+// ar folgende Höhe muss unter 100 bleiben, sonst hängt ein Stück heraus.
 const bts = [
-  { img: '/images/bts/bts-01.jpg', alt: 'Fünf Personen aus dem Team nebeneinander, jede mit einer Kamera' },
-  { img: '/images/bts/bts-02.jpg', alt: 'Interviewsituation: ein Mann auf einem Hocker, Tonangel und Monitore im Vordergrund' },
-  { img: '/images/bts/bts-03.jpg', alt: 'Kameramann mit Easyrig in einem hellen Wohnraum' },
-  { img: '/images/bts/bts-04.jpg', alt: 'Aufgebautes Interviewset mit Softboxen, das Team sitzt davor' },
-  { img: '/images/bts/bts-05.jpg', alt: 'Person hält eine Brezel in die Kamera, Kamerarig im Vordergrund' },
-  { img: '/images/bts/bts-06.jpg', alt: 'Zwei Personen richten im Studio eine Kamera ein' },
-  { img: '/images/bts/bts-07.jpg', alt: 'Dreh in einer Küche, die Kamera fährt auf dem Slider mit' },
-  { img: '/images/bts/bts-08.jpg', alt: 'Kamera mit zwei Monitoren, Hände am Stativkopf' },
-  { img: '/images/bts/bts-09.jpg', alt: 'Zwei Personen am Schnittplatz unter einem Flächenlicht' },
+  { img: '/images/bts/bts-01.jpg', alt: 'Fünf Personen aus dem Team nebeneinander, jede mit einer Kamera',                     x: 17, y: 6,  w: 43, ar: '3 / 2', z: 2 },
+  { img: '/images/bts/bts-04.jpg', alt: 'Aufgebautes Interviewset mit Softboxen, das Team sitzt davor',                        x: 62, y: 6,  w: 36, ar: '1 / 1',  z: 3 },
+  { img: '/images/bts/bts-06.jpg', alt: 'Zwei Personen richten im Studio eine Kamera ein',                                     x: 39, y: 16, w: 33, ar: '2 / 3', z: 5 },
+  { img: '/images/bts/bts-02.jpg', alt: 'Interviewsituation: ein Mann auf einem Hocker, Tonangel und Monitore im Vordergrund', x: 4,  y: 35, w: 44, ar: '2 / 3',  z: 4 },
+  { img: '/images/bts/bts-08.jpg', alt: 'Kamera mit zwei Monitoren, Hände am Stativkopf',                                      x: 70, y: 36, w: 30, ar: '3 / 4', z: 1 },
+  { img: '/images/bts/bts-03.jpg', alt: 'Kameramann mit Easyrig in einem hellen Wohnraum',                                     x: 46, y: 56, w: 33, ar: '1 / 1',  z: 6 },
 ];
 
-// Vier Plätze: die ersten beiden echt, die letzten beiden noch Unsplash.
-// team-01 und team-02 liegen im Querformat und werden hochkant beschnitten
-// — mittig geprüft, beide Personen sitzen sauber im Ausschnitt.
-// OFFEN: Namen und Rollen sowie zwei echte Porträts für Platz 3 und 4.
-// pos verschiebt den Bildausschnitt: Bei team-02 steht die Person rechts im
-// Querformat, ein mittiger Beschnitt hätte sie an den Rand gedrängt.
-// 70 % ist ausgemessen, nicht geschätzt.
+// Das Krafthaus am Rheinauhafen. Aus 26 gelieferten Aufnahmen sechs
+// ausgewählt: das Haus im Abendlicht mit dem Kranhaus dahinter, der Blick
+// aus der Drohne, die Fassade, das Schild am Fenster und der Arbeitsplatz.
+// Nicht dabei ist die Aufnahme mit dem Kübel vor dem Eingang — darauf
+// steht das Schild der Schwestermarke, und die wird laut
+// Markenarchitektur nur im Impressum genannt.
+const krafthaus = [
+  { img: '/images/krafthaus/haus-01.jpg', alt: 'Das Krafthaus im Abendlicht, dahinter das Kranhaus am Rheinauhafen',            x: 8,  y: 5,  w: 45, ar: '3 / 2', z: 2 },
+  { img: '/images/krafthaus/haus-02.jpg', alt: 'Arbeitsplatz am Rundbogenfenster: Monitor, Laptop und Schreibtischlampe im Gegenlicht', x: 57, y: 0, w: 34, ar: '3 / 4', z: 3 },
+  // Ganz oben im Stapel, obwohl es mittig liegt: Der Schriftzug sitzt im
+  // unteren Drittel dieser Aufnahme, und genau dort deckte das Luftbild
+  // ihn zu. Es ist das einzige Bild mit unserem Namen am Haus.
+  { img: '/images/krafthaus/haus-03.jpg', alt: 'Schild mit dem Schriftzug Le Werk unter einem Sprossenfenster im Backstein',    x: 34, y: 26, w: 30, ar: '2 / 3', z: 7 },
+  { img: '/images/krafthaus/haus-04.jpg', alt: 'Die Backsteinfassade des Krafthauses unter bewölktem Himmel',                   x: 66, y: 40, w: 34, ar: '3 / 2',  z: 1 },
+  // 3:4 statt 1:1 und schmaler: Die Aufnahme liegt hochkant vor, der
+  // quadratische Beschnitt hat sie in die Breite gezogen und dem Giebel
+  // oben wie unten etwas weggenommen. In ihrem eigenen Format steht sie
+  // aufrecht — dafür ist sie von 40 auf 36 Prozent Breite zurückgesetzt,
+  // sonst liefe sie unten aus der Fläche.
+  { img: '/images/krafthaus/haus-05.jpg', alt: 'Giebel aus gelbem Backstein mit Sprossenfenstern vor blauem Himmel mit Wolken', x: 5,  y: 42, w: 36, ar: '3 / 4', z: 4 },
+  { img: '/images/krafthaus/haus-06.jpg', alt: 'Luftaufnahme des Krafthauses und der umliegenden Dächer im Rheinauhafen',       x: 38, y: 61, w: 36, ar: '16 / 9', z: 6 },
+];
+
+// Vier Plätze, alle vier echt. Sie liegen als fertiges Quadrat vor
+// (700 × 700): Der Zuschnitt steckt in der Datei und nicht im CSS, weil
+// die Aufnahmen quer oder hoch sind und die Personen klein im Raum
+// zeigen — ein Beschnitt per object-fit hätte sie nur verschoben, nicht
+// näher herangeholt. Die Originale liegen unter quellbilder/team.
+// OFFEN: die Rollen. Die Namen stehen, die Zeile darunter ist noch leer.
 const team = [
-  { img: '/images/team-02.jpg', name: 'Name folgt', role: 'Rolle folgt', pos: '70% center', alt: 'Porträt im Studio' },
-  { img: '/images/team-01.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Porträt, sitzend im Studio' },
-  { img: '/images/team-03.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Platzhalter-Porträt' },
-  { img: '/images/team-04.jpg', name: 'Name folgt', role: 'Rolle folgt', alt: 'Platzhalter-Porträt' },
+  { img: '/images/team/philipp-maxhofer.jpg', name: 'Philipp Maxhofer', role: 'Rolle folgt', alt: 'Porträt von Philipp Maxhofer im Rollkragenpullover, Studio im Hintergrund' },
+  { img: '/images/team/cem-schuch.jpg', name: 'Cem Schuch', role: 'Rolle folgt', alt: 'Porträt von Cem Schuch, sitzend auf einem Sofa im Studio' },
+  { img: '/images/team/joscha-ortmeier.jpg', name: 'Joscha Ortmeier', role: 'Rolle folgt', alt: 'Porträt von Joscha Ortmeier mit Brille, im Hintergrund ein Bücherregal' },
+  { img: '/images/team/tom-beckers.jpg', name: 'Tom Beckers', role: 'Rolle folgt', alt: 'Porträt von Tom Beckers, sitzend auf demselben Sofa im Studio' },
 ];
 
 // q darf Markup enthalten (Wortmarke), wird unten mit set:html gerendert.
@@ -197,14 +231,14 @@ const faqs = [
       <div class="marquee__track">
         <img
           class="marquee__strip"
-          src={withBase('/images/logokarusell.png')}
+          src={withBase('/images/kunden/logostreifen.png')}
           alt={`Kundenlogos: ${kundenlogos}`}
           width="5000" height="400" loading="lazy" decoding="async"
         />
         <!-- zweite Kopie nur für die Schleife, für Screenreader unsichtbar -->
         <img
           class="marquee__strip"
-          src={withBase('/images/logokarusell.png')}
+          src={withBase('/images/kunden/logostreifen.png')}
           alt="" aria-hidden="true"
           width="5000" height="400" loading="lazy" decoding="async"
         />
@@ -273,8 +307,7 @@ const faqs = [
             <img
               class="team__portrait"
               src={withBase(m.img)} alt={m.alt}
-              style={m.pos ? `object-position:${m.pos}` : undefined}
-              width="800" height="1200" loading="lazy" decoding="async"
+              width="700" height="700" loading="lazy" decoding="async"
             />
             <p class="team__name">{m.name}</p>
             <p class="team__role">{m.role}</p>
@@ -282,24 +315,37 @@ const faqs = [
         ))}
       </ul>
 
-      <!-- … dann der Text über die volle Breite. Er stand vorher klein im
-           Sektionskopf; als breiter Absatz trägt er den Abschnitt. -->
-      <p class="team__manifest" data-reveal>
-        Ein Team, das produziert — keine Account-Ebene, keine Weitergabe an
-        Dritte. Die Leute, mit denen ihr das Konzept besprecht, stehen später
-        auch am Set und sitzen im Schnitt. Vom Studio im Rheinauhafen aus
-        drehen wir in Köln, bundesweit und auf Anfrage international.
-      </p>
+      <!-- … dann zwei Blöcke, in denen der Text von seiner Seite
+           hereinkommt und die Bilder beim Scrollen mitwandern. Der Text
+           von 01 stand vorher als breiter Absatz über die volle Breite;
+           in der schmalen Spalte neben dem Haufen trägt er besser. -->
+      <div class="team__bloecke">
+        <Streublock nr="01" seite="rechts" bilder={bts} label="Blick hinter die Kulissen">
+          <p>
+            Ein Team, das produziert — keine Account-Ebene, keine Weitergabe an
+            Dritte. Die Leute, mit denen ihr das Konzept besprecht, stehen
+            später auch am Set und sitzen im Schnitt. Vom Studio im
+            Rheinauhafen aus drehen wir in Köln, bundesweit und auf Anfrage
+            international.
+          </p>
+        </Streublock>
 
-      <!-- … und zuletzt der Blick hinter die Kulissen, quer und hoch
-           gemischt und auf einer gemeinsamen Unterkante. -->
-      <ul class="bts" aria-label="Blick hinter die Kulissen">
-        {bts.map((b, i) => (
-          <li class="bts__item" data-reveal data-reveal-delay={(i % 3) * 80}>
-            <img src={withBase(b.img)} alt={b.alt} loading="lazy" decoding="async" />
-          </li>
-        ))}
-      </ul>
+        <!-- ENTWURF: Zu den Räumen lagen keine Angaben vor. Der Text sagt
+             deshalb nur, was auf den Bildern zu sehen ist — kein Baujahr,
+             keine Quadratmeter. -->
+        <Streublock nr="02" seite="links" bilder={krafthaus} label="Unsere Räume im Krafthaus" hoehe={0.95}>
+          <p>
+            Unsere Räume liegen im <strong>Krafthaus am Rheinauhafen</strong>:
+            gelber Backstein, Rundbogenfenster, hohe Decken. Hier entstehen
+            Konzept und Schnitt — und wenn ein Set klein genug ist, wird auch
+            hier gedreht.
+          </p>
+          <p>
+            Vor der Tür liegt die Stadt, dahinter der Rhein. Kurze Wege zum
+            nächsten Dreh und kurze Wege zueinander.
+          </p>
+        </Streublock>
+      </div>
     </div>
   </section>
 
@@ -401,10 +447,12 @@ const faqs = [
     align-items: flex-end;
     min-height: 100vh;
     min-height: 100svh;
-    /* Der untere Wert setzt den Text über der Unterkante. 10vh ließen ihn
-       80px über dem Rand sitzen — nur 32px über dem Scroll-Pfeil. Jetzt
-       108px, dadurch steht er freier und ist vom Pfeil abgesetzt. */
-    padding-block: clamp(8rem, 18vh, 12rem) clamp(5rem, 13.5vh, 9rem);
+    /* Der untere Wert setzt den Text über der Unterkante. Er ist zweimal
+       gewachsen: 10vh ließen ihn 80px über dem Rand sitzen und damit fast
+       auf dem Scroll-Pfeil, 13.5vh gaben 108px. Jetzt 17vh — der Satz
+       steht deutlich über der Mitte der unteren Hälfte und lässt mehr
+       Video frei. */
+    padding-block: clamp(8rem, 18vh, 12rem) clamp(6.5rem, 17vh, 11.5rem);
     background: var(--petrol-deep);
     color: var(--on-dark);
     overflow: hidden;
@@ -416,10 +464,11 @@ const faqs = [
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Bewusst ohne Graustufen-/Blend-Filter: Auf einem formatfüllenden
-       Video kosten die richtig Rechenzeit, und das Material ist von sich
-       aus dunkel und petrolstichig. Es bleibt beim Abdunkeln. */
-    filter: brightness(0.82) contrast(1.04);
+    /* Ohne jeden Filter. Er lag zuletzt bei brightness(0.92), davor bei
+       0.82 — beides nahm dem Material Licht, das es nicht hergeben muss.
+       Die Lesbarkeit trägt allein der Verlauf darunter, und der sitzt da,
+       wo die Schrift steht, statt über dem ganzen Bild. Nebenbei fällt
+       damit eine Filterebene über einem formatfüllenden Video weg. */
   }
 
   .hero__media::after { content: ''; position: absolute; inset: 0; }
@@ -427,11 +476,28 @@ const faqs = [
   /* Lesbarkeitsverlauf in neutralem Schwarz statt in Petrol: Ein farbiger
      Verlauf legt sich als Stich über das ganze Material und verfälscht die
      Farben der Aufnahme. Schwarz dunkelt ab, ohne einzufärben.
-     Die Werte sind über mehrere Videoframes gemessen, nicht geschätzt. */
+     Die Werte sind über mehrere Videoframes gemessen, nicht geschätzt.
+
+     Zweimal zurückgenommen, damit mehr vom Video zu sehen ist. Der Fuß
+     lief 0.90 → 0.82 → 0.72, die obere Kante 0.40 → 0.24 → 0.14, die
+     Mitte ist inzwischen ganz offen. Der Verlauf sitzt nur noch dort, wo
+     die Schrift steht. */
   .hero__media::after {
     background:
-      linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 28%, rgba(0, 0, 0, 0.08) 55%, rgba(0, 0, 0, 0.4) 100%),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.22) 45%, rgba(0, 0, 0, 0) 70%);
+      linear-gradient(0deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.32) 24%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.14) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0.1) 42%, rgba(0, 0, 0, 0) 64%);
+  }
+
+  /* Auf schmalen Schirmen steht der Satz sechszeilig statt zweizeilig und
+     reicht damit bis auf 35 % der Höhe hinauf — dort war der Verlauf schon
+     fast offen und der Kontrast fiel auf 2.8:1. Der Verlauf greift hier
+     deshalb höher. Der seitliche fällt weg: Der Satz nimmt die volle
+     Breite ein, eine linke Kante gibt es nicht mehr abzudunkeln. */
+  @media (max-width: 63.999rem) {
+    .hero__media::after {
+      background:
+        linear-gradient(0deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.46) 30%, rgba(0, 0, 0, 0.1) 55%, rgba(0, 0, 0, 0) 72%, rgba(0, 0, 0, 0.12) 100%);
+    }
   }
 
   /* Randabstand wie im Header, damit Text und Logo auf einer Achse sitzen */
@@ -839,20 +905,32 @@ const faqs = [
 
   .team__member { margin: 0; }
 
-  /* 2:3 hoch, weil vier Porträts nebeneinander stehen — vier Querformate
-     in einer Reihe wären flache Streifen. Die beiden echten Aufnahmen
-     liegen quer und werden mittig beschnitten; nachgesehen, beide Personen
-     sitzen sauber im Ausschnitt.
+  /* Quadratisch statt 2:3. Vier hohe Porträts über die volle Breite waren
+     rund 450px hoch und nahmen dem Abschnitt die Ruhe — die Gesichter
+     sollen den Text und das Raster darunter einleiten, nicht mit ihnen
+     konkurrieren. Im Quadrat sind es 220px.
 
-     In Farbe. Der frühere Graustufenfilter hielt die Reihe zusammen,
-     solange echte neben fremden Aufnahmen standen — er kostet aber
-     Wärme, und die ist bei Gesichtern mehr wert als eine glatte Reihe. */
+     Graustufen, Farbe erst bei Hover. Die vier Aufnahmen stammen aus
+     verschiedenen Situationen — Studio, Sofa, Loft — und haben jede einen
+     eigenen Farbstich. Grau bindet sie zu einer Reihe; die Farbe kommt
+     zurück, sobald jemand hinsieht. */
   .team__portrait {
     width: 100%;
-    aspect-ratio: 2 / 3;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: var(--radius);
     margin-bottom: var(--space-2);
+    filter: grayscale(1);
+    transition: filter var(--dur) var(--ease-out);
+  }
+
+  .team__member:hover .team__portrait,
+  .team__member:focus-within .team__portrait { filter: grayscale(0); }
+
+  /* Ohne Zeigegerät gäbe es die Farbe nie zu sehen — auf dem Handy stehen
+     die Porträts deshalb von vornherein farbig. */
+  @media (hover: none) {
+    .team__portrait { filter: none; }
   }
 
   .team__name {
@@ -866,69 +944,13 @@ const faqs = [
     color: var(--on-dark-muted);
   }
 
-  /* Breiter Absatz über die volle Spaltenbreite. Kein max-width in ch:
-     Der Satz soll die Fläche einnehmen. Weil der Grad mitwächst, bleibt
-     die Zeilenlänge trotzdem im lesbaren Bereich — gemessen rund 60
-     Zeichen je Zeile statt der 90, die derselbe Text in Fließtextgröße
-     über diese Breite ergäbe. */
-  .team__manifest {
-    margin-top: clamp(2.5rem, 6vw, 4.5rem);
-    font-size: clamp(1.25rem, 2.6vw, 2.125rem);
-    line-height: 1.32;
-    letter-spacing: -0.015em;
-    color: var(--on-dark);
-    text-wrap: pretty;
-  }
-
-  /* Blick hinter die Kulissen. Dreispaltiges Raster, in dem die mittlere
-     Reihe hoch steht und die äußeren quer liegen — dadurch bekommt der
-     Block eine Mitte, statt gleichförmig durchzulaufen. Die Reihenfolge im
-     Datenfeld bestimmt die Zuordnung: 1–3 quer, 4–6 hoch, 7–9 quer.
-
-     In Farbe. Es sind echte Aufnahmen von der Arbeit, und Licht, Set und
-     Ausstattung sind genau das, was sie zeigen sollen. Bei Hover bleibt
-     nur die leichte Vergrößerung. */
-  .bts {
+  /* Die beiden Streublöcke stehen mit Abstand untereinander und mit
+     Abstand zu den Porträts darüber. Der Rest steckt in
+     src/components/Streublock.astro. */
+  .team__bloecke {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(0.5rem, 1.4vw, 1rem);
-    margin-top: clamp(2.5rem, 6vw, 4.5rem);
-    list-style: none;
-    padding: 0;
-  }
-
-  .bts__item {
-    margin: 0;
-    overflow: hidden;
-    border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.06);
-  }
-
-  .bts img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
-    transition: transform 700ms var(--ease-out);
-  }
-
-  .bts__item:hover img { transform: scale(1.04); }
-
-  /* Unterhalb der Dreispaltigkeit greift die Reihenlogik nicht: Bei zwei
-     Spalten landen quer und hoch in derselben Zeile, das quere Bild wird
-     auf die Zeilenhöhe gestreckt und hart beschnitten. Deshalb hier alle
-     quadratisch — und das neunte über beide Spalten, sonst bleibt es
-     allein in der letzten Zeile stehen. */
-  @media (max-width: 63.999rem) {
-    .bts img { aspect-ratio: 1 / 1; }
-    .bts__item:last-child { grid-column: 1 / -1; }
-    .bts__item:last-child img { aspect-ratio: 2 / 1; }
-  }
-
-  /* Ab drei Spalten steht die mittlere Reihe hoch */
-  @media (min-width: 64rem) {
-    .bts__item:nth-child(n + 4):nth-child(-n + 6) img { aspect-ratio: 2 / 3; }
+    gap: clamp(4rem, 10vw, 8rem);
+    margin-top: clamp(3.5rem, 8vw, 6rem);
   }
 
   /* ── 10 · FAQ ─────────────────────────────────────────────────────────── */
@@ -998,7 +1020,16 @@ const faqs = [
   @media (min-width: 48rem) {
     .statement__text { text-wrap: balance; }
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .team__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    /* Vier Quadrate, aber nicht über die volle Breite: Bei 1320px Container
+       wären es 300px je Porträt und damit wieder ein Bildblock. Gedeckelt
+       bleiben rund 220px — eine Reihe Gesichter, keine Wand. Der freie
+       Platz rechts ist gewollt, der Text darunter läuft dagegen voll
+       durch. */
+    .team__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      max-width: 62rem;
+    }
     .hero__cue { display: inline-flex; }
   }
 
@@ -1058,7 +1089,6 @@ const faqs = [
 
     /* Ab hier drei Spalten wie in der Referenz. Darunter zwei, damit die
        Bilder auf dem Handy nicht zu Briefmarken werden. */
-    .bts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
     .faq__grid { grid-template-columns: 0.8fr 1.2fr; gap: clamp(3rem, 6vw, 6rem); }
     .faq__head { position: sticky; top: 7rem; }

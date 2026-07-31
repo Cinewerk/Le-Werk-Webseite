@@ -4,40 +4,60 @@ Diese Notiz lag früher als `public/images/README.md` im Projekt und wurde
 damit selbst mit ausgeliefert — interne Dokumentation war unter
 `/images/README.md` öffentlich abrufbar. Deshalb liegt sie jetzt in `docs/`.
 
-Alle Bilder in `public/images/` werden unter `/images/<dateiname>`
-ausgeliefert, z. B. `public/images/hero.jpg` → `<img src="/images/hero.jpg">`.
+Alle Bilder in `public/images/` werden unter `/images/<pfad>`
+ausgeliefert, z. B. `public/images/team/cem-schuch.jpg` →
+`<img src="/images/team/cem-schuch.jpg">`.
+
+## Die Ordner
+
+Jede Datei liegt in einem Ordner — lose Bilder gibt es keine mehr. Der
+Ordnername sagt, wozu die Bilder gehören:
+
+| Ordner | Inhalt | Wo es erscheint |
+|---|---|---|
+| `bts/` | neun Setfotos, sechs davon im Einsatz | Team, Streublock 01 |
+| `krafthaus/` | sechs Aufnahmen unserer Räume | Team, Streublock 02 |
+| `team/` | vier Porträts, nach Personen benannt | Team, Porträtreihe |
+| `work/` | fünf Vorschaubilder der Projekte | Featured Work |
+| `street-one/` | Fallstudie samt Video-Standbildern | `/arbeiten/street-one-…` |
+| `siemens/`, `allianz/` | nur Video-Standbilder | die beiden Videoseiten |
+| `formel-d/`, `revitive/` | die beiden Fotostrecken | die beiden Galerieseiten |
+| `services/` | vier Motive der Disziplinen | Startseite und `/services` |
+| `kunden/` | der Logostreifen der Trustbar | Startseite |
+
+**Die Team-Dateien heißen nach den Personen**, nicht nach Nummern:
+`philipp-maxhofer.jpg`, `cem-schuch.jpg`, `joscha-ortmeier.jpg`,
+`tom-beckers.jpg`. Vorher hießen sie `team-01` bis `team-04` und die
+Nummern liefen der Reihenfolge auf der Seite nicht parallel — Platz 1
+zeigte `team-02`. Diese Stolperfalle ist damit weg.
 
 ## Eigenes Bild einsetzen
 
-Datei mit **exakt dem Namen** in `public/images/` ablegen, den das Bild
-ersetzen soll — im
-Code muss dann nichts geändert werden. Das alte Bild wird dabei überschrieben;
-die Platzhalter liegen in der Git-Historie und sind nicht verloren.
+Datei mit **exakt demselben Pfad und Namen** ablegen, den das Bild
+ersetzen soll — im Code muss dann nichts geändert werden. Das alte Bild
+wird dabei überschrieben; es liegt in der Git-Historie und ist nicht
+verloren.
 
-Die Bühne der Startseite ist inzwischen ein Video, siehe Abschnitt unten.
+**Als JPEG, nicht als PNG.** PNG ist für Fotos das falsche Format: Eine
+Aufnahme, die als JPEG 139 KB wog, kam als PNG auf 296 KB — bei einem
+Viertel der Pixel. Für Fotos JPEG, Qualität 60 bis 62; PNG nur für
+Grafiken mit Flächen und Transparenz, wie den Logostreifen.
 
-| Datei | Wo es erscheint | Format | Status |
-|---|---|---|---|
-| `bts/bts-01.jpg` – `bts-09.jpg` | Team, Raster hinter den Kulissen | 3:2 quer / 2:3 hoch | **echt** |
-| `team-02.jpg` | Team, Porträt 1 | quer, hochkant beschnitten | **echt** |
-| `team-01.jpg` | Team, Porträt 2 | quer, hochkant beschnitten | **echt** |
-| `team-03.jpg`, `team-04.jpg` | Team, Porträt 3 und 4 | 2:3 hoch | Platzhalter |
-| `hero.jpg` | — | quer | **ungenutzt** |
-| `about.jpg` | — | quer | **ungenutzt** (Über-uns-Sektion entfallen) |
-| `quote-01.jpg` – `quote-03.jpg` | — | quadratisch | **ungenutzt** (Stimmen-Sektion entfallen) |
-| `work/siemens.webp` | Featured Work, breite Kachel links oben | 16:9 | **echt** |
-| `work/allianz.webp` | Featured Work, Hochformat rechts oben | 9:16 | **echt** |
-| `work/street-one.webp` | Featured Work, Hochformat Reihe zwei | 9:16 | **echt** |
-| `work/formel-d.jpg` | Featured Work, Querformat Reihe zwei | 3:2 | **echt** |
-| `work/revitive.jpg` | Featured Work, Querformat Schluss | 3:2 | **echt** |
-| `service-foto.jpg` | Karte „Foto" | 4:3 | Platzhalter |
-| `service-video.jpg` | Kasten „Video" (Startseite) und Karte auf `/services` | 4:5 | **echt** (aus `social_media.jpeg`) |
-| `service-konzept.jpg` | Karte „Konzept" | 4:3 | Platzhalter |
-| `service-workshops.jpg` | Karte „Workshops", nur auf `/services` | 4:3 | Platzhalter |
-| `logokarusell.png` | Kundenlogos in der Trustbar | ein durchgehender Streifen, 5000 × 400 | **echt** |
+Die Bühne der Startseite ist ein Video, siehe Abschnitt unten.
 
-Die verbliebenen Platzhalter stammen von Unsplash und sind nur zur Ansicht
-gedacht.
+### Was noch Platzhalter ist
+
+| Datei | Wo es erscheint | Status |
+|---|---|---|
+| `services/foto.jpg` | Karte „Foto" | Platzhalter (Unsplash) |
+| `services/konzept.jpg` | Karte „Konzept" | Platzhalter (Unsplash) |
+| `services/workshops.jpg` | Karte „Workshops", nur auf `/services` | Platzhalter (Unsplash) |
+| `services/video.jpg` | Kasten „Video" und Karte auf `/services` | **echt** (aus `social_media.jpeg`) |
+
+Alles andere ist echtes Material. Gelöscht wurden `hero.jpg`, `about.jpg`
+und `quote-01.jpg` bis `quote-03.jpg`: Sie gehörten zu Abschnitten, die es
+nicht mehr gibt, wurden von nichts mehr referenziert und lagen als rund
+460 KB tote Fracht im Deploy. In der Git-Historie sind sie erhalten.
 
 ## Originale und Webfassungen
 
@@ -53,7 +73,7 @@ Querformate 1100 px breit, Hochformate 760 px hoch, JPEG-Qualität 72 —
 das reicht für die tatsächlichen Anzeigegrößen samt Retina und hält die
 neun BTS-Bilder zusammen bei rund 1 MB.
 
-Ebenfalls dort: `social_media.jpeg`, das Original für `service-video.jpg`
+Ebenfalls dort: `social_media.jpeg`, das Original für `services/video.jpg`
 (1100 × 1375, 174 KB) — den großen Kasten „Video" im Abschnitt „Was wir
 machen", der die volle Höhe der beiden rechten Kästen füllt und deshalb
 mehr Pixel braucht als eine normale Kachel.
@@ -151,7 +171,44 @@ ein Untertitel mit im Bild — auf einer Seite, die genau davon handelt,
 passt das; bei anderen Filmen kann es stören. Ein eigenes Standbild
 einfach unter derselben ID ablegen, dann gilt das.
 
-## Das BTS-Raster
+## Die Streublöcke im Team-Abschnitt
+
+Unter den Porträts stehen zwei Blöcke, in denen der Text von seiner Seite
+hereinkommt und die Bilder beim Scrollen unterschiedlich schnell wandern:
+
+| Block | Text | Bilder |
+|---|---|---|
+| 01 | links | sechs Setfotos aus `bts/` |
+| 02 | rechts | sechs Aufnahmen aus `krafthaus/` |
+
+**Warum sechs und nicht mehr:** Die Anordnung ist an der Referenz
+nachgemessen. Dort überlappen sich sechs Bilder kräftig, die Größen
+reichen von 30 bis 45 Prozent der Breite, und die Fläche steht hochkant
+(1 : 1,1). Eine erste Fassung mit sieben weiter auseinanderliegenden
+Bildern las sich als Collage statt als Stapel.
+
+Die Anordnung steckt in `src/pages/index.astro` bei den Feldern `bts` und
+`krafthaus`. Jedes Bild trägt fünf Werte:
+
+- **`x`, `y`, `w`** — Position und Breite in Prozent der Haufenfläche.
+  Weil alles in Prozent liegt, skaliert der Haufen mit der Spaltenbreite,
+  statt bei jeder Fenstergröße neu zu zerfallen.
+- **`ar`** — das Seitenverhältnis des Ausschnitts.
+- **`v`** — wie weit das Stück beim Scrollen wandert, in Pixeln über den
+  ganzen Durchlauf. Das Vorzeichen bestimmt die Richtung; genau daraus
+  entsteht der lose Eindruck.
+- **`z`** — die Stapelreihenfolge.
+
+**Beim Umsortieren mitrechnen:** `y` plus die aus `w` und `ar` folgende
+Höhe muss unter 100 bleiben, sonst hängt ein Stück unten heraus. Die
+Fläche selbst ist über `hoehe` je Block einstellbar — Block 02 steht auf
+0.72, weil vier Bilder weniger Platz füllen als sieben.
+
+Unterhalb von 64 rem wird aus dem Haufen ein normales zweispaltiges
+Raster: Überlappende, absolut gesetzte Bilder werden auf einem Telefon zu
+Briefmarken, die sich gegenseitig verdecken.
+
+## Das frühere BTS-Raster
 
 Neun von zwanzig gelieferten Aufnahmen. Die Auswahl folgt dem Ablauf einer
 Produktion, nicht der Reihenfolge im Ordner:
@@ -172,13 +229,40 @@ Aussortiert wurden Motive ohne Produktionsbezug (Straßen-, Reise- und
 Architekturaufnahmen) sowie Situationen, die eine andere Aufnahme bereits
 besser zeigte.
 
-**Die Reihenfolge trägt das Layout:** Ab 64 rem stehen drei Spalten, die
-Bilder 4 bis 6 bilden die hohe Mittelreihe. Wer die Reihenfolge im
-`bts`-Array in `src/pages/index.astro` ändert, verschiebt damit auch, welche
-Bilder hochkant beschnitten werden. Darunter sind es zwei Spalten mit
-quadratischem Beschnitt, das neunte Bild läuft über beide.
+**Sechs davon liegen im Streublock**, siehe oben: `bts-01`, `-02`, `-03`,
+`-04`, `-06` und `-08`. Die übrigen drei bleiben liegen — sie kosten
+nichts und stehen für einen Austausch bereit.
+
+### Die Auswahl im Krafthaus-Block
+
+Aus 26 gelieferten Aufnahmen sechs ausgewählt, alle unter
+`quellbilder/krafthaus/neu/`:
+
+| Web | Quelle | Motiv |
+|---|---|---|
+| `haus-01.jpg` | `Krafthaus.jpg` | Das Haus im Abendlicht, dahinter das Kranhaus |
+| `haus-02.jpg` | `krafthaus-hafenhistorie-3-…` | Arbeitsplatz am Rundbogenfenster |
+| `haus-03.jpg` | `IMG_8042 (2).jpg` | Das Schild „Le Werk" am Fenster |
+| `haus-04.jpg` | `Das-Krafthaus-Koeln-2.jpg` | Fassade unter bewölktem Himmel |
+| `haus-05.jpg` | `office.jpeg` | Giebel vor blauem Himmel |
+| `haus-06.jpg` | `Krafthaus_Drohne_bereinigt.jpg` | Luftaufnahme |
+
+`haus-02` ist die einzige Innenaufnahme und stammt noch aus der ersten
+Lieferung — die neuen 26 zeigen ausschließlich das Gebäude von außen.
+
+**Nicht verwendet: `IMG_8031 (2).jpg`.** Darauf steht das Schild der
+Schwestermarke auf dem Pflanzkübel vor dem Eingang, gut lesbar. Laut
+Markenarchitektur wird sie ausschließlich im Impressum genannt. Beim
+Nachlegen weiterer Aufnahmen lohnt der Blick auf Schilder und Kübel.
+
+`haus-03` liegt bewusst ganz oben im Stapel, obwohl es mittig sitzt: Der
+Schriftzug steht im unteren Drittel der Aufnahme, und genau dort deckte
+ihn das Luftbild zu.
 
 ## Kundenlogos ersetzen
+
+Die Datei ist `kunden/logostreifen.png` — der einzige Ort im Projekt, an
+dem PNG richtig ist: Flächen, harte Kanten, Transparenz.
 
 Die Trustbar zeigt **einen** Streifen, nicht einzelne Dateien. Für die
 Endlosschleife läuft er zweimal hintereinander und wandert um genau eine
@@ -196,29 +280,48 @@ die Breite folgt automatisch dem Seitenverhältnis.
 
 ## Team-Porträts
 
-Vier Plätze, davon zwei echt:
+Vier Plätze, **alle vier echt**. Die Originale liegen in
+`quellbilder/team/`:
 
-- **Platz 1 und 2** (`team-02.jpg`, `team-01.jpg`) sind echte Aufnahmen. Sie
-  liegen im Querformat und werden hochkant beschnitten — beide Personen
-  sitzen im mittigen 2:3-Ausschnitt sauber, das wurde nachgesehen.
-- **Platz 3 und 4** (`team-03.jpg`, `team-04.jpg`) sind noch Unsplash und
-  zeigen nicht das Team.
+| Platz | Person | Web | Original |
+|---|---|---|---|
+| 1 | Philipp Maxhofer | `team/philipp-maxhofer.jpg` | aus der ersten Lieferung |
+| 2 | Cem Schuch | `team/cem-schuch.jpg` | aus der ersten Lieferung |
+| 3 | Joscha Ortmeier | `team/joscha-ortmeier.jpg` | `Joscha_Team.JPG` |
+| 4 | Tom Beckers | `team/tom-beckers.jpg` | `Tom_Beckers.jpg` |
+
+Maßgeblich für die Reihenfolge auf der Seite ist das `team`-Feld in
+`src/pages/index.astro`, nicht die alphabetische Ordnung der Dateien.
+
+Platz 2 und 4 sind auf demselben Sofa im Studio entstanden — das hält die
+Reihe zusammen.
+
+**Graustufen, Farbe erst bei Hover.** Die Aufnahmen stammen aus
+verschiedenen Situationen — Studio, Sofa, Loft — und haben jede einen
+eigenen Farbstich; grau bindet sie zu einer Reihe. Ohne Zeigegerät
+(`hover: none`) stehen sie von vornherein farbig, sonst gäbe es die Farbe
+auf dem Handy nie zu sehen.
 
 Unter allen vier steht „Name folgt / Rolle folgt" — die Namen fehlen also
 noch komplett.
 
-Zum Ersetzen: Porträts im Verhältnis 2:3 (etwa 800 × 1200) unter denselben
-Namen ablegen, dann Namen und Rollen im `team`-Array in
-`src/pages/index.astro` eintragen. Die Reihenfolge im Array bestimmt die
-Reihenfolge auf der Seite.
+**Alle vier liegen als fertiges Quadrat vor, 700 × 700.** Der Zuschnitt
+steckt in der Datei und nicht im CSS: Die beiden echten Aufnahmen sind
+quer und zeigen die Personen klein im Raum, ein Beschnitt per `object-fit`
+hätte sie nur verschoben statt näher herangeholt. Die ursprünglichen
+Querformate (1400 × 933) liegen in der Git-Historie.
 
-Porträts und BTS-Raster stehen in Farbe. Ein Graustufenfilter lag zwischen‑
-zeitlich auf beiden und hielt die Reihe zusammen, solange echte neben
-fremden Aufnahmen standen — er kostet aber Wärme, und die zählt bei
-Gesichtern und Setfotos mehr als eine glatte Reihe.
+Zum Ersetzen: Quadrate mit etwa 700 × 700 unter denselben Namen ablegen,
+dann Namen und Rollen im `team`-Array in `src/pages/index.astro`
+eintragen. Die Reihenfolge im Array bestimmt die Reihenfolge auf der
+Seite. Wer eine Aufnahme im Hochformat liefert, schneidet sie besser
+selbst quadratisch zu — ein Beschnitt per CSS würde die Person nur
+verschieben, nicht näher heranholen.
 
-Für Platz 3 und 4 heißt das: Die beiden Unsplash-Bilder fallen jetzt
-deutlicher auf. Das ist gewollt, es macht die Lücke sichtbar.
+Die Setfotos im Streublock stehen in Farbe, die Porträts in Graustufen —
+siehe oben. Der Filter lag zwischenzeitlich auf beiden und war einmal
+komplett entfernt; bei den Porträts ist er zurück, weil vier Aufnahmen aus
+vier Situationen sonst vier Farbstiche in eine Reihe bringen.
 
 ## Bühnenvideo
 
