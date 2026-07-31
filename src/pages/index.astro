@@ -1042,15 +1042,19 @@ const faqs = [
     .statement__text { text-wrap: balance; }
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-    /* Vier Quadrate, aber nicht über die volle Breite: Bei 1320px Container
-       wären es 300px je Porträt und damit wieder ein Bildblock. Gedeckelt
-       bleiben rund 220px — eine Reihe Gesichter, keine Wand. Der freie
-       Platz rechts ist gewollt, der Text darunter läuft dagegen voll
-       durch. */
-    .team__grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      max-width: 62rem;
-    }
+    /* Vier Quadrate über die volle Breite.
+
+       Hier stand eine Deckelung auf 62rem, damit die Porträts rund 220px
+       statt 300px groß blieben — eine Reihe Gesichter, keine Wand. Die
+       Rechnung ging nicht auf: 62rem sind ein fester Wert, der Container
+       wächst mit dem Fenster. Bei 1100px Fensterbreite fehlten der Reihe
+       49px zur rechten Kante, bei 1457px schon 390. Auf schmalen Schirmen
+       unsichtbar, auf breiten ein Versatz, der wie ein Fehler aussieht —
+       zumal der Bildhaufen direkt darunter voll durchläuft.
+
+       Lieber vier größere Gesichter als eine Reihe, die je nach Bildschirm
+       woanders aufhört. */
+    .team__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .hero__cue { display: inline-flex; }
   }
 
