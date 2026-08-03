@@ -47,6 +47,25 @@ import { withBase } from '../lib/paths';
 //
 // Wo es eine deutsche Fassung gibt, steht sie hier — siemens.de leitet
 // sauber auf siemens.com/de-de.
+// Bezugskasten für die Leiste: 94px breit, 40px hoch. Der Wert steht hier
+// und in .marquee als --logo-breite; das Verhältnis 2.35 verbindet beide.
+const LOGO_VERHAELTNIS = 94 / 40;
+
+// Wie breit ein Logo im Verhältnis zur vollen Kastenbreite läuft. Breite
+// Wortmarken bekommen die ganze Breite, hohe Bildmarken so viel, wie ihre
+// Höhe zulässt.
+//
+// Gerechnet statt eingetragen, damit der Wert beim Austausch einer Datei
+// nicht veraltet — er hängt nur an b und h.
+//
+// Warum überhaupt je Logo: Eine feste Kastenbreite für alle sah aus wie
+// unterschiedliche Abstände. Ein schmales Logo saß mittig in einem 94px
+// breiten Kasten und brachte bis zu 55px Leerraum mit, der sich zur Lücke
+// addierte — gemessen zwischen 38px und 87px. Und der naheliegende Weg
+// über max-width geht nicht: Bindet max-width, rechnet der Browser die
+// Höhe nicht zurück, die Wortmarken werden auf volle Kastenhöhe gezogen.
+const logoBreite = (k) => Math.min(1, k.b / k.h / LOGO_VERHAELTNIS).toFixed(4);
+
 const kunden = [
   { datei: 'siemens',     name: 'Siemens',                      url: 'https://www.siemens.de/',          b: 330, h:  51 },
   { datei: 'street-one',  name: 'Street One',                   url: 'https://www.street-one.de/',       b: 330, h:  48 },
@@ -372,6 +391,7 @@ const faqs = [
                   src={withBase(`/images/kunden/${k.datei}.png`)}
                   alt={kopie ? '' : k.name}
                   width={k.b} height={k.h} loading="lazy" decoding="async"
+                  style={`--b: ${logoBreite(k)}`}
                 />
               </a>
             </li>
@@ -690,6 +710,11 @@ const faqs = [
   .trust .marquee { margin-top: clamp(1.5rem, 3vw, 2.5rem); }
 
   .marquee {
+    /* Die volle Kastenbreite. Alles andere in der Leiste hängt daran: die
+       Logobreite über den Faktor --b je Marke, die Kastenhöhe über das
+       Verhältnis 2.35. Beide Werte stehen auch im Frontmatter, dort als
+       LOGO_VERHAELTNIS. */
+    --logo-breite: clamp(3.7rem, 5.85vw, 5.25rem);
     position: relative;
     overflow: hidden;
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
@@ -708,10 +733,11 @@ const faqs = [
        deshalb im Logo, siehe .marquee__logo. */
     gap: 0;
     width: max-content;
-    /* 33s statt 40: Der frühere Streifen lief 1600px in 40s, also 40px in
-       der Sekunde. Eine Runde misst jetzt 1320px — bei gleicher
-       Geschwindigkeit sind das 33s. */
-    animation: marquee 33s linear infinite;
+    /* 26s statt 40: Der frühere Streifen lief 1600px in 40s, also 40px in
+       der Sekunde. Eine Runde misst jetzt 1042px — bei gleicher
+       Geschwindigkeit sind das 26s. Wer ein Logo ergänzt, muss den Wert
+       nachziehen, sonst läuft die Leiste schneller. */
+    animation: marquee 26s linear infinite;
     will-change: transform;
   }
 
@@ -723,28 +749,25 @@ const faqs = [
     to   { transform: translate3d(-50%, 0, 0); }
   }
 
-  /* Der Kasten, in dem jedes Logo steht: gleiche Breite, gleiche Höhe,
-     gleicher Abstand. Die Maße sind am früheren Streifen abgenommen. Dort
-     standen die Wortmarken zwischen 80 und 120px breit — Siemens bei 80,
-     Douglas bei 90, Street One und Seven.One bei 118 — und zwischen zwei
-     Logos lagen 38px.
+  /* Die Kachel ist so breit wie ihr Logo plus zweimal Polsterung — keine
+     feste Breite. Damit steht zwischen zwei Logos immer derselbe Abstand
+     von 37px.
 
-     Der Kasten war zuerst 148 x 54 und damit deutlich zu groß: Die
-     Wortmarken kamen auf 111px statt der 80 bis 118 von vorher, und vor
-     allem standen vier Bildmarken auf voller Höhe, wo der frühere Streifen
-     nur eine hatte. Über 142 x 44 steht er jetzt bei 132 x 40 — damit liegt
-     Siemens bei 94 x 15 gegen 80 x 15 früher.
+     Mit fester Breite war das nicht so. Ein schmales Logo saß dann mittig
+     in einem 94px breiten Kasten und brachte bis zu 55px Leerraum mit, der
+     sich zur Lücke addierte — gemessen lagen die sichtbaren Abstände
+     zwischen 38px (Siemens neben Street One) und 87px (EA neben Formel D).
+     Zwei Wortmarken standen doppelt so eng wie zwei Bildmarken.
 
-     Die feste Breite ist auch die Rechnung für die Schleife: zehn Kästen zu
-     132px sind 1320px je Runde, und genau um diese Strecke wandert der
-     Track. */
+     Die Größe selbst kommt aus --logo-breite an .marquee und war zuerst
+     deutlich zu groß: Bei einem Kasten von 148 x 54 kamen die Wortmarken
+     auf 111px, und vier Bildmarken standen auf voller Höhe, wo der frühere
+     Streifen nur eine hatte. Über 142 x 44 und 132 x 40 steht sie jetzt bei
+     84 x 36 — Siemens läuft damit 84px breit gegen 80px im alten
+     Streifen. */
   .marquee__logo {
     flex: none;
     display: flex;
-    /* Außenmaß, nicht Logobreite: box-sizing steht global auf border-box,
-       die Polsterung geht also von diesen 132px ab und lässt dem Logo
-       94px. */
-    width: clamp(5.25rem, 9.15vw, 8.25rem);
     padding-inline: clamp(0.75rem, 1.3vw, 1.1875rem);
   }
 
@@ -765,9 +788,9 @@ const faqs = [
      Grund: Ein Ziel von 104 x 44px ist knapp, und die Leiste bewegt sich.
      Deshalb hält sie beim Überfahren an, siehe .marquee__track. */
   .marquee__link {
-    display: block;
-    width: 100%;
-    height: clamp(1.75rem, 2.75vw, 2.5rem);
+    display: flex;
+    align-items: center;
+    height: calc(var(--logo-breite) / 2.35);
   }
 
   /* Die Trustbar liegt auf Weiß, deshalb Petrol und nicht currentColor —
@@ -778,19 +801,24 @@ const faqs = [
     border-radius: 2px;
   }
 
-  /* Das Bild füllt den Kasten, contain hält das Seitenverhältnis und
-     zentriert. Damit stößt jede Marke an das Maß, das für sie bindet —
-     breite Wortmarken an die Breite, hohe Bildmarken an die Höhe. Auf
-     gleiche Höhe gebracht wären die Wortmarken dreimal so schwer.
+  /* Die Breite kommt je Marke aus --b, die Höhe folgt dem
+     Seitenverhältnis. Breite Wortmarken bekommen die volle Kastenbreite,
+     hohe Bildmarken so viel, wie ihre Höhe zulässt — auf gleiche Höhe
+     gebracht wären die Wortmarken dreimal so schwer.
+
+     Die feste Breite ist Bedingung, nicht Kosmetik: Stehen Breite und Höhe
+     beide auf auto, hat ein Bild mit loading="lazy" vor dem Laden keine
+     Größe, kommt damit nie in die Nähe des Sichtfelds und lädt nie. Die
+     Leiste bleibt leer. Mit fester Breite steht die Fläche von Anfang an —
+     das Seitenverhältnis liefern die width- und height-Attribute.
 
      Kein Farbfilter: Die Logos sind schwarz, weil die Dateien schwarz sind.
      Formel D kam türkis und wurde umgefärbt — nachgemessen liegt die
      Deckfarbe jetzt bei allen zehn zwischen 0 und 32 von 255. Details in
      docs/bildmaterial.md. */
   .marquee__logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    width: calc(var(--b, 1) * var(--logo-breite));
+    height: auto;
     opacity: 0.72;
     transition: opacity var(--dur) var(--ease-out);
   }
@@ -1185,10 +1213,15 @@ const faqs = [
 
      Der obere Abstand ist von 3,5/8vw/6rem auf 5,5/11vw/8rem erhöht. Das
      ist kein Geschmack, sondern Platzbedarf: Am Anfang der Animation
-     stehen die Stücke auseinander, das oberste ragt dabei rund 105px über
-     die Haufenfläche hinaus. Mit dem alten Abstand blieben nur 96px bis
-     zur Porträtreihe — das obere Stück wäre beim Hereinscrollen kurz in
-     die Gesichter gelaufen. */
+     stehen die Stücke auseinander, das oberste ragt dabei 98px über die
+     Haufenfläche hinaus. Mit dem alten Abstand blieben nur 96px bis zur
+     Porträtreihe — das obere Stück wäre beim Hereinscrollen kurz in die
+     Gesichter gelaufen. Jetzt sind es 128px.
+
+     Der Überstand lag zwischenzeitlich bei 105px und ist gesunken, weil
+     die Haufenfläche seither auf die Bilder eingepasst wird: Der Streuweg
+     rechnet sich aus der Lage zur Flächenmitte, und die sitzt in einer
+     eng anliegenden Fläche näher an den Stücken. */
   .team__bloecke {
     display: grid;
     gap: clamp(4rem, 10vw, 8rem);

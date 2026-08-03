@@ -294,10 +294,18 @@ Die Anordnung steckt in `src/pages/index.astro` bei den Feldern `bts` und
   entsteht der lose Eindruck.
 - **`z`** — die Stapelreihenfolge.
 
-**Beim Umsortieren mitrechnen:** `y` plus die aus `w` und `ar` folgende
-Höhe muss unter 100 bleiben, sonst hängt ein Stück unten heraus. Die
-Fläche selbst ist über `hoehe` je Block einstellbar — Block 02 steht auf
-0.72, weil vier Bilder weniger Platz füllen als sieben.
+**Beim Umsortieren:** `y` plus die aus `w` und `ar` folgende Höhe darf über
+100 hinausgehen — die Fläche wird auf die Bilder eingepasst, nicht
+umgekehrt. `hoehe` je Block ist damit nur noch ein Ausgangswert; die
+tatsächliche Flächenhöhe rechnet `Streublock.astro` aus der Ausdehnung der
+Bilder und rechnet die `y`-Werte in den neuen Bezug um. Die Bilder stehen
+danach an derselben Stelle und in derselben Größe.
+
+Das ist kein Detail für die Fläche, sondern für den Text daneben: Der steht
+mit `align-items: center` mittig zur Fläche. Solange die höher war als das,
+was man sieht, saß er zu tief — bei Block 01 um 55px, weil unter dem
+untersten Bild 109px leer standen. Jetzt liegen beide Mitten exakt
+aufeinander, nachgemessen bei 1440 und 768px.
 
 Unterhalb von 64 rem wird aus dem Haufen ein normales zweispaltiges
 Raster: Überlappende, absolut gesetzte Bilder werden auf einem Telefon zu
@@ -381,32 +389,48 @@ Git-Historie sucht, findet `kunden/logostreifen.png`.
 
 ### Wie die Größe zustande kommt
 
-Jedes Logo steht in einem Kasten von 142 × 44px mit je 19px Polsterung,
-also 104px für das Logo selbst. Darin wächst es so weit, wie sein
-Seitenverhältnis zulässt: Breite Marken stoßen an die Breite, hohe an die
-Höhe.
+Bezugsgröße ist ein gedachter Kasten von 84 × 36px — `--logo-breite` an
+`.marquee`, die Höhe folgt über das Verhältnis 2,35. Jedes Logo wächst
+darin so weit, wie sein Seitenverhältnis zulässt: Breite Marken stoßen an
+die Breite, hohe an die Höhe.
 
 | Logo | Verhältnis | Anzeige | gebunden durch | früher |
 |---|---|---|---|---|
-| Siemens | 6,4 : 1 | 104 × 16 | Breite | 80 × 15 |
-| Street One | 6,9 : 1 | 104 × 15 | Breite | 118 × 19 |
-| Douglas | 5,4 : 1 | 104 × 19 | Breite | 90 × 16 |
-| Allianz | 3,8 : 1 | 104 × 27 | Breite | — |
-| Seven.One | 4,5 : 1 | 104 × 23 | Breite | 118 × 27 |
-| Olympische Spiele | 2,1 : 1 | 94 × 44 | Höhe | — |
-| Paralympisches Komitee | 1,4 : 1 | 60 × 44 | Höhe | — |
-| Formel D | 1,3 : 1 | 58 × 44 | Höhe | — |
-| Zehnder Group | 1,1 : 1 | 49 × 44 | Höhe | 63 × 54 |
-| EA | 1,0 : 1 | 44 × 44 | Höhe | — |
+| Siemens | 6,4 : 1 | 84 × 13 | Breite | 80 × 15 |
+| Street One | 6,9 : 1 | 84 × 12 | Breite | 118 × 19 |
+| Douglas | 5,4 : 1 | 84 × 16 | Breite | 90 × 16 |
+| Allianz | 3,8 : 1 | 84 × 22 | Breite | — |
+| Seven.One | 4,5 : 1 | 84 × 19 | Breite | 118 × 27 |
+| Olympische Spiele | 2,1 : 1 | 76 × 36 | Höhe | — |
+| Paralympisches Komitee | 1,4 : 1 | 49 × 36 | Höhe | — |
+| Formel D | 1,3 : 1 | 47 × 36 | Höhe | — |
+| Zehnder Group | 1,1 : 1 | 40 × 36 | Höhe | 63 × 54 |
+| EA | 1,0 : 1 | 36 × 36 | Höhe | — |
 
 Auf gleiche Höhe gebracht wären die Wortmarken dreimal so schwer wie die
 Bildmarken, auf gleiche Fläche gebracht verschwänden sie.
 
-Die Spalte „früher" ist am Streifenbild aus der Git-Historie abgemessen und
-der Grund für die Maße. Der Kasten war zuerst 148 × 54 und damit zu groß —
-nicht so sehr wegen der Wortmarken, die kamen auf 111 statt 80 bis 118,
-sondern weil vier Bildmarken auf voller Höhe standen, wo der frühere
-Streifen nur eine hatte.
+Die Spalte „früher" ist am Streifenbild aus der Git-Historie abgemessen.
+Der Kasten war zuerst 148 × 54 und damit deutlich zu groß — nicht so sehr
+wegen der Wortmarken, die kamen auf 111 statt 80 bis 118, sondern weil vier
+Bildmarken auf voller Höhe standen, wo der frühere Streifen nur eine hatte.
+Über 142 × 44 und 132 × 40 steht er jetzt bei 84 × 36.
+
+**Die Breite wird je Logo gesetzt, nicht über `max-width`.** Zwei Gründe,
+beide nachgemessen:
+
+- Ein fester Kasten für alle sah aus wie ungleiche Abstände. Ein schmales
+  Logo saß mittig darin und brachte bis zu 55px Leerraum mit, der sich zur
+  Lücke addierte — sichtbar lagen die Abstände zwischen 38px (Siemens neben
+  Street One) und 87px (EA neben Formel D). Jetzt ist die Kachel so breit
+  wie ihr Logo, und der Abstand ist überall 37px.
+- Der naheliegende Weg über `max-width` bei fester Höhe geht nicht: Bindet
+  `max-width`, rechnet der Browser die Höhe nicht zurück. Die Wortmarken
+  werden auf volle Kastenhöhe gezogen und verzerrt.
+
+Der Breitenfaktor steht als `--b` am Bild und wird im Frontmatter aus `b`
+und `h` gerechnet, nicht eingetragen — beim Austausch einer Datei kann er
+so nicht veralten.
 
 ### Was bei der Schleife zu beachten ist
 
@@ -418,7 +442,8 @@ spränge sichtbar.
 
 Kommt ein Logo dazu, wird die Runde länger und die Leiste läuft schneller.
 Die Geschwindigkeit steht als Dauer in `.marquee__track` und ist auf 40px
-in der Sekunde gerechnet: zehn Kästen zu 142px sind 1420px, also 36s.
+in der Sekunde gerechnet — dieselbe wie beim früheren Streifen. Eine Runde
+misst zurzeit 1042px, daher 26s.
 
 ### Die Logos sind verlinkt
 
@@ -433,7 +458,7 @@ Jedes Logo führt auf die Seite des Unternehmens; die Adressen stehen im
   das für Screenreader nicht existiert. Ohne die Angabe stünden zehn stumme
   Links in der Tabreihenfolge.
 - **Die Leiste hält beim Überfahren und beim Fokus an.** Ein Ziel von
-  104 × 44px ist knapp, und es bewegt sich. Die Regel dafür stand schon
+  84 × 36px ist knapp, und es bewegt sich. Die Regel dafür stand schon
   vorher da, ist mit den Links aber keine Nettigkeit mehr, sondern
   Bedingung.
 

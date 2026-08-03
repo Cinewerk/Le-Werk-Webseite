@@ -31,6 +31,38 @@ interface Props {
 
 const { nr, seite, bilder, label, hoehe = 1.1 } = Astro.props;
 
+// Die Fläche wird auf die Bilder eingepasst.
+//
+// hoehe ist ein Vorgabewert und trifft die tatsächliche Ausdehnung der
+// Bilder nicht: Bei den Setfotos reichten sie bis 86,7 % der Flächenhöhe,
+// bei den Räumen bis 91,4 %. Der Rest stand leer — 109px beziehungsweise
+// 61px unter dem untersten Bild.
+//
+// Das fiel nicht in der Fläche auf, sondern daneben: Der Text steht mit
+// align-items: center mittig zur Fläche, und die ist eben höher als das,
+// was man sieht. Bei Block 01 saß er dadurch 55px unter der Bildmitte.
+//
+// Deshalb hier: Ausdehnung der Bilder messen, Flächenhöhe darauf setzen,
+// y-Werte in den neuen Bezug umrechnen. Die Bilder stehen danach an
+// derselben Stelle und in derselben Größe wie vorher — nachgerechnet
+// bleibt die gerenderte Höhe w/verhaeltnis mal Flächenbreite, unabhängig
+// von hoehe. Nur der leere Streifen unten fällt weg.
+const anteilHoehe = (b: Streubild) => {
+  const [za, ne] = b.ar.split('/').map((t) => Number(t.trim()));
+  return b.w / (za / ne) / hoehe;
+};
+
+const oben = Math.min(...bilder.map((b) => b.y));
+const unten = Math.max(...bilder.map((b) => b.y + anteilHoehe(b)));
+const spanne = unten - oben;
+
+// Die eingepasste Flächenhöhe und die umgerechneten Lagen.
+const hoeheEff = Math.round(hoehe * (spanne / 100) * 10000) / 10000;
+const eingepasst = bilder.map((b) => ({
+  ...b,
+  y: Math.round(((b.y - oben) * 100) / spanne * 100) / 100,
+}));
+
 // Wie weit die Stücke beim Eintreten auseinanderliegen — für ein Stück ganz
 // am Rand der Fläche, in Prozent der Haufenbreite. An der Referenz gemessen:
 // Zwischen zwei Frames der Eintrittsphase wanderte das Bild oben links 27px
@@ -56,12 +88,12 @@ const WEITE = 22;
 // Der Streuvektor jedes Stücks, ausgerechnet aus seiner Lage: Mitte des
 // Stücks minus Mitte der Fläche. Damit muss beim Umsortieren niemand
 // Bewegungswerte von Hand pflegen — die Bewegung folgt der Anordnung.
-const gestreut = bilder.map((b) => {
+const gestreut = eingepasst.map((b) => {
   const [za, ne] = b.ar.split('/').map((t) => Number(t.trim()));
   const verhaeltnis = za / ne;
   // Höhe des Stücks in Prozent der Flächenhöhe: erst in Prozent der
   // Breite rechnen, dann durch das Format der Fläche teilen.
-  const hProzent = b.w / verhaeltnis / hoehe;
+  const hProzent = b.w / verhaeltnis / hoeheEff;
   const mx = b.x + b.w / 2;
   const my = b.y + hProzent / 2;
   // Zwei Nachkommastellen: Bei ganzen Zahlen wäre der Sprung zwischen zwei
@@ -82,7 +114,7 @@ const gestreut = bilder.map((b) => {
     <div class="streu__satz"><slot /></div>
   </div>
 
-  <ul class="haufen" aria-label={label} style={`--hoehe:${hoehe}`}>
+  <ul class="haufen" aria-label={label} style={`--hoehe:${hoeheEff}`}>
     {gestreut.map((b) => (
       <li
         class="haufen__stueck"
