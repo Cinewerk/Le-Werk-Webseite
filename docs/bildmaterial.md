@@ -97,10 +97,23 @@ behält davon nur die mittleren 45 % der Breite. Es geht auf, weil die Frau
 fast genau mittig steht, bleibt aber ein Beschnitt aus einem Beschnitt.
 Sobald eine echte 4:5-Fassung aus dem Schnitt vorliegt, gehört sie hierher.
 
-**Das BVB-Standbild dient doppelt**: als Kachel unter `work/` und als
-Standbild der Videoseite unter `bvb-ea-sports/poster/880446770.jpg`. Es ist
-kein Vimeo-Thumbnail — die Seite lädt nichts von einem fremden Server,
+**BVB hat zwei verschiedene Standbilder**, beide aus derselben Einstellung:
+`work/bvb-ea-sports.webp` zeigt eng nur das Gesicht und ist die Kachel auf
+der Startseite, `bvb-ea-sports/poster/880446770.jpg` zeigt weiter — Kopf,
+Schulter, tätowierter Arm — und ist das Standbild der Videoseite. Keines
+ist ein Vimeo-Thumbnail; die Seite lädt nichts von einem fremden Server,
 bevor jemand auf Play drückt.
+
+**Der Dateiname des Posters ist Pflicht**, nicht Geschmack: `Videowand.astro`
+sucht das Standbild unter `<posterordner>/<vimeo-id>.jpg`. Ein Poster, das
+anders heißt, wird stillschweigend nicht geladen — die Kachel bleibt leer.
+Beim Austauschen also den Namen behalten.
+
+**Die gelieferte Fassung des Posters war ein Bildschirmfoto** mit einem
+Mauszeiger unten rechts (599 × 1074, Zeiger bei etwa x 504, y 1049). Die
+hier liegende Datei ist auf 579 × 1030 beschnitten: unten so weit weg, dass
+der Zeiger fehlt, seitlich so weit, dass 9:16 stimmt. Wer das Poster
+ersetzt, sollte auf beides achten.
 
 **Die beiden Reel-Standbilder sind knapp bemessen.** Sie sind nur 540 px
 breit, die Kachel steht auf großen Schirmen 408 px breit — das reicht für
