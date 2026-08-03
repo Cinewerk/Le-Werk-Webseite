@@ -70,20 +70,32 @@ const bts = [
   // darunter zu; dort sind bei diesen Motiven Boden, Tisch und Vordergrund,
   // während Gesichter, Kameras und Monitore oben sitzen. Die z-Werte laufen
   // deshalb streng von oben links nach unten rechts durch.
-  { img: '/images/bts/bts-01.jpg', alt: 'Sechs Personen aus dem Team nebeneinander, jede mit einer Kamera, in einer dunklen Halle', x: 0,  y: 0,  w: 44, ar: '3 / 2',   z: 1 },
-  { img: '/images/bts/bts-02.jpg', alt: 'Frau im Blazer auf einem Hocker vor grauem Studiohintergrund, davor Kamera auf Stativ und eine Tonangel', x: 56, y: 0,  w: 34, ar: '3 / 4',   z: 2 },
-  { img: '/images/bts/bts-07.jpg', alt: 'Zwei Personen an einer Kamera auf dem Körperstativ in einem hellen Studio',                x: 20, y: 20, w: 40, ar: '5 / 4',   z: 3 },
-  { img: '/images/bts/bts-04.jpg', alt: 'Küchenszene: mehrere Arme greifen über eine Arbeitsplatte, darauf eine Kamera mit Monitor', x: 54, y: 36, w: 38, ar: '24 / 17', z: 4 },
-  { img: '/images/bts/bts-09.jpg', alt: 'Zwei Personen an einem Schreibtisch mit Monitor, darüber eine Flächenleuchte',             x: 0,  y: 46, w: 46, ar: '3 / 2',   z: 5 },
-  { img: '/images/bts/bts-03.jpg', alt: 'Zwei Frauen posieren im weißen Studio, daneben filmt eine Person mit Körperstativ',        x: 42, y: 56, w: 34, ar: '4 / 5',   z: 6 },
+  //
+  // WICHTIG BEIM UMSORTIEREN: Die beiden Hochformate stehen diagonal —
+  // bts-02 oben rechts, bts-03 unten links, waagerechte Überschneidung
+  // null. Zwei Hochformate untereinander lesen sich als Säule und brechen
+  // den Haufen; das ist keine Feinheit, sondern fällt sofort auf.
+  { img: '/images/bts/bts-01.jpg', alt: 'Sechs Personen aus dem Team nebeneinander, jede mit einer Kamera, in einer dunklen Halle', x: 0,  y: 0,  w: 46, ar: '3 / 2',   z: 1 },
+  { img: '/images/bts/bts-02.jpg', alt: 'Frau im Blazer auf einem Hocker vor grauem Studiohintergrund, davor Kamera auf Stativ und eine Tonangel', x: 58, y: 0,  w: 34, ar: '3 / 4',   z: 2 },
+  { img: '/images/bts/bts-07.jpg', alt: 'Zwei Personen an einer Kamera auf dem Körperstativ in einem hellen Studio',                x: 18, y: 20, w: 40, ar: '5 / 4',   z: 3 },
+  { img: '/images/bts/bts-04.jpg', alt: 'Küchenszene: mehrere Arme greifen über eine Arbeitsplatte, darauf eine Kamera mit Monitor', x: 54, y: 36, w: 38, ar: '24 / 17', z: 5 },
+  { img: '/images/bts/bts-09.jpg', alt: 'Zwei Personen an einem Schreibtisch mit Monitor, darüber eine Flächenleuchte',             x: 30, y: 60, w: 44, ar: '3 / 2',   z: 6 },
+  { img: '/images/bts/bts-03.jpg', alt: 'Zwei Frauen posieren im weißen Studio, daneben filmt eine Person mit Körperstativ',        x: 0,  y: 44, w: 32, ar: '4 / 5',   z: 4 },
 ];
 
 // Die sechs vom Kunden gelieferten Aufnahmen, unverändert in der Auswahl.
 //
-// Zwei davon zeigen das Haus von außen: haus-01 im Abendlicht und haus-04
-// mit der Backsteinfassade. Die liegen bewusst weit auseinander — oben
-// links und unten mittig, dazwischen 26 Prozent der Flächenhöhe. Nebeneinander
-// läsen sie sich als ein Motiv in zwei Anläufen.
+// Zwei Bedingungen bestimmen die Anordnung, beide fallen sofort auf, wenn
+// sie verletzt sind:
+//
+// Die zwei Außenansichten des Hauses — haus-01 im Abendlicht und haus-04
+// mit der Backsteinfassade — liegen in gegenüberliegenden Ecken, oben links
+// und unten rechts. Nebeneinander läsen sie sich als ein Motiv in zwei
+// Anläufen.
+//
+// Die zwei Hochformate — haus-03 oben rechts, haus-06 unten links — stehen
+// diagonal, waagerechte Überschneidung null. Untereinander ergäben sie eine
+// Säule und brächen den Haufen auf.
 //
 // Auch hier steht jedes Stück in seinem eigenen Seitenverhältnis, es wird
 // also nirgends beschnitten. haus-04 ist mit 987 × 1000 als 1:1 gesetzt;
@@ -93,12 +105,12 @@ const bts = [
 // Sessel behält seine Sitzfläche, der Sattelzug seine linke Hälfte, das
 // Haus im Abendlicht Himmel und Fassade.
 const krafthaus = [
-  { img: '/images/krafthaus/haus-01.jpg', alt: 'Das Krafthaus im Abendlicht, dahinter das Kranhaus am Rheinauhafen',               x: 0,  y: 0,  w: 46, ar: '3 / 2', z: 1 },
-  { img: '/images/krafthaus/haus-03.jpg', alt: 'Grüner Sessel vor weißer Wand, daneben ein Sideboard mit Lampe und ein Alukoffer', x: 62, y: 0,  w: 30, ar: '2 / 3', z: 2 },
-  { img: '/images/krafthaus/haus-02.jpg', alt: 'Schwarzweiß: leere Autobahn mit Leitplanke und Waldrand',                          x: 18, y: 26, w: 42, ar: '3 / 2', z: 3 },
-  { img: '/images/krafthaus/haus-05.jpg', alt: 'Sattelzug an einer Raststätte unter blauem Himmel',                                x: 0,  y: 48, w: 38, ar: '3 / 2', z: 4 },
-  { img: '/images/krafthaus/haus-06.jpg', alt: 'Mehrere Personen an Biertischen vor einem Lokal, eine Person lacht in die Kamera', x: 62, y: 44, w: 30, ar: '2 / 3', z: 5 },
-  { img: '/images/krafthaus/haus-04.jpg', alt: 'Die Backsteinfassade des Krafthauses unter bewölktem Himmel',                      x: 32, y: 58, w: 32, ar: '1 / 1', z: 6 },
+  { img: '/images/krafthaus/haus-01.jpg', alt: 'Das Krafthaus im Abendlicht, dahinter das Kranhaus am Rheinauhafen',               x: 0,  y: 0,  w: 44, ar: '3 / 2', z: 1 },
+  { img: '/images/krafthaus/haus-03.jpg', alt: 'Grüner Sessel vor weißer Wand, daneben ein Sideboard mit Lampe und ein Alukoffer', x: 62, y: 2,  w: 30, ar: '2 / 3', z: 2 },
+  { img: '/images/krafthaus/haus-02.jpg', alt: 'Schwarzweiß: leere Autobahn mit Leitplanke und Waldrand',                          x: 22, y: 26, w: 40, ar: '3 / 2', z: 3 },
+  { img: '/images/krafthaus/haus-05.jpg', alt: 'Sattelzug an einer Raststätte unter blauem Himmel',                                x: 28, y: 50, w: 38, ar: '3 / 2', z: 5 },
+  { img: '/images/krafthaus/haus-06.jpg', alt: 'Mehrere Personen an Biertischen vor einem Lokal, eine Person lacht in die Kamera', x: 0,  y: 44, w: 30, ar: '2 / 3', z: 4 },
+  { img: '/images/krafthaus/haus-04.jpg', alt: 'Die Backsteinfassade des Krafthauses unter bewölktem Himmel',                      x: 60, y: 58, w: 30, ar: '1 / 1', z: 6 },
 ];
 
 // Vier Plätze, alle vier echt. Sie liegen als fertiges Quadrat vor
