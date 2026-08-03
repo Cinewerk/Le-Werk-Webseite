@@ -1120,73 +1120,110 @@ const faqs = [
       row-gap: clamp(3rem, 6vw, 5rem);
     }
 
-    /* Sechs Kacheln im Takt drei, eins, zwei. Der ungleiche Takt ist der
-       Punkt: Drei Reihen zu zwei lasen sich in früheren Fassungen als
-       Tabelle, egal wie gut die Größen darin saßen.
+    /* Drei Paare im Reißverschluss. Links steht immer die breitere
+       Kachel, rechts die schmalere, und keine zwei teilen sich eine
+       Kante oder eine Höhe. Die Reihenfolge der Projekte steht in
+       src/data/arbeiten.ts, dort auch die Begründung der Gattungsfolge.
 
-       OBEN (3 Kacheln, zusammen genau die volle Breite)
-       Street One auf vier Spalten, Siemens auf fünf, Allianz auf drei.
+       Gemessen bei 1440px Fenster, Raster 1310px breit, Spalte 69.6,
+       Spaltenabstand 43.2:
 
-       Die Versätze sind bewusst unregelmäßig: 0, 187 und 50px. Vorher
-       fielen sie in gleichen Stufen von 0 über 58 auf 115 — eine saubere
-       Treppe, und genau die stand quer zum lockeren Teil darunter. Jetzt
-       hängt die mittlere Kachel am tiefsten, die rechte dazwischen, und
-       weder Ober- noch Unterkanten liegen auf einer Linie.
+         Siemens     746 x 933   links    x    0 …  746    y    0 …  933
+         Allianz     408 x 725   rechts   x  902 … 1310    y  140 …  865
+         Revitive    859 x 573   links    x    0 …  859    y 1034 … 1607
+         Street One  295 x 525   rechts   x 1015 … 1310    y 1144 … 1669
+         BVB         408 x 725   links    x    0 …  408    y 1709 … 2434
+         Formel D    746 x 497   rechts   x  564 … 1310    y 1874 … 2372
 
-       Die Reihenfolge darin ist nicht beliebig. Street One und Allianz
-       sind beide 9:16; nebeneinander lesen sie sich als ein Motiv in zwei
-       Anläufen. Siemens ist mit 4:5 das einzige andere Format in der
-       Reihe und steht deshalb zwischen ihnen. Die beiden Hochformate
-       trennen damit 521px.
+       Zwölf verschiedene waagerechte Kanten, fünf verschiedene
+       Breiten. Keine Kachel schließt mit einer anderen oben oder unten
+       ab; der knappste Abstand zwischen zwei gleichgerichteten Kanten
+       beträgt 61px. Geteilt werden nur die beiden Rasterränder — links
+       von Siemens, Revitive und BVB, rechts von Allianz, Street One
+       und Formel D. An denen muss etwas anliegen, sonst franst der
+       Block zu beiden Seiten aus.
 
-       MITTE UND UNTEN (3 Kacheln, ineinandergreifend)
-       Revitive breit auf acht Spalten, Formel D darunter auf sechs, BVB
-       rechts daneben auf vier ab Spalte 9.
+       DIE LUFT IN DER RECHTEN SPALTE
+       Rechts stehen nur zwei Kacheln, links drei — die rechte Spalte
+       trägt rund 1000px weniger Inhalt und hat entsprechend mehr Luft
+       zu verteilen. Street One saß deshalb zuerst dicht unter Allianz:
+       60px nach oben, 237px nach unten.
 
-       Diese drei standen zuerst als einzelne Kachel plus Zweierreihe
-       darunter, und dazwischen klaffte Fläche: rechts neben Revitive
-       blieben 451px leer, und weil BVB mit 725px Höhe die untere Reihe
-       aufspannt, Formel D aber nur 422px hoch ist, standen darüber
-       weitere 303px tot.
+       Jetzt sind es 237 nach oben und 164 nach unten. Auf gleiche
+       Werte lässt es sich nicht bringen, ohne etwas anderes zu
+       verletzen:
 
-       Beides ist jetzt weg. Revitive füllt mit acht Spalten die Breite
-       bis auf den Streifen, in dem BVB steht. Und BVB zieht sich über
-       einen negativen Rand nach oben in genau diesen Streifen hinein —
-       es steht dadurch neben Revitive und neben Formel D zugleich.
+         · Street One tiefer zu setzen ginge nur, wenn Allianz
+           mitrutscht — und Allianz kann nicht zwischen 148 und 268
+           liegen, weil seine Unterkante sonst auf die von Siemens
+           trifft.
+         · Formel D weiter nach unten zu ziehen, ginge nur, bis seine
+           Unterkante auf die von BVB trifft. Bei 1874 bleiben davon
+           genau 61px.
 
-       Die beiden können sich dabei nicht ins Gehege kommen: Revitive
-       endet auf Spalte 8, BVB beginnt auf Spalte 9. Der negative Rand
-       verkürzt außerdem den Abschnitt um rund 300px.
+       Die drei Bedingungen — Gleichgewicht, keine gemeinsamen Kanten,
+       gleiche Abschnittshöhe — schließen sich zu dritt aus. Vorrang
+       haben die Kanten: 237 zu 167 liest sich als Absicht, zwei
+       Kacheln auf gleicher Höhe als Versehen.
 
-       BVB bleibt die letzte Kachel im Quelltext und steht rechts außen.
+       Die Höhe des Abschnitts kostet das alles nichts: Revitive hängt
+       an Siemens und BVB an Revitive, und diese Kette bestimmt die
+       Gesamthöhe. Allianz, Street One und Formel D bewegen sich
+       innerhalb davon.
 
-       Die Reihen entstehen von selbst — Astro setzt die Kacheln der Reihe
-       nach, und wo sich Spalten überschneiden, rutscht die nächste eine
-       Reihe tiefer. Kein grid-row, das würde brechen, sobald ein Projekt
-       dazukommt. */
-    .work__item--1 { grid-column: 1 / span 4; }                   /* Street One 9:16 */
-    .work__item--2 { grid-column: 5 / span 5; }                   /* Siemens 4:5 */
-    .work__item--3 { grid-column: 10 / span 3; }                  /* Allianz 9:16 */
+       DIE LINKE UND DIE RECHTE SPALTE BERÜHREN SICH NIE
+       Links endet spätestens bei 859, rechts beginnt frühestens bei
+       564 — aber nie auf derselben Höhe. Dadurch sind die beiden
+       Hälften vertikal frei gegeneinander verschiebbar, und genau das
+       machen die negativen Ränder unten.
 
-    .work__item--4 { grid-column: 1 / span 8; }                   /* Revitive 3:2 */
+       ALLE DREI SENKRECHTEN FUGEN SIND GLEICH BREIT
+       Zwischen Siemens und Allianz, zwischen Revitive und Street One,
+       zwischen BVB und Formel D: je 156px, also genau eine Spalte plus
+       ihre beiden Abstände. Das ist die einzige Größe, die sich in der
+       Anordnung wiederholt, und sie ist der Grund, warum die drei Paare
+       trotz sechs verschiedener Höhen zusammengehören.
 
-    .work__item--5 { grid-column: 1 / span 6; }                   /* Formel D 3:2 */
-    .work__item--6 { grid-column: 9 / span 4; }                   /* BVB 9:16 */
+       Vorher waren Siemens und Revitive je eine Spalte schmaler. Die
+       obere Fuge maß dann 156px, die mittlere 269 — die las sich nicht
+       als Abstand, sondern als vergessene Kachel.
 
-    /* Der Zug nach oben. Er ist so bemessen, dass BVB neben Revitive
-       hochreicht, ohne dessen Unterkante zu überschreiten — sonst stünde
-       es über und nicht neben ihm. */
-    .work__item--6 { margin-top: calc(-1 * clamp(10rem, 24vw, 23rem)); }
+       Die Flächendeckung liegt dadurch bei 71 statt 67 Prozent,
+       nachgemessen bei 1024, 1200, 1440 und 1920px Fensterbreite. Der
+       engste senkrechte Abstand beträgt dabei nie weniger als 47px.
 
-    /* Der Versatz der obersten Reihe. margin-top und nicht transform: Die
-       Kacheln sollen den Platz, den sie einnehmen, auch beanspruchen —
-       sonst liefe die Kachel darunter in sie hinein.
+       DIE NEGATIVEN RÄNDER
+       Der Zeilenabstand von 80px plus die Bildunterschrift von 42px
+       stapeln sich sonst zu Löchern zwischen den Paaren. Die linken
+       Kacheln werden deshalb so weit hochgezogen, dass über ihnen
+       genau 60px Luft zu der Kachel stehen, die sie tatsächlich
+       blockiert — nicht zur ganzen Zeile. Das spart rund 210px.
 
-       Die Werte stehen bewusst nicht in gleichen Stufen. Eine
-       gleichmäßige Treppe liest sich als Ordnung, und die passte nicht
-       zu dem Teil darunter, in dem drei Kacheln ineinandergreifen. */
-    .work__item--2 { margin-top: clamp(4rem, 13vw, 12rem); }
-    .work__item--3 { margin-top: clamp(1rem, 3.5vw, 3.5rem); }
+       Die Reihen entstehen von selbst — Astro setzt die Kacheln der
+       Reihe nach, und wo sich Spalten überschneiden, rutscht die
+       nächste eine Reihe tiefer. Kein grid-row, das würde brechen,
+       sobald ein Projekt dazukommt. */
+    .work__item--1 { grid-column: 1 / span 7; }                   /* Siemens 4:5 */
+    .work__item--2 { grid-column: 9 / span 4; }                   /* Allianz 9:16 */
+
+    .work__item--3 { grid-column: 1 / span 8; }                   /* Revitive 3:2 */
+    .work__item--4 { grid-column: 10 / span 3; }                  /* Street One 9:16 */
+
+    .work__item--5 { grid-column: 1 / span 4; }                   /* BVB 9:16 */
+    .work__item--6 { grid-column: 6 / span 7; }                   /* Formel D 3:2 */
+
+    /* Die Versätze. margin-top und nicht transform — die Kacheln sollen
+       den Platz, den sie einnehmen, auch beanspruchen, sonst liefe die
+       Kachel darunter in sie hinein.
+
+       Alles in vw gerechnet, damit die Versätze mit den Kachelhöhen
+       mitwachsen: die sind über aspect-ratio ebenfalls an die Breite
+       gekoppelt. */
+    .work__item--2 { margin-top: clamp(3rem, 9.7vw, 8.75rem); }
+    .work__item--3 { margin-top: calc(-1 * clamp(0.5rem, 1.45vw, 1.5rem)); }
+    .work__item--4 { margin-top: clamp(2rem, 6.2vw, 6rem); }
+    .work__item--5 { margin-top: calc(-1 * clamp(2rem, 5.7vw, 5.5rem)); }
+    .work__item--6 { margin-top: clamp(2rem, 6vw, 5.25rem); }
 
     /* Video links, Konzept und Foto rechts — aber nichts fluchtet.
 
