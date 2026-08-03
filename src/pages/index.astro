@@ -1081,22 +1081,31 @@ const faqs = [
        als Tabelle — erst mit wilden Größen, dann mit angeglichenen. Das
        Problem war nie die Größe, sondern der gleichbleibende Takt.
 
-       ANFANG (2 Kacheln)
+       ANFANG (2 Kacheln, schwer)
        Siemens auf fünf Spalten trägt die Sektion an, Revitive auf sechs
-       antwortet rechts unten. Zwei Bilder, ungleich im Format, gleich
-       weit unten — sie enden auf derselben Linie.
+       antwortet rechts unten. Ungleich im Format, gleich weit unten — sie
+       enden auf derselben Linie.
 
        MITTE (3 Kacheln)
-       Die drei Hochformate nebeneinander, je vier Spalten, zusammen genau
-       die volle Breite. Sie fallen treppab: die zweite um einen, die
-       dritte um zwei Schritte tiefer. Ohne den Versatz wären sie ein
-       Zaun; mit ihm sind sie eine Bewegung nach rechts unten.
+       Ein Fries: hoch, breit, mittelhoch. Vier, fünf und drei Spalten —
+       in jedem Schritt wechseln Format, Breite und Höhe, keine zwei
+       Kacheln haben dasselbe Maß (408×725, 521×347, 295×525).
+
+       Ein erster Versuch gab dem Fries 3/5/3 Spalten. Dann waren die
+       beiden Hochformate links und rechts gleich groß und rahmten die
+       Mitte — ein Altarbild. Mit 4/5/3 fällt die Symmetrie weg, und
+       Street One nimmt oben die Breite auf, die BVB unten hat.
+
+       Formel D hängt an der Unterkante, Allianz steht etwas tiefer als
+       Street One. Damit liegt keine Ober- und keine Unterkante im Fries
+       auf einer Linie.
 
        SCHLUSS (1 Kachel)
-       Formel D allein auf sieben Spalten, auf Spalte 3 eingerückt — mit
-       nichts bündig, weder links noch rechts. Eine einzelne Kachel, die
-       sich an keine Kante hängt, liest sich als Schlusspunkt und nicht
-       als angefangene Reihe.
+       BVB allein auf vier Spalten, auf Spalte 8 gesetzt — links wie
+       rechts mit nichts bündig. Eine einzelne Kachel, die sich an keine
+       Kante hängt, liest sich als Schlusspunkt und nicht als angefangene
+       Reihe. Dass es eine Nahaufnahme ist, die in die Kamera sieht,
+       trägt den Schluss zusätzlich.
 
        Die Reihen entstehen dabei von selbst: Astro setzt die Kacheln der
        Reihe nach, und wo sich Spalten überschneiden, rutscht die nächste
@@ -1105,17 +1114,16 @@ const faqs = [
     .work__item--1 { grid-column: 1 / span 5; }                   /* Siemens 4:5 */
     .work__item--2 { grid-column: 7 / span 6; align-self: end; }  /* Revitive 3:2 */
 
-    .work__item--3 { grid-column: 1 / span 4; }                   /* BVB 9:16 */
-    .work__item--4 { grid-column: 5 / span 4; }                   /* Street One 9:16 */
-    .work__item--5 { grid-column: 9 / span 4; }                   /* Allianz 9:16 */
+    .work__item--3 { grid-column: 1 / span 4; }                   /* Street One 9:16 */
+    .work__item--4 { grid-column: 5 / span 5; align-self: end; }  /* Formel D 3:2 */
+    .work__item--5 { grid-column: 10 / span 3; }                  /* Allianz 9:16 */
 
-    .work__item--6 { grid-column: 3 / span 7; }                   /* Formel D 3:2 */
+    .work__item--6 { grid-column: 8 / span 4; }                   /* BVB 9:16 */
 
-    /* Der Versatz der Treppe. margin-top und nicht transform: Die Kacheln
-       sollen den Platz, den sie einnehmen, auch beanspruchen — sonst
-       liefe der Schlussteil in die dritte Kachel hinein. */
-    .work__item--4 { margin-top: clamp(2rem, 4vw, 4rem); }
-    .work__item--5 { margin-top: clamp(4rem, 8vw, 8rem); }
+    /* Der Versatz im Fries. margin-top und nicht transform: Die Kachel
+       soll den Platz, den sie einnimmt, auch beanspruchen — sonst liefe
+       der Schlussteil in sie hinein. */
+    .work__item--5 { margin-top: clamp(2rem, 4vw, 4rem); }
 
     /* Zwei Spalten: Video links über beide Zeilen, Idee & Konzept rechts
        oben, Foto rechts unten. */
