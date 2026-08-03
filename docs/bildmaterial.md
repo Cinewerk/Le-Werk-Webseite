@@ -15,8 +15,8 @@ Ordnername sagt, wozu die Bilder gehören:
 
 | Ordner | Inhalt | Wo es erscheint |
 |---|---|---|
-| `bts/` | neun Setfotos, sechs davon im Einsatz | Team, Streublock 01 |
-| `krafthaus/` | sechs Aufnahmen unserer Räume | Team, Streublock 02 |
+| `bts/` | sieben Setfotos, sechs davon im Einsatz | Team, Streublock 01 |
+| `krafthaus/` | sechs Aufnahmen, alle im Einsatz | Team, Streublock 02 |
 | `team/` | vier Porträts, nach Personen benannt | Team, Porträtreihe |
 | `work/` | sechs Vorschaubilder der Projekte | Featured Work |
 | `street-one/` | Fallstudie samt Video-Standbildern | `/arbeiten/street-one-…` |
@@ -173,6 +173,26 @@ der Zuschnitt ist Teil der fotografischen Arbeit. Maßstab: 1280 px für
 große Plätze, 1000 px für kleine, Qualität 55 bis 58. Die Nacht-Luftbilder
 sind mit rund 250 KB die schwersten Dateien im Projekt — tausende kleine
 Fahrzeuge lassen sich kaum komprimieren.
+
+### Die Seitenverhältnisse der Streublöcke
+
+Seit dem Austausch im August steht **jedes Stück in beiden Haufen in seinem
+eigenen Seitenverhältnis** — 3:2, 3:4, 4:5, 5:4, 2:3, 24:17, 1:1 — statt in
+einem für alle vorgegebenen. Nachgemessen wird dadurch an keinem der zwölf
+Bilder etwas abgeschnitten; die einzige Rundung ist `haus-04` mit 987 × 1000
+als 1:1 und kostet 1,3 Prozent.
+
+Wer ein Bild tauscht, muss deshalb das `ar` in `src/pages/index.astro`
+mittauschen. Bleibt der alte Wert stehen, wird die neue Aufnahme beschnitten,
+ohne dass es eine Fehlermeldung gibt.
+
+Die Überlappungen sitzen an den Unterkanten, nie über Gesichtern, Kameras
+oder Monitoren. Kein Stück ist zu mehr als 18 Prozent verdeckt; das unterste
+im Stapel trägt am meisten, das oberste nichts.
+
+**Nicht im Einsatz:** `bts-06.jpg`. Beide Personen stehen mit dem Rücken zur
+Kamera, die Datei ist mit 570 × 760 als einzige unter 1000px breit, und
+inhaltlich zeigt sie dasselbe wie `bts-07` und `bts-09` — nur ohne Gesichter.
 
 ### Video-Standbilder
 
