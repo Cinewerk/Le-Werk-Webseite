@@ -1104,10 +1104,16 @@ const faqs = [
        Tabelle, egal wie gut die Größen darin saßen.
 
        OBEN (3 Kacheln, zusammen genau die volle Breite)
-       Siemens auf fünf Spalten, Street One auf vier, Allianz auf drei —
+       Street One auf vier Spalten, Siemens auf fünf, Allianz auf drei —
        die Reihe wird nach rechts schmaler und fällt zugleich treppab.
        Beides zusammen ergibt eine Bewegung nach rechts unten, die auf
        nichts trifft: rechts endet die Reihe am Rasterrand.
+
+       Die Reihenfolge darin ist nicht beliebig. Street One und Allianz
+       sind beide 9:16; nebeneinander lesen sie sich als ein Motiv in zwei
+       Anläufen. Siemens ist mit 4:5 das einzige andere Format in der
+       Reihe und steht deshalb zwischen ihnen. Die beiden Hochformate
+       trennen damit 521px.
 
        MITTE (1 Kachel)
        Revitive allein auf sieben Spalten, auf Spalte 2 eingerückt, mit
@@ -1125,8 +1131,8 @@ const faqs = [
        nach, und wo sich Spalten überschneiden, rutscht die nächste eine
        Reihe tiefer. Kein grid-row, das würde brechen, sobald ein Projekt
        dazukommt. */
-    .work__item--1 { grid-column: 1 / span 5; }                   /* Siemens 4:5 */
-    .work__item--2 { grid-column: 6 / span 4; }                   /* Street One 9:16 */
+    .work__item--1 { grid-column: 1 / span 4; }                   /* Street One 9:16 */
+    .work__item--2 { grid-column: 5 / span 5; }                   /* Siemens 4:5 */
     .work__item--3 { grid-column: 10 / span 3; }                  /* Allianz 9:16 */
 
     .work__item--4 { grid-column: 2 / span 7; }                   /* Revitive 3:2 */

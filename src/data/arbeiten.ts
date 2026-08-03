@@ -7,10 +7,14 @@
  * zwei. Der ungleiche Takt ist der Punkt: Drei Reihen zu zwei lasen sich
  * in früheren Fassungen als Tabelle, egal wie gut die Größen darin saßen.
  *
- *   OBEN (3)      Die drei Kampagnenfilme nebeneinander, treppab fallend:
- *                 Siemens breit und ruhig, dann Street One und Allianz
- *                 hochkant und jeweils kleiner. Eine Reihe, die nach
- *                 rechts leichter wird.
+ *   OBEN (3)      Die drei Kampagnenfilme nebeneinander, treppab fallend
+ *                 und nach rechts kleiner werdend: Street One hoch,
+ *                 Siemens breiter, Allianz am kleinsten.
+ *
+ *                 Siemens steht dabei nicht aus Laune in der Mitte: Es
+ *                 ist das einzige Format in der Reihe, das kein 9:16 ist,
+ *                 und trennt damit die beiden Hochformate. Nebeneinander
+ *                 lesen die sich als ein Motiv in zwei Anläufen.
  *
  *   MITTE (1)     Revitive allein und breit, eingerückt. Die erste
  *                 Fotostrecke trennt die Filme oben von dem, was unten
@@ -66,6 +70,21 @@ export interface Arbeit {
 
 export const arbeiten: Arbeit[] = [
   {
+    // Der Slug heißt weiter …-instagram-reel: Die Adresse ist vergeben,
+    // eine Umbenennung würde bestehende Links ins Leere laufen lassen.
+    slug: 'street-one-instagram-reel',
+    kunde: 'Street One',
+    titel: 'Social Media Kampagne',
+    bild: '/images/work/street-one.webp',
+    breite: 543,
+    hoehe: 960,
+    ratio: '9:16',
+    format: '9:16',
+    alt: 'Model mit schwarzem Strohhut und gestreifter Bluse in einer Industriehalle, im Hochformat aufgenommen',
+    art: 'Video',
+    eigeneSeite: true,
+  },
+  {
     // ACHTUNG: Die Datei ist 1920x1080. Der 4:5-Beschnitt behält davon nur
     // die mittleren 45 % der Breite — es passt, weil die Frau fast genau
     // mittig steht, ist aber ein Beschnitt aus einem Beschnitt. Sobald eine
@@ -79,21 +98,6 @@ export const arbeiten: Arbeit[] = [
     ratio: '4:5',
     format: '4:5',
     alt: 'Frau mit regenbogenbunt gefärbtem Haar und großflächigem Rückentattoo steht von hinten am Ufer eines Sees',
-    art: 'Video',
-    eigeneSeite: true,
-  },
-  {
-    // Der Slug heißt weiter …-instagram-reel: Die Adresse ist vergeben,
-    // eine Umbenennung würde bestehende Links ins Leere laufen lassen.
-    slug: 'street-one-instagram-reel',
-    kunde: 'Street One',
-    titel: 'Social Media Kampagne',
-    bild: '/images/work/street-one.webp',
-    breite: 543,
-    hoehe: 960,
-    ratio: '9:16',
-    format: '9:16',
-    alt: 'Model mit schwarzem Strohhut und gestreifter Bluse in einer Industriehalle, im Hochformat aufgenommen',
     art: 'Video',
     eigeneSeite: true,
   },
