@@ -4,30 +4,30 @@
  * Unterseiten unter /arbeiten/<slug>.
  *
  * Die Reihenfolge hier ist die Reihenfolge auf der Startseite. Sie folgt
- * keiner Regel mehr, sondern einer Dramaturgie — zwei Anläufe davor sind
- * an Regeln gescheitert:
- *
- *   Erst wechselten Video und Foto stur ab. Ergebnis: drei Reihen zu zwei,
- *   also eine Tabelle.
- *   Dann bekam jede Reihe ein Hoch- und ein Querformat, alle Kacheln
- *   gleich schwer. Ergebnis: dieselbe Tabelle, nur ohne Hierarchie.
- *
- * Jetzt hat der Abschnitt drei Teile — zwei, drei, eins:
+ * einer Dramaturgie in drei Teilen — zwei, eins, drei:
  *
  *   ANFANG   Zwei große Kacheln. Siemens trägt an, Revitive antwortet
  *            rechts unten. Ein Bild, das trägt, und eines, das antwortet.
  *
- *   MITTE    Ein Fries aus drei kleineren: Street One hoch, Formel D
- *            breit, Allianz hoch. Format, Größe und Höhe wechseln in
- *            jedem Schritt, die Unterkanten fallen nach rechts. Nach den
- *            beiden schweren Kacheln darüber ein leichterer Takt.
+ *   ATEMZUG  Formel D allein und breit, eingerückt. Eine einzelne Kachel
+ *            zwischen zwei dichten Teilen — sie trennt sie, statt beide
+ *            zu einem Feld zu verkleben.
  *
- *   SCHLUSS  BVB allein, aus jeder Flucht gerückt. Eine Nahaufnahme, die
- *            in die Kamera sieht — der letzte Blick des Abschnitts, und
- *            das einzige Bild, das für sich steht.
+ *   SCHLUSS  Die drei Hochformate nebeneinander, treppab nach rechts
+ *            fallend: Street One, Allianz, BVB. BVB steht damit als
+ *            letzte Kachel und zugleich als tiefste und rechteste — eine
+ *            Nahaufnahme, die in die Kamera sieht, als letzter Blick des
+ *            Abschnitts.
  *
- * Video und Foto stehen damit als V F V F V V. Die beiden Fotostrecken
- * liegen auf Platz 2 und 4 und damit weit auseinander.
+ * Die Dreierreihe war schon einmal da und hat als Figur funktioniert; sie
+ * stand nur in der Mitte. Ans Ende gerückt löst sie beides auf einmal:
+ * BVB kommt zuletzt, und der Abschnitt endet dicht statt mit einer
+ * einzelnen Kachel im Nichts.
+ *
+ * Video und Foto stehen als V F F V V V. Die beiden Fotostrecken liegen
+ * benachbart, aber nicht nebeneinander — Revitive schließt Reihe eins
+ * rechts ab, Formel D steht darunter eingerückt. Hell gegen dunkel, kein
+ * Block.
  *
  * Die Spaltenzahl je Platz steht in index.astro und ist auf die Formate
  * gerechnet. Wer umsortiert, muss beides mitdenken.
@@ -102,6 +102,19 @@ export const arbeiten: Arbeit[] = [
     eigeneSeite: true,
   },
   {
+    slug: 'formel-d-fotogalerie',
+    kunde: 'Formel D',
+    titel: 'Fotogalerie',
+    bild: '/images/work/formel-d.jpg',
+    breite: 1400,
+    hoehe: 933,
+    ratio: '3:2',
+    format: '3:2',
+    alt: 'Dunkler SUV frontal unter einem aufgeklappten Lichtdach mit Leuchtstoffröhren in einer Werkhalle',
+    art: 'Foto',
+    eigeneSeite: true,
+  },
+  {
     // Der Slug heißt weiter …-instagram-reel: Die Adresse ist vergeben,
     // eine Umbenennung würde bestehende Links ins Leere laufen lassen.
     slug: 'street-one-instagram-reel',
@@ -114,19 +127,6 @@ export const arbeiten: Arbeit[] = [
     format: '9:16',
     alt: 'Model mit schwarzem Strohhut und gestreifter Bluse in einer Industriehalle, im Hochformat aufgenommen',
     art: 'Video',
-    eigeneSeite: true,
-  },
-  {
-    slug: 'formel-d-fotogalerie',
-    kunde: 'Formel D',
-    titel: 'Fotogalerie',
-    bild: '/images/work/formel-d.jpg',
-    breite: 1400,
-    hoehe: 933,
-    ratio: '3:2',
-    format: '3:2',
-    alt: 'Dunkler SUV frontal unter einem aufgeklappten Lichtdach mit Leuchtstoffröhren in einer Werkhalle',
-    art: 'Foto',
     eigeneSeite: true,
   },
   {

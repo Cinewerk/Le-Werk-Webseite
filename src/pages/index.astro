@@ -1065,58 +1065,49 @@ const faqs = [
       row-gap: clamp(3rem, 6vw, 5rem);
     }
 
-    /* Ein Zickzack aus gleich hohen Kacheln, abwechselnd links und rechts
-       an der Kante.
+    /* Sechs Kacheln in drei Teilen — zwei, eins, drei. Die Plätze sind
+       auf die Bildformate in src/data/arbeiten.ts zugeschnitten; wer
+       umsortiert, muss sie mitdenken.
 
-       Drei Fassungen davor waren versetzte Raster mit wechselnden Größen —
-       und alle drei sahen beliebig aus. Der Fehler war nicht die
-       Anordnung, sondern die Zahl der Variablen: Breite, Höhe, Format und
-       Position änderten sich bei jeder Kachel gleichzeitig. Bei so vielen
-       Freiheitsgraden liest niemand mehr ein System, sondern nur noch
-       Zufall.
+       ANFANG (2 Kacheln)
+       Siemens auf fünf Spalten trägt an, Revitive auf sechs antwortet
+       rechts unten. Ungleich im Format, gleich weit unten — beide enden
+       auf derselben Linie.
 
-       Nachgemessen an brotherfilms.com, der Referenz für diesen
-       Abschnitt: Dort steht ein großes Bild mittig, darunter vier Kacheln
-       von exakt 648 × 366 an nur zwei x-Positionen, 72 und 720 —
-       abwechselnd. Der vertikale Abstand ist null, die Kacheln greifen
-       ineinander. Es ändert sich dort genau eine Größe: die Seite.
+       ATEMZUG (1 Kachel)
+       Formel D allein auf sieben Spalten, auf Spalte 2 eingerückt, mit
+       nichts bündig. Sie trennt die beiden dichten Teile, statt sie zu
+       einem Feld zu verkleben.
 
-       Hier dasselbe Prinzip, auf unsere Formate übertragen. Konstant sind
-       Höhe und Kante. Die Breite ergibt sich aus dem Format der Arbeit und
-       ist damit keine Setzung, sondern eine Folge:
+       SCHLUSS (3 Kacheln)
+       Die drei Hochformate nebeneinander, je vier Spalten, zusammen genau
+       die volle Breite. Sie fallen treppab: die zweite um einen, die
+       dritte um zwei Schritte tiefer. Damit ist BVB die letzte Kachel und
+       zugleich die tiefste und rechteste.
 
-         4:5  → 435 × 544     9:16 → 306 × 544     3:2  → 816 × 544
+       Diese Dreierreihe stand schon einmal in der Mitte und hat als Figur
+       getragen. Ans Ende gerückt löst sie zwei Dinge auf einmal: BVB kommt
+       zuletzt, und der Abschnitt endet dicht statt mit einer einzelnen
+       Kachel im Nichts.
 
-       Ein Hochformat ist schmal, ein Querformat breit — das ist keine
-       Gewichtung, die jemand vergeben hat, sondern das Format selbst. Die
-       gemeinsame Höhe hält die sechs trotzdem zusammen.
+       Die Reihen entstehen von selbst. Astro setzt die Kacheln der Reihe
+       nach, und wo sich Spalten überschneiden, rutscht die nächste eine
+       Reihe tiefer — es braucht kein grid-row, das würde nur brechen,
+       sobald ein Projekt dazukommt. */
+    .work__item--1 { grid-column: 1 / span 5; }                   /* Siemens 4:5 */
+    .work__item--2 { grid-column: 7 / span 6; align-self: end; }  /* Revitive 3:2 */
 
-       Der negative Rand lässt aufeinanderfolgende Kacheln ineinander
-       greifen wie in der Referenz. Sie kollidieren nicht, weil sie an
-       gegenüberliegenden Kanten sitzen: Die beiden breitesten
-       Nachbarpaare messen zusammen 1251 und 1122px und bleiben damit
-       unter den 1310px des Rasters. Ohne den Versatz wäre der Abschnitt
-       ein Drittel länger. */
-    .work__grid {
-      grid-template-columns: minmax(0, 1fr);
-      column-gap: 0;
-      row-gap: 0;
-      --kachelhoehe: clamp(22rem, 38vw, 34rem);
-      --versatz: clamp(9rem, 17vw, 15rem);
-    }
+    .work__item--3 { grid-column: 2 / span 7; }                   /* Formel D 3:2 */
 
-    /* fit-content statt voller Breite: Die Kachel soll genau so breit
-       sein wie ihr Bild, sonst hinge die Formatpille am Rasterrand statt
-       am Bildrand. */
-    .work__item { justify-self: start; width: fit-content; }
-    .work__item:nth-child(even) { justify-self: end; }
-    .work__item + .work__item { margin-top: calc(-1 * var(--versatz)); }
+    .work__item--4 { grid-column: 1 / span 4; }                   /* Street One 9:16 */
+    .work__item--5 { grid-column: 5 / span 4; }                   /* Allianz 9:16 */
+    .work__item--6 { grid-column: 9 / span 4; }                   /* BVB 9:16 */
 
-    .work__figure { width: fit-content; height: var(--kachelhoehe); }
-
-    /* Höhe gesetzt, Breite frei — das Seitenverhältnis aus data-format
-       rechnet sie aus. */
-    .work__figure img { height: 100%; width: auto; }
+    /* Der Versatz der Treppe. margin-top und nicht transform: Die Kacheln
+       sollen den Platz, den sie einnehmen, auch beanspruchen — sonst
+       liefe der nächste Abschnitt in sie hinein. */
+    .work__item--5 { margin-top: clamp(2rem, 4vw, 4rem); }
+    .work__item--6 { margin-top: clamp(4rem, 8vw, 8rem); }
 
     /* Zwei Spalten: Video links über beide Zeilen, Idee & Konzept rechts
        oben, Foto rechts unten. */
