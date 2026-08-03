@@ -274,11 +274,24 @@ button { cursor: pointer; }
   text-transform: none;
 }
 
+/* Der Kicker war mit 3,5rem fast so groß wie die Überschrift darunter —
+   56 gegen 60px, also 7 Prozent Unterschied. Zwei Zeilen fast gleicher
+   Größe stapeln sich zum Block, sobald auch die Wörter ähnlich lang sind:
+   "Unser" maß 143px, "TEAM" 162px.
+
+   Jetzt sind es 2,5rem, also 40px. Das ist zwei Drittel der Grundgröße
+   einer Überschrift und 45 Prozent der großen Stufe — der Kicker steht
+   damit als Vorzeile über der Überschrift statt neben ihr. "Unser" misst
+   102 gegen 162px, der Unterschied wächst von 19 auf 60px.
+
+   Die Alternative wäre gewesen, die Überschriften zu vergrößern. Das
+   behebt dasselbe, macht aber die Abschnittsköpfe schwerer — und die
+   Größen sollten bleiben, wie sie sind. */
 .editorial--kicker {
   display: block;
-  font-size: clamp(1.5rem, 4.5vw, 3.5rem);
-  line-height: 1.1;
-  margin-bottom: 0.1em;
+  font-size: clamp(1.125rem, 3.2vw, 2.5rem);
+  line-height: 1.15;
+  margin-bottom: 0.15em;
 }
 
 .lead {
