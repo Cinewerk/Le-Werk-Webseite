@@ -3,31 +3,28 @@
  * Orten gebraucht werden: als Kacheln auf der Startseite und als
  * Unterseiten unter /arbeiten/<slug>.
  *
- * Die Reihenfolge hier ist die Reihenfolge auf der Startseite. Sie folgt
- * einer Dramaturgie in drei Teilen — zwei, eins, drei:
+ * Die Reihenfolge folgt einer Dramaturgie und einem Takt von drei, eins,
+ * zwei. Der ungleiche Takt ist der Punkt: Drei Reihen zu zwei lasen sich
+ * in früheren Fassungen als Tabelle, egal wie gut die Größen darin saßen.
  *
- *   ANFANG   Zwei große Kacheln. Siemens trägt an, Revitive antwortet
- *            rechts unten. Ein Bild, das trägt, und eines, das antwortet.
+ *   OBEN (3)      Die drei Kampagnenfilme nebeneinander, treppab fallend:
+ *                 Siemens breit und ruhig, dann Street One und Allianz
+ *                 hochkant und jeweils kleiner. Eine Reihe, die nach
+ *                 rechts leichter wird.
  *
- *   ATEMZUG  Formel D allein und breit, eingerückt. Eine einzelne Kachel
- *            zwischen zwei dichten Teilen — sie trennt sie, statt beide
- *            zu einem Feld zu verkleben.
+ *   MITTE (1)     Revitive allein und breit, eingerückt. Die erste
+ *                 Fotostrecke trennt die Filme oben von dem, was unten
+ *                 kommt — eine einzelne Kachel liest sich als Atemzug.
  *
- *   SCHLUSS  Die drei Hochformate nebeneinander, treppab nach rechts
- *            fallend: Street One, Allianz, BVB. BVB steht damit als
- *            letzte Kachel und zugleich als tiefste und rechteste — eine
- *            Nahaufnahme, die in die Kamera sieht, als letzter Blick des
- *            Abschnitts.
+ *   UNTEN (2)     Formel D links, BVB rechts daneben. Die zweite
+ *                 Fotostrecke und das Schlussbild. Dunkle Werkhalle gegen
+ *                 helle Nahaufnahme, und BVB steht als letzte Kachel.
  *
- * Die Dreierreihe war schon einmal da und hat als Figur funktioniert; sie
- * stand nur in der Mitte. Ans Ende gerückt löst sie beides auf einmal:
- * BVB kommt zuletzt, und der Abschnitt endet dicht statt mit einer
- * einzelnen Kachel im Nichts.
- *
- * Video und Foto stehen als V F F V V V. Die beiden Fotostrecken liegen
- * benachbart, aber nicht nebeneinander — Revitive schließt Reihe eins
- * rechts ab, Formel D steht darunter eingerückt. Hell gegen dunkel, kein
- * Block.
+ * Die Anordnung ist bewusst nicht symmetrisch: Die Reihen zählen 3, 1, 2,
+ * die Kacheln sind unterschiedlich breit, und nur die rechte Kante der
+ * obersten Reihe fällt mit dem Rasterrand zusammen. Der Sinn dahinter ist
+ * die Gattung — oben Film, in der Mitte und unten Fotografie, dazwischen
+ * der Abschluss.
  *
  * Die Spaltenzahl je Platz steht in index.astro und ist auf die Formate
  * gerechnet. Wer umsortiert, muss beides mitdenken.
@@ -86,6 +83,34 @@ export const arbeiten: Arbeit[] = [
     eigeneSeite: true,
   },
   {
+    // Der Slug heißt weiter …-instagram-reel: Die Adresse ist vergeben,
+    // eine Umbenennung würde bestehende Links ins Leere laufen lassen.
+    slug: 'street-one-instagram-reel',
+    kunde: 'Street One',
+    titel: 'Social Media Kampagne',
+    bild: '/images/work/street-one.webp',
+    breite: 543,
+    hoehe: 960,
+    ratio: '9:16',
+    format: '9:16',
+    alt: 'Model mit schwarzem Strohhut und gestreifter Bluse in einer Industriehalle, im Hochformat aufgenommen',
+    art: 'Video',
+    eigeneSeite: true,
+  },
+  {
+    slug: 'allianz-instagram-reel',
+    kunde: 'Allianz',
+    titel: 'Instagram Reel',
+    bild: '/images/work/allianz.webp',
+    breite: 540,
+    hoehe: 960,
+    ratio: '9:16',
+    format: '9:16',
+    alt: 'Lachende junge Frau vor einer Kletterwand, im Hochformat aufgenommen',
+    art: 'Video',
+    eigeneSeite: true,
+  },
+  {
     // Das leichte Gegengewicht zu Siemens, deshalb hier und nicht Formel D:
     // Die dunkle Werkhalle wäre kein Gegengewicht, sondern ein zweites
     // schweres Bild — und sie wird am Schluss gebraucht.
@@ -112,34 +137,6 @@ export const arbeiten: Arbeit[] = [
     format: '3:2',
     alt: 'Dunkler SUV frontal unter einem aufgeklappten Lichtdach mit Leuchtstoffröhren in einer Werkhalle',
     art: 'Foto',
-    eigeneSeite: true,
-  },
-  {
-    // Der Slug heißt weiter …-instagram-reel: Die Adresse ist vergeben,
-    // eine Umbenennung würde bestehende Links ins Leere laufen lassen.
-    slug: 'street-one-instagram-reel',
-    kunde: 'Street One',
-    titel: 'Social Media Kampagne',
-    bild: '/images/work/street-one.webp',
-    breite: 543,
-    hoehe: 960,
-    ratio: '9:16',
-    format: '9:16',
-    alt: 'Model mit schwarzem Strohhut und gestreifter Bluse in einer Industriehalle, im Hochformat aufgenommen',
-    art: 'Video',
-    eigeneSeite: true,
-  },
-  {
-    slug: 'allianz-instagram-reel',
-    kunde: 'Allianz',
-    titel: 'Instagram Reel',
-    bild: '/images/work/allianz.webp',
-    breite: 540,
-    hoehe: 960,
-    ratio: '9:16',
-    format: '9:16',
-    alt: 'Lachende junge Frau vor einer Kletterwand, im Hochformat aufgenommen',
-    art: 'Video',
     eigeneSeite: true,
   },
   {
