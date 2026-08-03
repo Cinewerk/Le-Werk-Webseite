@@ -1065,65 +1065,58 @@ const faqs = [
       row-gap: clamp(3rem, 6vw, 5rem);
     }
 
-    /* Sechs Kacheln in drei Reihen, versetzt. Die Plätze sind auf die
-       Bildformate der Projekte in src/data/arbeiten.ts zugeschnitten — beim
-       Umsortieren mitdenken: ein 9:16 auf Platz 4 wäre über 800px hoch, ein
-       3:2 auf Platz 6 nur 167px.
+    /* Ein Zickzack aus gleich hohen Kacheln, abwechselnd links und rechts
+       an der Kante.
 
-       Die Reihen entstehen von selbst. Astro setzt die Kacheln der Reihe
-       nach, und weil sich die Spalten von 1 und 3 überschneiden, rutscht 3
-       in die zweite Reihe, 5 in die dritte. Es braucht also keine
-       grid-row-Angaben — sie würden nur brechen, sobald ein Projekt
-       dazukommt.
+       Drei Fassungen davor waren versetzte Raster mit wechselnden Größen —
+       und alle drei sahen beliebig aus. Der Fehler war nicht die
+       Anordnung, sondern die Zahl der Variablen: Breite, Höhe, Format und
+       Position änderten sich bei jeder Kachel gleichzeitig. Bei so vielen
+       Freiheitsgraden liest niemand mehr ein System, sondern nur noch
+       Zufall.
 
-       Der Abschnitt ist in drei Teile gebaut und nicht in drei Reihen zu
-       zwei. Zwei Fassungen davor waren Paarraster, und beide lasen sich
-       als Tabelle — erst mit wilden Größen, dann mit angeglichenen. Das
-       Problem war nie die Größe, sondern der gleichbleibende Takt.
+       Nachgemessen an brotherfilms.com, der Referenz für diesen
+       Abschnitt: Dort steht ein großes Bild mittig, darunter vier Kacheln
+       von exakt 648 × 366 an nur zwei x-Positionen, 72 und 720 —
+       abwechselnd. Der vertikale Abstand ist null, die Kacheln greifen
+       ineinander. Es ändert sich dort genau eine Größe: die Seite.
 
-       ANFANG (2 Kacheln, schwer)
-       Siemens auf fünf Spalten trägt die Sektion an, Revitive auf sechs
-       antwortet rechts unten. Ungleich im Format, gleich weit unten — sie
-       enden auf derselben Linie.
+       Hier dasselbe Prinzip, auf unsere Formate übertragen. Konstant sind
+       Höhe und Kante. Die Breite ergibt sich aus dem Format der Arbeit und
+       ist damit keine Setzung, sondern eine Folge:
 
-       MITTE (3 Kacheln)
-       Ein Fries: hoch, breit, mittelhoch. Vier, fünf und drei Spalten —
-       in jedem Schritt wechseln Format, Breite und Höhe, keine zwei
-       Kacheln haben dasselbe Maß (408×725, 521×347, 295×525).
+         4:5  → 435 × 544     9:16 → 306 × 544     3:2  → 816 × 544
 
-       Ein erster Versuch gab dem Fries 3/5/3 Spalten. Dann waren die
-       beiden Hochformate links und rechts gleich groß und rahmten die
-       Mitte — ein Altarbild. Mit 4/5/3 fällt die Symmetrie weg, und
-       Street One nimmt oben die Breite auf, die BVB unten hat.
+       Ein Hochformat ist schmal, ein Querformat breit — das ist keine
+       Gewichtung, die jemand vergeben hat, sondern das Format selbst. Die
+       gemeinsame Höhe hält die sechs trotzdem zusammen.
 
-       Formel D hängt an der Unterkante, Allianz steht etwas tiefer als
-       Street One. Damit liegt keine Ober- und keine Unterkante im Fries
-       auf einer Linie.
+       Der negative Rand lässt aufeinanderfolgende Kacheln ineinander
+       greifen wie in der Referenz. Sie kollidieren nicht, weil sie an
+       gegenüberliegenden Kanten sitzen: Die beiden breitesten
+       Nachbarpaare messen zusammen 1251 und 1122px und bleiben damit
+       unter den 1310px des Rasters. Ohne den Versatz wäre der Abschnitt
+       ein Drittel länger. */
+    .work__grid {
+      grid-template-columns: minmax(0, 1fr);
+      column-gap: 0;
+      row-gap: 0;
+      --kachelhoehe: clamp(22rem, 38vw, 34rem);
+      --versatz: clamp(9rem, 17vw, 15rem);
+    }
 
-       SCHLUSS (1 Kachel)
-       BVB allein auf vier Spalten, auf Spalte 8 gesetzt — links wie
-       rechts mit nichts bündig. Eine einzelne Kachel, die sich an keine
-       Kante hängt, liest sich als Schlusspunkt und nicht als angefangene
-       Reihe. Dass es eine Nahaufnahme ist, die in die Kamera sieht,
-       trägt den Schluss zusätzlich.
+    /* fit-content statt voller Breite: Die Kachel soll genau so breit
+       sein wie ihr Bild, sonst hinge die Formatpille am Rasterrand statt
+       am Bildrand. */
+    .work__item { justify-self: start; width: fit-content; }
+    .work__item:nth-child(even) { justify-self: end; }
+    .work__item + .work__item { margin-top: calc(-1 * var(--versatz)); }
 
-       Die Reihen entstehen dabei von selbst: Astro setzt die Kacheln der
-       Reihe nach, und wo sich Spalten überschneiden, rutscht die nächste
-       eine Reihe tiefer. Es braucht kein grid-row — das würde nur brechen,
-       sobald ein Projekt dazukommt. */
-    .work__item--1 { grid-column: 1 / span 5; }                   /* Siemens 4:5 */
-    .work__item--2 { grid-column: 7 / span 6; align-self: end; }  /* Revitive 3:2 */
+    .work__figure { width: fit-content; height: var(--kachelhoehe); }
 
-    .work__item--3 { grid-column: 1 / span 4; }                   /* Street One 9:16 */
-    .work__item--4 { grid-column: 5 / span 5; align-self: end; }  /* Formel D 3:2 */
-    .work__item--5 { grid-column: 10 / span 3; }                  /* Allianz 9:16 */
-
-    .work__item--6 { grid-column: 8 / span 4; }                   /* BVB 9:16 */
-
-    /* Der Versatz im Fries. margin-top und nicht transform: Die Kachel
-       soll den Platz, den sie einnimmt, auch beanspruchen — sonst liefe
-       der Schlussteil in sie hinein. */
-    .work__item--5 { margin-top: clamp(2rem, 4vw, 4rem); }
+    /* Höhe gesetzt, Breite frei — das Seitenverhältnis aus data-format
+       rechnet sie aus. */
+    .work__figure img { height: 100%; width: auto; }
 
     /* Zwei Spalten: Video links über beide Zeilen, Idee & Konzept rechts
        oben, Foto rechts unten. */
