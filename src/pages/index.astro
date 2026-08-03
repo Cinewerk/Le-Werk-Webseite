@@ -113,11 +113,32 @@ const krafthaus = [
   { img: '/images/krafthaus/haus-04.jpg', alt: 'Die Backsteinfassade des Krafthauses unter bewölktem Himmel',                      x: 60, y: 58, w: 30, ar: '1 / 1', z: 6 },
 ];
 
-// Vier Plätze, alle vier echt. Sie liegen als fertiges Quadrat vor
-// (700 × 700): Der Zuschnitt steckt in der Datei und nicht im CSS, weil
-// die Aufnahmen quer oder hoch sind und die Personen klein im Raum
-// zeigen — ein Beschnitt per object-fit hätte sie nur verschoben, nicht
-// näher herangeholt. Die Originale liegen unter quellbilder/team.
+// Vier Plätze, alle vier echt. Der Zuschnitt steckt in der Datei und
+// nicht im CSS, weil die Aufnahmen quer oder hoch sind und die Personen
+// klein im Raum zeigen — ein Beschnitt per object-fit hätte sie nur
+// verschoben, nicht näher herangeholt.
+//
+// AUGENLINIE BEI 35 %. Alle vier Quadrate sind so geschnitten, dass die
+// Augen auf derselben Höhe liegen. Vorher lagen sie zwischen 22 und 37
+// Prozent: Beim Blick von einem Porträt zum nächsten sprang der Blick um
+// rund 45px auf und ab.
+//
+// Die 35 % sind nicht frei gewählt, sondern die untere Grenze. Sie ergeben
+// sich aus Joscha: Bei ihm liegen zwischen Haaransatz und Augen 220px, über
+// dem Haaransatz nur 38. Ein tieferer Wert hätte ihm den Kopf abgeschnitten,
+// ein höherer die beiden sitzenden Aufnahmen unnötig eng gemacht.
+//
+// Die Kacheln sind deshalb verschieden groß — 700, 680, 440 und 437px.
+// Cem und Tom sitzen auf ihren Aufnahmen weit im Raum und haben über den
+// Augen wenig Rand; um sie auf dieselbe Augenhöhe zu bringen, muss enger
+// beschnitten werden. Dargestellt werden alle mit 304px, also mindestens
+// 1,4-fach.
+//
+// Wer ein Porträt tauscht, muss den Schnitt mitliefern: 35 % der Höhe bis
+// zu den Augen, quadratisch, und über dem Haaransatz Luft lassen.
+//
+// Die Originale liegen unter quellbilder/team — allerdings nur die von
+// Joscha und Tom. Für Philipp und Cem existiert nur die Webfassung.
 // OFFEN: die Rollen. Die Namen stehen, die Zeile darunter ist noch leer.
 const team = [
   { img: '/images/team/philipp-maxhofer.jpg', name: 'Philipp Maxhofer', role: 'Rolle folgt', alt: 'Porträt von Philipp Maxhofer im Rollkragenpullover, Studio im Hintergrund' },

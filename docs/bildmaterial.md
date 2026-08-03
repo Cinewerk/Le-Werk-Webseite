@@ -194,6 +194,36 @@ im Stapel trägt am meisten, das oberste nichts.
 Kamera, die Datei ist mit 570 × 760 als einzige unter 1000px breit, und
 inhaltlich zeigt sie dasselbe wie `bts-07` und `bts-09` — nur ohne Gesichter.
 
+### Die Team-Porträts
+
+Alle vier Quadrate sind so geschnitten, dass **die Augen auf 35 Prozent der
+Höhe** liegen. Vorher lagen sie zwischen 22 und 37 Prozent — beim Blick von
+einem Porträt zum nächsten sprang der Blick um rund 45px auf und ab.
+
+Die 35 Prozent sind die untere Grenze, nicht ein gewählter Wert. Sie ergeben
+sich aus Joscha: zwischen Haaransatz und Augen liegen bei ihm 220px, über dem
+Haaransatz nur 38. Tiefer angesetzt hätte ihm den Kopf abgeschnitten, höher
+die beiden sitzenden Aufnahmen unnötig eng gemacht.
+
+| Datei | Kachel | Augen | über dem Haaransatz |
+|---|---|---|---|
+| `philipp-maxhofer.jpg` | 700 × 700 | 35 % | 81 px |
+| `joscha-ortmeier.jpg` | 680 × 680 | 35 % | 18 px |
+| `tom-beckers.jpg` | 440 × 440 | 35 % | 42 px |
+| `cem-schuch.jpg` | 437 × 437 | 35 % | 82 px |
+
+Die Kacheln sind verschieden groß, weil Cem und Tom auf ihren Aufnahmen weit
+im Raum sitzen und über den Augen wenig Rand haben: Um sie auf dieselbe
+Augenhöhe zu bringen, muss enger beschnitten werden. Dargestellt werden alle
+mit 304px, also mindestens 1,4-fach.
+
+**Beim Austauschen den Schnitt mitliefern**: quadratisch, Augen auf 35 Prozent
+der Höhe, über dem Haaransatz Luft. Ohne das springt die Reihe wieder.
+
+Von den Originalen liegen nur `Joscha_Team.JPG` und `Tom_Beckers.jpg` unter
+`quellbilder/team/`. Für Philipp und Cem existiert nur die Webfassung — ein
+weiterer Beschnitt geht dort auf Kosten der Auflösung.
+
 ### Video-Standbilder
 
 Vier Projektseiten binden Vimeo-Videos ein und haben dafür je einen
