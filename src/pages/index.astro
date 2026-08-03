@@ -1167,34 +1167,43 @@ const faqs = [
     .work__item--2 { margin-top: clamp(4rem, 13vw, 12rem); }
     .work__item--3 { margin-top: clamp(1rem, 3.5vw, 3.5rem); }
 
-    /* Zwei Spalten: Video links über beide Zeilen, Idee & Konzept rechts
-       oben, Foto rechts unten. */
+    /* Drei Kästen, ineinandergreifend statt in einem sauberen Raster.
+
+       Vorher stand Video links über beide Zeilen und rechts daneben
+       Konzept über Foto — zwei exakt gleich breite Kästen, exakt
+       übereinander, alle Kanten bündig. Das war das ordentlichste Feld der
+       Seite und stand quer zu allem darüber.
+
+       Jetzt sind alle drei verschieden groß, und ihre Größe folgt dem
+       Rang: Video als Hauptdisziplin 633 × 791, Foto als klare Zweite
+       633 × 422, Konzept als vorgeschaltete Leistung 521 × 347. Das
+       Verhältnis von größter zu kleinster Fläche ist damit 2,8 zu 1.
+
+       Foto zieht sich über einen negativen Rand nach oben, bis es neben
+       der unteren Hälfte von Video und unter Konzept steht. Kollidieren
+       kann es dabei nicht: Video endet auf Spalte 6, Foto beginnt auf
+       Spalte 7.
+
+       Die einzige durchgehende Linie ist die rechte Kante von Konzept und
+       Foto auf Spalte 12. Sie hält das Feld zusammen, während links und
+       oben nichts fluchtet. */
     .disziplinen {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: clamp(1.5rem, 3vw, 3rem);
       row-gap: clamp(2rem, 4vw, 3rem);
     }
 
-    .disziplin--1 { grid-column: 1 / span 6; grid-row: 1 / span 2; }
-    .disziplin--2 { grid-column: 8 / span 5; grid-row: 1; }
-    .disziplin--3 { grid-column: 8 / span 5; grid-row: 2; }
+    .disziplin--1 { grid-column: 1 / span 6; }                    /* Video 4:5 */
+    .disziplin--2 { grid-column: 8 / span 5; }                    /* Konzept 3:2 */
+    .disziplin--3 { grid-column: 7 / span 6; }                    /* Foto 3:2 */
 
-    /* Der linke Kasten bekommt keine feste Bildhöhe, sondern füllt exakt
-       das, was die beiden rechten zusammen hoch sind. Mit einem festen
-       Seitenverhältnis bliebe sonst je nach Textlänge unten ein Rest übrig
-       oder das Bild stünde über. */
-    .disziplin--1 .disziplin__link {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
+    /* Konzept hängt leicht tiefer als Video, damit die beiden Oberkanten
+       nicht auf einer Linie liegen. */
+    .disziplin--2 { margin-top: clamp(1rem, 3vw, 3rem); }
 
-    .disziplin--1 .disziplin__bild { flex: 1; min-height: 0; }
-
-    .disziplin--1 .disziplin__bild img {
-      height: 100%;
-      aspect-ratio: auto;
-    }
+    /* Der Zug nach oben, der die Lücke zwischen Konzept und Video
+       schließt. */
+    .disziplin--3 { margin-top: calc(-1 * clamp(11rem, 26vw, 25rem)); }
 
     /* Ab hier drei Spalten wie in der Referenz. Darunter zwei, damit die
        Bilder auf dem Handy nicht zu Briefmarken werden. */
