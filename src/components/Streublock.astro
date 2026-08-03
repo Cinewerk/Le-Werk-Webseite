@@ -202,14 +202,26 @@ const gestreut = bilder.map((b) => {
             if (e.isIntersecting) sichtbar.add(block);
             else {
               sichtbar.delete(block);
-              // Beim Verlassen nach oben den Endzustand festhalten, damit
-              // ein Block, der oben rausläuft, nicht halb gestreut bleibt.
-              // Auch der Ist-Wert wandert mit, sonst liefe der Block beim
-              // Zurückscrollen aus einer falschen Stellung an.
-              if (block.getBoundingClientRect().bottom < 0) {
-                block.style.setProperty('--q', '1');
-                ist.set(block, 1);
-              }
+
+              // Außerhalb des Fensters wird nicht mehr gerechnet — deshalb
+              // hier den Ist-Wert auf das Ziel setzen, statt ihn stehen zu
+              // lassen.
+              //
+              // Ohne das lief ein Block beim Wiedereintritt kurz in die
+              // falsche Richtung: Wer nach unten scrollt und sofort wieder
+              // nach oben, schiebt einen Block unten aus dem Bild, während
+              // sein Ist-Wert noch hoch steht. Beim nächsten Eintritt von
+              // unten ist das Ziel aber wieder klein — der Haufen lief also
+              // erst auseinander, obwohl nach unten gescrollt wurde, und
+              // drehte erst um, wenn das Ziel den Ist-Wert eingeholt hatte.
+              //
+              // ziel() deckt beide Seiten ab: oberhalb des Fensters ist der
+              // Wert auf 1 begrenzt, unterhalb auf 0. Der Sprung ist nicht
+              // zu sehen, weil der Beobachter erst 15 % der Fensterhöhe
+              // jenseits der Kante abschaltet.
+              const z = ziel(block);
+              ist.set(block, z);
+              block.style.setProperty('--q', z.toFixed(4));
             }
           }
           anstossen();

@@ -1167,7 +1167,7 @@ const faqs = [
     .work__item--2 { margin-top: clamp(4rem, 13vw, 12rem); }
     .work__item--3 { margin-top: clamp(1rem, 3.5vw, 3.5rem); }
 
-    /* Drei Kästen, ineinandergreifend statt in einem sauberen Raster.
+    /* Drei Kästen, ungleich groß statt in einem sauberen Raster.
 
        Vorher stand Video links über beide Zeilen und rechts daneben
        Konzept über Foto — zwei exakt gleich breite Kästen, exakt
@@ -1175,35 +1175,59 @@ const faqs = [
        Seite und stand quer zu allem darüber.
 
        Jetzt sind alle drei verschieden groß, und ihre Größe folgt dem
-       Rang: Video als Hauptdisziplin 633 × 791, Foto als klare Zweite
-       633 × 422, Konzept als vorgeschaltete Leistung 521 × 347. Das
-       Verhältnis von größter zu kleinster Fläche ist damit 2,8 zu 1.
+       Rang: Video als Hauptdisziplin am größten, Foto als klare Zweite,
+       Konzept als vorgeschaltete Leistung am kleinsten — die Flächen
+       verhalten sich rund 5 zu 2 zu 1. Konzept steht auf vier Spalten
+       rechts außen, Foto auf sechs und beginnt zwei Spalten weiter links.
+       Die linken Kanten fluchten damit nirgends.
 
-       Foto zieht sich über einen negativen Rand nach oben, bis es neben
-       der unteren Hälfte von Video und unter Konzept steht. Kollidieren
-       kann es dabei nicht: Video endet auf Spalte 6, Foto beginnt auf
-       Spalte 7.
+       Foto hängt zusätzlich tiefer, als die Zeile es verlangt. Der Versatz
+       geht bewusst nach unten und nicht nach oben: Nach unten kann er
+       nichts verdecken, weil darunter nichts mehr liegt.
 
-       Die einzige durchgehende Linie ist die rechte Kante von Konzept und
-       Foto auf Spalte 12. Sie hält das Feld zusammen, während links und
-       oben nichts fluchtet. */
+       Konzept und Foto liegen dabei in festen Rasterzeilen. Ein erster
+       Anlauf zog Foto über einen negativen Rand nach oben zwischen die
+       beiden — das sah dichter aus, war aber gefährlich: Der Rand hing an
+       der Fensterbreite, die Höhe des Konzept-Textes dagegen am
+       Zeilenumbruch. Zwischen beiden blieben je nach Breite nur 60 bis
+       70px, und sobald der Text eine Zeile mehr brauchte, schob sich Foto
+       darüber. Mit festen Zeilen ist das ausgeschlossen.
+
+       Video füllt beide Zeilen und bekommt deshalb keine feste Bildhöhe,
+       sondern nimmt genau das, was Konzept und Foto zusammen hoch sind.
+       Mit einem festen Seitenverhältnis bliebe je nach Textlänge unten ein
+       Rest übrig oder das Bild stünde über. */
     .disziplinen {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: clamp(1.5rem, 3vw, 3rem);
       row-gap: clamp(2rem, 4vw, 3rem);
     }
 
-    .disziplin--1 { grid-column: 1 / span 6; }                    /* Video 4:5 */
-    .disziplin--2 { grid-column: 8 / span 5; }                    /* Konzept 3:2 */
-    .disziplin--3 { grid-column: 7 / span 6; }                    /* Foto 3:2 */
+    .disziplin--1 { grid-column: 1 / span 6; grid-row: 1 / span 2; }  /* Video */
+    .disziplin--2 { grid-column: 9 / span 4; grid-row: 1; }           /* Konzept */
+    .disziplin--3 { grid-column: 7 / span 6; grid-row: 2; }           /* Foto */
 
-    /* Konzept hängt leicht tiefer als Video, damit die beiden Oberkanten
-       nicht auf einer Linie liegen. */
-    .disziplin--2 { margin-top: clamp(1rem, 3vw, 3rem); }
+    /* Konzept startet etwas unter Video, damit auch oben keine
+       durchgehende Linie liegt. */
+    .disziplin--2 { margin-top: clamp(1rem, 2.5vw, 2.5rem); }
 
-    /* Der Zug nach oben, der die Lücke zwischen Konzept und Video
-       schließt. */
-    .disziplin--3 { margin-top: calc(-1 * clamp(11rem, 26vw, 25rem)); }
+    /* Foto sackt ab. Die Zeile darüber wächst dadurch mit, und weil Video
+       beide Zeilen füllt, wird auch Video höher — der Abschnitt bleibt
+       also geschlossen, statt unten auszufransen. */
+    .disziplin--3 { margin-top: clamp(2rem, 6vw, 6rem); }
+
+    .disziplin--1 .disziplin__link {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .disziplin--1 .disziplin__bild { flex: 1; min-height: 0; }
+
+    .disziplin--1 .disziplin__bild img {
+      height: 100%;
+      aspect-ratio: auto;
+    }
 
     /* Ab hier drei Spalten wie in der Referenz. Darunter zwei, damit die
        Bilder auf dem Handy nicht zu Briefmarken werden. */
