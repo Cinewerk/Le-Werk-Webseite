@@ -9,13 +9,56 @@ import { withBase } from '../lib/paths';
 // Quelltext jeder Seite, und laut Markenarchitektur wird die Schwestermarke
 // ausschließlich im Impressum genannt. Details in docs/bildmaterial.md.
 
-// Die Kundenlogos liegen als ein durchgehender Streifen vor. Für die
-// Endlosschleife läuft er zweimal hintereinander; der Track wandert um
-// exakt eine Streifenbreite, dadurch ist der Übergang nahtlos.
-const kundenlogos =
-  'Henkell Freixenet, ServiceNow, Douglas, Seven.One Entertainment Group, ' +
-  'Hugo Boss, Deutsche Welle, Shop Apotheke Europe, Street One, Siemens, ' +
-  'Zehnder Group, North Kiteboarding';
+// Die Kundenlogos, einzeln statt als ein Streifenbild. Für die
+// Endlosschleife läuft die Liste zweimal hintereinander; der Track wandert
+// um exakt eine Listenbreite, dadurch ist der Übergang nahtlos. Das setzt
+// voraus, dass der Abstand zwischen den Logos im Logo selbst steckt — als
+// padding an .marquee__logo und nicht als gap am Track. Ein gap läge auch
+// zwischen den beiden Kopien und würde die Rechnung um genau einen Abstand
+// verschieben; die Schleife spränge sichtbar.
+//
+// Die Größe steckt nicht in diesen Daten, sondern in einem Kasten im CSS:
+// Jedes Logo bekommt dieselbe Höchstbreite und dieselbe Höchsthöhe und
+// wächst darin so weit, wie es sein Seitenverhältnis zulässt. Breite
+// Wortmarken stoßen an die Breite, hohe Bildmarken an die Höhe.
+//
+// Das ist die Ordnung, die der frühere Streifen hatte — nachgemessen an
+// dessen Bilddatei: Siemens, Douglas, Street One und Seven.One standen
+// dort alle zwischen 80 und 120px breit, Zehnder als einzige hohe Marke
+// bei 63 x 54. Auf gleiche Höhe gebracht wären die Wortmarken dreimal so
+// schwer wie die Bildmarken.
+//
+// b und h sind die Maße der freigestellten Dateien und stehen nur wegen
+// des width/height-Attributs hier — sie verhindern, dass die Zeile beim
+// Laden springt. Freigestellt heißt: auf den Kasten beschnitten, in dem
+// überhaupt Farbe steht. Die Lieferung hatte sehr unterschiedlich viel
+// durchsichtigen Rand — Siemens stand in einem 2400er Quadrat, in dem die
+// Wortmarke nur 364px hoch war.
+//
+// url führt auf die Seite des Unternehmens. Jede Adresse ist per Abruf
+// geprüft; zwei Anmerkungen dazu:
+//
+//   douglas.de   antwortet einem Abruf ohne Browser mit 400. Das ist ein
+//                Bot-Schutz, keine tote Adresse — DNS, TLS und die
+//                Umleitung auf www greifen. douglas.com wäre falsch, die
+//                Adresse führt zu einer gleichnamigen Firma in Kanada.
+//   olympics.com bricht denselben Abruf ab, ist aber belegt: olympic.org
+//                leitet mit 301 genau dorthin.
+//
+// Wo es eine deutsche Fassung gibt, steht sie hier — siemens.de leitet
+// sauber auf siemens.com/de-de.
+const kunden = [
+  { datei: 'siemens',     name: 'Siemens',                      url: 'https://www.siemens.de/',          b: 330, h:  51 },
+  { datei: 'street-one',  name: 'Street One',                   url: 'https://www.street-one.de/',       b: 330, h:  48 },
+  { datei: 'douglas',     name: 'Douglas',                      url: 'https://www.douglas.de/',          b: 330, h:  61 },
+  { datei: 'allianz',     name: 'Allianz',                      url: 'https://www.allianz.de/',          b: 330, h:  86 },
+  { datei: 'olympia',     name: 'Olympische Spiele',            url: 'https://www.olympics.com/',        b: 252, h: 118 },
+  { datei: 'paralympics', name: 'Paralympisches Komitee',       url: 'https://www.paralympic.org/',      b: 192, h: 141 },
+  { datei: 'ea',          name: 'EA',                           url: 'https://www.ea.com/de-de',         b: 159, h: 160 },
+  { datei: 'formel-d',    name: 'Formel D',                     url: 'https://www.formeld.com/de/',      b: 189, h: 143 },
+  { datei: 'sevenone',    name: 'Seven.One Entertainment Group', url: 'https://www.seven.one/',           b: 330, h:  74 },
+  { datei: 'zehnder',     name: 'Zehnder Group',                url: 'https://www.zehndergroup.com/',    b: 171, h: 152 },
+];
 
 // Die fünf Projekte liegen in src/data/arbeiten.ts, weil die Unterseiten
 // unter /arbeiten/<slug> dieselben Angaben brauchen.
@@ -118,33 +161,62 @@ const krafthaus = [
 // klein im Raum zeigen — ein Beschnitt per object-fit hätte sie nur
 // verschoben, nicht näher herangeholt.
 //
-// AUGENLINIE BEI 35 %. Alle vier Quadrate sind so geschnitten, dass die
-// Augen auf derselben Höhe liegen. Vorher lagen sie zwischen 22 und 37
-// Prozent: Beim Blick von einem Porträt zum nächsten sprang der Blick um
-// rund 45px auf und ab.
+// ZWEI MASSE HALTEN DIE REIHE ZUSAMMEN, und beide sind nachgemessen:
 //
-// Die 35 % sind nicht frei gewählt, sondern die untere Grenze. Sie ergeben
-// sich aus Joscha: Bei ihm liegen zwischen Haaransatz und Augen 220px, über
-// dem Haaransatz nur 38. Ein tieferer Wert hätte ihm den Kopf abgeschnitten,
-// ein höherer die beiden sitzenden Aufnahmen unnötig eng gemacht.
+//   AUGENLINIE 44 %   Die Augen liegen bei allen vier auf 44 Prozent der
+//                     Kachelhöhe. Vorher lagen sie zwischen 22 und 37 —
+//                     der Blick sprang beim Wechsel um rund 45px.
 //
-// Die Kacheln sind deshalb verschieden groß — 700, 680, 440 und 437px.
-// Cem und Tom sitzen auf ihren Aufnahmen weit im Raum und haben über den
-// Augen wenig Rand; um sie auf dieselbe Augenhöhe zu bringen, muss enger
-// beschnitten werden. Dargestellt werden alle mit 304px, also mindestens
-// 1,4-fach.
+//   KOPFHÖHE 177 px   Vom Scheitel bis zum Kinn, gerechnet auf die
+//                     Anzeigegröße von 304px. Gemessen liegen die vier
+//                     bei 173 bis 179, also innerhalb von zwei Prozent.
 //
-// Wer ein Porträt tauscht, muss den Schnitt mitliefern: 35 % der Höhe bis
-// zu den Augen, quadratisch, und über dem Haaransatz Luft lassen.
+// Das zweite Maß ist das jüngere. Eine gemeinsame Augenlinie allein
+// reicht nicht: Danach lagen die Augen zwar auf einer Linie, die Köpfe
+// waren aber 92 bis 174px hoch — Joschas fast doppelt so groß wie Cems.
+// Die Reihe las sich als vier verschiedene Aufnahmen, nicht als ein Satz.
 //
-// Die Originale liegen unter quellbilder/team — allerdings nur die von
-// Joscha und Tom. Für Philipp und Cem existiert nur die Webfassung.
-// OFFEN: die Rollen. Die Namen stehen, die Zeile darunter ist noch leer.
+// Die 44 % sind der Kompromiss aus zwei Grenzen. Nach unten setzt Cem
+// sie: Bei ihm liegen zwischen Scheitel und Augen 59 Prozent der
+// Kopfhöhe, tiefer angesetzt stößt er oben an. Nach oben setzt Philipp
+// sie: Von ihm gibt es nur die Webfassung, sein Ausschnitt kann nicht
+// weiter nach unten wandern als bis an deren Rand.
+//
+// Philipp ist auch der Grund für die Kopfhöhe. Sein Bild lässt sich
+// nicht weiter aufziehen, Joschas nicht weiter zurücknehmen — dessen
+// Quelle ist nur 1086px breit und damit schon fast ausgereizt. Zwischen
+// diesen beiden Grenzen liegt genau ein gemeinsamer Wert.
+//
+// Die Kacheln sind deshalb 700px groß, Philipps 524. Bei 304px Anzeige
+// sind das 2,3-fach und 1,7-fach.
+//
+// Wer ein Porträt tauscht, muss den Schnitt mitliefern: quadratisch,
+// Augen auf 44 Prozent, Kopf 58 Prozent der Kachelhöhe.
+//
+// Die Originale liegen unter quellbilder/team — von Philipp gibt es
+// keins, deshalb ist seine Kachel die kleinste.
+//
+// Die Rollen sind Doppelnennungen mit Schrägstrich und laufen bei zwei
+// von vieren über die Kachelbreite hinaus. Am Umbruch hängen drei Dinge:
+//
+//   text-wrap: balance   an .team__role verteilt die Zeilen gleichmäßig.
+//                        Ohne die Angabe füllt die erste Zeile sich bis
+//                        zum Rand und lässt ein einzelnes Wort darunter.
+//   U+2011               steht als Bindestrich in "Post‑Production" und
+//                        "Self‑Shooting" — ein gewöhnlicher Bindestrich
+//                        ist eine Trennstelle, und Joschas Zeile brach
+//                        genau dort: "Head of Post-" über "Production /
+//                        Photographer". Der Umbruch gehört an den
+//                        Schrägstrich, nicht in den Begriff.
+//   U+2009               steht als schmales Leerzeichen um die
+//                        Schrägstriche. Nur Optik, keine Umbruchregel —
+//                        es ist ein trennbares Leerzeichen wie jedes
+//                        andere.
 const team = [
-  { img: '/images/team/philipp-maxhofer.jpg', name: 'Philipp Maxhofer', role: 'Rolle folgt', alt: 'Porträt von Philipp Maxhofer im Rollkragenpullover, Studio im Hintergrund' },
-  { img: '/images/team/cem-schuch.jpg', name: 'Cem Schuch', role: 'Rolle folgt', alt: 'Porträt von Cem Schuch, sitzend auf einem Sofa im Studio' },
-  { img: '/images/team/joscha-ortmeier.jpg', name: 'Joscha Ortmeier', role: 'Rolle folgt', alt: 'Porträt von Joscha Ortmeier mit Brille, im Hintergrund ein Bücherregal' },
-  { img: '/images/team/tom-beckers.jpg', name: 'Tom Beckers', role: 'Rolle folgt', alt: 'Porträt von Tom Beckers, sitzend auf demselben Sofa im Studio' },
+  { img: '/images/team/philipp-maxhofer.jpg', name: 'Philipp Maxhofer', role: 'Concept / Creative Director', alt: 'Porträt von Philipp Maxhofer im Rollkragenpullover, Studio im Hintergrund' },
+  { img: '/images/team/cem-schuch.jpg', name: 'Cem Schuch', role: 'Head of Production / Self‑Shooting Director', alt: 'Porträt von Cem Schuch in dunkler Sweatjacke, lachend, im Hintergrund ein Sprossenfenster' },
+  { img: '/images/team/joscha-ortmeier.jpg', name: 'Joscha Ortmeier', role: 'Head of Post‑Production / Photographer', alt: 'Porträt von Joscha Ortmeier mit Brille, im Hintergrund ein Bücherregal' },
+  { img: '/images/team/tom-beckers.jpg', name: 'Tom Beckers', role: 'Producer / Content Creator', alt: 'Porträt von Tom Beckers mit schulterlangem Haar und Schnurrbart, im Hintergrund ein helles Fenster' },
 ];
 
 // q darf Markup enthalten (Wortmarke), wird unten mit set:html gerendert.
@@ -218,7 +290,7 @@ const faqs = [
       <p class="statement__text" id="statement-title" data-reveal>
         <em>Gegründet von Filmemachern.</em>{' '}
         <span class="brand">Le Werk</span> ist ein Visual Content Studio im
-        Kölner Rheinauhafen, spezialisiert auf Storytelling, Film und Foto
+        Kölner Rheinauhafen. Spezialisiert auf Storytelling, Film und Foto
         für <em>Social und Branded Content.</em>
       </p>
       <p class="statement__meta" data-reveal data-reveal-delay="80">
@@ -275,36 +347,65 @@ const faqs = [
     </div>
 
     <div class="marquee">
-      <div class="marquee__track">
-        <img
-          class="marquee__strip"
-          src={withBase('/images/kunden/logostreifen.png')}
-          alt={`Kundenlogos: ${kundenlogos}`}
-          width="5000" height="400" loading="lazy" decoding="async"
-        />
-        <!-- zweite Kopie nur für die Schleife, für Screenreader unsichtbar -->
-        <img
-          class="marquee__strip"
-          src={withBase('/images/kunden/logostreifen.png')}
-          alt="" aria-hidden="true"
-          width="5000" height="400" loading="lazy" decoding="async"
-        />
-      </div>
+      <!-- Die Liste steht zweimal im Markup. Die zweite Runde trägt
+           aria-hidden und leere Alternativtexte: Sie ist nur da, damit die
+           Schleife ohne Lücke umbrechen kann, und würde sonst jeden
+           Kundennamen doppelt vorlesen lassen.
+
+           tabindex="-1" gehört zwingend dazu: Ein Element mit aria-hidden
+           darf nicht fokussierbar sein, sonst landet die Tabulatortaste in
+           etwas, das für Screenreader nicht existiert. Ohne die Angabe
+           stünden zehn stumme Links in der Tabreihenfolge. -->
+      <ul class="marquee__track">
+        {[...kunden, ...kunden].map((k, i) => {
+          const kopie = i >= kunden.length;
+          return (
+            <li class="marquee__logo" aria-hidden={kopie ? 'true' : undefined}>
+              <a
+                class="marquee__link"
+                href={k.url}
+                target="_blank"
+                rel="noopener"
+                tabindex={kopie ? -1 : undefined}
+              >
+                <img
+                  src={withBase(`/images/kunden/${k.datei}.png`)}
+                  alt={kopie ? '' : k.name}
+                  width={k.b} height={k.h} loading="lazy" decoding="async"
+                />
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   </section>
 
   <!-- ═══ 5 · LEISTUNGEN ═════════════════════════════════════════════════ -->
   <section class="section section--sand services" aria-labelledby="services-title">
     <div class="container">
+      <!-- "Content, holistisch gedacht" ist entfallen; "Was wir machen"
+           rückt von der Marginalie in die Überschrift auf und ist damit
+           gebaut wie die Nachbarn: Auftakt in Bodoni, zweiter Teil in
+           Poppins.
+
+           Die Marginalie darüber ist deshalb weg — sie trug denselben
+           Wortlaut und stünde jetzt doppelt.
+
+           Der Umbruch ist der knappste auf der Seite: "Was wir" und
+           "machen" sind fast gleich lang. Getragen wird der Absatz allein
+           vom Schriftwechsel und vom Größenunterschied, nicht von der
+           Zeilenlänge — dafür ist der Kicker kleiner gesetzt als die
+           Headline, siehe .editorial--kicker in global.css.
+
+           Ein Fließtext stand hier früher ebenfalls. Er stufte die
+           Disziplinen ab ("Hauptdisziplin", "klare Zweite") und ist mit der
+           damaligen Überschrift zusammen entfallen. -->
       <header class="sec-head" data-reveal>
-        <p class="label">Was wir machen</p>
         <h2 class="headline" id="services-title">
-          <span class="editorial editorial--kicker">Content,</span>{' '}
-          holistisch gedacht
+          <span class="editorial editorial--kicker">Was wir</span>{' '}
+          machen
         </h2>
-        <!-- Der frühere Fließtext ist entfallen. Er stufte die Disziplinen
-             ab ("Hauptdisziplin", "klare Zweite", "vorgeschaltet") und stand
-             damit gegen die neue Überschrift, die sie zusammendenkt. -->
       </header>
 
       <!-- Nur die drei Produktionsdisziplinen. Workshops sind bewusst nicht
@@ -336,14 +437,14 @@ const faqs = [
     </div>
   </section>
 
-  <!-- ═══ 6 · UNSER TEAM ═════════════════════════════════════════════════ -->
+  <!-- ═══ 6 · UNSER KERNTEAM ═════════════════════════════════════════════ -->
   <section class="section section--dark team" aria-labelledby="team-title">
     <div class="container">
       <header class="sec-head sec-head--knapp" data-reveal>
         <p class="label">Wer dahintersteht</p>
         <h2 class="headline" id="team-title">
           <span class="editorial editorial--kicker">Unser</span>{' '}
-          Team
+          Kernteam
         </h2>
       </header>
 
@@ -369,27 +470,17 @@ const faqs = [
       <div class="team__bloecke">
         <Streublock nr="01" seite="rechts" bilder={bts} label="Blick hinter die Kulissen">
           <p>
-            Ein Team, das produziert — keine Account-Ebene, keine Weitergabe an
-            Dritte. Die Leute, mit denen ihr das Konzept besprecht, stehen
-            später auch am Set und sitzen im Schnitt. Vom Studio im
-            Rheinauhafen aus drehen wir in Köln, bundesweit und auf Anfrage
-            international.
+            <strong>Erfahrung aus hunderten Produktionen:</strong> Wir
+            kombinieren ein schlagkräftiges Kernteam mit kreativen
+            Spezialisten aus verschiedenen Feldern.
           </p>
         </Streublock>
 
-        <!-- ENTWURF: Zu den Räumen lagen keine Angaben vor. Der Text sagt
-             deshalb nur, was auf den Bildern zu sehen ist — kein Baujahr,
-             keine Quadratmeter. -->
         <Streublock nr="02" seite="links" bilder={krafthaus} label="Unsere Räume im Krafthaus" hoehe={0.95}>
           <p>
-            Unsere Räume liegen im <strong>Krafthaus am Rheinauhafen</strong>:
-            gelber Backstein, Rundbogenfenster, hohe Decken. Hier entstehen
-            Konzept und Schnitt — und wenn ein Set klein genug ist, wird auch
-            hier gedreht.
-          </p>
-          <p>
-            Vor der Tür liegt die Stadt, dahinter der Rhein. Kurze Wege zum
-            nächsten Dreh und kurze Wege zueinander.
+            Unsere Räumlichkeiten liegen im <strong>Krafthaus, im
+            Rheinauhafen</strong>. Gedreht wird in Köln, bundesweit oder auch
+            international.
           </p>
         </Streublock>
       </div>
@@ -415,8 +506,8 @@ const faqs = [
           <h3 class="benefit__title">Content darf gut aussehen</h3>
           <p class="benefit__text">
             Hochwertig produzierte Visuals in Bild und Bewegtbild — mit den
-            Maßstäben an Licht, Bildgestaltung und Postproduktion, die eine
-            Kampagne verlangt.
+            Maßstäben an Licht, Bildgestaltung und Postproduktion, wie man
+            es aus der Filmproduktion kennt.
           </p>
         </li>
         <li class="benefit" data-reveal data-reveal-delay="80">
@@ -469,8 +560,8 @@ const faqs = [
   <section class="section section--dark cta" aria-labelledby="cta-title">
     <div class="container cta__inner" data-reveal>
       <h2 class="headline headline--xl cta__title" id="cta-title">
-        <span class="editorial editorial--kicker">Erzählt uns</span>{' '}
-        von eurem Projekt
+        <span class="editorial editorial--kicker">Erzähl uns</span>{' '}
+        von deinem Projekt
       </h2>
       <div class="cta__actions">
         <a class="btn btn--on-dark" href={withBase("/kontakt")}>
@@ -595,10 +686,8 @@ const faqs = [
   }
 
   /* ── 2 · Trustbar ─────────────────────────────────────────────────────── */
-  /* Der Logostreifen hat oben und unten eigenen Rand — deshalb hier
-     weniger Abstand, sonst reißt die Sektion auseinander. */
   .trust__label { margin-bottom: 0; }
-  .trust .marquee { margin-block: calc(var(--space-2) * -1); }
+  .trust .marquee { margin-top: clamp(1.5rem, 3vw, 2.5rem); }
 
   .marquee {
     position: relative;
@@ -610,13 +699,19 @@ const faqs = [
   .marquee__track {
     display: flex;
     align-items: center;
-    /* muss 0 bleiben: Der Track wandert um 50 % seiner Breite. Ein Abstand
-       zwischen den beiden Kopien würde diese Rechnung verschieben und die
-       Schleife sichtbar springen lassen. Der Streifen bringt seinen
-       Randabstand selbst mit. */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    /* muss 0 bleiben: Der Track wandert um 50 % seiner Breite. Ein gap läge
+       auch zwischen den beiden Kopien und verschöbe die Rechnung um genau
+       einen Abstand — die Schleife spränge sichtbar. Der Abstand steckt
+       deshalb im Logo, siehe .marquee__logo. */
     gap: 0;
     width: max-content;
-    animation: marquee 40s linear infinite;
+    /* 33s statt 40: Der frühere Streifen lief 1600px in 40s, also 40px in
+       der Sekunde. Eine Runde misst jetzt 1320px — bei gleicher
+       Geschwindigkeit sind das 33s. */
+    animation: marquee 33s linear infinite;
     will-change: transform;
   }
 
@@ -628,18 +723,84 @@ const faqs = [
     to   { transform: translate3d(-50%, 0, 0); }
   }
 
-  /* Höhe steuert die Größe, die Breite folgt dem Seitenverhältnis 12,5:1.
-     Die Logos sitzen mit Luft im Streifen, deshalb ist er höher als die
-     Logos selbst wirken. */
-  .marquee__strip {
-    height: clamp(80px, 9vw, 128px);
-    width: auto;
-    max-width: none;
+  /* Der Kasten, in dem jedes Logo steht: gleiche Breite, gleiche Höhe,
+     gleicher Abstand. Die Maße sind am früheren Streifen abgenommen. Dort
+     standen die Wortmarken zwischen 80 und 120px breit — Siemens bei 80,
+     Douglas bei 90, Street One und Seven.One bei 118 — und zwischen zwei
+     Logos lagen 38px.
+
+     Der Kasten war zuerst 148 x 54 und damit deutlich zu groß: Die
+     Wortmarken kamen auf 111px statt der 80 bis 118 von vorher, und vor
+     allem standen vier Bildmarken auf voller Höhe, wo der frühere Streifen
+     nur eine hatte. Über 142 x 44 steht er jetzt bei 132 x 40 — damit liegt
+     Siemens bei 94 x 15 gegen 80 x 15 früher.
+
+     Die feste Breite ist auch die Rechnung für die Schleife: zehn Kästen zu
+     132px sind 1320px je Runde, und genau um diese Strecke wandert der
+     Track. */
+  .marquee__logo {
+    flex: none;
+    display: flex;
+    /* Außenmaß, nicht Logobreite: box-sizing steht global auf border-box,
+       die Polsterung geht also von diesen 132px ab und lässt dem Logo
+       94px. */
+    width: clamp(5.25rem, 9.15vw, 8.25rem);
+    padding-inline: clamp(0.75rem, 1.3vw, 1.1875rem);
+  }
+
+  /* Der Link ist der Kasten. Seine Höhe ist fest und nicht vom Bild
+     abgeleitet — das ist keine Kosmetik, sondern Bedingung dafür, dass die
+     Logos überhaupt erscheinen:
+
+     Ein Bild mit loading="lazy" wird geladen, sobald sein Kasten in die
+     Nähe des Sichtfelds kommt. Stehen aber Breite und Höhe des Bildes auf
+     auto, hat es vor dem Laden keine Größe — und was keine Größe hat,
+     kommt nie in die Nähe des Sichtfelds. Das Bild lädt nicht, bleibt
+     ohne Größe, und die Leiste ist leer. Genau das ist hier passiert.
+
+     Mit fester Kastenhöhe steht die Fläche von Anfang an, das Laden löst
+     aus, und object-fit hält das Seitenverhältnis.
+
+     Dass der Link die Fläche trägt und nicht das Bild, hat noch einen
+     Grund: Ein Ziel von 104 x 44px ist knapp, und die Leiste bewegt sich.
+     Deshalb hält sie beim Überfahren an, siehe .marquee__track. */
+  .marquee__link {
+    display: block;
+    width: 100%;
+    height: clamp(1.75rem, 2.75vw, 2.5rem);
+  }
+
+  /* Die Trustbar liegt auf Weiß, deshalb Petrol und nicht currentColor —
+     der Ring soll sich vom schwarzen Logo unterscheiden. */
+  .marquee__link:focus-visible {
+    outline: 2px solid var(--petrol);
+    outline-offset: 6px;
+    border-radius: 2px;
+  }
+
+  /* Das Bild füllt den Kasten, contain hält das Seitenverhältnis und
+     zentriert. Damit stößt jede Marke an das Maß, das für sie bindet —
+     breite Wortmarken an die Breite, hohe Bildmarken an die Höhe. Auf
+     gleiche Höhe gebracht wären die Wortmarken dreimal so schwer.
+
+     Kein Farbfilter: Die Logos sind schwarz, weil die Dateien schwarz sind.
+     Formel D kam türkis und wurde umgefärbt — nachgemessen liegt die
+     Deckfarbe jetzt bei allen zehn zwischen 0 und 32 von 255. Details in
+     docs/bildmaterial.md. */
+  .marquee__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     opacity: 0.72;
     transition: opacity var(--dur) var(--ease-out);
   }
 
-  .marquee:hover .marquee__strip { opacity: 1; }
+  /* Beim Überfahren der Leiste heben sich alle Logos, das einzelne unter
+     dem Zeiger geht auf volle Deckung — sonst wäre nicht zu sehen, worauf
+     der Klick geht. */
+  .marquee:hover .marquee__logo img { opacity: 0.85; }
+  .marquee__link:hover img,
+  .marquee__link:focus-visible img { opacity: 1; }
 
   /* ── 2 · Positionierung ───────────────────────────────────────────────── */
   .statement { padding-block: clamp(4.5rem, 10vw, 8.5rem); }
@@ -955,7 +1116,7 @@ const faqs = [
 
   .benefit__text { color: var(--ink-muted); }
 
-  /* ── 6 · Unser Team ───────────────────────────────────────────────────── */
+  /* ── 6 · Unser Kernteam ─────────────────────────────────────────────── */
   /* Kopf ohne Fließtext — der steht jetzt als breiter Absatz unter den
      Porträts, deshalb hier weniger Abstand nach unten. */
   /* Der Team-Kopf steht enger, weil "UNSER TEAM" kurz ist und die
@@ -1008,9 +1169,14 @@ const faqs = [
     color: var(--on-dark);
   }
 
+  /* balance, weil die Rollen Doppelnennungen sind und zwei von ihnen
+     breiter als die Kachel laufen. Ohne die Angabe füllt die erste Zeile
+     sich bis zum Rand und schiebt den Rest hinterher — bei Cem stand
+     "Director" allein auf 59px unter einer 258px langen Zeile. */
   .team__role {
     font-size: var(--fs-small);
     color: var(--on-dark-muted);
+    text-wrap: balance;
   }
 
   /* Die beiden Streublöcke stehen mit Abstand untereinander und mit
@@ -1291,7 +1457,7 @@ const faqs = [
       mask-image: none;
     }
     .marquee__track { animation-name: none; }
-    .marquee__track img[aria-hidden='true'] { display: none; }
+    .marquee__track [aria-hidden='true'] { display: none; }
     .hero__cue { animation-name: none; }
   }
 </style>

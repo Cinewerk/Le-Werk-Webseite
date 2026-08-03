@@ -196,33 +196,52 @@ inhaltlich zeigt sie dasselbe wie `bts-07` und `bts-09` — nur ohne Gesichter.
 
 ### Die Team-Porträts
 
-Alle vier Quadrate sind so geschnitten, dass **die Augen auf 35 Prozent der
-Höhe** liegen. Vorher lagen sie zwischen 22 und 37 Prozent — beim Blick von
-einem Porträt zum nächsten sprang der Blick um rund 45px auf und ab.
+Zwei Maße halten die Reihe zusammen, beide nachgemessen an der
+Anzeigegröße von 304px:
 
-Die 35 Prozent sind die untere Grenze, nicht ein gewählter Wert. Sie ergeben
-sich aus Joscha: zwischen Haaransatz und Augen liegen bei ihm 220px, über dem
-Haaransatz nur 38. Tiefer angesetzt hätte ihm den Kopf abgeschnitten, höher
-die beiden sitzenden Aufnahmen unnötig eng gemacht.
+- **Augenlinie 44 Prozent** der Kachelhöhe, bei allen vier.
+- **Kopfhöhe 177px**, vom Scheitel bis zum Kinn. Gemessen liegen die vier
+  zwischen 173 und 179, also innerhalb von zwei Prozent.
 
-| Datei | Kachel | Augen | über dem Haaransatz |
-|---|---|---|---|
-| `philipp-maxhofer.jpg` | 700 × 700 | 35 % | 81 px |
-| `joscha-ortmeier.jpg` | 680 × 680 | 35 % | 18 px |
-| `tom-beckers.jpg` | 440 × 440 | 35 % | 42 px |
-| `cem-schuch.jpg` | 437 × 437 | 35 % | 82 px |
+Das zweite Maß ist das jüngere und das wichtigere. Eine gemeinsame
+Augenlinie allein reicht nicht: Danach lagen die Augen zwar auf einer Linie,
+die Köpfe waren aber 92 bis 174px hoch — Joschas fast doppelt so groß wie
+Cems. Die Reihe las sich als vier verschiedene Aufnahmen und nicht als ein
+Satz.
 
-Die Kacheln sind verschieden groß, weil Cem und Tom auf ihren Aufnahmen weit
-im Raum sitzen und über den Augen wenig Rand haben: Um sie auf dieselbe
-Augenhöhe zu bringen, muss enger beschnitten werden. Dargestellt werden alle
-mit 304px, also mindestens 1,4-fach.
+| Datei | Kachel | Anzeige | Kopfhöhe | über dem Scheitel |
+|---|---|---|---|---|
+| `philipp-maxhofer.jpg` | 524 × 524 | 1,7-fach | 173 px | 32 px |
+| `cem-schuch.jpg` | 700 × 700 | 2,3-fach | 179 px | 33 px |
+| `joscha-ortmeier.jpg` | 700 × 700 | 2,3-fach | 177 px | 33 px |
+| `tom-beckers.jpg` | 700 × 700 | 2,3-fach | 178 px | 30 px |
 
-**Beim Austauschen den Schnitt mitliefern**: quadratisch, Augen auf 35 Prozent
-der Höhe, über dem Haaransatz Luft. Ohne das springt die Reihe wieder.
+**Warum genau diese Werte.** Die 44 Prozent sind der Kompromiss aus zwei
+Grenzen: Nach unten setzt Cem sie — bei ihm liegen zwischen Scheitel und
+Augen 59 Prozent der Kopfhöhe, tiefer angesetzt stößt er oben an. Nach oben
+setzt Philipp sie, dessen Ausschnitt nicht weiter nach unten wandern kann als
+bis an den Rand seiner Webfassung.
 
-Von den Originalen liegen nur `Joscha_Team.JPG` und `Tom_Beckers.jpg` unter
-`quellbilder/team/`. Für Philipp und Cem existiert nur die Webfassung — ein
-weiterer Beschnitt geht dort auf Kosten der Auflösung.
+Philipp ist auch der Grund für die Kopfhöhe. Sein Bild lässt sich nicht
+weiter aufziehen, Joschas nicht weiter zurücknehmen — dessen Quelle ist nur
+1086px breit und im vorhandenen Schnitt schon fast ausgereizt. Zwischen
+diesen beiden Grenzen liegt genau ein gemeinsamer Wert, und der ist 177.
+
+Philipps Kachel ist deshalb die kleinste: Von ihm gibt es kein Original,
+sein Quadrat wird aus der 700er-Webfassung geschnitten und landet bei 524.
+Bei 304px Anzeige sind das 1,7-fach — auf einem Bildschirm mit doppelter
+Pixeldichte etwas weich. **Ein hochauflösendes Original von Philipp würde
+das lösen**; alle anderen sind mit 2,3-fach in Reserve.
+
+**Beim Austauschen den Schnitt mitliefern**: quadratisch, Augen auf 44
+Prozent der Höhe, Kopf 58 Prozent der Kachelhöhe. Ohne beides springt die
+Reihe wieder.
+
+Die Originale liegen unter `quellbilder/team/` — `Cem_Schuch.jpg` (7008 ×
+4672), `Tom_Beckers.jpg` (6229 × 4672) und `Joscha_Team.JPG` (1086 × 1448).
+`Joscha6.jpg` liegt dort ebenfalls, zeigt aber eine andere Aufnahme in
+anderem Raum und ist als Ersatz nicht brauchbar. Der Ordner ist bewusst
+nicht in Git — die vier Dateien wiegen zusammen knapp 39 MB.
 
 ### Video-Standbilder
 
@@ -337,22 +356,91 @@ ihn das Luftbild zu.
 
 ## Kundenlogos ersetzen
 
-Die Datei ist `kunden/logostreifen.png` — der einzige Ort im Projekt, an
-dem PNG richtig ist: Flächen, harte Kanten, Transparenz.
+Die Logos liegen einzeln in `public/images/kunden/` — zehn PNG, zusammen
+124 KB. PNG ist hier richtig und sonst fast nirgends im Projekt: Flächen,
+harte Kanten, Transparenz.
 
-Die Trustbar zeigt **einen** Streifen, nicht einzelne Dateien. Für die
-Endlosschleife läuft er zweimal hintereinander und wandert um genau eine
-Streifenbreite. Damit der Übergang unsichtbar bleibt, muss ein neuer Streifen
-zwei Bedingungen erfüllen:
+Die Reihenfolge steht im `kunden`-Array in `src/pages/index.astro`. Bis
+Anfang August 2026 war es stattdessen **ein** Streifenbild; wer in der
+Git-Historie sucht, findet `kunden/logostreifen.png`.
 
-1. **Links und rechts gleich viel Rand** — zusammengenommen ungefähr so viel
-   wie der Abstand zwischen zwei Logos im Streifen. Sonst entsteht beim
-   Rundenwechsel eine Lücke oder die Logos stoßen aneinander.
-2. **Transparenter Hintergrund**, Logos in Schwarz. Die Trustbar liegt auf
-   Weiß und regelt die Zurückhaltung über die Deckkraft.
+### Drei Bedingungen an eine neue Datei
 
-Die Höhe im Layout steuert `.marquee__strip` in `src/pages/index.astro`;
-die Breite folgt automatisch dem Seitenverhältnis.
+1. **Freigestellt.** Das PNG darf keinen durchsichtigen Rand mitbringen,
+   sonst steht das Logo kleiner in seinem Kasten als die Nachbarn. Die
+   Lieferung war darin sehr uneinheitlich — Siemens kam als 2400er
+   Quadrat, in dem die Wortmarke nur 364px hoch war.
+2. **Schwarz.** Die Trustbar liegt auf Weiß und nimmt sich über die
+   Deckkraft zurück; ein farbiges Logo springt heraus. Formel D kam
+   türkis und wurde umgefärbt — Farbe auf Null, Alphakanal erhalten.
+   Nachgemessen liegt die Deckfarbe jetzt bei allen zehn zwischen 0 und
+   32 von 255. Ein CSS-Filter wäre der schlechtere Weg: Aus Türkis würde
+   damit ein mittleres Grau und kein Schwarz.
+3. **Rund dreimal so groß wie die Anzeige.** Breite Wortmarken laufen mit
+   111px, also 330px Datei; hohe Bildmarken mit 54px Höhe.
+
+### Wie die Größe zustande kommt
+
+Jedes Logo steht in einem Kasten von 142 × 44px mit je 19px Polsterung,
+also 104px für das Logo selbst. Darin wächst es so weit, wie sein
+Seitenverhältnis zulässt: Breite Marken stoßen an die Breite, hohe an die
+Höhe.
+
+| Logo | Verhältnis | Anzeige | gebunden durch | früher |
+|---|---|---|---|---|
+| Siemens | 6,4 : 1 | 104 × 16 | Breite | 80 × 15 |
+| Street One | 6,9 : 1 | 104 × 15 | Breite | 118 × 19 |
+| Douglas | 5,4 : 1 | 104 × 19 | Breite | 90 × 16 |
+| Allianz | 3,8 : 1 | 104 × 27 | Breite | — |
+| Seven.One | 4,5 : 1 | 104 × 23 | Breite | 118 × 27 |
+| Olympische Spiele | 2,1 : 1 | 94 × 44 | Höhe | — |
+| Paralympisches Komitee | 1,4 : 1 | 60 × 44 | Höhe | — |
+| Formel D | 1,3 : 1 | 58 × 44 | Höhe | — |
+| Zehnder Group | 1,1 : 1 | 49 × 44 | Höhe | 63 × 54 |
+| EA | 1,0 : 1 | 44 × 44 | Höhe | — |
+
+Auf gleiche Höhe gebracht wären die Wortmarken dreimal so schwer wie die
+Bildmarken, auf gleiche Fläche gebracht verschwänden sie.
+
+Die Spalte „früher" ist am Streifenbild aus der Git-Historie abgemessen und
+der Grund für die Maße. Der Kasten war zuerst 148 × 54 und damit zu groß —
+nicht so sehr wegen der Wortmarken, die kamen auf 111 statt 80 bis 118,
+sondern weil vier Bildmarken auf voller Höhe standen, wo der frühere
+Streifen nur eine hatte.
+
+### Was bei der Schleife zu beachten ist
+
+Die Liste steht zweimal im Markup und der Track wandert um 50 Prozent
+seiner Breite. Das geht nur auf, solange der Abstand **im Kasten** steckt
+und nicht als `gap` am Track: Ein `gap` läge auch zwischen den beiden
+Kopien und verschöbe die Rechnung um genau einen Abstand — die Schleife
+spränge sichtbar.
+
+Kommt ein Logo dazu, wird die Runde länger und die Leiste läuft schneller.
+Die Geschwindigkeit steht als Dauer in `.marquee__track` und ist auf 40px
+in der Sekunde gerechnet: zehn Kästen zu 142px sind 1420px, also 36s.
+
+### Die Logos sind verlinkt
+
+Jedes Logo führt auf die Seite des Unternehmens; die Adressen stehen im
+`kunden`-Array. Drei Dinge hängen daran:
+
+- **Kein `nofollow`.** Der Zweck der Links ist, auf belegbare Adressen zu
+  zeigen; ein `nofollow` nähme ihnen genau das. Sie tragen `target="_blank"`
+  und `rel="noopener"`.
+- **`tabindex="-1"` an der zweiten Runde.** Ein Element mit `aria-hidden`
+  darf nicht fokussierbar sein, sonst landet die Tabulatortaste in etwas,
+  das für Screenreader nicht existiert. Ohne die Angabe stünden zehn stumme
+  Links in der Tabreihenfolge.
+- **Die Leiste hält beim Überfahren und beim Fokus an.** Ein Ziel von
+  104 × 44px ist knapp, und es bewegt sich. Die Regel dafür stand schon
+  vorher da, ist mit den Links aber keine Nettigkeit mehr, sondern
+  Bedingung.
+
+Beim Prüfen neuer Adressen: `douglas.de` antwortet einem Abruf ohne Browser
+mit 400 und `olympics.com` bricht ab — beides ist Bot-Schutz und keine tote
+Adresse. Und `douglas.com` wäre falsch, das führt zu einer gleichnamigen
+Firma in Kanada.
 
 ## Team-Porträts
 
@@ -361,16 +449,17 @@ Vier Plätze, **alle vier echt**. Die Originale liegen in
 
 | Platz | Person | Web | Original |
 |---|---|---|---|
-| 1 | Philipp Maxhofer | `team/philipp-maxhofer.jpg` | aus der ersten Lieferung |
-| 2 | Cem Schuch | `team/cem-schuch.jpg` | aus der ersten Lieferung |
+| 1 | Philipp Maxhofer | `team/philipp-maxhofer.jpg` | **fehlt** — nur die Webfassung |
+| 2 | Cem Schuch | `team/cem-schuch.jpg` | `Cem_Schuch.jpg` |
 | 3 | Joscha Ortmeier | `team/joscha-ortmeier.jpg` | `Joscha_Team.JPG` |
 | 4 | Tom Beckers | `team/tom-beckers.jpg` | `Tom_Beckers.jpg` |
 
 Maßgeblich für die Reihenfolge auf der Seite ist das `team`-Feld in
 `src/pages/index.astro`, nicht die alphabetische Ordnung der Dateien.
 
-Platz 2 und 4 sind auf demselben Sofa im Studio entstanden — das hält die
-Reihe zusammen.
+Platz 2 und 4 sind in derselben Sitzecke im Studio entstanden. Im engen
+Schnitt ist davon nur noch das Fenster im Rücken zu sehen — das ist der
+Rest, der die beiden verbindet.
 
 **Graustufen, Farbe erst bei Hover.** Die Aufnahmen stammen aus
 verschiedenen Situationen — Studio, Sofa, Loft — und haben jede einen
@@ -378,21 +467,26 @@ eigenen Farbstich; grau bindet sie zu einer Reihe. Ohne Zeigegerät
 (`hover: none`) stehen sie von vornherein farbig, sonst gäbe es die Farbe
 auf dem Handy nie zu sehen.
 
-Unter allen vier steht „Name folgt / Rolle folgt" — die Namen fehlen also
-noch komplett.
+Namen und Rollen stehen vollständig im `team`-Array. Die Rollen sind
+Doppelnennungen mit Schrägstrich („Head of Production / Self-Shooting
+Director") und laufen bei zwei von vieren über die Kachelbreite hinaus;
+den Umbruch regelt `text-wrap: balance` an `.team__role`. Ohne die Angabe
+füllt die erste Zeile sich bis zum Rand und lässt ein einzelnes Wort
+darunter stehen.
 
-**Alle vier liegen als fertiges Quadrat vor, 700 × 700.** Der Zuschnitt
-steckt in der Datei und nicht im CSS: Die beiden echten Aufnahmen sind
-quer und zeigen die Personen klein im Raum, ein Beschnitt per `object-fit`
-hätte sie nur verschoben statt näher herangeholt. Die ursprünglichen
-Querformate (1400 × 933) liegen in der Git-Historie.
+**Alle vier liegen als fertiges Quadrat vor**, in unterschiedlicher
+Kantenlänge — die Maße und der Grund dafür stehen oben unter „Die
+Team-Porträts". Der Zuschnitt steckt in der Datei und nicht im CSS: Die
+Aufnahmen sind quer und zeigen die Personen klein im Raum, ein Beschnitt
+per `object-fit` hätte sie nur verschoben statt näher herangeholt. Die
+ursprünglichen Querformate (1400 × 933) liegen in der Git-Historie.
 
-Zum Ersetzen: Quadrate mit etwa 700 × 700 unter denselben Namen ablegen,
-dann Namen und Rollen im `team`-Array in `src/pages/index.astro`
-eintragen. Die Reihenfolge im Array bestimmt die Reihenfolge auf der
-Seite. Wer eine Aufnahme im Hochformat liefert, schneidet sie besser
-selbst quadratisch zu — ein Beschnitt per CSS würde die Person nur
-verschieben, nicht näher heranholen.
+Zum Ersetzen: Quadrat unter demselben Namen ablegen — Augen auf 44 Prozent
+der Höhe, Kopf auf 58 Prozent, siehe oben — dann Name und Rolle im
+`team`-Array in `src/pages/index.astro` eintragen. Die Reihenfolge im Array bestimmt die
+Reihenfolge auf der Seite. Wer eine Aufnahme im Hochformat liefert,
+schneidet sie besser selbst quadratisch zu — ein Beschnitt per CSS würde
+die Person nur verschieben, nicht näher heranholen.
 
 Die Setfotos im Streublock stehen in Farbe, die Porträts in Graustufen —
 siehe oben. Der Filter lag zwischenzeitlich auf beiden und war einmal
