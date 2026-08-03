@@ -1167,67 +1167,54 @@ const faqs = [
     .work__item--2 { margin-top: clamp(4rem, 13vw, 12rem); }
     .work__item--3 { margin-top: clamp(1rem, 3.5vw, 3.5rem); }
 
-    /* Drei Kästen, ungleich groß statt in einem sauberen Raster.
+    /* Video links, Konzept und Foto rechts — aber nichts fluchtet.
 
-       Vorher stand Video links über beide Zeilen und rechts daneben
-       Konzept über Foto — zwei exakt gleich breite Kästen, exakt
-       übereinander, alle Kanten bündig. Das war das ordentlichste Feld der
-       Seite und stand quer zu allem darüber.
+       Der Aufbau ist derselbe wie zu Anfang. Ordentlich sah er nicht
+       deshalb aus, sondern weil alles bündig abschloss: Konzept und Foto
+       exakt gleich breit, exakt übereinander, linke wie rechte Kanten auf
+       einer Linie, und Videos Unterkante genau auf der von Foto.
 
-       Jetzt sind alle drei verschieden groß, und ihre Größe folgt dem
-       Rang: Video als Hauptdisziplin am größten, Foto als klare Zweite,
-       Konzept als vorgeschaltete Leistung am kleinsten — die Flächen
-       verhalten sich rund 5 zu 2 zu 1. Konzept steht auf vier Spalten
-       rechts außen, Foto auf sechs und beginnt zwei Spalten weiter links.
-       Die linken Kanten fluchten damit nirgends.
+       Jetzt liegt keine Kante auf einer anderen:
 
-       Foto hängt zusätzlich tiefer, als die Zeile es verlangt. Der Versatz
-       geht bewusst nach unten und nicht nach oben: Nach unten kann er
-       nichts verdecken, weil darunter nichts mehr liegt.
+         Video    641 × 801   513k   links,  x   0 …  641
+         Foto     641 × 427   274k   rechts, x 684 … 1325
+         Konzept  527 × 351   185k   rechts, x 798 … 1325
 
-       Konzept und Foto liegen dabei in festen Rasterzeilen. Ein erster
-       Anlauf zog Foto über einen negativen Rand nach oben zwischen die
-       beiden — das sah dichter aus, war aber gefährlich: Der Rand hing an
-       der Fensterbreite, die Höhe des Konzept-Textes dagegen am
-       Zeilenumbruch. Zwischen beiden blieben je nach Breite nur 60 bis
-       70px, und sobald der Text eine Zeile mehr brauchte, schob sich Foto
-       darüber. Mit festen Zeilen ist das ausgeschlossen.
+       Drei verschiedene linke Kanten, drei verschiedene Höhen, drei
+       verschiedene Unterkanten. Konzept ist schmaler als Foto und rückt
+       von links ein, ragt also nicht mit ihm gleich weit.
 
-       Video füllt beide Zeilen und bekommt deshalb keine feste Bildhöhe,
-       sondern nimmt genau das, was Konzept und Foto zusammen hoch sind.
-       Mit einem festen Seitenverhältnis bliebe je nach Textlänge unten ein
-       Rest übrig oder das Bild stünde über. */
+       Die rechte Kante teilen sich Konzept und Foto. Das ist Absicht: Ein
+       einziger durchgehender Strich hält das Feld zusammen, während alles
+       andere versetzt liegt — dieselbe Regel wie bei Featured Work. Alle
+       drei ohne jede gemeinsame Kante zerfielen in Einzelteile.
+
+       Die Abstände sind bewusst knapp. Eine frühere Fassung setzte Foto
+       100px unter die Zeile und Konzept 50px unter Video; zwischen den
+       Kacheln stand dadurch mehr Leere als Bild.
+
+       Dazu drei verschiedene Höhen: Konzept setzt tiefer an als Video,
+       Foto noch einmal tiefer als die Zeile es verlangt. Die Versätze
+       gehen ausschließlich nach unten — ein Zug nach oben hatte in einem
+       früheren Anlauf den Text der Kachel darüber verdeckt.
+
+       Video steht über beide Zeilen, füllt sie aber nicht mehr aus: Mit
+       align-self: start behält es sein eigenes 4:5 aus den Daten und endet
+       deutlich über dem unteren Rand des Abschnitts, statt mit Foto
+       abzuschließen. Genau diese Bündigkeit war vorher das Ordentlichste
+       am ganzen Feld. */
     .disziplinen {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: clamp(1.5rem, 3vw, 3rem);
       row-gap: clamp(2rem, 4vw, 3rem);
     }
 
-    .disziplin--1 { grid-column: 1 / span 6; grid-row: 1 / span 2; }  /* Video */
-    .disziplin--2 { grid-column: 9 / span 4; grid-row: 1; }           /* Konzept */
-    .disziplin--3 { grid-column: 7 / span 6; grid-row: 2; }           /* Foto */
+    .disziplin--1 { grid-column: 1 / span 6; grid-row: 1 / span 2; align-self: start; }
+    .disziplin--2 { grid-column: 8 / span 5; grid-row: 1; }
+    .disziplin--3 { grid-column: 7 / span 6; grid-row: 2; }
 
-    /* Konzept startet etwas unter Video, damit auch oben keine
-       durchgehende Linie liegt. */
-    .disziplin--2 { margin-top: clamp(1rem, 2.5vw, 2.5rem); }
-
-    /* Foto sackt ab. Die Zeile darüber wächst dadurch mit, und weil Video
-       beide Zeilen füllt, wird auch Video höher — der Abschnitt bleibt
-       also geschlossen, statt unten auszufransen. */
-    .disziplin--3 { margin-top: clamp(2rem, 6vw, 6rem); }
-
-    .disziplin--1 .disziplin__link {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .disziplin--1 .disziplin__bild { flex: 1; min-height: 0; }
-
-    .disziplin--1 .disziplin__bild img {
-      height: 100%;
-      aspect-ratio: auto;
-    }
+    .disziplin--2 { margin-top: clamp(0.75rem, 1.8vw, 1.75rem); }
+    .disziplin--3 { margin-top: clamp(0.5rem, 1.2vw, 1.25rem); }
 
     /* Ab hier drei Spalten wie in der Referenz. Darunter zwei, damit die
        Bilder auf dem Handy nicht zu Briefmarken werden. */
