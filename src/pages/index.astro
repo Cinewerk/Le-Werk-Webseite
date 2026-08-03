@@ -1104,10 +1104,13 @@ const faqs = [
        Tabelle, egal wie gut die Größen darin saßen.
 
        OBEN (3 Kacheln, zusammen genau die volle Breite)
-       Street One auf vier Spalten, Siemens auf fünf, Allianz auf drei —
-       die Reihe wird nach rechts schmaler und fällt zugleich treppab.
-       Beides zusammen ergibt eine Bewegung nach rechts unten, die auf
-       nichts trifft: rechts endet die Reihe am Rasterrand.
+       Street One auf vier Spalten, Siemens auf fünf, Allianz auf drei.
+
+       Die Versätze sind bewusst unregelmäßig: 0, 187 und 50px. Vorher
+       fielen sie in gleichen Stufen von 0 über 58 auf 115 — eine saubere
+       Treppe, und genau die stand quer zum lockeren Teil darunter. Jetzt
+       hängt die mittlere Kachel am tiefsten, die rechte dazwischen, und
+       weder Ober- noch Unterkanten liegen auf einer Linie.
 
        Die Reihenfolge darin ist nicht beliebig. Street One und Allianz
        sind beide 9:16; nebeneinander lesen sie sich als ein Motiv in zwei
@@ -1156,9 +1159,13 @@ const faqs = [
 
     /* Der Versatz der obersten Reihe. margin-top und nicht transform: Die
        Kacheln sollen den Platz, den sie einnehmen, auch beanspruchen —
-       sonst liefe die Kachel darunter in sie hinein. */
-    .work__item--2 { margin-top: clamp(2rem, 4vw, 4rem); }
-    .work__item--3 { margin-top: clamp(4rem, 8vw, 8rem); }
+       sonst liefe die Kachel darunter in sie hinein.
+
+       Die Werte stehen bewusst nicht in gleichen Stufen. Eine
+       gleichmäßige Treppe liest sich als Ordnung, und die passte nicht
+       zu dem Teil darunter, in dem drei Kacheln ineinandergreifen. */
+    .work__item--2 { margin-top: clamp(4rem, 13vw, 12rem); }
+    .work__item--3 { margin-top: clamp(1rem, 3.5vw, 3.5rem); }
 
     /* Zwei Spalten: Video links über beide Zeilen, Idee & Konzept rechts
        oben, Foto rechts unten. */
