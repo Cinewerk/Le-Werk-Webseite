@@ -229,7 +229,12 @@ const gestreut = bilder.map((b) => {
     width: calc(var(--w) * 1%);
     z-index: var(--z);
     overflow: hidden;
-    border-radius: var(--radius);
+    /* Eigener Radius statt --radius (4px). Die Stücke sind hier 220 bis
+       340px breit; 4px sind auf dieser Fläche keine Rundung, sondern nur
+       ein gebrochener Pixel. Der Wert wächst mit der Fenstergröße, damit
+       die Rundung auf einem Telefon nicht plump wirkt und auf einem großen
+       Schirm nicht verschwindet. */
+    border-radius: clamp(0.75rem, 1.4vw, 1.25rem);
     background: rgba(255, 255, 255, 0.06);
     /* Kräftiger Schatten, weil die Stücke sich stark überlappen: Ohne ihn
        verschmelzen zwei dunkle Setfotos zu einer Fläche und der Stapel
