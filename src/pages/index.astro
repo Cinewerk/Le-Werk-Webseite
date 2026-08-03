@@ -1115,17 +1115,26 @@ const faqs = [
        Reihe und steht deshalb zwischen ihnen. Die beiden Hochformate
        trennen damit 521px.
 
-       MITTE (1 Kachel)
-       Revitive allein auf sieben Spalten, auf Spalte 2 eingerückt, mit
-       nichts bündig. Eine einzelne Kachel zwischen zwei dichten Teilen
-       liest sich als Atemzug und verklebt sie nicht zu einem Feld.
+       MITTE UND UNTEN (3 Kacheln, ineinandergreifend)
+       Revitive breit auf acht Spalten, Formel D darunter auf sechs, BVB
+       rechts daneben auf vier ab Spalte 9.
 
-       UNTEN (2 Kacheln)
-       Formel D links auf sechs Spalten, BVB rechts daneben auf vier ab
-       Spalte 8. BVB ist damit die letzte Kachel und die tiefste. Die
-       rechte Kante liegt bewusst auf Spalte 11 und nicht auf 12: Ein
-       ganzer Spaltenabstand zur Kante oben ist ein sichtbarer Unterschied,
-       eine Beinahe-Flucht wäre schlimmer als eine deutliche Versetzung.
+       Diese drei standen zuerst als einzelne Kachel plus Zweierreihe
+       darunter, und dazwischen klaffte Fläche: rechts neben Revitive
+       blieben 451px leer, und weil BVB mit 725px Höhe die untere Reihe
+       aufspannt, Formel D aber nur 422px hoch ist, standen darüber
+       weitere 303px tot.
+
+       Beides ist jetzt weg. Revitive füllt mit acht Spalten die Breite
+       bis auf den Streifen, in dem BVB steht. Und BVB zieht sich über
+       einen negativen Rand nach oben in genau diesen Streifen hinein —
+       es steht dadurch neben Revitive und neben Formel D zugleich.
+
+       Die beiden können sich dabei nicht ins Gehege kommen: Revitive
+       endet auf Spalte 8, BVB beginnt auf Spalte 9. Der negative Rand
+       verkürzt außerdem den Abschnitt um rund 300px.
+
+       BVB bleibt die letzte Kachel im Quelltext und steht rechts außen.
 
        Die Reihen entstehen von selbst — Astro setzt die Kacheln der Reihe
        nach, und wo sich Spalten überschneiden, rutscht die nächste eine
@@ -1135,10 +1144,15 @@ const faqs = [
     .work__item--2 { grid-column: 5 / span 5; }                   /* Siemens 4:5 */
     .work__item--3 { grid-column: 10 / span 3; }                  /* Allianz 9:16 */
 
-    .work__item--4 { grid-column: 2 / span 7; }                   /* Revitive 3:2 */
+    .work__item--4 { grid-column: 1 / span 8; }                   /* Revitive 3:2 */
 
-    .work__item--5 { grid-column: 1 / span 6; align-self: end; }  /* Formel D 3:2 */
-    .work__item--6 { grid-column: 8 / span 4; }                   /* BVB 9:16 */
+    .work__item--5 { grid-column: 1 / span 6; }                   /* Formel D 3:2 */
+    .work__item--6 { grid-column: 9 / span 4; }                   /* BVB 9:16 */
+
+    /* Der Zug nach oben. Er ist so bemessen, dass BVB neben Revitive
+       hochreicht, ohne dessen Unterkante zu überschreiten — sonst stünde
+       es über und nicht neben ihm. */
+    .work__item--6 { margin-top: calc(-1 * clamp(10rem, 24vw, 23rem)); }
 
     /* Der Versatz der obersten Reihe. margin-top und nicht transform: Die
        Kacheln sollen den Platz, den sie einnehmen, auch beanspruchen —
