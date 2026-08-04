@@ -998,14 +998,17 @@ const faqs = [
      das stünde einspaltig, wo es kein Links und Rechts gibt, fast alles
      still.
 
-     Der Maßstab ist kleiner als im Haufen: 42px Weg und 3 Prozent Größe
-     gegen 165px und 12 Prozent. Die Stücke dort sind Schnipsel, hier sind
-     es Kacheln bis 633 x 792px — derselbe Weg sähe an ihnen nicht lebendig
-     aus, sondern lose.
+     Der Maßstab ist deutlich kleiner als im Haufen: 32px Weg und 2,2
+     Prozent Größe gegen 165px und 12 Prozent. Die Stücke dort sind
+     Schnipsel, hier sind es Kacheln bis 633 x 792px — derselbe Weg sähe an
+     ihnen nicht lebendig aus, sondern lose.
 
-     Um ein Drittel zurückgenommen: Der Weg lag bei 63px und die Größe bei
-     4,5 Prozent, die Kachelmitte wanderte damit 43 bis 55px. Jetzt sind es
-     29 bis 37px.
+     In zwei Schritten zurückgenommen. Der Weg lag zuerst bei 63px und die
+     Größe bei 4,5 Prozent, die Kachelmitte wanderte damit 43 bis 55px:
+
+       63px / 4,5 %    →   43 bis 55px Weg der Mitte
+       42px / 3,0 %    →   29 bis 37px
+       32px / 2,2 %    →   22 bis 28px
 
      Weg und Größe ziehen gegeneinander: Bei --q = 0 steht die Kachel
      weiter außen, ist aber kleiner — die Außenkante läuft deshalb weniger
@@ -1015,14 +1018,14 @@ const faqs = [
      deshalb als --zug-bild an :root-Ersatz hier oben, nicht zweimal. */
   .work__item.is-aktiv,
   .disziplin.is-aktiv {
-    --zug: clamp(1rem, 2.95vw, 2.85rem);
+    --zug: clamp(0.75rem, 2.2vw, 2.15rem);
     transform:
       translate3d(
         calc(var(--dx, 0) * var(--zug) * (1 - var(--q, 1))),
         calc(var(--dy, 0.55) * var(--zug) * (1 - var(--q, 1))),
         0
       )
-      scale(calc(0.97 + 0.03 * var(--q, 1)));
+      scale(calc(0.978 + 0.022 * var(--q, 1)));
   }
 
   /* Einspaltig gibt es keine linke und keine rechte Spalte. Damit der
