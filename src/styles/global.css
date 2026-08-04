@@ -693,10 +693,11 @@ button { cursor: pointer; }
   color: var(--on-dark-muted);
 }
 
-/* Die Wortmarke schließt die Spaltenreihe ab: über die ganze Breite,
-   rechtsbündig, direkt über der Rechtezeile. Als eigene Spalte stand sie
-   auf Höhe der Rubrik-Überschriften und hatte nichts unter sich.
-   Rechtsbündig spannt sie jetzt eine Diagonale zu "Navigation" oben links.
+/* Die Wortmarke schließt die Spaltenreihe unten ab, über die ganze Breite
+   und linksbündig — auf derselben Kante wie "Navigation" darüber und die
+   Rechtezeile darunter. Rechtsbündig stand sie zwar in einer Diagonale zu
+   "Navigation", saß damit aber an einer Kante, an der im Footer sonst
+   nichts ausgerichtet ist; das las sich verrutscht statt gesetzt.
 
    Sie ist ein Logo und darf nicht umbrechen — daher nowrap. Die Laufweite
    bleibt bei -0.04em: Über die volle Breite gezogen wäre der Schriftzug
@@ -1023,14 +1024,6 @@ button { cursor: pointer; }
 
 @media (min-width: 40rem) and (max-width: 61.99rem) {
   .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-/* Rechtsbündig erst, sobald der Footer Spalten hat: Die Wortmarke schließt
-   die Reihe unten rechts ab und spannt die Diagonale zu "Navigation" oben
-   links. Einspaltig gäbe es nichts abzuschließen — dort steht sie linksbündig
-   wie alles andere, sonst sähe sie verrutscht aus. */
-@media (min-width: 40rem) {
-  .footer__brand { justify-self: end; }
 }
 
 /* --------------------------------------------------------------------------
