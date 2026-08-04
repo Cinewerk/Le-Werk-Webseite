@@ -311,6 +311,16 @@ const gestreut = eingepasst.map((b) => {
         0
       )
       scale(calc(0.88 + 0.12 * var(--q, 1)));
+    /* Die Stücke werden dichter, während sie zusammenlaufen: Volle Deckung
+       hat der Haufen erst, wenn er beisammen ist. Bei --q = 0 stehen sie
+       bei 12 Prozent — nicht bei null, sonst käme der Haufen aus dem
+       Nichts statt aus der Ferne.
+
+       Linear und nicht mit Kurve: Deckkraft und Weg hängen an derselben
+       Zahl, also sollen sie auch denselben Verlauf haben. Eine eigene
+       Kurve für die Deckkraft ließe die Bewegung an einer Stelle
+       auseinanderlaufen, an der es nichts zu gewinnen gibt. */
+    opacity: calc(0.12 + 0.88 * var(--q, 1));
   }
 
   /* Der Schatten ist auf große Flächen gerechnet. Auf einem Telefon ist der
@@ -361,6 +371,6 @@ const gestreut = eingepasst.map((b) => {
 
   @media (prefers-reduced-motion: reduce) {
     .streu.is-aktiv .streu__text { opacity: 1; transform: none; }
-    .streu.is-aktiv .haufen__stueck { transform: none; }
+    .streu.is-aktiv .haufen__stueck { transform: none; opacity: 1; }
   }
 </style>
