@@ -15,7 +15,7 @@ Ordnername sagt, wozu die Bilder gehören:
 
 | Ordner | Inhalt | Wo es erscheint |
 |---|---|---|
-| `bts/` | sieben Setfotos, sechs davon im Einsatz | Team, Streublock 01 |
+| `bts/` | sechs Setfotos, alle im Einsatz | Team, Streublock 01 |
 | `krafthaus/` | sechs Aufnahmen, alle im Einsatz | Team, Streublock 02 |
 | `team/` | vier Porträts, nach Personen benannt | Team, Porträtreihe |
 | `work/` | sechs Vorschaubilder der Projekte | Featured Work |
@@ -192,10 +192,11 @@ Fahrzeuge lassen sich kaum komprimieren.
 ### Die Seitenverhältnisse der Streublöcke
 
 Seit dem Austausch im August steht **jedes Stück in beiden Haufen in seinem
-eigenen Seitenverhältnis** — 3:2, 3:4, 4:5, 5:4, 2:3, 24:17, 1:1 — statt in
-einem für alle vorgegebenen. Nachgemessen wird dadurch an keinem der zwölf
-Bilder etwas abgeschnitten; die einzige Rundung ist `haus-04` mit 987 × 1000
-als 1:1 und kostet 1,3 Prozent.
+eigenen Seitenverhältnis** — 3:2, 3:4, 5:4, 2:3 — statt in einem für alle
+vorgegebenen. Nachgemessen wird dadurch an keinem der zwölf Bilder etwas
+abgeschnitten. Die einzige Ausnahme ist `haus-drohne`: Die Aufnahme kommt
+als 16:9 aus der Kamera und liegt als 3:2 in der Datei, beschnitten um
+450px am linken Rand, wo nur Gehweg und Durchgang stehen.
 
 Wer ein Bild tauscht, muss deshalb das `ar` in `src/pages/index.astro`
 mittauschen. Bleibt der alte Wert stehen, wird die neue Aufnahme beschnitten,
@@ -205,9 +206,34 @@ Die Überlappungen sitzen an den Unterkanten, nie über Gesichtern, Kameras
 oder Monitoren. Kein Stück ist zu mehr als 18 Prozent verdeckt; das unterste
 im Stapel trägt am meisten, das oberste nichts.
 
-**Nicht im Einsatz:** `bts-06.jpg`. Beide Personen stehen mit dem Rücken zur
-Kamera, die Datei ist mit 570 × 760 als einzige unter 1000px breit, und
-inhaltlich zeigt sie dasselbe wie `bts-07` und `bts-09` — nur ohne Gesichter.
+### Der BTS-Satz vom 4. August 2026
+
+Zwölf neue Aufnahmen geliefert, fünf davon im Einsatz. Aus dem ersten Satz
+blieb nur die Loft-Aufnahme; die übrigen sechs Dateien sind gelöscht.
+
+| Web | Quelle | Motiv | Leitton |
+|---|---|---|---|
+| `bts-halle.jpg` | `neu/0D4A3738.jpg` | Dreh in einer Werkhalle, drei Leute, Softbox | Gelb an der Maschine |
+| `bts-transporter.jpg` | `neu/WhatsApp … 19.14.38.jpeg` | Zwei Frauen im Transporter an der Tankstelle | Rot |
+| `bts-loft.jpg` | erster Satz (`bts-07.jpg`) | Zwei an der Kamera auf dem Körperstativ | warmes Neutral |
+| `bts-schnitt.jpg` | `neu/DSCF2573.JPG` | Zwei am Schnittplatz vor Monitoren | Grün |
+| `bts-studio.jpg` | `neu/R0018342 (1).JPG` | Studioaufbau vor blauer Wand | Blau und Orange |
+| `bts-buero.jpg` | `neu/R0018337 (1).JPG` | Zwei Männer vor petrolfarbener Wand | Petrol |
+
+**Ausgewählt ist nach Situation.** Keine zwei Bilder zeigen denselben Raum.
+Der vorige Satz löste das nicht ein: Vier der sechs standen in einem hellen
+Studio, und der Haufen war fast durchgehend weiß-grau.
+
+**Sechs der zwölf sind nicht verwendet.** Vier sind private Aufnahmen — drei
+Filmscans und ein Porträt im Trainingsanzug —, zwei zeigen dasselbe Studio
+wie `bts-studio`, nur enger. Eine siebte, `neu/WhatsApp … 19.14.38 (2)`,
+zeigt jemanden mit Kamera im Freien und wäre inhaltlich passend, ist aber
+schwarzweiß und lief der Vorgabe „mehr Farbe" zuwider.
+
+**Die Drehung ist eingebacken.** Mehrere der Dateien tragen ihre Ausrichtung
+nur im EXIF-Flag, das Pixelmaß widerspricht ihr. `sharp().rotate()` schreibt
+sie fest; ohne das stimmen die `ar`-Werte in `index.astro` nicht mit dem
+überein, was der Browser zeigt.
 
 ### Die Team-Porträts
 
@@ -326,44 +352,41 @@ Unterhalb von 64 rem wird aus dem Haufen ein normales zweispaltiges
 Raster: Überlappende, absolut gesetzte Bilder werden auf einem Telefon zu
 Briefmarken, die sich gegenseitig verdecken.
 
-## Das frühere BTS-Raster
+## Der frühere BTS-Satz
 
-Neun von zwanzig gelieferten Aufnahmen. Die Auswahl folgt dem Ablauf einer
-Produktion, nicht der Reihenfolge im Ordner:
+Historisch, die Dateien sind gelöscht. Neun von zwanzig Aufnahmen lagen als
+`bts-01` bis `bts-09` im Web-Verzeichnis, sechs davon im Streublock. Am
+4. August 2026 ersetzt — siehe „Der BTS-Satz vom 4. August 2026" weiter
+oben. Übernommen wurde nur `bts-07` (Dreh im Loft, Kamera auf dem
+Körperstativ), jetzt `bts-loft.jpg`.
 
-| Feld | Datei | Motiv |
-|---|---|---|
-| 1 quer | `bts-01.jpg` | Fünf aus dem Team mit Kameras |
-| 2 quer | `bts-02.jpg` | Interviewset mit Angel und Monitoren |
-| 3 quer | `bts-03.jpg` | Kameramann mit Easyrig im Wohnraum |
-| 4 hoch | `bts-04.jpg` | Aufgebautes Set mit Softboxen |
-| 5 hoch | `bts-05.jpg` | Person mit Brezel vor der Kamera |
-| 6 hoch | `bts-06.jpg` | Zwei richten im Studio die Kamera ein |
-| 7 quer | `bts-07.jpg` | Dreh in einer Küche, Kamera auf dem Slider |
-| 8 quer | `bts-08.jpg` | Kamera mit Monitoren, Hände am Stativkopf |
-| 9 quer | `bts-09.jpg` | Zwei am Schnittplatz unter Flächenlicht |
-
-Aussortiert wurden Motive ohne Produktionsbezug (Straßen-, Reise- und
-Architekturaufnahmen) sowie Situationen, die eine andere Aufnahme bereits
-besser zeigte.
-
-**Sechs davon liegen im Streublock**, siehe oben: `bts-01`, `-02`, `-03`,
-`-04`, `-06` und `-08`. Die übrigen drei bleiben liegen — sie kosten
-nichts und stehen für einen Austausch bereit.
+Der Grund für den Austausch steht dort: Vier der sechs Bilder zeigten ein
+helles Studio, der Haufen hatte weder Farbe noch Bandbreite.
 
 ### Die Auswahl im Krafthaus-Block
 
 Aus 26 gelieferten Aufnahmen sechs ausgewählt, alle unter
 `quellbilder/krafthaus/neu/`:
 
-| Web | Quelle | Motiv |
-|---|---|---|
-| `haus-01.jpg` | `Krafthaus.jpg` | Das Haus im Abendlicht, dahinter das Kranhaus |
-| `haus-02.jpg` | `krafthaus-hafenhistorie-3-…` | Arbeitsplatz am Rundbogenfenster |
-| `haus-03.jpg` | `IMG_8042 (2).jpg` | Das Schild „Le Werk" am Fenster |
-| `haus-04.jpg` | `Das-Krafthaus-Koeln-2.jpg` | Fassade unter bewölktem Himmel |
-| `haus-05.jpg` | `office.jpeg` | Giebel vor blauem Himmel |
-| `haus-06.jpg` | `Krafthaus_Drohne_bereinigt.jpg` | Luftaufnahme |
+| Web | Motiv |
+|---|---|
+| `haus-01.jpg` | Das Haus im Abendlicht, dahinter das Kranhaus |
+| `haus-02.jpg` | Schwarzweiß: leere Autobahn mit Leitplanke und Waldrand |
+| `haus-03.jpg` | Grüner Sessel vor weißer Wand, Sideboard, Alukoffer |
+| `haus-05.jpg` | Sattelzug an einer Raststätte unter blauem Himmel |
+| `haus-06.jpg` | Personen an Biertischen vor einem Lokal |
+| `haus-drohne.jpg` | Luftaufnahme des Hauses im Rheinauhafen |
+
+**Die Quellenspalte fehlt bewusst.** Vier der Dateien wurden am 3. August
+ausgetauscht, ohne dass die Zuordnung mitgeschrieben wurde — die Tabelle
+nannte danach Motive, die so nicht mehr in den Dateien standen. Lieber keine
+Angabe als eine falsche. Belegt ist nur `haus-drohne.jpg`: aus
+`neu/Krafthaus_Drohne_bereinigt.jpg`, 3840 × 2160, auf 3:2 beschnitten.
+
+`haus-drohne.jpg` hat am 4. August die Fassadenaufnahme `haus-04.jpg`
+abgelöst. Sie zeigt denselben Bau, aber im Hafen stehend statt als
+Ausschnitt von unten, und schließt den Haufen dort, wo der Absatz daneben
+vom Ort spricht.
 
 `haus-02` ist die einzige Innenaufnahme und stammt noch aus der ersten
 Lieferung — die neuen 26 zeigen ausschließlich das Gebäude von außen.
