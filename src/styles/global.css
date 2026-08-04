@@ -810,13 +810,6 @@ button { cursor: pointer; }
   margin-bottom: var(--space-2);
 }
 
-.service__cta {
-  display: block;
-  font-weight: 600;
-  font-size: var(--fs-small);
-  color: var(--petrol);
-}
-
 /* --------------------------------------------------------------------------
    8b. Rechtstexte (Impressum, Datenschutz)
    -------------------------------------------------------------------------- */

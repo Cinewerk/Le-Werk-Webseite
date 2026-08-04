@@ -348,7 +348,11 @@ const gestreut = eingepasst.map((b) => {
        aus 0,75/1,4vw/1,25rem wurde 0,525/0,98vw/0,875rem. Bei 1440px
        Fensterbreite sind das 14px statt 20px. */
     border-radius: clamp(0.525rem, 0.98vw, 0.875rem);
-    background: rgba(255, 255, 255, 0.06);
+    /* Kein Hintergrund: Als Platzhalter mit 6 % Weiß war er heller als
+       der Abschnitt und blitzte in den abgerundeten Ecken als Bogen
+       durch — overflow: hidden schneidet das Bild dort nicht auf den
+       letzten Pixel genau ab. Ausführlich bei .work__figure in
+       index.astro. */
     /* Kräftiger Schatten, weil die Stücke sich stark überlappen: Ohne ihn
        verschmelzen zwei dunkle Setfotos zu einer Fläche und der Stapel
        verliert seine Tiefe. */
@@ -356,6 +360,9 @@ const gestreut = eingepasst.map((b) => {
   }
 
   .haufen__stueck img {
+    /* Eigene Rundung, damit die Kante nicht allein am Beschnitt des
+       Kastens hängt — siehe .work__figure img in index.astro. */
+    border-radius: inherit;
     display: block;
     width: 100%;
     aspect-ratio: var(--ar);

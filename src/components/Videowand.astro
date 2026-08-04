@@ -187,7 +187,12 @@ const hoehe = (ratio: Clip['ratio']) =>
     aspect-ratio: var(--ratio);
     overflow: hidden;
     border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.06);
+    /* Kein Hintergrund — heller Platzhalter blitzt in der Rundung durch,
+       siehe .work__figure in index.astro. */
+    /* Maske gegen den hellen Saum in der Rundung, sobald das Bild bei
+       Hover wächst — ausführlich bei .work__figure in index.astro. */
+    -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
+    mask-image: linear-gradient(#000, #000);
   }
 
   .clip__start {

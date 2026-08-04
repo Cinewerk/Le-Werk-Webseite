@@ -34,6 +34,9 @@
  * Die Spaltenzahl und die Versätze je Platz stehen in index.astro und
  * sind auf die Formate gerechnet. Wer umsortiert, muss beides mitdenken.
  */
+/** Ausgabeformate, wie sie in den Pillen stehen */
+export type Format = '16:9' | '4:3' | '4:5' | '3:2' | '9:16';
+
 export interface Arbeit {
   /** Adresse der Unterseite: /arbeiten/<slug> */
   slug: string;
@@ -47,17 +50,20 @@ export interface Arbeit {
   /** Beschnitt der Kachel */
   ratio: '16:9' | '4:3' | '4:5' | '9:16' | '3:2';
   /**
-   * Das Format, in dem die Arbeit entstanden ist — steht als Pille in der
-   * Zeile unter der Kachel.
+   * Die Formate, in denen die Arbeit entstanden ist — stehen als Pillen in
+   * der Zeile unter der Kachel.
    *
    * Bewusst getrennt von ratio: Das ist der Beschnitt fürs Raster, hier
-   * steht die Angabe zur Arbeit. Zurzeit sind beide überall gleich — das
-   * ist ein Zustand, keine Regel. Siemens lief eine Weile als 4:3-Arbeit
-   * in einer 16:9-Kachel, und sobald ein Projekt in einem Format
-   * ausgeliefert wird, das der Kachelplatz nicht tragen kann, gehen sie
-   * wieder auseinander. Deshalb bleiben es zwei Felder.
+   * steht die Angabe zur Arbeit. Siemens lief eine Weile als 4:3-Arbeit in
+   * einer 16:9-Kachel, und sobald ein Projekt in einem Format ausgeliefert
+   * wird, das der Kachelplatz nicht tragen kann, gehen sie auseinander.
+   * Deshalb bleiben es zwei Felder.
+   *
+   * Eine Liste, weil drei der Projekte in zwei Formaten ausgeliefert
+   * wurden. Die Reihenfolge ist die Anzeigereihenfolge: zuerst das
+   * Format, in dem die Kachel steht, dann das zweite.
    */
-  format: '4:3' | '4:5' | '3:2' | '9:16';
+  formate: Format[];
   alt: string;
   /** Videoprojekt oder Fotostrecke — bestimmt später den Aufbau der Unterseite */
   art: 'Video' | 'Foto';
@@ -87,7 +93,7 @@ export const arbeiten: Arbeit[] = [
     breite: 1920,
     hoehe: 1080,
     ratio: '4:5',
-    format: '4:5',
+    formate: ['4:5'],
     alt: 'Frau mit regenbogenbunt gefärbtem Haar und großflächigem Rückentattoo steht von hinten am Ufer eines Sees',
     art: 'Video',
     eigeneSeite: true,
@@ -97,13 +103,13 @@ export const arbeiten: Arbeit[] = [
     // steht dieses am höchsten, weil es das hellste ist — die Kletterwand
     // trägt den oberen Rand, an dem der Abschnitt aus dem Dunkel kommt.
     slug: 'allianz-instagram-reel',
-    kunde: 'Allianz',
-    titel: 'Instagram Reel',
+    kunde: 'Allianz × Olympia',
+    titel: 'Social Videos',
     bild: '/images/work/allianz.webp',
     breite: 540,
     hoehe: 960,
     ratio: '9:16',
-    format: '9:16',
+    formate: ['9:16', '16:9'],
     alt: 'Lachende junge Frau vor einer Kletterwand, im Hochformat aufgenommen',
     art: 'Video',
     eigeneSeite: true,
@@ -115,12 +121,12 @@ export const arbeiten: Arbeit[] = [
     // dunklen Auftakt.
     slug: 'revitive-fotogalerie',
     kunde: 'Revitive',
-    titel: 'Fotogalerie',
+    titel: 'Fotos und Web Content',
     bild: '/images/work/revitive.jpg',
     breite: 1400,
     hoehe: 933,
     ratio: '3:2',
-    format: '3:2',
+    formate: ['3:2', '16:9'],
     alt: 'Frau auf einem hellen Sofa im Wohnzimmer, die Füße auf einem Durchblutungsgerät, daneben ein Hund vor der Terrassentür',
     art: 'Foto',
     eigeneSeite: true,
@@ -134,12 +140,12 @@ export const arbeiten: Arbeit[] = [
     // Allianz wäre.
     slug: 'street-one-instagram-reel',
     kunde: 'Street One',
-    titel: 'Social Media Kampagne',
+    titel: 'Social Content',
     bild: '/images/work/street-one.webp',
     breite: 543,
     hoehe: 960,
     ratio: '9:16',
-    format: '9:16',
+    formate: ['9:16'],
     alt: 'Model mit schwarzem Strohhut und gestreifter Bluse in einer Industriehalle, im Hochformat aufgenommen',
     art: 'Video',
     eigeneSeite: true,
@@ -155,8 +161,8 @@ export const arbeiten: Arbeit[] = [
     breite: 540,
     hoehe: 960,
     ratio: '9:16',
-    format: '9:16',
-    alt: 'Nahaufnahme eines Mannes mit hellblond gefärbtem Haar im gelben Trikot, leicht zur Kamera geneigt',
+    formate: ['9:16'],
+    alt: 'Nahaufnahme von Marco Reus im gelben BVB-Trikot, hellblond gefärbtes Haar, leicht zur Kamera geneigt',
     art: 'Video',
     eigeneSeite: true,
   },
@@ -166,12 +172,12 @@ export const arbeiten: Arbeit[] = [
     // den Abschnitt zum Rasterrand hin ab.
     slug: 'formel-d-fotogalerie',
     kunde: 'Formel D',
-    titel: 'Fotogalerie',
+    titel: 'Fotografie',
     bild: '/images/work/formel-d.jpg',
     breite: 1400,
     hoehe: 933,
     ratio: '3:2',
-    format: '3:2',
+    formate: ['3:2'],
     alt: 'Dunkler SUV frontal unter einem aufgeklappten Lichtdach mit Leuchtstoffröhren in einer Werkhalle',
     art: 'Foto',
     eigeneSeite: true,

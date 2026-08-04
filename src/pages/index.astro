@@ -47,8 +47,8 @@ import { withBase } from '../lib/paths';
 //
 // Wo es eine deutsche Fassung gibt, steht sie hier — siemens.de leitet
 // sauber auf siemens.com/de-de.
-// Bezugskasten für die Leiste: 94px breit, 40px hoch. Der Wert steht hier
-// und in .marquee als --logo-breite; das Verhältnis 2.35 verbindet beide.
+// Bezugskasten für die Leiste. Der Wert steht hier und in .marquee als
+// --logo-breite; das Verhältnis 2.35 verbindet beide.
 const LOGO_VERHAELTNIS = 94 / 40;
 
 // Wie breit ein Logo im Verhältnis zur vollen Kastenbreite läuft. Breite
@@ -64,7 +64,12 @@ const LOGO_VERHAELTNIS = 94 / 40;
 // addierte — gemessen zwischen 38px und 87px. Und der naheliegende Weg
 // über max-width geht nicht: Bindet max-width, rechnet der Browser die
 // Höhe nicht zurück, die Wortmarken werden auf volle Kastenhöhe gezogen.
-const logoBreite = (k) => Math.min(1, k.b / k.h / LOGO_VERHAELTNIS).toFixed(4);
+//
+// weite ist die Ausnahme von der Regel und steht deshalb je Logo in den
+// Daten, nicht hier: Sie lässt eine Marke breiter laufen als den Kasten.
+// Gebraucht wird das genau einmal, siehe Johnson & Johnson.
+const logoBreite = (k) =>
+  (Math.min(1, k.b / k.h / LOGO_VERHAELTNIS) * (k.weite ?? 1)).toFixed(4);
 
 const kunden = [
   { datei: 'siemens',     name: 'Siemens',                      url: 'https://www.siemens.de/',          b: 330, h:  51 },
@@ -77,6 +82,14 @@ const kunden = [
   { datei: 'formel-d',    name: 'Formel D',                     url: 'https://www.formeld.com/de/',      b: 189, h: 143 },
   { datei: 'sevenone',    name: 'Seven.One Entertainment Group', url: 'https://www.seven.one/',           b: 330, h:  74 },
   { datei: 'zehnder',     name: 'Zehnder Group',                url: 'https://www.zehndergroup.com/',    b: 171, h: 152 },
+  { datei: 'griesemann',  name: 'Griesemann Gruppe',            url: 'https://griesemann.com/',          b: 330, h:  48 },
+  // Die einzige Marke mit weite: Mit 10,7 : 1 ist sie die mit Abstand
+  // breiteste, und im Kasten käme sie auf 8px Höhe — halb so hoch wie
+  // Douglas und kaum noch lesbar. Der Faktor 1.52 hebt sie auf 12px und
+  // damit auf dieselbe Höhe wie Street One. Sie läuft dafür 128px breit
+  // statt 84; das ist der Preis und bei einer so langen Wortmarke
+  // vertretbar.
+  { datei: 'johnson-johnson', name: 'Johnson & Johnson',        url: 'https://www.jnj.com/de-de',        b: 330, h:  31, weite: 1.52 },
 ];
 
 // Die fünf Projekte liegen in src/data/arbeiten.ts, weil die Unterseiten
@@ -186,34 +199,34 @@ const krafthaus = [
 //                     Kachelhöhe. Vorher lagen sie zwischen 22 und 37 —
 //                     der Blick sprang beim Wechsel um rund 45px.
 //
-//   KOPFHÖHE 177 px   Vom Scheitel bis zum Kinn, gerechnet auf die
+//   KOPFHÖHE 178 px   Vom Scheitel bis zum Kinn, gerechnet auf die
 //                     Anzeigegröße von 304px. Gemessen liegen die vier
-//                     bei 173 bis 179, also innerhalb von zwei Prozent.
+//                     bei 177 bis 179, also innerhalb von einem Prozent.
 //
 // Das zweite Maß ist das jüngere. Eine gemeinsame Augenlinie allein
 // reicht nicht: Danach lagen die Augen zwar auf einer Linie, die Köpfe
 // waren aber 92 bis 174px hoch — Joschas fast doppelt so groß wie Cems.
 // Die Reihe las sich als vier verschiedene Aufnahmen, nicht als ein Satz.
 //
-// Die 44 % sind der Kompromiss aus zwei Grenzen. Nach unten setzt Cem
-// sie: Bei ihm liegen zwischen Scheitel und Augen 59 Prozent der
-// Kopfhöhe, tiefer angesetzt stößt er oben an. Nach oben setzt Philipp
-// sie: Von ihm gibt es nur die Webfassung, sein Ausschnitt kann nicht
-// weiter nach unten wandern als bis an deren Rand.
+// Die Grenzen für die beiden Werte:
 //
-// Philipp ist auch der Grund für die Kopfhöhe. Sein Bild lässt sich
-// nicht weiter aufziehen, Joschas nicht weiter zurücknehmen — dessen
-// Quelle ist nur 1086px breit und damit schon fast ausgereizt. Zwischen
-// diesen beiden Grenzen liegt genau ein gemeinsamer Wert.
+//   nach unten   Cem für die Augenlinie: Bei ihm liegen zwischen Scheitel
+//                und Augen 59 Prozent der Kopfhöhe, tiefer angesetzt
+//                stößt er oben an. Bei 44 Prozent bleiben ihm 33px Luft.
+//   nach oben    Joscha für die Kopfhöhe: Seine Quelle ist nur 1086px
+//                breit, der Ausschnitt schöpft sie fast aus. Kleiner als
+//                177 lässt sich sein Kopf nicht mehr schneiden.
 //
-// Die Kacheln sind deshalb 700px groß, Philipps 524. Bei 304px Anzeige
-// sind das 2,3-fach und 1,7-fach.
+// Eine dritte Grenze ist entfallen: Von Philipp gab es lange nur die
+// 700er Webfassung, sein Ausschnitt konnte weder nach unten wandern noch
+// weiter aufgezogen werden, und seine Kachel maß deshalb nur 524px. Seit
+// dem 4. August 2026 liegt sein Original vor (2880 x 1920), und alle vier
+// Kacheln sind 700px groß — bei 304px Anzeige also 2,3-fach.
 //
 // Wer ein Porträt tauscht, muss den Schnitt mitliefern: quadratisch,
 // Augen auf 44 Prozent, Kopf 58 Prozent der Kachelhöhe.
 //
-// Die Originale liegen unter quellbilder/team — von Philipp gibt es
-// keins, deshalb ist seine Kachel die kleinste.
+// Die Originale liegen alle vier unter quellbilder/team.
 //
 // Die Rollen sind Doppelnennungen mit Schrägstrich und laufen bei zwei
 // von vieren über die Kachelbreite hinaus. Am Umbruch hängen drei Dinge:
@@ -232,27 +245,28 @@ const krafthaus = [
 //                        es ist ein trennbares Leerzeichen wie jedes
 //                        andere.
 const team = [
-  { img: '/images/team/philipp-maxhofer.jpg', name: 'Philipp Maxhofer', role: 'Concept / Creative Director', alt: 'Porträt von Philipp Maxhofer im Rollkragenpullover, Studio im Hintergrund' },
-  { img: '/images/team/cem-schuch.jpg', name: 'Cem Schuch', role: 'Head of Production / Self‑Shooting Director', alt: 'Porträt von Cem Schuch in dunkler Sweatjacke, lachend, im Hintergrund ein Sprossenfenster' },
-  { img: '/images/team/joscha-ortmeier.jpg', name: 'Joscha Ortmeier', role: 'Head of Post‑Production / Photographer', alt: 'Porträt von Joscha Ortmeier mit Brille, im Hintergrund ein Bücherregal' },
-  { img: '/images/team/tom-beckers.jpg', name: 'Tom Beckers', role: 'Producer / Content Creator', alt: 'Porträt von Tom Beckers mit schulterlangem Haar und Schnurrbart, im Hintergrund ein helles Fenster' },
+  { img: '/images/team/philipp-maxhofer.jpg', name: 'Philipp Maxhofer', role: 'Concept | Creative Director', alt: 'Porträt von Philipp Maxhofer im Rollkragenpullover, Studio im Hintergrund' },
+  { img: '/images/team/cem-schuch.jpg', name: 'Cem-Pierre Schuch', role: 'Head of Production | Self‑Shooting Director', alt: 'Porträt von Cem-Pierre Schuch in dunkler Sweatjacke, lachend, im Hintergrund ein Sprossenfenster' },
+  { img: '/images/team/joscha-ortmeier.jpg', name: 'Joscha Ortmeier', role: 'Head of Post‑Production | Photographer', alt: 'Porträt von Joscha Ortmeier mit Brille, im Hintergrund ein Bücherregal' },
+  { img: '/images/team/tom-beckers.jpg', name: 'Tom Beckers', role: 'Producer | Content Creator', alt: 'Porträt von Tom Beckers mit schulterlangem Haar und Schnurrbart, im Hintergrund ein helles Fenster' },
 ];
 
 // q darf Markup enthalten (Wortmarke), wird unten mit set:html gerendert.
-// Die Fragen 2, 6 und 7 tragen die drei Punkte aus "Was wir nicht machen" —
-// im FAQ statt in einer eigenen Sektion, weil eine Abgrenzung als Antwort
-// auf eine echte Frage überzeugt und als Aufzählung nur abweist.
+//
+// Von zehn Fragen auf fünf gekürzt. Entfallen sind die zu Werbefilm in
+// 16:9, Mediaplanung und SEO, Köln als Arbeitsgebiet, Nutzungsrechten
+// und Workshops.
+//
+// Zwei davon trugen die Abgrenzung "was wir nicht machen" — sie steckt
+// jetzt nur noch in Frage 2 zu UGC. Wer die Abgrenzung deutlicher will,
+// muss sie dort schärfen oder eine der beiden Fragen zurückholen; sie
+// stehen in der Git-Historie.
 const faqs = [
   { q: 'Was kostet eine Produktion bei <span class="brand">Le Werk</span>?', a: 'Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.' },
   { q: 'Macht ihr auch UGC- oder Handy-Content?', a: 'Nein. Das ist ein anderer Markt mit anderen Preisen und anderem Anspruch. Bei uns entstehen Visuals auf Kampagnenniveau — auch dann, wenn sie am Ende vertikal im Feed laufen. Wer schnellen, günstigen Durchsatz sucht, ist bei uns falsch.' },
   { q: 'Bekommen wir Foto und Video aus einer Produktion?', a: 'Ja, das ist der Kern unserer Arbeitsweise. Wir planen Sets so, dass bewegte und stehende Bilder parallel entstehen. Das spart einen kompletten Produktionstag und sorgt dafür, dass Foto und Video wie eine Kampagne aussehen — nicht wie zwei.' },
   { q: 'Warum denkt ihr vom vertikalen Format aus?', a: 'Weil dort die Aufmerksamkeit liegt. Ein Bildaufbau, der als 16:9 entsteht und später hochkant beschnitten wird, verliert immer — Blickführung, Text und Rhythmus stimmen dann nicht mehr. Wir planen umgekehrt: vertikal als Kern, Landscape und Stills als Ableitung derselben Produktion.' },
   { q: 'Wie lange dauert es von der Anfrage bis zum fertigen Material?', a: 'Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.' },
-  { q: 'Produziert ihr auch klassische Werbefilm-Kampagnen in 16:9?', a: 'Als Hauptformat nicht — die cinematische 16:9-Kampagne ist nicht unsere Disziplin, und wir tun nicht so, als wäre sie es. Landscape bekommt ihr bei uns als Ableitung aus einer Content-Produktion. Wenn euer Vorhaben in Wahrheit ein Werbefilm ist, sagen wir das offen und nennen euch die passende Adresse.' },
-  { q: 'Übernehmt ihr Mediaplanung, SEO oder SEA?', a: 'Nein, wir sind kein Full-Service-Betrieb. Keine Media-Buchung, kein Suchmaschinen-Marketing, keine Account-Ebene zwischen euch und der Produktion. Wir liefern die Visuals und arbeiten dabei problemlos mit eurer Agentur oder eurem Marketing-Team zusammen.' },
-  { q: 'Arbeitet ihr nur in Köln?', a: 'Das Studio liegt im Rheinauhafen, der Verkaufsschwerpunkt ist Köln und NRW — gedreht wird da, wo euer Thema ist. Based in Köln, booked worldwide: bundesweite Produktionen sind Alltag, internationale Drehs gehen ebenfalls.' },
-  { q: 'Wie ist das mit den Nutzungsrechten?', a: 'Ihr erhaltet standardmäßig zeitlich und räumlich unbegrenzte Nutzungsrechte für alle eigenen Kanäle. Für Paid Media, Out-of-Home oder TV klären wir Buyouts vorab transparent im Angebot — keine Nachforderungen.' },
-  { q: 'Was bieten eure Workshops?', a: 'Drei Formate: Auftreten und Sprechen vor der Kamera, ein Social-Media-Basistraining zu Formatlogik und Bildsprache sowie Teambuilding und interne Kommunikation über Improtheater-Training. Umfang, Dauer und Teilnehmerzahl stimmen wir auf euer Team ab.' },
 ];
 ---
 
@@ -300,17 +314,19 @@ const faqs = [
            englische Positions-Satz im Hero diese Rolle, ein Manifest-Satz
            auf Deutsch steht noch aus. Dieser Absatz erklärt die Position,
            er behauptet sie nicht als Slogan. -->
-      <!-- Ein durchlaufender Absatz: Der Auftakt stand vorher auf eigener
-           Zeile, dadurch begann der Satz sichtbar mit "Le Werk ist ein
-           Visual Content Studio" — dieselbe Aussage wie im Hero darüber.
-           Inline gesetzt trägt er den Satzanfang und der Doppelklang ist weg.
-           Die Eleganz kommt jetzt aus drei Stimmen in einer Zeile: kursiver
-           Einstieg, Roman als Körper, kursiver Schluss. -->
+      <!-- Ein durchlaufender Absatz aus drei Stimmen: kursiver Einstieg,
+           Roman als Körper, kursiver Schluss. Das geschützte Leerzeichen
+           nach dem Auftakt hält ihn an "Le Werk" — sonst stünde
+           "Gegründet von Filmemachern." allein auf einer Zeile.
+
+           Gekürzt: "ist ein Visual Content Studio im Kölner Rheinauhafen"
+           ist entfallen. Beides stand ohnehin woanders — die Gattung im
+           Hero direkt darüber, der Ort in Streublock 02 und im Impressum.
+           Übrig bleibt, was nur hier steht. -->
       <p class="statement__text" id="statement-title" data-reveal>
         <em>Gegründet von Filmemachern.</em>{' '}
-        <span class="brand">Le Werk</span> ist ein Visual Content Studio im
-        Kölner Rheinauhafen. Spezialisiert auf Storytelling, Film und Foto
-        für <em>Social und Branded Content.</em>
+        <span class="brand">Le Werk</span> ist spezialisiert auf
+        Storytelling, Film und Foto für <em>Social und Branded Content.</em>
       </p>
       <p class="statement__meta" data-reveal data-reveal-delay="80">
         Konzept · Produktion · Postproduktion · Based in Köln, Booked Worldwide
@@ -346,8 +362,14 @@ const faqs = [
               </figure>
               <p class="work__caption">
                 <span class="work__titel">{a.titel}</span>
-                <span class="work__format">
-                  <span class="visually-hidden">Format </span>{a.format}
+                <!-- Die Ansage steht einmal vor der ersten Pille, nicht an
+                     jeder: "Formate 9:16 16:9" statt "Format 9:16 Format
+                     16:9". Der Plural richtet sich nach der Anzahl. -->
+                <span class="work__formate">
+                  <span class="visually-hidden">
+                    {a.formate.length > 1 ? 'Formate ' : 'Format '}
+                  </span>
+                  {a.formate.map((f) => <span class="work__format">{f}</span>)}
                 </span>
               </p>
             </a>
@@ -387,10 +409,17 @@ const faqs = [
                 rel="noopener"
                 tabindex={kopie ? -1 : undefined}
               >
+                <!-- eager statt lazy: Die Leiste läuft, sobald sie ins Bild
+                     kommt, und ein nachgeladenes Logo hinterlässt bis dahin
+                     eine Lücke. Zwölf Dateien sind zusammen 124 KB, die
+                     zweite Runde kommt aus dem Zwischenspeicher.
+                     fetchpriority low, damit sie sich nicht vor das
+                     Bühnenvideo und die ersten Kacheln drängen. -->
                 <img
                   src={withBase(`/images/kunden/${k.datei}.png`)}
                   alt={kopie ? '' : k.name}
-                  width={k.b} height={k.h} loading="lazy" decoding="async"
+                  width={k.b} height={k.h}
+                  loading="eager" fetchpriority="low" decoding="async"
                   style={`--b: ${logoBreite(k)}`}
                 />
               </a>
@@ -404,28 +433,20 @@ const faqs = [
   <!-- ═══ 5 · LEISTUNGEN ═════════════════════════════════════════════════ -->
   <section class="section section--sand services" aria-labelledby="services-title">
     <div class="container">
-      <!-- "Content, holistisch gedacht" ist entfallen; "Was wir machen"
-           rückt von der Marginalie in die Überschrift auf und ist damit
-           gebaut wie die Nachbarn: Auftakt in Bodoni, zweiter Teil in
-           Poppins.
+      <!-- Marginalienstil wie bei "Warum Le Werk", nicht die große
+           Überschrift der übrigen Abschnitte. Steht als h2 und nicht als
+           p — ohne Überschrift auf dieser Ebene bliebe eine Lücke in der
+           Gliederung.
 
-           Die Marginalie darüber ist deshalb weg — sie trug denselben
-           Wortlaut und stünde jetzt doppelt.
+           Der Modifier --nur-marke ist Pflicht, nicht Geschmack: Die
+           Grundabstände sind auf eine Headline gerechnet, unter einer
+           12px-Zeile wirken 72px wie ein Loch.
 
-           Der Umbruch ist der knappste auf der Seite: "Was wir" und
-           "machen" sind fast gleich lang. Getragen wird der Absatz allein
-           vom Schriftwechsel und vom Größenunterschied, nicht von der
-           Zeilenlänge — dafür ist der Kicker kleiner gesetzt als die
-           Headline, siehe .editorial--kicker in global.css.
-
-           Ein Fließtext stand hier früher ebenfalls. Er stufte die
-           Disziplinen ab ("Hauptdisziplin", "klare Zweite") und ist mit der
-           damaligen Überschrift zusammen entfallen. -->
-      <header class="sec-head" data-reveal>
-        <h2 class="headline" id="services-title">
-          <span class="editorial editorial--kicker">Was wir</span>{' '}
-          machen
-        </h2>
+           "Content, holistisch gedacht" stand hier früher als Headline,
+           davor zusätzlich ein Fließtext, der die Disziplinen abstufte
+           ("Hauptdisziplin", "klare Zweite"). Beides ist entfallen. -->
+      <header class="sec-head sec-head--nur-marke" data-reveal>
+        <h2 class="label" id="services-title">Was wir machen</h2>
       </header>
 
       <!-- Nur die drei Produktionsdisziplinen. Workshops sind bewusst nicht
@@ -444,12 +465,7 @@ const faqs = [
                 <figcaption class="disziplin__marke">{s.titel ?? s.label}</figcaption>
               </figure>
 
-              <p class="disziplin__zeile">
-                <span class="disziplin__text">{s.text}</span>
-                <span class="disziplin__mehr">
-                  Mehr erfahren <span class="disziplin__pfeil" aria-hidden="true">→</span>
-                </span>
-              </p>
+              <p class="disziplin__zeile">{s.text}</p>
             </a>
           </li>
         ))}
@@ -498,9 +514,9 @@ const faqs = [
 
         <Streublock nr="02" seite="links" bilder={krafthaus} label="Unsere Räume im Krafthaus" hoehe={0.95}>
           <p>
-            Unsere Räumlichkeiten liegen im <strong>Krafthaus, im
-            Rheinauhafen</strong>. Gedreht wird in Köln, bundesweit oder auch
-            international.
+            <strong>Based in Köln, booked worldwide:</strong> Unsere
+            Räumlichkeiten liegen im Krafthaus, im Rheinauhafen. Gedreht wird
+            in Köln, bundesweit oder auch international.
           </p>
         </Streublock>
       </div>
@@ -532,10 +548,10 @@ const faqs = [
         </li>
         <li class="benefit" data-reveal data-reveal-delay="80">
           <span class="benefit__num" aria-hidden="true">02</span>
-          <h3 class="benefit__title">Inhaltlicher Impact</h3>
+          <h3 class="benefit__title">Inhaltliche Substanz</h3>
           <p class="benefit__text">
             Redaktionelle Tiefe, ehrlich erzählte Geschichten, menschliche
-            Momente — interviewbasiert und dokumentarisch, mit Blick für
+            Momente. Interviewbasiert und dokumentarisch, mit Blick für
             Charaktere.
           </p>
         </li>
@@ -543,18 +559,40 @@ const faqs = [
           <span class="benefit__num" aria-hidden="true">03</span>
           <h3 class="benefit__title">Social First</h3>
           <p class="benefit__text">
-            Social ist bei uns der Anfang der Planung und nicht der letzte
-            Schritt der Verwertung. Was im Feed läuft, ist dafür gemacht —
-            nicht dafür übriggeblieben.
+            Marken müssen dort sichtbar sein, wo die Aufmerksamkeit ihrer
+            Kunden liegt. Wir denken social first und produzieren den
+            richtigen Content für die richtigen Kanäle.
           </p>
         </li>
       </ol>
     </div>
   </section>
 
-  <!-- ═══ 8 · FAQ ═══════════════════════════════════════════════════════ -->
-  <!-- Beige statt Weiß: Vorher grenzten zwei weiße Flächen aneinander und
-       der Abschnittswechsel war nicht zu erkennen. -->
+  <!-- Der Aufruf steht vor der FAQ und nicht dahinter: Wer bis hierher
+       gelesen hat, ist bereit zu fragen. Die FAQ fängt danach die auf,
+       die noch etwas wissen wollen — sie ist der Nachsatz, nicht der
+       Abschluss.
+
+       ═══ 8 · BOTTOM-CTA ════════════════════════════════════════════════ -->
+  <section class="section section--dark cta" aria-labelledby="cta-title">
+    <div class="container cta__inner" data-reveal>
+      <h2 class="headline headline--xl cta__title" id="cta-title">
+        <span class="editorial editorial--kicker">Erzähl uns</span>{' '}
+        von deinem Projekt
+      </h2>
+      <div class="cta__actions">
+        <a class="btn btn--on-dark" href={withBase("/kontakt")}>
+          Projekt anfragen <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--ghost" href="mailto:contact@lewerk.de">contact@lewerk.de</a>
+      </div>
+    </div>
+  </section>
+  <!-- ═══ 9 · FAQ ═══════════════════════════════════════════════════════ -->
+  <!-- Beige und nicht Weiß: Die FAQ steht zwischen dem dunklen Aufruf und
+       der dunklen Fußzeile und braucht einen eigenen Ton, sonst liest sie
+       sich als deren Fortsetzung. Ursprünglich stand sie hinter den
+       Vorteilen, und dort grenzten zwei weiße Flächen aneinander. -->
   <section class="section section--sand faq" aria-labelledby="faq-title">
     <div class="container faq__grid">
       <header class="faq__head" data-reveal>
@@ -576,21 +614,6 @@ const faqs = [
     </div>
   </section>
 
-  <!-- ═══ 9 · BOTTOM-CTA ════════════════════════════════════════════════ -->
-  <section class="section section--dark cta" aria-labelledby="cta-title">
-    <div class="container cta__inner" data-reveal>
-      <h2 class="headline headline--xl cta__title" id="cta-title">
-        <span class="editorial editorial--kicker">Erzähl uns</span>{' '}
-        von deinem Projekt
-      </h2>
-      <div class="cta__actions">
-        <a class="btn btn--on-dark" href={withBase("/kontakt")}>
-          Projekt anfragen <span class="btn__arrow" aria-hidden="true">→</span>
-        </a>
-        <a class="btn btn--ghost" href="mailto:contact@lewerk.de">contact@lewerk.de</a>
-      </div>
-    </div>
-  </section>
 </BaseLayout>
 
 <style>
@@ -733,11 +756,11 @@ const faqs = [
        deshalb im Logo, siehe .marquee__logo. */
     gap: 0;
     width: max-content;
-    /* 26s statt 40: Der frühere Streifen lief 1600px in 40s, also 40px in
-       der Sekunde. Eine Runde misst jetzt 1042px — bei gleicher
-       Geschwindigkeit sind das 26s. Wer ein Logo ergänzt, muss den Wert
+    /* Der frühere Streifen lief 1600px in 40s, also 40px in der Sekunde.
+       Bei zwölf Logos misst eine Runde 1329px — bei gleicher
+       Geschwindigkeit sind das 33s. Wer ein Logo ergänzt, muss den Wert
        nachziehen, sonst läuft die Leiste schneller. */
-    animation: marquee 26s linear infinite;
+    animation: marquee 33s linear infinite;
     will-change: transform;
   }
 
@@ -916,15 +939,54 @@ const faqs = [
 
   .work__link { display: block; text-decoration: none; color: inherit; }
 
+  /* Kein Hintergrund. Er stand hier als Platzhalter fürs Laden, mit 6 %
+     Weiß — und war damit heller als der Abschnitt darunter. In den
+     abgerundeten Ecken schneidet overflow: hidden das Bild nicht auf den
+     letzten Pixel genau ab, und genau dort blitzte dieser helle
+     Hintergrund als Bogen durch. Nachgestellt und im Vergleich bestätigt.
+
+     Ein Platzhalter wird auch nicht gebraucht: Die Bilder tragen width und
+     height, die Fläche steht also von Anfang an. */
   .work__figure {
     position: relative;
     margin: 0;
     overflow: hidden;
     border-radius: var(--radius-lg);
-    background: rgba(255, 255, 255, 0.06);
+    /* Die Maske ist der Grund, warum die Rundung beim Überfahren sauber
+       bleibt.
+
+       Das Bild wächst bei Hover um 3,5 Prozent. Für diese Bewegung legt
+       der Browser es auf eine eigene Ebene, und der abgerundete Beschnitt
+       des Kastens wird dann getrennt davon angewendet. In den Ecken passt
+       beides nicht auf den Pixel zusammen — dort blitzte ein heller Saum
+       auf, solange die Bewegung lief.
+
+       Eine Maske zwingt den Kasten selbst auf eine Ebene, und der
+       Beschnitt wird mit ihm zusammen gerastert. Beide Schreibweisen,
+       weil die alte WebKit-Form dort greift, wo die neue noch nicht
+       gilt. Der Inhalt der Maske ist gleichgültig — sie ist überall
+       deckend; gebraucht wird nur der Weg, den sie erzwingt.
+
+       Durchprobiert und am Bildschirm verglichen: isolation, overflow:
+       clip und eine eigene Ebene am Kasten helfen alle nicht, die Maske
+       schon. */
+    -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
+    mask-image: linear-gradient(#000, #000);
   }
 
+    /* border-radius: inherit an Bild und Verlauf.
+
+       Ohne das beschneidet nur der Kasten, und zwar jede Ebene für sich.
+       In der Rundung bleibt dabei ein Bruchteil eines Pixels frei, in dem
+       der abdunkelnde Verlauf das Bild nicht mehr erwischt — dort kam es
+       ungedimmt durch. Bei den drei Reels fiel das auf, weil ihre linke
+       untere Ecke im Bild hell ist: Allianz 213, BVB 205, Street One 178
+       von 255, während die Fotostrecken dort bei 8 bis 82 liegen.
+
+       Mit eigener Rundung an beiden Ebenen fällt die Fuge weg. Am
+       Bildschirm gegengeprüft, vorher und nachher. */
   .work__figure img {
+    border-radius: inherit;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -939,23 +1001,48 @@ const faqs = [
 
   .work__link:hover .work__figure img { transform: scale(1.035); }
 
-  /* Lesbarkeitsverlauf unter den Tags. Vorher trug der Schatten allein, und
-     der zählt für den Kontrast nicht — er ist weich, keine deckende Fläche.
-     Nachgemessen auf den Zeilenkästen der Schrift lagen drei von vier Tags
-     unter der Grenze: Kampagne 1.11:1, Vertikal 1.36:1, Social Video 2.05:1
-     bei 3.0 als Minimum für große fette Schrift.
-     Mit diesem Verlauf: Kampagne 4.51, Social Video 10.34, Vertikal 10.75,
-     Fotografie 16.39 — auch über der strengeren Schwelle von 4.5 und mit
-     Reserve für echte Projektbilder, die noch kommen. */
+  /* Lesbarkeitsverlauf unter den Kundennamen. Vorher trug der Schatten
+     allein, und der zählt für den Kontrast nicht — er ist weich, keine
+     deckende Fläche. Ohne Verlauf lagen drei von vier Namen unter der
+     Grenze von 3.0 für große fette Schrift.
+
+     ABGESCHWÄCHT VON 0.95/0.66 AUF 0.82/0.58
+     Der Verlauf deckte unten praktisch in der Farbe des Abschnitts. Die
+     Kachel ging dort ohne sichtbare Kante in den Hintergrund über, und
+     die Bildzeile darunter wirkte dadurch verrutscht: Man sah nicht,
+     worauf sie sich ausrichtet.
+
+     Er beginnt weiterhin an der Unterkante und läuft von dort nach oben
+     aus — ein ausgenommener Streifen ganz unten war der erste Versuch
+     und sah wie ein Leuchtstreifen aus.
+
+     Nachgemessen an den untersten zwei Bildzeilen, Abschnitt ist
+     rgb(4, 37, 44):
+
+       Siemens   Bild (48, 49, 41)   vorher (6, 38, 44)   jetzt (12, 39, 43)
+       BVB       Bild (175,164,105)  vorher (13,44, 47)   jetzt (35, 60, 55)
+
+     Weiter herunter geht es, kostet aber an den drei Reels: Deren linke
+     untere Bildecke ist hell — gemessen 213 (Allianz), 205 (BVB) und 178
+     (Street One) von 255, während die Fotostrecken dort bei 8 bis 82
+     liegen. Je schwächer der Verlauf, desto deutlicher kommt diese Ecke
+     durch. Das ist das Bild und keine Fuge in der Rundung: Mit einer
+     dunklen Fläche statt des Bildes bleibt die Ecke sauber,
+     gegengeprüft am Bildschirm.
+
+     Der Name bleibt weit über der Grenze. Nachgerechnet über alle sechs
+     Kacheln auf dem Zeilenkasten der Schrift: schlechtester Wert 10.77
+     gegen 13.45 vorher, Schwelle ist 4.5. */
   .work__figure::after {
     content: '';
     position: absolute;
     inset: 0;
+    border-radius: inherit;
     pointer-events: none;
     background: linear-gradient(
       0deg,
-      rgba(4, 37, 44, 0.95) 0%,
-      rgba(4, 37, 44, 0.66) 32%,
+      rgba(4, 37, 44, 0.82) 0%,
+      rgba(4, 37, 44, 0.58) 32%,
       rgba(4, 37, 44, 0) 60%
     );
   }
@@ -976,9 +1063,15 @@ const faqs = [
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
   }
 
-  /* Projektname links, Format rechts. Der Kunde steht groß im Bild darüber.
-     baseline statt center: Die Pille ist kleiner gesetzt als der Titel,
-     an der Mittelachse ausgerichtet stünde sie sichtbar zu hoch. */
+  /* Projektname links, Formate rechts. Der Kunde steht groß im Bild
+     darüber. baseline statt center: Die Pillen sind kleiner gesetzt als
+     der Titel, an der Mittelachse ausgerichtet stünden sie sichtbar zu
+     hoch.
+
+     Die Zeile schließt links und rechts mit dem Bild ab, ohne Einzug.
+     Sie war zwischenzeitlich auf den Einzug von .work__tag gesetzt,
+     damit Kundenname und Projektname auf einer Linie beginnen — das war
+     nicht gewollt. Die Kachelkante ist der Bezug, nicht der Kundenname. */
   .work__caption {
     display: flex;
     flex-wrap: wrap;
@@ -990,11 +1083,25 @@ const faqs = [
 
   .work__titel { font-weight: 600; }
 
-  /* margin-left: auto drückt die Pille an die rechte Kante der Kachel —
-     dadurch steht sie über alle fünf Kacheln hinweg bündig, obwohl die
-     Titel unterschiedlich lang sind. */
-  .work__format {
+  /* margin-left: auto drückt die Pillen an die rechte Kante der Kachel —
+     dadurch stehen sie über alle sechs Kacheln hinweg bündig, obwohl die
+     Titel unterschiedlich lang sind.
+
+     Die Gruppe trägt das auto und nicht die einzelne Pille: Bei zwei
+     Formaten säße sonst nur die erste rechts und die zweite hinge daran.
+     Der Zeilenumbruch innerhalb der Gruppe ist erlaubt — bei schmalen
+     Kacheln rutscht das zweite Format unter das erste, statt den Titel
+     zu quetschen. */
+  .work__formate {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 0.3rem;
     margin-left: auto;
+  }
+
+  .work__format {
     padding: 0.15rem 0.55rem;
     border: 1px solid var(--line-dark);
     border-radius: 999px;
@@ -1022,15 +1129,22 @@ const faqs = [
 
   .disziplin__link { display: block; text-decoration: none; color: inherit; }
 
+  /* Kein Hintergrund — siehe .work__figure. Hier war der Platzhalter
+     dunkel und der Abschnitt hell, der Bogen in der Rundung entsprechend
+     dunkel statt hell. Dieselbe Ursache. */
   .disziplin__bild {
     position: relative;
     margin: 0;
     overflow: hidden;
     border-radius: var(--radius-lg);
-    background: rgba(4, 37, 44, 0.06);
+    /* Maske gegen den hellen Saum in der Rundung, sobald das Bild bei
+       Hover wächst — ausführlich bei .work__figure in index.astro. */
+    -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
+    mask-image: linear-gradient(#000, #000);
   }
 
   .disziplin__bild img {
+    border-radius: inherit;
     display: block;
     width: 100%;
     /* Jede Disziplin in ihrem eigenen Format — kommt aus den Daten */
@@ -1058,6 +1172,7 @@ const faqs = [
     content: '';
     position: absolute;
     inset: 0;
+    border-radius: inherit;
     pointer-events: none;
     background: linear-gradient(
       0deg,
@@ -1082,34 +1197,16 @@ const faqs = [
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
   }
 
-  /* Bildunterschrift im Zuschnitt der Arbeiten: Text links, Hinweis rechts */
+  /* Nur noch der Beschreibungstext. Rechts stand hier ein "Mehr erfahren"
+     mit Pfeil — entfallen, weil es zu den Disziplinen keine Unterseiten
+     mehr geben soll. Damit fällt auch die Flex-Zeile weg: Ein einzelner
+     Absatz braucht keine zwei Enden. */
   .disziplin__zeile {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.4rem var(--space-3);
     margin-top: var(--space-2);
+    max-width: 46ch;
     font-size: var(--fs-small);
+    color: var(--ink-muted);
   }
-
-  .disziplin__text { color: var(--ink-muted); max-width: 46ch; }
-
-  .disziplin__mehr {
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    flex-shrink: 0;
-    font-family: var(--font-ui);
-    font-size: var(--fs-label);
-    font-weight: 700;
-    letter-spacing: var(--track-label);
-    text-transform: uppercase;
-    color: var(--petrol);
-  }
-
-  .disziplin__pfeil { transition: transform var(--dur) var(--ease-out); }
-  .disziplin__link:hover .disziplin__pfeil { transform: translateX(5px); }
 
 
   /* ── 6 · Vorteile ─────────────────────────────────────────────────────── */
@@ -1197,10 +1294,16 @@ const faqs = [
     color: var(--on-dark);
   }
 
-  /* balance, weil die Rollen Doppelnennungen sind und zwei von ihnen
-     breiter als die Kachel laufen. Ohne die Angabe füllt die erste Zeile
-     sich bis zum Rand und schiebt den Rest hinterher — bei Cem stand
-     "Director" allein auf 59px unter einer 258px langen Zeile. */
+  /* balance, weil die Rollen Doppelnennungen sind und die längeren
+     zwei Zeilen brauchen. Ohne die Angabe füllt die erste Zeile sich bis
+     zum Rand und lässt ein einzelnes Wort darunter stehen — bei Cem
+     stand "Director" allein auf 59px unter einer 258px langen Zeile.
+
+     Die Schriftgröße hing zwischenzeitlich an der Kachelbreite (4.6cqi),
+     damit die Rollen auf breiten Bildschirmen in eine Zeile passen. Das
+     ist zurückgenommen: Sie steht wieder wie Name und Bildzeilen auf
+     --fs-small. Wie viele Zeichen damit einzeilig bleiben, hängt an der
+     Kachelbreite und steht in docs/bildmaterial.md. */
   .team__role {
     font-size: var(--fs-small);
     color: var(--on-dark-muted);
@@ -1327,51 +1430,30 @@ const faqs = [
        Gemessen bei 1440px Fenster, Raster 1310px breit, Spalte 69.6,
        Spaltenabstand 43.2:
 
-         Siemens     746 x 933   links    x    0 …  746    y    0 …  933
-         Allianz     408 x 725   rechts   x  902 … 1310    y  140 …  865
-         Revitive    859 x 573   links    x    0 …  859    y 1034 … 1607
-         Street One  295 x 525   rechts   x 1015 … 1310    y 1144 … 1669
-         BVB         408 x 725   links    x    0 …  408    y 1709 … 2434
-         Formel D    746 x 497   rechts   x  564 … 1310    y 1874 … 2372
+         Siemens     633 x 792   links    x    0 …  633    y    0 …  792
+         Allianz     408 x 725   rechts   x  789 … 1197    y  140 …  865
+         Revitive    746 x 497   links    x    0 …  746    y  894 … 1391
+         Street One  408 x 725   rechts   x  902 … 1310    y  967 … 1692
+         BVB         408 x 725   links    x    0 …  408    y 1493 … 2218
+         Formel D    746 x 497   rechts   x  564 … 1310    y 1793 … 2291
 
-       Zwölf verschiedene waagerechte Kanten, fünf verschiedene
-       Breiten. Keine Kachel schließt mit einer anderen oben oder unten
-       ab; der knappste Abstand zwischen zwei gleichgerichteten Kanten
-       beträgt 61px. Geteilt werden nur die beiden Rasterränder — links
-       von Siemens, Revitive und BVB, rechts von Allianz, Street One
-       und Formel D. An denen muss etwas anliegen, sonst franst der
-       Block zu beiden Seiten aus.
+       DIE GEWICHTE
+       Siemens zu Allianz stand als Fläche bei 70 zu 30 und war damit zu
+       kopflastig. Siemens ist deshalb von sieben auf sechs Spalten
+       zurück, das ergibt 63 zu 37.
 
-       DIE LUFT IN DER RECHTEN SPALTE
-       Rechts stehen nur zwei Kacheln, links drei — die rechte Spalte
-       trägt rund 1000px weniger Inhalt und hat entsprechend mehr Luft
-       zu verteilen. Street One saß deshalb zuerst dicht unter Allianz:
-       60px nach oben, 237px nach unten.
+       Genauer geht es auf zwölf Spalten nicht: Die nächsten möglichen
+       Kombinationen liegen bei 70/30 (Siemens sieben Spalten) und 59/41
+       (Allianz fünf) — dazwischen gibt es keine Rasterbreite. 65/35
+       bräuchte Siemens auf 6,4 Spalten.
 
-       Jetzt sind es 237 nach oben und 164 nach unten. Auf gleiche
-       Werte lässt es sich nicht bringen, ohne etwas anderes zu
-       verletzen:
-
-         · Street One tiefer zu setzen ginge nur, wenn Allianz
-           mitrutscht — und Allianz kann nicht zwischen 148 und 268
-           liegen, weil seine Unterkante sonst auf die von Siemens
-           trifft.
-         · Formel D weiter nach unten zu ziehen, ginge nur, bis seine
-           Unterkante auf die von BVB trifft. Bei 1874 bleiben davon
-           genau 61px.
-
-       Die drei Bedingungen — Gleichgewicht, keine gemeinsamen Kanten,
-       gleiche Abschnittshöhe — schließen sich zu dritt aus. Vorrang
-       haben die Kanten: 237 zu 167 liest sich als Absicht, zwei
-       Kacheln auf gleicher Höhe als Versehen.
-
-       Die Höhe des Abschnitts kostet das alles nichts: Revitive hängt
-       an Siemens und BVB an Revitive, und diese Kette bestimmt die
-       Gesamthöhe. Allianz, Street One und Formel D bewegen sich
-       innerhalb davon.
+       Revitive ist von acht auf sieben Spalten zurück, war als
+       breiteste Kachel der Seite zu schwer. Street One von drei auf
+       vier: Mit 295px stand es in einem schmalen Streifen am rechten
+       Rand, jetzt sind es 408px.
 
        DIE LINKE UND DIE RECHTE SPALTE BERÜHREN SICH NIE
-       Links endet spätestens bei 859, rechts beginnt frühestens bei
+       Links endet spätestens bei 746, rechts beginnt frühestens bei
        564 — aber nie auf derselben Höhe. Dadurch sind die beiden
        Hälften vertikal frei gegeneinander verschiebbar, und genau das
        machen die negativen Ränder unten.
@@ -1383,30 +1465,38 @@ const faqs = [
        Anordnung wiederholt, und sie ist der Grund, warum die drei Paare
        trotz sechs verschiedener Höhen zusammengehören.
 
-       Vorher waren Siemens und Revitive je eine Spalte schmaler. Die
-       obere Fuge maß dann 156px, die mittlere 269 — die las sich nicht
-       als Abstand, sondern als vergessene Kachel.
-
-       Die Flächendeckung liegt dadurch bei 71 statt 67 Prozent,
-       nachgemessen bei 1024, 1200, 1440 und 1920px Fensterbreite. Der
-       engste senkrechte Abstand beträgt dabei nie weniger als 47px.
-
-       DIE NEGATIVEN RÄNDER
+       DIE VERSÄTZE
        Der Zeilenabstand von 80px plus die Bildunterschrift von 42px
-       stapeln sich sonst zu Löchern zwischen den Paaren. Die linken
-       Kacheln werden deshalb so weit hochgezogen, dass über ihnen
-       genau 60px Luft zu der Kachel stehen, die sie tatsächlich
-       blockiert — nicht zur ganzen Zeile. Das spart rund 210px.
+       stapeln sich sonst zu Löchern zwischen den Paaren. Jede Kachel
+       wird deshalb einzeln gesetzt, bezogen auf die Kachel, die sie
+       tatsächlich blockiert — nicht auf die ganze Zeile. Zwischen einer
+       Bildzeile und der nächsten Kachel darunter stehen dadurch überall
+       110px.
+
+       Der Wert lag zwischenzeitlich bei 60px, und das war zu eng. Er
+       war nicht gewählt, sondern übrig: Street One ist von drei auf
+       vier Spalten gewachsen und damit 200px höher, und die rechte
+       Spalte hatte danach keine Luft mehr zu verteilen. Vorher standen
+       dort 237px zwischen Allianz und Street One und 164px zwischen
+       Street One und Formel D.
+
+       Die 110px kommen jetzt aus dem einzigen freien Maß, das der
+       Aufbau noch hat: Formel D darf nach unten wandern. Damit liegt
+       der Abschnitt bei 2433px und damit fast genau auf der Höhe von
+       vorher (2475px), obwohl alle Kacheln kleiner geworden sind.
+
+       Flächendeckung 66,9 Prozent, nachgemessen auch bei 1024 und
+       1920px Fensterbreite. Der engste Abstand liegt dort bei 82px.
 
        Die Reihen entstehen von selbst — Astro setzt die Kacheln der
        Reihe nach, und wo sich Spalten überschneiden, rutscht die
        nächste eine Reihe tiefer. Kein grid-row, das würde brechen,
        sobald ein Projekt dazukommt. */
-    .work__item--1 { grid-column: 1 / span 7; }                   /* Siemens 4:5 */
-    .work__item--2 { grid-column: 9 / span 4; }                   /* Allianz 9:16 */
+    .work__item--1 { grid-column: 1 / span 6; }                   /* Siemens 4:5 */
+    .work__item--2 { grid-column: 8 / span 4; }                   /* Allianz 9:16 */
 
-    .work__item--3 { grid-column: 1 / span 8; }                   /* Revitive 3:2 */
-    .work__item--4 { grid-column: 10 / span 3; }                  /* Street One 9:16 */
+    .work__item--3 { grid-column: 1 / span 7; }                   /* Revitive 3:2 */
+    .work__item--4 { grid-column: 9 / span 4; }                   /* Street One 9:16 */
 
     .work__item--5 { grid-column: 1 / span 4; }                   /* BVB 9:16 */
     .work__item--6 { grid-column: 6 / span 7; }                   /* Formel D 3:2 */
@@ -1419,10 +1509,10 @@ const faqs = [
        mitwachsen: die sind über aspect-ratio ebenfalls an die Breite
        gekoppelt. */
     .work__item--2 { margin-top: clamp(3rem, 9.7vw, 8.75rem); }
-    .work__item--3 { margin-top: calc(-1 * clamp(0.5rem, 1.45vw, 1.5rem)); }
-    .work__item--4 { margin-top: clamp(2rem, 6.2vw, 6rem); }
-    .work__item--5 { margin-top: calc(-1 * clamp(2rem, 5.7vw, 5.5rem)); }
-    .work__item--6 { margin-top: clamp(2rem, 6vw, 5.25rem); }
+    .work__item--3 { margin-top: calc(-1 * clamp(1rem, 3vw, 3rem)); }
+    .work__item--4 { margin-top: clamp(0.75rem, 2.08vw, 2rem); }
+    .work__item--5 { margin-top: calc(-1 * clamp(5rem, 18.8vw, 17rem)); }
+    .work__item--6 { margin-top: clamp(0.75rem, 2.08vw, 2rem); }
 
     /* Video links, Konzept und Foto rechts — aber nichts fluchtet.
 

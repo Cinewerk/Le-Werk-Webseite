@@ -23,7 +23,7 @@ Ordnername sagt, wozu die Bilder gehören:
 | `siemens/`, `allianz/`, `bvb-ea-sports/` | nur Video-Standbilder | die drei Videoseiten |
 | `formel-d/`, `revitive/` | die beiden Fotostrecken | die beiden Galerieseiten |
 | `services/` | vier Motive der Disziplinen | Startseite und `/services` |
-| `kunden/` | der Logostreifen der Trustbar | Startseite |
+| `kunden/` | zwölf Kundenlogos der Trustbar | Startseite |
 
 **Die Team-Dateien heißen nach den Personen**, nicht nach Nummern:
 `philipp-maxhofer.jpg`, `cem-schuch.jpg`, `joscha-ortmeier.jpg`,
@@ -41,7 +41,7 @@ verloren.
 **Als JPEG, nicht als PNG.** PNG ist für Fotos das falsche Format: Eine
 Aufnahme, die als JPEG 139 KB wog, kam als PNG auf 296 KB — bei einem
 Viertel der Pixel. Für Fotos JPEG, Qualität 60 bis 62; PNG nur für
-Grafiken mit Flächen und Transparenz, wie den Logostreifen.
+Grafiken mit Flächen und Transparenz, wie die Kundenlogos.
 
 Die Bühne der Startseite ist ein Video, siehe Abschnitt unten.
 
@@ -200,8 +200,8 @@ Zwei Maße halten die Reihe zusammen, beide nachgemessen an der
 Anzeigegröße von 304px:
 
 - **Augenlinie 44 Prozent** der Kachelhöhe, bei allen vier.
-- **Kopfhöhe 177px**, vom Scheitel bis zum Kinn. Gemessen liegen die vier
-  zwischen 173 und 179, also innerhalb von zwei Prozent.
+- **Kopfhöhe 178px**, vom Scheitel bis zum Kinn. Gemessen liegen die vier
+  zwischen 177 und 179, also innerhalb von einem Prozent.
 
 Das zweite Maß ist das jüngere und das wichtigere. Eine gemeinsame
 Augenlinie allein reicht nicht: Danach lagen die Augen zwar auf einer Linie,
@@ -211,37 +211,37 @@ Satz.
 
 | Datei | Kachel | Anzeige | Kopfhöhe | über dem Scheitel |
 |---|---|---|---|---|
-| `philipp-maxhofer.jpg` | 524 × 524 | 1,7-fach | 173 px | 32 px |
+| `philipp-maxhofer.jpg` | 700 × 700 | 2,3-fach | 178 px | 34 px |
 | `cem-schuch.jpg` | 700 × 700 | 2,3-fach | 179 px | 33 px |
 | `joscha-ortmeier.jpg` | 700 × 700 | 2,3-fach | 177 px | 33 px |
 | `tom-beckers.jpg` | 700 × 700 | 2,3-fach | 178 px | 30 px |
 
-**Warum genau diese Werte.** Die 44 Prozent sind der Kompromiss aus zwei
-Grenzen: Nach unten setzt Cem sie — bei ihm liegen zwischen Scheitel und
-Augen 59 Prozent der Kopfhöhe, tiefer angesetzt stößt er oben an. Nach oben
-setzt Philipp sie, dessen Ausschnitt nicht weiter nach unten wandern kann als
-bis an den Rand seiner Webfassung.
+**Warum genau diese Werte.** Zwei Grenzen halten sie fest:
 
-Philipp ist auch der Grund für die Kopfhöhe. Sein Bild lässt sich nicht
-weiter aufziehen, Joschas nicht weiter zurücknehmen — dessen Quelle ist nur
-1086px breit und im vorhandenen Schnitt schon fast ausgereizt. Zwischen
-diesen beiden Grenzen liegt genau ein gemeinsamer Wert, und der ist 177.
+- **Nach unten Cem**, für die Augenlinie: Bei ihm liegen zwischen Scheitel
+  und Augen 59 Prozent der Kopfhöhe. Tiefer angesetzt stößt er oben an; bei
+  44 Prozent bleiben ihm 33px Luft.
+- **Nach oben Joscha**, für die Kopfhöhe: Seine Quelle ist nur 1086px breit
+  und der Ausschnitt schöpft sie fast aus. Kleiner als 177 lässt sich sein
+  Kopf nicht schneiden.
 
-Philipps Kachel ist deshalb die kleinste: Von ihm gibt es kein Original,
-sein Quadrat wird aus der 700er-Webfassung geschnitten und landet bei 524.
-Bei 304px Anzeige sind das 1,7-fach — auf einem Bildschirm mit doppelter
-Pixeldichte etwas weich. **Ein hochauflösendes Original von Philipp würde
-das lösen**; alle anderen sind mit 2,3-fach in Reserve.
+Eine dritte Grenze ist am 4. August 2026 entfallen. Von Philipp gab es lange
+nur die 700er-Webfassung: Sein Ausschnitt konnte weder nach unten wandern
+noch weiter aufgezogen werden, und seine Kachel maß deshalb nur 524px — bei
+304px Anzeige 1,7-fach und damit auf einem Bildschirm mit doppelter
+Pixeldichte etwas weich. Mit dem Original (2880 × 1920) sind jetzt alle vier
+Kacheln 700px groß.
 
 **Beim Austauschen den Schnitt mitliefern**: quadratisch, Augen auf 44
 Prozent der Höhe, Kopf 58 Prozent der Kachelhöhe. Ohne beides springt die
 Reihe wieder.
 
-Die Originale liegen unter `quellbilder/team/` — `Cem_Schuch.jpg` (7008 ×
-4672), `Tom_Beckers.jpg` (6229 × 4672) und `Joscha_Team.JPG` (1086 × 1448).
+Die Originale liegen alle vier unter `quellbilder/team/` —
+`Cem_Schuch.jpg` (7008 × 4672), `Tom_Beckers.jpg` (6229 × 4672),
+`Philipp_Maxhofer.jpg` (2880 × 1920) und `Joscha_Team.JPG` (1086 × 1448).
 `Joscha6.jpg` liegt dort ebenfalls, zeigt aber eine andere Aufnahme in
 anderem Raum und ist als Ersatz nicht brauchbar. Der Ordner ist bewusst
-nicht in Git — die vier Dateien wiegen zusammen knapp 39 MB.
+nicht in Git — die fünf Dateien wiegen zusammen gut 41 MB.
 
 ### Video-Standbilder
 
@@ -364,8 +364,8 @@ ihn das Luftbild zu.
 
 ## Kundenlogos ersetzen
 
-Die Logos liegen einzeln in `public/images/kunden/` — zehn PNG, zusammen
-124 KB. PNG ist hier richtig und sonst fast nirgends im Projekt: Flächen,
+Die Logos liegen einzeln in `public/images/kunden/` — zwölf PNG, zusammen
+rund 145 KB. PNG ist hier richtig und sonst fast nirgends im Projekt: Flächen,
 harte Kanten, Transparenz.
 
 Die Reihenfolge steht im `kunden`-Array in `src/pages/index.astro`. Bis
@@ -379,8 +379,9 @@ Git-Historie sucht, findet `kunden/logostreifen.png`.
    Lieferung war darin sehr uneinheitlich — Siemens kam als 2400er
    Quadrat, in dem die Wortmarke nur 364px hoch war.
 2. **Schwarz.** Die Trustbar liegt auf Weiß und nimmt sich über die
-   Deckkraft zurück; ein farbiges Logo springt heraus. Formel D kam
-   türkis und wurde umgefärbt — Farbe auf Null, Alphakanal erhalten.
+   Deckkraft zurück; ein farbiges Logo springt heraus. Formel D kam türkis
+   und Griesemann blau-grau; beide wurden umgefärbt — Farbe auf Null,
+   Alphakanal erhalten.
    Nachgemessen liegt die Deckfarbe jetzt bei allen zehn zwischen 0 und
    32 von 255. Ein CSS-Filter wäre der schlechtere Weg: Aus Türkis würde
    damit ein mittleres Grau und kein Schwarz.
@@ -406,9 +407,18 @@ die Breite, hohe an die Höhe.
 | Formel D | 1,3 : 1 | 47 × 36 | Höhe | — |
 | Zehnder Group | 1,1 : 1 | 40 × 36 | Höhe | 63 × 54 |
 | EA | 1,0 : 1 | 36 × 36 | Höhe | — |
+| Griesemann Gruppe | 6,9 : 1 | 84 × 12 | Breite | — |
+| Johnson & Johnson | 10,7 : 1 | 128 × 12 | **Ausnahme** | — |
 
 Auf gleiche Höhe gebracht wären die Wortmarken dreimal so schwer wie die
 Bildmarken, auf gleiche Fläche gebracht verschwänden sie.
+
+**Die eine Ausnahme.** Johnson & Johnson ist mit 10,7 : 1 die mit Abstand
+breiteste Marke und käme im Kasten auf 8px Höhe — halb so hoch wie Douglas
+und kaum noch lesbar. Das Feld `weite: 1.52` im `kunden`-Array hebt sie auf
+12px und damit auf dieselbe Höhe wie Street One; sie läuft dafür 128px breit
+statt 84. Das Feld steht bewusst je Logo in den Daten und nicht in der
+Rechnung, damit die Ausnahme als Ausnahme sichtbar bleibt.
 
 Die Spalte „früher" ist am Streifenbild aus der Git-Historie abgemessen.
 Der Kasten war zuerst 148 × 54 und damit deutlich zu groß — nicht so sehr
@@ -443,7 +453,7 @@ spränge sichtbar.
 Kommt ein Logo dazu, wird die Runde länger und die Leiste läuft schneller.
 Die Geschwindigkeit steht als Dauer in `.marquee__track` und ist auf 40px
 in der Sekunde gerechnet — dieselbe wie beim früheren Streifen. Eine Runde
-misst zurzeit 1042px, daher 26s.
+misst bei zwölf Logos 1329px, daher 33s.
 
 ### Die Logos sind verlinkt
 
@@ -457,6 +467,10 @@ Jedes Logo führt auf die Seite des Unternehmens; die Adressen stehen im
   darf nicht fokussierbar sein, sonst landet die Tabulatortaste in etwas,
   das für Screenreader nicht existiert. Ohne die Angabe stünden zehn stumme
   Links in der Tabreihenfolge.
+- **Die Logos laden mit der Seite**, nicht verzögert. Mit `loading="lazy"`
+  begann die Leiste zu laufen, bevor die Bilder da waren — es lief eine
+  weiße Lücke durch. `fetchpriority="low"` hält sie trotzdem hinter dem
+  Bühnenvideo zurück.
 - **Die Leiste hält beim Überfahren und beim Fokus an.** Ein Ziel von
   84 × 36px ist knapp, und es bewegt sich. Die Regel dafür stand schon
   vorher da, ist mit den Links aber keine Nettigkeit mehr, sondern
@@ -465,7 +479,9 @@ Jedes Logo führt auf die Seite des Unternehmens; die Adressen stehen im
 Beim Prüfen neuer Adressen: `douglas.de` antwortet einem Abruf ohne Browser
 mit 400 und `olympics.com` bricht ab — beides ist Bot-Schutz und keine tote
 Adresse. Und `douglas.com` wäre falsch, das führt zu einer gleichnamigen
-Firma in Kanada.
+Firma in Kanada. Bei Griesemann führt `griesemann-gruppe.de` per Umleitung
+auf `griesemann.com`; belegt über den Seitentitel „Startseite - Griesemann
+Gruppe".
 
 ## Team-Porträts
 
@@ -474,7 +490,7 @@ Vier Plätze, **alle vier echt**. Die Originale liegen in
 
 | Platz | Person | Web | Original |
 |---|---|---|---|
-| 1 | Philipp Maxhofer | `team/philipp-maxhofer.jpg` | **fehlt** — nur die Webfassung |
+| 1 | Philipp Maxhofer | `team/philipp-maxhofer.jpg` | `Philipp_Maxhofer.jpg` |
 | 2 | Cem Schuch | `team/cem-schuch.jpg` | `Cem_Schuch.jpg` |
 | 3 | Joscha Ortmeier | `team/joscha-ortmeier.jpg` | `Joscha_Team.JPG` |
 | 4 | Tom Beckers | `team/tom-beckers.jpg` | `Tom_Beckers.jpg` |
