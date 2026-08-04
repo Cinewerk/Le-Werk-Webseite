@@ -379,9 +379,15 @@ const faqs = [
       <!-- Der Kundenname steht groß im Bild, das Projekt in der Zeile
            darunter. Vorher trug das Bild eine Gattung ("Social Video") —
            bei echten Arbeiten ist der Kunde die stärkere Angabe. -->
+      <!-- Kein data-reveal an den Kacheln: Sie hängen an --q und laufen
+           damit nach demselben Gesetz wie die Stücke im Streublock weiter
+           unten. Beides auf einer Eigenschaft ginge nicht — data-reveal
+           setzt transform über eine Übergangszeit, --q schreibt es je Bild
+           neu. Der Abschnittskopf blendet weiterhin ein, genau wie der Text
+           neben den Streublöcken. -->
       <div class="work__grid">
         {arbeiten.map((a, i) => (
-          <article class={`work__item work__item--${i + 1}`} data-reveal data-reveal-delay={(i % 2) * 80}>
+          <article class={`work__item work__item--${i + 1}`}>
             <a class="work__link" href={withBase(`/arbeiten/${a.slug}`)}>
               <figure class="work__figure" data-format={a.ratio}>
                 <img src={withBase(a.bild)} alt={a.alt} width={a.breite} height={a.hoehe} loading="lazy" decoding="async" />
@@ -948,6 +954,12 @@ const faqs = [
   }
 
   /* ── 4 · Arbeiten ─────────────────────────────────────────────────────── */
+  /* Kappt waagerecht, aus demselben Grund wie .team: Die Kacheln fahren
+     seitlich auf ihren Platz zu und stehen bei --q = 0 bis zu 48px außerhalb
+     des Rasters. Ungekappt wüchse die Seite und ließe sich seitwärts
+     scrollen. */
+  .work { overflow-x: clip; }
+
   /* Nur noch die Überschrift im Kopf: Der Kasten war zweispaltig angelegt
      (Überschrift links, Einleitung rechts). Ohne die Einleitung hätte die
      Überschrift in einer 1,35fr-Spalte gesessen und rechts wäre eine leere
@@ -963,6 +975,60 @@ const faqs = [
     display: grid;
     grid-template-columns: 1fr;
     gap: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  /* Die Kacheln laufen beim Scrollen auf ihren Platz zu — dasselbe
+     Bewegungsgesetz wie die Stücke im Streublock, nur auf die andere
+     Anordnung gelegt.
+
+     Im Haufen laufen die Stücke radial auf die Mitte der Fläche zu. Hier
+     ist die Anordnung ein Reißverschluss aus drei Paaren, und seine Achse
+     ist die senkrechte Mittellinie des Rasters: Die linken Kacheln kommen
+     von links, die rechten von rechts, und der Verschluss schließt sich
+     beim Scrollen. Radial wäre hier falsch — der Abschnitt ist 2400px hoch,
+     die senkrechte Komponente würde alles überlagern.
+
+     --dx ist der Weg in Einheiten von --zug, ausgerechnet aus der Lage im
+     Raster: Mitte der Kachel minus Mitte des Rasters, geteilt durch die
+     halbe Rasterbreite. Die Werte stehen weiter unten bei den Spalten, weil
+     sie von ihnen abhängen. Was weiter außen sitzt, läuft weiter — genau
+     wie im Haufen.
+
+     --dy zieht alle Kacheln zusätzlich ein Stück von unten herauf. Ohne
+     das stünde einspaltig, wo es kein Links und Rechts gibt, fast alles
+     still.
+
+     Der Maßstab ist kleiner als im Haufen: 63px Weg und 4,5 Prozent Größe
+     gegen 165px und 12 Prozent. Die Stücke dort sind Schnipsel, hier sind
+     es Kacheln bis 633 x 792px — derselbe Weg sähe an ihnen nicht lebendig
+     aus, sondern lose. Nachgemessen wandert eine Kachel damit rund 45px
+     aus ihrer Ruhelage, waagerecht und senkrecht zusammengenommen.
+
+     Weg und Größe ziehen gegeneinander: Bei --q = 0 steht die Kachel
+     weiter außen, ist aber kleiner — die Außenkante läuft deshalb nur
+     34px, nicht 42px. Das ist gewollt, sonst risse der Rand auf. */
+  .work__item.is-aktiv {
+    --zug: clamp(1.5rem, 4.4vw, 4.25rem);
+    transform:
+      translate3d(
+        calc(var(--dx, 0) * var(--zug) * (1 - var(--q, 1))),
+        calc(var(--dy, 0.55) * var(--zug) * (1 - var(--q, 1))),
+        0
+      )
+      scale(calc(0.955 + 0.045 * var(--q, 1)));
+  }
+
+  /* Einspaltig gibt es keine linke und keine rechte Spalte. Damit der
+     Reißverschluss-Gedanke trotzdem trägt, wechseln die Kacheln sich ab —
+     dieselbe Bewegung, nur aus der Reihenfolge statt aus dem Raster.
+
+     Ausdrücklich nur unterhalb von 64rem, wo das Raster eine Spalte hat.
+     Ohne die Begrenzung schlüge diese Regel die Rasterwerte weiter unten:
+     :nth-child zählt in der Spezifität wie eine zweite Klasse und gewinnt
+     damit gegen .work__item--1, egal in welcher Reihenfolge beide stehen. */
+  @media (max-width: 63.999rem) {
+    .work__item:nth-child(odd) { --dx: -0.5; }
+    .work__item:nth-child(even) { --dx: 0.5; }
   }
 
   .work__link { display: block; text-decoration: none; color: inherit; }
@@ -1567,6 +1633,24 @@ const faqs = [
     .work__item--5 { grid-column: 1 / span 4; }                   /* BVB 9:16 */
     .work__item--6 { grid-column: 6 / span 7; }                   /* Formel D 3:2 */
 
+    /* Der Weg jeder Kachel, siehe .work__item.is-aktiv weiter oben:
+
+         Mitte der Kachel − 6,5        Spalten 1…12, Mitte also 6,5
+         ─────────────────────         geteilt durch die halbe Breite
+                  6
+
+       Siemens sitzt auf 3,5 und läuft damit eine halbe Einheit nach links,
+       Street One auf 10,5 und zwei Drittel nach rechts. Die drei Paare
+       ergeben −0,50/+0,50, −0,42/+0,67 und −0,67/+0,42: Jedes Paar zieht
+       gegeneinander, und die Beträge sind ungleich, weil die Kacheln es
+       auch sind. Gleiche Beträge sähen nach Mechanik aus. */
+    .work__item--1 { --dx: -0.50; }
+    .work__item--2 { --dx:  0.50; }
+    .work__item--3 { --dx: -0.42; }
+    .work__item--4 { --dx:  0.67; }
+    .work__item--5 { --dx: -0.67; }
+    .work__item--6 { --dx:  0.42; }
+
     /* Die Versätze. margin-top und nicht transform — die Kacheln sollen
        den Platz, den sie einnehmen, auch beanspruchen, sonst liefe die
        Kachel darunter in sie hinein.
@@ -1650,6 +1734,23 @@ const faqs = [
     .hero__cue { animation-name: none; }
   }
 </style>
+
+<script>
+  // Die Kacheln in "Featured Work" laufen beim Scrollen auf ihren Platz zu.
+  //
+  // Dieselbe Rechnung wie die Streublöcke weiter unten, aus einem Modul:
+  // gleiche Zeitkonstante, gleicher Nachlauf, gleiches Verhalten beim
+  // Verlassen des Fensters. Nur der Weg unterscheidet sich, und der steht
+  // im CSS bei --dx.
+  //
+  // Je Kachel und nicht je Abschnitt: Der Abschnitt ist 2433px hoch. Ein
+  // gemeinsamer Wert hieße, dass die unteren Kacheln längst stehen, bevor
+  // sie jemand sieht. Der Haufen ist ein kompakter Block und kommt deshalb
+  // mit einem Wert aus.
+  import { nachlaufBinden } from '../scripts/nachlauf';
+
+  nachlaufBinden(document.querySelectorAll<HTMLElement>('.work__item'));
+</script>
 
 <script>
   // Ein Video lässt sich per CSS nicht anhalten. Wer reduzierte Bewegung
