@@ -1268,6 +1268,17 @@ const faqs = [
     filter: grayscale(0) contrast(1);
   }
 
+  /* Ohne Zeigegerät gäbe es die Farbe nie zu sehen — auf dem Handy stehen
+     die Aufnahmen deshalb von vornherein farbig. Dieselbe Regel steht
+     weiter unten bei den Team-Porträts, aus demselben Grund.
+
+     filter: none und nicht grayscale(0) contrast(1): Beides ist dasselbe
+     Bild — grayscale(0) und contrast(1) verändern nichts —, und none sagt
+     das kürzer. */
+  @media (hover: none) {
+    .disziplin__bild img { filter: none; }
+  }
+
   /* Lesbarkeitsverlauf, auf den echten Motiven gemessen statt geschätzt:
      Bild im Cover-Zuschnitt samt Graustufenfilter im Canvas nachgebaut,
      Verlauf darüber, dann der schlechteste Wert auf den Zeilenkästen der
