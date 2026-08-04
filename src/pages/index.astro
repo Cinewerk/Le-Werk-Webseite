@@ -1253,6 +1253,19 @@ const faqs = [
   .benefit__text { color: var(--ink-muted); }
 
   /* ── 6 · Unser Kernteam ─────────────────────────────────────────────── */
+  /* Der Abschnitt kappt waagerecht. Die Streublöcke darin fahren ihren Text
+     beim Scrollen um 7rem zur Seite herein, und der rechte Block schiebt
+     ihn dabei aus dem Container heraus. Ungekappt wuchs die Seite dadurch
+     bei 1280px Fenster auf 1326px Scrollbreite — 46px waagerechtes Scrollen
+     auf jeder Unterseite mit diesem Abschnitt.
+
+     clip und nicht hidden: hidden macht aus dem Abschnitt einen
+     Scrollcontainer, und da overflow-y sichtbar bleiben muss, würde der
+     Browser daraus auto rechnen. clip kappt nur. Der Abschnitt läuft über
+     die volle Fensterbreite, geschnitten wird also nichts, was man
+     ohnehin sähe. */
+  .team { overflow-x: clip; }
+
   /* Kopf ohne Fließtext — der steht jetzt als breiter Absatz unter den
      Porträts, deshalb hier weniger Abstand nach unten. */
   /* Der Team-Kopf steht enger, weil "UNSER TEAM" kurz ist und die
@@ -1261,18 +1274,22 @@ const faqs = [
 
   /* Vier Porträts: zwei Spalten auf dem Handy, vier ab 48rem.
 
-     Die Reihe läuft von Kante zu Kante, und das ist die Vorgabe. Damit ist
-     die Bildgröße festgelegt: Vier Bilder und drei Abstände teilen sich
-     dieselbe Breite, kleinere Bilder heißen also größere Lücken. Zwei
-     Versuche liegen dahinter — 236px Bild mit 123px Abstand, dann dieselben
-     236px mit 40px Abstand und 123px Einrückung je Seite. Beide Male war
-     die Reihe entweder zerfallen oder nicht mehr bündig.
+     Zwei Vorgaben stehen fest: Die Reihe liegt bündig an beiden Kanten,
+     und die Gesichter sind gut ein Viertel kleiner als in voller Breite.
+     Beides zusammen heißt zwangsläufig große Abstände — vier Bilder und
+     drei Abstände teilen sich dieselbe Breite, was das eine verliert,
+     gewinnt das andere. Bei 1310px Reihe sind das 220px Bild und 143px
+     Abstand gegen 300px und 36px vorher.
 
-     Wer die Gesichter kleiner haben will, ohne die Kanten aufzugeben, muss
-     an das Seitenverhältnis: Bei 300px Breite und 4:3 statt 1:1 fällt ein
-     Viertel der Fläche weg, Abstand und Kanten bleiben. Das heißt aber,
-     die vier Porträts neu zu beschneiden — die Augenlinie sitzt auf dem
-     Quadrat. */
+     Der Versuch, den Überhang stattdessen nach außen zu legen (40px
+     Abstand, 123px Einrückung je Seite), fiel durch: Die Reihe stand dann
+     nicht mehr bündig.
+
+     Ohne die großen Abstände ginge es nur über das Seitenverhältnis — bei
+     voller Breite und 4:3 statt 1:1 fiele ein Viertel der Fläche weg, ohne
+     dass sich ein Abstand ändert. Dafür fehlt Joscha: Seine Vorlage misst
+     1086 × 1448, der quadratische Ausschnitt schöpft die Breite fast aus,
+     und 4:3 bräuchte 1439px. */
   .team__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1423,9 +1440,23 @@ const faqs = [
     .statement__text { text-wrap: balance; }
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-    /* Vier Quadrate über die volle Breite, bündig an beiden Kanten. Warum
-       daran nichts zu schrauben ist, steht oben an .team__grid. */
-    .team__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    /* Vier Quadrate über die volle Breite, bündig an beiden Kanten. Der
+       Spaltenabstand setzt die Bildgröße:
+
+         3 × 10,94 %              = 32,82 % für die Abstände
+         (100 − 32,82) ÷ 4        = 16,80 % je Bild
+
+       bei 1310px Reihe also 220px Bild und 143px Abstand — 27 Prozent
+       weniger Kantenlänge als die 300px, die vier Bilder ohne Abstand
+       ergäben. In Prozent, damit das Verhältnis bei jeder Fensterbreite
+       steht; nur so bleibt die Reihe an beiden Kanten bündig.
+
+       Nur hier und nicht an .team__grid: Auf dem Handy stehen zwei
+       nebeneinander, dort wäre derselbe Wert eine Lücke. */
+    .team__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 10.94%;
+    }
     .hero__cue { display: inline-flex; }
   }
 

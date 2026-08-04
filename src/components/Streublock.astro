@@ -329,9 +329,14 @@ const gestreut = eingepasst.map((b) => {
      erst mit .is-aktiv.
 
      Der Weg ist von 4 auf 7rem verlängert, damit die Bewegung zum
-     kräftigeren Haufen daneben passt. Anders als beim Haufen ist das
-     unkritisch: Der Text läuft waagerecht heraus, und body kappt seitlich
-     ohnehin. */
+     kräftigeren Haufen daneben passt.
+
+     Hier stand, das sei unkritisch, weil "body seitlich ohnehin kappt".
+     Das tut body nicht. Der rechte Block schob seinen Text um 7rem nach
+     rechts aus dem Container heraus, und weil nichts das kappte, wuchs die
+     Seite: bei 1280px Fensterbreite auf 1326px Scrollbreite, also 46px
+     waagerechte Scrollstrecke auf jeder Seite. Gekappt wird jetzt am
+     Abschnitt, siehe .team in index.astro. */
   .streu.is-aktiv .streu__text {
     opacity: var(--q, 1);
     transform: translateX(calc(var(--aus, -7rem) * (1 - var(--q, 1))));
