@@ -1253,13 +1253,20 @@ const faqs = [
     aspect-ratio: var(--ratio);
     object-fit: cover;
     filter: grayscale(1) contrast(1.05);
+    transition: filter var(--dur-slow) var(--ease-out);
   }
 
-  /* Hier stand ein Hover: Das Bild wuchs um 3,5 Prozent und wechselte aus
-     Graustufen in Farbe. Beides ist mit dem Link entfallen — eine Kachel,
-     die auf das Überfahren reagiert, verspricht einen Klick, den es nicht
-     mehr gibt. Die Aufnahmen stehen damit dauerhaft in Graustufen, so wie
-     sie es bisher auch taten, solange niemand mit der Maus darüberfuhr. */
+  /* Der Farbwechsel beim Überfahren bleibt, obwohl die Kachel kein Link
+     mehr ist. Das Vergrößern um 3,5 Prozent ist dagegen entfallen: Eine
+     Fläche, die unter dem Zeiger wächst, liest sich als Knopf. Ein
+     Farbwechsel tut das nicht — er zeigt her, was da ist, statt etwas
+     anzukündigen.
+
+     Am li und nicht mehr am Link: Der ist weg, und die Fläche, auf die es
+     ankommt, ist ohnehin die ganze Kachel. */
+  .disziplin:hover .disziplin__bild img {
+    filter: grayscale(0) contrast(1);
+  }
 
   /* Lesbarkeitsverlauf, auf den echten Motiven gemessen statt geschätzt:
      Bild im Cover-Zuschnitt samt Graustufenfilter im Canvas nachgebaut,
