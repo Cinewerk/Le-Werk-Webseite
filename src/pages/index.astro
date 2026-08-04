@@ -166,17 +166,27 @@ const bts = [
   // während Gesichter, Kameras und Monitore oben sitzen. Die z-Werte laufen
   // deshalb streng von oben links nach unten rechts durch.
   //
+  // ENGER GEZOGEN. Die y-Werte sind zusammengerückt, x und w blieben fast
+  // unverändert — die Breite trägt die Fläche, die Höhe war das Lockere.
+  // Der Haufen misst damit 637 statt 736px bei gleicher Breite, die
+  // Flächendeckung steigt von 73 auf 77 Prozent.
+  //
+  // Am meisten verdeckt ist der Transporter mit 31 Prozent, und zwar von
+  // unten: Die beiden Frauen sitzen in der oberen Hälfte und bleiben frei.
+  // Eine noch engere Fassung lag bei 42 Prozent und schnitt sie an — das
+  // ist die Grenze, an der Dichte in Verlust umschlägt.
+  //
   // WICHTIG BEIM UMSORTIEREN: Die beiden Hochformate stehen diagonal —
   // der Transporter oben rechts, der Schnittplatz unten links, waagerechte
   // Überschneidung null. Zwei Hochformate untereinander lesen sich als
   // Säule und brechen den Haufen; das ist keine Feinheit, sondern fällt
   // sofort auf.
-  { img: '/images/bts/bts-halle.jpg',       alt: 'Dreiköpfiges Team in einer Werkhalle: einer beugt sich über die Kamera auf dem Stativ, dahinter ein Monitorplatz und eine Softbox', x: 0,  y: 0,  w: 45, ar: '3 / 2', z: 1 },
-  { img: '/images/bts/bts-transporter.jpg', alt: 'Zwei Frauen sitzen mit einem Laptop im Transporter, die Schiebetür steht offen, dahinter eine Tankstelle',                          x: 59, y: 2,  w: 33, ar: '2 / 3', z: 2 },
-  { img: '/images/bts/bts-loft.jpg',        alt: 'Zwei Personen an einer Kamera auf dem Körperstativ in einem hellen Studio',                                                         x: 15, y: 21, w: 41, ar: '5 / 4', z: 3 },
-  { img: '/images/bts/bts-schnitt.jpg',     alt: 'Zwei Personen am Schnittplatz vor mehreren Monitoren, daneben ein Fenster mit Zimmerpflanzen',                                      x: 0,  y: 47, w: 31, ar: '3 / 4', z: 4 },
-  { img: '/images/bts/bts-studio.jpg',      alt: 'Studioaufbau vor blauer Wand: ein weißer Hocker, zwei Kameras auf Stativen, Softboxen und eine Tonangel über orangem Bodenband',    x: 52, y: 41, w: 40, ar: '3 / 2', z: 5 },
-  { img: '/images/bts/bts-buero.jpg',       alt: 'Zwei Männer vor einer petrolfarbenen Bürowand, davor ein schwarz abgedecktes Gerät',                                                x: 26, y: 63, w: 44, ar: '3 / 2', z: 6 },
+  { img: '/images/bts/bts-halle.jpg',       alt: 'Dreiköpfiges Team in einer Werkhalle: einer beugt sich über die Kamera auf dem Stativ, dahinter ein Monitorplatz und eine Softbox', x: 0,  y: 0,  w: 46, ar: '3 / 2', z: 1 },
+  { img: '/images/bts/bts-transporter.jpg', alt: 'Zwei Frauen sitzen mit einem Laptop im Transporter, die Schiebetür steht offen, dahinter eine Tankstelle',                          x: 59, y: 3,  w: 33, ar: '2 / 3', z: 2 },
+  { img: '/images/bts/bts-loft.jpg',        alt: 'Zwei Personen an einer Kamera auf dem Körperstativ in einem hellen Studio',                                                         x: 13, y: 17, w: 42, ar: '5 / 4', z: 3 },
+  { img: '/images/bts/bts-schnitt.jpg',     alt: 'Zwei Personen am Schnittplatz vor mehreren Monitoren, daneben ein Fenster mit Zimmerpflanzen',                                      x: 0,  y: 37, w: 31, ar: '3 / 4', z: 4 },
+  { img: '/images/bts/bts-studio.jpg',      alt: 'Studioaufbau vor blauer Wand: ein weißer Hocker, zwei Kameras auf Stativen, Softboxen und eine Tonangel über orangem Bodenband',    x: 52, y: 34, w: 40, ar: '3 / 2', z: 5 },
+  { img: '/images/bts/bts-buero.jpg',       alt: 'Zwei Männer vor einer petrolfarbenen Bürowand, davor ein schwarz abgedecktes Gerät',                                                x: 25, y: 51, w: 44, ar: '3 / 2', z: 6 },
 ];
 
 // Die sechs vom Kunden gelieferten Aufnahmen, unverändert in der Auswahl.
@@ -193,6 +203,12 @@ const bts = [
 // diagonal, waagerechte Überschneidung null. Untereinander ergäben sie eine
 // Säule und brächen den Haufen auf.
 //
+// haus-03 mit dem grünen Sessel ist von x 62 auf 54 gerückt und dabei von
+// 30 auf 32 Prozent gewachsen. Vorher klaffte zwischen dem Haus oben links
+// (endet bei 44) und dem Sessel (begann bei 62) ein Streifen Hintergrund
+// über die halbe Höhe. Jetzt überbrückt die Autobahn dazwischen, und der
+// Streifen ist weg.
+//
 // Auch hier steht jedes Stück in seinem eigenen Seitenverhältnis, es wird
 // also nirgends beschnitten. Einzige Ausnahme ist die Drohnenaufnahme: Sie
 // kommt als 16:9 aus der Kamera und ist auf 3:2 zugeschnitten — 450px am
@@ -204,7 +220,7 @@ const bts = [
 // Haus im Abendlicht Himmel und Fassade.
 const krafthaus = [
   { img: '/images/krafthaus/haus-01.jpg', alt: 'Das Krafthaus im Abendlicht, dahinter das Kranhaus am Rheinauhafen',               x: 0,  y: 0,  w: 44, ar: '3 / 2', z: 1 },
-  { img: '/images/krafthaus/haus-03.jpg', alt: 'Grüner Sessel vor weißer Wand, daneben ein Sideboard mit Lampe und ein Alukoffer', x: 62, y: 2,  w: 30, ar: '2 / 3', z: 2 },
+  { img: '/images/krafthaus/haus-03.jpg', alt: 'Grüner Sessel vor weißer Wand, daneben ein Sideboard mit Lampe und ein Alukoffer', x: 54, y: 2,  w: 32, ar: '2 / 3', z: 2 },
   { img: '/images/krafthaus/haus-02.jpg', alt: 'Schwarzweiß: leere Autobahn mit Leitplanke und Waldrand',                          x: 22, y: 26, w: 40, ar: '3 / 2', z: 3 },
   { img: '/images/krafthaus/haus-05.jpg', alt: 'Sattelzug an einer Raststätte unter blauem Himmel',                                x: 28, y: 50, w: 38, ar: '3 / 2', z: 5 },
   { img: '/images/krafthaus/haus-06.jpg', alt: 'Mehrere Personen an Biertischen vor einem Lokal, eine Person lacht in die Kamera', x: 0,  y: 44, w: 30, ar: '2 / 3', z: 4 },
@@ -546,7 +562,7 @@ const faqs = [
       <div class="team__bloecke">
         <Streublock nr="01" seite="rechts" bilder={bts} label="Blick hinter die Kulissen">
           <p>
-            <strong>Erfahrung aus hunderten Produktionen:</strong> Wir
+            <strong class="knapp" style="--laenge: 21.7">Erfahrung aus hunderten Produktionen:</strong> Wir
             kombinieren ein schlagkräftiges Kernteam mit kreativen
             Spezialisten aus verschiedenen Feldern.
           </p>
@@ -554,7 +570,7 @@ const faqs = [
 
         <Streublock nr="02" seite="links" bilder={krafthaus} label="Unsere Räume im Krafthaus" hoehe={0.95}>
           <p>
-            <strong class="knapp">Based in Köln, booked worldwide:</strong> Unsere
+            <strong class="knapp" style="--laenge: 18.3">Based in Köln, booked worldwide:</strong> Unsere
             Räumlichkeiten liegen im Krafthaus, im Rheinauhafen. Gedreht wird
             in Köln, bundesweit oder auch international.
           </p>
@@ -1675,7 +1691,7 @@ const faqs = [
   .team__bloecke {
     display: grid;
     gap: clamp(4rem, 10vw, 8rem);
-    margin-top: clamp(5.5rem, 11vw, 8rem);
+    margin-top: clamp(7rem, 13vw, 11rem);
   }
 
   /* ── 10 · FAQ ─────────────────────────────────────────────────────────── */

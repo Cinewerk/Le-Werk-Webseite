@@ -178,25 +178,31 @@ const gestreut = eingepasst.map((b) => {
     color: var(--on-dark);
   }
 
-  /* Ein Vorspann, der einzeilig bleiben muss, bekommt zusätzlich .knapp.
-     Den Platz dafür schafft die Spaltenbreite weiter unten — hier steht
-     nur das Verbot umzubrechen.
+  /* Ein Vorspann, der einzeilig bleiben muss, bekommt .knapp und dazu
+     --laenge: wie oft seine Zeile in ihren eigenen Schriftgrad passt.
+     Gemessen bei 19px Poppins 600:
 
-     Er läuft im Schriftgrad des Fließtextes, nicht kleiner. Ein früherer
-     Versuch deckelte ihn an der Spaltenbreite; er blieb damit zwar
-     einzeilig, war aber sichtbar kleiner als der Absatz darunter.
+       "Erfahrung aus hunderten Produktionen:"   381px   20,05-fach
+       "Based in Köln, booked worldwide:"        321px   16,90-fach
 
-     5.8cqi ist nur noch die Reißleine: 5,8 % der Spalte entsprechen dem
-     Punkt, an dem die Zeile die Spalte ausfüllt. Bei fünf Spalten liegt
-     die Grenze bei rund 29px und damit weit über allem, was eine
-     Grundschrifteinstellung hergibt — sie greift erst, wenn die Zeile
-     sonst aus dem Fenster liefe.
+     Daraus rechnet sich die Obergrenze selbst: 100cqi geteilt durch die
+     Länge ist genau der Schriftgrad, bei dem die Zeile die Spalte
+     ausfüllt. Mit acht Prozent Sicherheit für Ersatzschriften stehen 21.7
+     und 18.3 in den Daten.
 
-     .knapp gilt bewusst nicht für jeden Vorspann: "Erfahrung aus
-     hunderten Produktionen:" ist mit dem 20-fachen seines Schriftgrads
-     ein Fünftel länger und darf umbrechen. */
+     Warum je Zeile und nicht ein gemeinsamer Wert: Ein Deckel, der für die
+     längere reicht, würde die kürzere schrumpfen lassen, obwohl sie
+     bequem passt. Der Parameter macht aus einer Regel für eine Zeile eine
+     Regel für jede Zeile.
+
+     Der Deckel greift fast nie. Bei 1440px Fenster liegt er bei 22,9px
+     (lang) und 27,2px (kurz), der Fließtext bei 19 — auch mit einer
+     Grundschrift von 20px bleibt Luft. Erst auf dem Telefon bindet er:
+     Dort misst die Spalte 315px, und die längere Zeile bräuchte bei voller
+     Größe 341. Sie geht dann auf 14,5px zurück. Das ist keine Wahl,
+     sondern Arithmetik — 36 Zeichen passen sonst nicht nebeneinander. */
   .streu__satz :global(strong.knapp) {
-    font-size: min(1em, 5.8cqi);
+    font-size: min(1em, calc(100cqi / var(--laenge, 18.3)));
     white-space: nowrap;
   }
 
