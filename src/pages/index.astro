@@ -492,14 +492,14 @@ const faqs = [
       <ol class="disziplinen">
         {disziplinen.map((s, i) => (
           <li class={`disziplin disziplin--${i + 1}`} data-reveal data-reveal-delay={i * 90}>
-            <a class="disziplin__link" href={withBase(s.href)}>
+            <div class="disziplin__inhalt">
               <figure class="disziplin__bild" style={`--ratio:${s.ratio ?? '4 / 3'}`}>
                 <img src={withBase(s.img)} alt="" width="1200" height="900" loading="lazy" decoding="async" />
                 <figcaption class="disziplin__marke">{s.titel ?? s.label}</figcaption>
               </figure>
 
               <p class="disziplin__zeile">{s.text}</p>
-            </a>
+            </div>
           </li>
         ))}
       </ol>
@@ -1225,7 +1225,11 @@ const faqs = [
     padding: 0;
   }
 
-  .disziplin__link { display: block; text-decoration: none; color: inherit; }
+  /* Ein div und kein a: Die drei Disziplinen führen nirgendwohin mehr. Es
+     gibt zu ihnen keine Unterseiten, nur Workshops hat eine, und die steht
+     nicht in diesem Abschnitt. Die Adressen bleiben in den Daten — Menü und
+     Fußzeile brauchen sie weiter. */
+  .disziplin__inhalt { display: block; }
 
   /* Kein Hintergrund — siehe .work__figure. Hier war der Platzhalter
      dunkel und der Abschnitt hell, der Bogen in der Rundung entsprechend
@@ -1249,14 +1253,13 @@ const faqs = [
     aspect-ratio: var(--ratio);
     object-fit: cover;
     filter: grayscale(1) contrast(1.05);
-    transition: transform 600ms var(--ease-out), filter var(--dur-slow) var(--ease-out);
   }
 
-  .disziplin__link:hover .disziplin__bild img,
-  .disziplin__link:focus-visible .disziplin__bild img {
-    transform: scale(1.035);
-    filter: grayscale(0) contrast(1);
-  }
+  /* Hier stand ein Hover: Das Bild wuchs um 3,5 Prozent und wechselte aus
+     Graustufen in Farbe. Beides ist mit dem Link entfallen — eine Kachel,
+     die auf das Überfahren reagiert, verspricht einen Klick, den es nicht
+     mehr gibt. Die Aufnahmen stehen damit dauerhaft in Graustufen, so wie
+     sie es bisher auch taten, solange niemand mit der Maus darüberfuhr. */
 
   /* Lesbarkeitsverlauf, auf den echten Motiven gemessen statt geschätzt:
      Bild im Cover-Zuschnitt samt Graustufenfilter im Canvas nachgebaut,
