@@ -35,29 +35,29 @@ export const services: Service[] = [
     href: '/services/video',
     label: 'Video',
     img: '/images/services/video.jpg',
-    text: 'Vertikale und horizontale Formate. Visuell ansprechend, mit inhaltlicher Tiefe.',
+    text: 'Vertikale und horizontale Formate. Komplett aus einer Hand. Visuell ansprechend, mit inhaltlicher Tiefe und Auge fürs Detail. Für Kampagne und organischen Content.',
     disziplin: true,
     /* 4:5 ist das Eigenformat der Aufnahme — so steht sie ungeschnitten.
        Das gilt nur unterhalb von 64rem; darüber füllt der Kasten die Höhe
        der beiden rechten und beschneidet ohnehin. */
-    ratio: '4 / 5',
+    ratio: '3 / 4',
   },
   {
     href: '/services/foto',
     label: 'Foto',
     img: '/images/services/foto.jpg',
-    text: 'Aus derselben Produktion oder als eigener Shoot. Für Content, Kampagne und Marken-Bildwelten.',
+    text: 'Aus derselben Produktion wie Video oder als eigener Shoot. Fotografie und Nachbearbeitung für Content, Kampagne, Event oder Marke.',
     disziplin: true,
-    ratio: '3 / 2',
+    ratio: '7 / 5',
   },
   {
     href: '/services/konzept',
     label: 'Konzept',
     titel: 'Idee & Konzept',
     img: '/images/services/konzept.jpg',
-    text: 'Wenn die Richtung noch offen ist, entwickeln wir sie mit euch.',
+    text: 'Wo wir einsteigen, entscheidet ihr. Entweder setzen wir eure fertigen Ideen um. Oder wir kommen schon früher mit an Board und übernehmen die Ideenentwicklung und Konzeptarbeit. Es muss erst ein Fundament geschaffen werden? Gerne fangen wir bei der Content Strategy an.',
     disziplin: true,
-    ratio: '3 / 2',
+    ratio: '9 / 8',
   },
   {
     href: '/services/workshops',

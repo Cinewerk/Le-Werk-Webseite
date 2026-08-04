@@ -1476,10 +1476,10 @@ const faqs = [
   .disziplin__text {
     display: grid;
     grid-template-rows: 0fr;
-    max-width: 34ch;
+    max-width: 80cqi;
     margin-top: 0;
     font-family: var(--font-ui);
-    font-size: var(--fs-small);
+    font-size: clamp(0.875rem, 3cqi, var(--fs-body));
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: 0;
@@ -1502,6 +1502,20 @@ const faqs = [
   /* Ohne Zeigegerät gibt es kein Überfahren — dort steht der Text immer.
      Dieselbe Entscheidung wie beim Farbwechsel darüber: Was nur der Hover
      zeigt, ist auf dem Telefon sonst nicht vorhanden. */
+  /* Einspaltig ist jede Kachel so breit wie der Container, und damit wird
+     die Zeile kurz: Bei 375px Fenster passen 33 Zeichen darauf, der
+     Konzept-Text braucht dann neun Zeilen. Im Quadrat füllte der Block 81
+     Prozent der Kachel. Hochkant sind es 62.
+
+     Nur diese eine Kachel — Video und Foto kommen mit zwei und drei Zeilen
+     aus und brauchen die Höhe nicht. Über die Bildhöhe und nicht über
+     --ratio, weil das Format als Inline-Stil aus den Daten kommt und eine
+     Regel im Stylesheet sonst nicht dagegen ankäme. */
+  @media (max-width: 767.98px) {
+    .disziplin--2 .disziplin__bild img { aspect-ratio: 2 / 3; }
+    .disziplin--3 .disziplin__bild img { aspect-ratio: 1 / 1; }
+  }
+
   @media (hover: none) {
     .disziplin__text {
       grid-template-rows: 1fr;
@@ -1531,8 +1545,8 @@ const faqs = [
       background: linear-gradient(
         0deg,
         rgba(4, 37, 44, 0.94) 0%,
-        rgba(4, 37, 44, 0.72) 35%,
-        rgba(4, 37, 44, 0) 68%
+        rgba(4, 37, 44, 0.78) 38%,
+        rgba(4, 37, 44, 0) 80%
       );
     }
   }
@@ -1922,12 +1936,14 @@ const faqs = [
 
   }
 
-  /* Ab hier bleibt es bei 1024: Die drei Disziplinen und die FAQ
-     brauchen kein frueheres Nebeneinander — die Disziplinen tragen ihre
-     Beschriftung im Bild und werden zu dritt in einer 768er Breite zu
-     Briefmarken, die FAQ-Antworten wuerden auf 20 Zeichen je Zeile
-     zusammenlaufen. */
-  @media (min-width: 1024px) {
+  /* Das Disziplinenfeld erst ab 1200 nebeneinander.
+
+     Bei 1024 misst die Konzept-Kachel im Zwoelfspaltigen 428px und traegt
+     268 Zeichen — der Textblock fuellte dort drei Viertel der Kachel.
+     Einspaltig hat sie an derselben Stelle 886px und kommt mit sechs
+     Zeilen aus. Zwischen 1024 und 1200 steht das Feld deshalb
+     untereinander. */
+  @media (min-width: 1200px) {
     /* Video links, Konzept und Foto rechts — aber nichts fluchtet.
 
        Der Aufbau ist derselbe wie zu Anfang. Ordentlich sah er nicht
@@ -1966,10 +1982,22 @@ const faqs = [
        am ganzen Feld. */
     .disziplinen {
       grid-template-columns: repeat(12, minmax(0, 1fr));
-      column-gap: clamp(1.5rem, 3vw, 3rem);
+      column-gap: clamp(1rem, 2.2vw, 2.25rem);
       row-gap: clamp(2rem, 4vw, 3rem);
     }
 
+    /* Die beiden rechten Plätze sind getauscht: Konzept sitzt jetzt unten
+       auf sechs Spalten, Foto oben auf fünf. Nur die Plätze — die Folge im
+       Text bleibt Video, Konzept, Foto.
+
+       Grund ist die Textlänge. Konzept trägt 268 Zeichen, Video 79 und
+       Foto 92. Auf dem kleinsten Platz brauchte Konzept neun Zeilen und
+       der Block reichte bis 115 Prozent der Kachelhöhe — der Text stand
+       über den Rand hinaus und das Motiv war vollständig verdeckt. Der
+       längste Text gehört auf die größte Fläche.
+
+       Video wächst von 4:5 auf 2:3 mit. Sonst stünde die rechte Spalte
+       994px hoch neben 764px links; jetzt sind es 994 zu 917. */
     .disziplin--1 { grid-column: 1 / span 6; grid-row: 1 / span 2; align-self: start; }
     .disziplin--2 { grid-column: 8 / span 5; grid-row: 1; }
     .disziplin--3 { grid-column: 7 / span 6; grid-row: 2; }
@@ -1980,6 +2008,11 @@ const faqs = [
     /* Ab hier drei Spalten wie in der Referenz. Darunter zwei, damit die
        Bilder auf dem Handy nicht zu Briefmarken werden. */
 
+  }
+
+  /* FAQ zweispaltig ab 1024: Die Antworten wuerden in einer 768er Breite
+     auf 20 Zeichen je Zeile zusammenlaufen. */
+  @media (min-width: 1024px) {
     .faq__grid { grid-template-columns: 0.8fr 1.2fr; gap: clamp(3rem, 6vw, 6rem); }
     .faq__head { position: sticky; top: 7rem; }
   }
