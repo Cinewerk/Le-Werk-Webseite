@@ -87,7 +87,7 @@ Zwei davon sind für das Web zu schwer und liegen deshalb gerechnet in
 | `work/siemens.webp` | `SIEMENS_Social_Media_Kampagne.webp` | 1920 × 1080 | 40 KB, unverändert |
 | `work/allianz.webp` | `Allianz_Instagram_Reel.webp` | 540 × 960 | 40 KB, unverändert |
 | `work/street-one.webp` | `StreetOne_Instagram_Reel.webp` | 543 × 960 | 28 KB, unverändert |
-| `work/bvb-ea-sports.webp` | `Social_Media_reel_EASports.webp` | 540 × 960 | 39 KB, unverändert |
+| `work/bvb-ea-sports.webp` | `BVB_EA_Sports_Social_Ad.png` | 1080 × 1920 | 60 KB (von 8,2 MB) |
 | `work/formel-d.jpg` | `FormelD_Fotogalerie.jpg` | 1400 × 933 | 224 KB (von 471 KB) |
 | `work/revitive.jpg` | `Revitive_Fotogalerie.jpg` | 1400 × 933 | 260 KB (von 561 KB) |
 
@@ -103,6 +103,21 @@ der Startseite, `bvb-ea-sports/poster/880446770.jpg` zeigt weiter — Kopf,
 Schulter, tätowierter Arm — und ist das Standbild der Videoseite. Keines
 ist ein Vimeo-Thumbnail; die Seite lädt nichts von einem fremden Server,
 bevor jemand auf Play drückt.
+
+Die Kachel lief bis August 2026 mit 540 × 960 und war damit die einzige,
+die unter ihrer Anzeigegröße lag: Der Platz ist 408px breit, auf einem
+Retina-Schirm also 816 — die Datei brachte 540. Die neue Fassung kommt
+aus dem Schnitt mit 2160 × 3840 und liegt als PNG in `quellbilder/`; fürs
+Web ist sie auf 1080 × 1920 gerechnet. Das Seitenverhältnis stimmt exakt
+mit dem Kachelplatz überein, es wird also nichts beschnitten.
+
+`sips` kann WebP zwar lesen, aber nicht schreiben — die Umrechnung lief
+deshalb über `sharp` aus `node_modules`, das Astro ohnehin mitbringt:
+
+```
+node -e "require('sharp')('quelle.png').resize(1080,1920,{fit:'cover'})
+  .webp({quality:80}).toFile('ziel.webp')"
+```
 
 **Der Dateiname des Posters ist Pflicht**, nicht Geschmack: `Videowand.astro`
 sucht das Standbild unter `<posterordner>/<vimeo-id>.jpg`. Ein Poster, das
@@ -380,9 +395,9 @@ Git-Historie sucht, findet `kunden/logostreifen.png`.
    Quadrat, in dem die Wortmarke nur 364px hoch war.
 2. **Schwarz.** Die Trustbar liegt auf Weiß und nimmt sich über die
    Deckkraft zurück; ein farbiges Logo springt heraus. Formel D kam türkis
-   und Griesemann blau-grau; beide wurden umgefärbt — Farbe auf Null,
-   Alphakanal erhalten.
-   Nachgemessen liegt die Deckfarbe jetzt bei allen zehn zwischen 0 und
+   und HUGO BOSS mit (4, 7, 7) knapp daneben; beide wurden umgefärbt —
+   Farbe auf Null, Alphakanal erhalten.
+   Nachgemessen liegt die Deckfarbe jetzt bei allen zwölf zwischen 0 und
    32 von 255. Ein CSS-Filter wäre der schlechtere Weg: Aus Türkis würde
    damit ein mittleres Grau und kein Schwarz.
 3. **Rund dreimal so groß wie die Anzeige.** Breite Wortmarken laufen mit
@@ -407,17 +422,19 @@ die Breite, hohe an die Höhe.
 | Formel D | 1,3 : 1 | 47 × 36 | Höhe | — |
 | Zehnder Group | 1,1 : 1 | 40 × 36 | Höhe | 63 × 54 |
 | EA | 1,0 : 1 | 36 × 36 | Höhe | — |
-| Griesemann Gruppe | 6,9 : 1 | 84 × 12 | Breite | — |
+| HUGO BOSS | 8,3 : 1 | 100 × 12 | **Ausnahme** | — |
 | Johnson & Johnson | 10,7 : 1 | 128 × 12 | **Ausnahme** | — |
 
 Auf gleiche Höhe gebracht wären die Wortmarken dreimal so schwer wie die
 Bildmarken, auf gleiche Fläche gebracht verschwänden sie.
 
-**Die eine Ausnahme.** Johnson & Johnson ist mit 10,7 : 1 die mit Abstand
-breiteste Marke und käme im Kasten auf 8px Höhe — halb so hoch wie Douglas
-und kaum noch lesbar. Das Feld `weite: 1.52` im `kunden`-Array hebt sie auf
-12px und damit auf dieselbe Höhe wie Street One; sie läuft dafür 128px breit
-statt 84. Das Feld steht bewusst je Logo in den Daten und nicht in der
+**Die beiden Ausnahmen.** Jenseits von etwa 7 : 1 fällt eine Wortmarke im
+Kasten unter 12px Höhe und damit unter alle anderen. Johnson & Johnson käme
+mit 10,7 : 1 auf 8px — halb so hoch wie Douglas und kaum noch lesbar; HUGO
+BOSS mit 8,3 : 1 auf 10px und wäre damit kleiner als das bereits korrigierte
+Johnson & Johnson. Das Feld `weite` im `kunden`-Array hebt beide auf 12px,
+die Höhe von Street One: 1.52 bzw. 1.19. Sie laufen dafür 128 und 100px
+breit statt 84. Das Feld steht bewusst je Logo in den Daten und nicht in der
 Rechnung, damit die Ausnahme als Ausnahme sichtbar bleibt.
 
 Die Spalte „früher" ist am Streifenbild aus der Git-Historie abgemessen.
@@ -479,9 +496,7 @@ Jedes Logo führt auf die Seite des Unternehmens; die Adressen stehen im
 Beim Prüfen neuer Adressen: `douglas.de` antwortet einem Abruf ohne Browser
 mit 400 und `olympics.com` bricht ab — beides ist Bot-Schutz und keine tote
 Adresse. Und `douglas.com` wäre falsch, das führt zu einer gleichnamigen
-Firma in Kanada. Bei Griesemann führt `griesemann-gruppe.de` per Umleitung
-auf `griesemann.com`; belegt über den Seitentitel „Startseite - Griesemann
-Gruppe".
+Firma in Kanada.
 
 ## Team-Porträts
 

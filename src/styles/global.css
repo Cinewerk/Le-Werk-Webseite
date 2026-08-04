@@ -720,7 +720,14 @@ button { cursor: pointer; }
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
   justify-content: space-between;
-  margin-top: var(--space-6);
+  /* Die Wortmarke soll genauso weit von der Linie stehen wie die Zeile
+     darunter. Gleiche Kastenabstände reichen dafür nicht: Der Zeilenkasten
+     der Wortmarke reicht 9px unter ihre Unterlänge — "Le Werk" hat keine —,
+     der Kasten der kleinen Zeile beginnt 6px über ihren Versalien. Die
+     Differenz von 3px steht hier, sonst stünde die Wortmarke sichtbar
+     weiter weg. Gemessen bei 1440px: 30,1px über der Linie, 31,5px
+     darunter — vorher 73 zu 31. */
+  margin-top: calc(var(--space-3) - 3px);
   padding-top: var(--space-3);
   border-top: 1px solid var(--line-dark);
   font-size: var(--fs-small);

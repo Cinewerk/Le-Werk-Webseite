@@ -67,7 +67,9 @@ const LOGO_VERHAELTNIS = 94 / 40;
 //
 // weite ist die Ausnahme von der Regel und steht deshalb je Logo in den
 // Daten, nicht hier: Sie lässt eine Marke breiter laufen als den Kasten.
-// Gebraucht wird das genau einmal, siehe Johnson & Johnson.
+// Gebraucht wird das von den beiden längsten Wortmarken, Johnson &
+// Johnson und HUGO BOSS — jenseits von etwa 7 : 1 fällt ein Logo im
+// Kasten unter 12px Höhe und damit unter die übrigen Wortmarken.
 const logoBreite = (k) =>
   (Math.min(1, k.b / k.h / LOGO_VERHAELTNIS) * (k.weite ?? 1)).toFixed(4);
 
@@ -82,13 +84,17 @@ const kunden = [
   { datei: 'formel-d',    name: 'Formel D',                     url: 'https://www.formeld.com/de/',      b: 189, h: 143 },
   { datei: 'sevenone',    name: 'Seven.One Entertainment Group', url: 'https://www.seven.one/',           b: 330, h:  74 },
   { datei: 'zehnder',     name: 'Zehnder Group',                url: 'https://www.zehndergroup.com/',    b: 171, h: 152 },
-  { datei: 'griesemann',  name: 'Griesemann Gruppe',            url: 'https://griesemann.com/',          b: 330, h:  48 },
-  // Die einzige Marke mit weite: Mit 10,7 : 1 ist sie die mit Abstand
-  // breiteste, und im Kasten käme sie auf 8px Höhe — halb so hoch wie
-  // Douglas und kaum noch lesbar. Der Faktor 1.52 hebt sie auf 12px und
-  // damit auf dieselbe Höhe wie Street One. Sie läuft dafür 128px breit
-  // statt 84; das ist der Preis und bei einer so langen Wortmarke
-  // vertretbar.
+  // Zweite Marke mit weite: 8,3 : 1, im Kasten 10px hoch und damit die
+  // kleinste Schrift der Leiste — kleiner als Johnson & Johnson nach
+  // deren Korrektur, was die Reihenfolge der Ausnahmen auf den Kopf
+  // stellen würde. 1.19 hebt sie auf dieselben 12px, sie läuft dafür
+  // 100px breit statt 84.
+  { datei: 'hugo-boss',   name: 'HUGO BOSS',                    url: 'https://www.hugoboss.com/de/',     b: 200, h:  24, weite: 1.19 },
+  // Mit 10,7 : 1 die mit Abstand breiteste Marke; im Kasten käme sie auf
+  // 8px Höhe — halb so hoch wie Douglas und kaum noch lesbar. Der Faktor
+  // 1.52 hebt sie auf 12px und damit auf dieselbe Höhe wie Street One.
+  // Sie läuft dafür 128px breit statt 84; das ist der Preis und bei einer
+  // so langen Wortmarke vertretbar.
   { datei: 'johnson-johnson', name: 'Johnson & Johnson',        url: 'https://www.jnj.com/de-de',        b: 330, h:  31, weite: 1.52 },
 ];
 
@@ -1006,7 +1012,7 @@ const faqs = [
      deckende Fläche. Ohne Verlauf lagen drei von vier Namen unter der
      Grenze von 3.0 für große fette Schrift.
 
-     ABGESCHWÄCHT VON 0.95/0.66 AUF 0.82/0.58
+     ABGESCHWÄCHT IN ZWEI SCHRITTEN: 0.95/0.66 → 0.82/0.58 → 0.66/0.46
      Der Verlauf deckte unten praktisch in der Farbe des Abschnitts. Die
      Kachel ging dort ohne sichtbare Kante in den Hintergrund über, und
      die Bildzeile darunter wirkte dadurch verrutscht: Man sah nicht,
@@ -1014,13 +1020,15 @@ const faqs = [
 
      Er beginnt weiterhin an der Unterkante und läuft von dort nach oben
      aus — ein ausgenommener Streifen ganz unten war der erste Versuch
-     und sah wie ein Leuchtstreifen aus.
+     und sah wie ein Leuchtstreifen aus. Auch die Stufen bleiben, nur
+     ihre Deckung sinkt; das hält die Kurve monoton.
 
      Nachgemessen an den untersten zwei Bildzeilen, Abschnitt ist
      rgb(4, 37, 44):
 
-       Siemens   Bild (48, 49, 41)   vorher (6, 38, 44)   jetzt (12, 39, 43)
-       BVB       Bild (175,164,105)  vorher (13,44, 47)   jetzt (35, 60, 55)
+       Siemens   Bild ( 48,  50,  41)   0.82 → ( 12, 39, 43)   0.66 → (19, 41, 43)
+       BVB       Bild (175, 164, 106)   0.82 → ( 35, 60, 55)   0.66 → (62, 80, 65)
+       Allianz   Bild (185,  97, 107)   0.82 → ( 37, 48, 55)   0.66 → (66, 57, 65)
 
      Weiter herunter geht es, kostet aber an den drei Reels: Deren linke
      untere Bildecke ist hell — gemessen 213 (Allianz), 205 (BVB) und 178
@@ -1031,8 +1039,10 @@ const faqs = [
      gegengeprüft am Bildschirm.
 
      Der Name bleibt weit über der Grenze. Nachgerechnet über alle sechs
-     Kacheln auf dem Zeilenkasten der Schrift: schlechtester Wert 10.77
-     gegen 13.45 vorher, Schwelle ist 4.5. */
+     Kacheln auf dem Zeilenkasten der Schrift, 32px über der Unterkante:
+     schlechtester Wert 7.94 (BVB) gegen 10.77 bei 0.82 und 13.45 zu
+     Anfang. Schwelle ist 4.5. Selbst 0.49/0.35 läge mit 5.80 noch
+     darüber — der Verlauf hält die Schrift, nicht umgekehrt. */
   .work__figure::after {
     content: '';
     position: absolute;
@@ -1041,8 +1051,8 @@ const faqs = [
     pointer-events: none;
     background: linear-gradient(
       0deg,
-      rgba(4, 37, 44, 0.82) 0%,
-      rgba(4, 37, 44, 0.58) 32%,
+      rgba(4, 37, 44, 0.66) 0%,
+      rgba(4, 37, 44, 0.46) 32%,
       rgba(4, 37, 44, 0) 60%
     );
   }
@@ -1248,11 +1258,31 @@ const faqs = [
      Porträts direkt darunter die Fläche übernehmen. */
   .sec-head--knapp { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
 
-  /* Vier Porträts: zwei Spalten auf dem Handy, vier ab 48rem. */
+  /* Vier Porträts: zwei Spalten auf dem Handy, vier ab 48rem.
+
+     Der Spaltenabstand ist der Hebel für die Größe der Gesichter. Die
+     Reihe läuft von Kante zu Kante — was der Abstand bekommt, geben die
+     Porträts ab. Bei drei Abständen zu 9,33 % bleiben 72 % für vier
+     Bilder, also 18 % der Reihe je Porträt: bei 1440px sind das 236px
+     statt 300px, gut ein Fünftel weniger Kantenlänge und ein Drittel
+     weniger Fläche.
+
+     Der Bezug ist der Bildhaufen direkt darunter, gegen den die vier
+     Gesichter zu schwer wirkten. Über dessen zwölf Bilder gemittelt:
+     53.000px². Die Porträts lagen bei 90.000 und liegen jetzt bei 56.000.
+
+     In Prozent statt in vw oder rem, weil sich der Wert damit auf die
+     Reihe selbst bezieht. Genau daran scheiterte der Versuch davor: eine
+     Deckelung auf 62rem ist ein fester Wert, der Container wächst aber
+     mit dem Fenster — die Reihe hörte je nach Bildschirm woanders auf.
+
+     Zeilen- und Spaltenabstand getrennt: Auf dem Handy stehen zwei Reihen
+     untereinander, und dort wäre derselbe Wert eine Lücke, kein Abstand. */
   .team__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(1.25rem, 3vw, 2.25rem);
+    column-gap: 9.33%;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -1399,18 +1429,9 @@ const faqs = [
     .statement__text { text-wrap: balance; }
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-    /* Vier Quadrate über die volle Breite.
-
-       Hier stand eine Deckelung auf 62rem, damit die Porträts rund 220px
-       statt 300px groß blieben — eine Reihe Gesichter, keine Wand. Die
-       Rechnung ging nicht auf: 62rem sind ein fester Wert, der Container
-       wächst mit dem Fenster. Bei 1100px Fensterbreite fehlten der Reihe
-       49px zur rechten Kante, bei 1457px schon 390. Auf schmalen Schirmen
-       unsichtbar, auf breiten ein Versatz, der wie ein Fehler aussieht —
-       zumal der Bildhaufen direkt darunter voll durchläuft.
-
-       Lieber vier größere Gesichter als eine Reihe, die je nach Bildschirm
-       woanders aufhört. */
+    /* Vier Quadrate über die volle Breite. Kleiner werden sie über den
+       Spaltenabstand, nicht über eine Deckelung — warum, steht oben an
+       .team__grid. */
     .team__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .hero__cue { display: inline-flex; }
   }
