@@ -61,10 +61,33 @@
   --space-6: 4rem;
   --space-7: 6rem;
   --section-y: clamp(4.5rem, 10vw, 9rem);
-  --gutter: clamp(1.25rem, 4vw, 4rem);
+  /* Seitlicher Innenabstand des Containers.
+     Von 4vw/64px auf 6vw/88px erhöht. Der Grund steht am Zusammenspiel mit
+     --container direkt darunter. */
+  --gutter: clamp(1.25rem, 6vw, 5.5rem);
   /* Header und Overlay laufen bewusst randbreiter als der Inhalt und
      ignorieren die Container-Maximalbreite — Logo links, Menü rechts. */
   --edge: clamp(1.25rem, 2.5vw, 2.5rem);
+  /* Der Rand neben dem Inhalt ist die Summe aus zwei Dingen: dem
+     Innenabstand --gutter und, sobald das Fenster breiter als --container
+     ist, der Hälfte des Überschusses aus der Zentrierung. Unter 1440px gibt
+     es diesen zweiten Teil nicht — deshalb kann derselbe Aufbau auf einem
+     Laptop randvoll und auf einem großen Schirm luftig wirken:
+
+       Fenster   Rand je Seite   Inhalt   Anteil am Fenster
+          1221        73px       1074px         88 %
+          1440        86px       1267px         88 %
+          1916       326px       1264px         66 %
+
+     Gleiche Ränder auf jeder Breite gibt es nicht, solange der Inhalt
+     gedeckelt ist — genau das ist die Deckelung. Was geht: der Anteil unter
+     1440px ist mit 6vw konstant, und der Sprung darüber ist so klein wie
+     möglich. Mit den vorherigen 4vw stand der Inhalt unterhalb von 1440 auf
+     92 Prozent der Fensterbreite und klebte am Rand.
+
+     Wer die großen Schirme voller haben will, muss --container anheben —
+     das verbreitert aber alle Raster und verschiebt jedes gemessene Maß in
+     diesem Projekt. */
   --container: 1440px;
   --measure: 62ch;
 
