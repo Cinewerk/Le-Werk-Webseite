@@ -392,14 +392,14 @@ const etappen = [
   }
 
   /* ═══ Breakpoints ════════════════════════════════════════════════════ */
-  @media (min-width: 48rem) {
+  @media (min-width: 768px) {
     .clips { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
     .strecke__raster { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .strecke__feld:last-child { grid-column: auto; }
   }
 
-  @media (min-width: 64rem) {
+  @media (min-width: 1024px) {
     .fall-kopf__grid {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: clamp(1.5rem, 3vw, 3rem);

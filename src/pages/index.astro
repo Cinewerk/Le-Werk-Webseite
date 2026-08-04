@@ -708,7 +708,7 @@ const faqs = [
      fast offen und der Kontrast fiel auf 2.8:1. Der Verlauf greift hier
      deshalb höher. Der seitliche fällt weg: Der Satz nimmt die volle
      Breite ein, eine linke Kante gibt es nicht mehr abzudunkeln. */
-  @media (max-width: 63.999rem) {
+  @media (max-width: 1023.98px) {
     .hero__media::after {
       background:
         linear-gradient(0deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.46) 30%, rgba(0, 0, 0, 0.1) 55%, rgba(0, 0, 0, 0) 72%, rgba(0, 0, 0, 0.12) 100%);
@@ -1022,11 +1022,17 @@ const faqs = [
      Reißverschluss-Gedanke trotzdem trägt, wechseln die Kacheln sich ab —
      dieselbe Bewegung, nur aus der Reihenfolge statt aus dem Raster.
 
-     Ausdrücklich nur unterhalb von 64rem, wo das Raster eine Spalte hat.
+     Ausdrücklich nur unterhalb von 768px, wo das Raster eine Spalte hat.
      Ohne die Begrenzung schlüge diese Regel die Rasterwerte weiter unten:
      :nth-child zählt in der Spezifität wie eine zweite Klasse und gewinnt
-     damit gegen .work__item--1, egal in welcher Reihenfolge beide stehen. */
-  @media (max-width: 63.999rem) {
+     damit gegen .work__item--1, egal in welcher Reihenfolge beide stehen.
+
+     Die Grenze muss mit der des Rasters zusammenfallen. Als das
+     Zwölfspaltige von 1024 auf 768 rückte und dieser Block bei 1023.98
+     stehen blieb, galten zwischen 768 und 1024 beide — und weil
+     :nth-child spezifischer ist, lief der Reißverschluss dort in die
+     falsche Richtung. */
+  @media (max-width: 767.98px) {
     .work__item:nth-child(odd) { --dx: -0.5; }
     .work__item:nth-child(even) { --dx: 0.5; }
   }
@@ -1358,7 +1364,11 @@ const faqs = [
     text-wrap: balance;
   }
 
-  .benefit__text { color: var(--ink-muted); }
+  /* Gedeckelt wie der Streublock-Text: Unter 992px steht ein Grund über die
+     volle Breite und käme bei 900px Fenster auf 813px Zeilenlänge, also
+     rund 90 Zeichen. Nebeneinander greift der Deckel nicht — dort sind die
+     Spalten 266 bis 399px breit. */
+  .benefit__text { max-width: 62ch; color: var(--ink-muted); }
 
   /* ── 6 · Unser Kernteam ─────────────────────────────────────────────── */
   /* Der Abschnitt kappt waagerecht. Die Streublöcke darin fahren ihren Text
@@ -1544,8 +1554,16 @@ const faqs = [
   }
 
   /* ── Breakpoints ──────────────────────────────────────────────────────── */
-  @media (min-width: 48rem) {
+  @media (min-width: 768px) {
     .statement__text { text-wrap: balance; }
+    .hero__cue { display: inline-flex; }
+  }
+
+  @media (min-width: 992px) {
+    /* Drei Gründe nebeneinander erst ab 992. Bei 768px war eine Spalte
+       204px breit — rund 24 Zeichen je Zeile, und die Überschrift
+       "Inhaltliche Substanz" füllte sie schon allein. Ab 992 sind es 266px
+       und bei 1440 dann 399. */
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
     /* Vier Quadrate über die volle Breite, bündig an beiden Kanten. Der
@@ -1559,16 +1577,29 @@ const faqs = [
        ergäben. In Prozent, damit das Verhältnis bei jeder Fensterbreite
        steht; nur so bleibt die Reihe an beiden Kanten bündig.
 
-       Nur hier und nicht an .team__grid: Auf dem Handy stehen zwei
-       nebeneinander, dort wäre derselbe Wert eine Lücke. */
+       Erst ab 992 und nicht schon ab 768: Bei 768px kamen vier Bilder mit
+       diesem Abstand auf 116px Kantenlänge — zweispaltig darunter waren es
+       259. Die Gesichter wurden also kleiner, während das Fenster größer
+       wurde. Zwei Reihen zu zweit tragen diese Breite besser.
+
+       Nur hier und nicht an .team__grid: Zweispaltig wäre derselbe Wert
+       eine Lücke, kein Abstand. */
     .team__grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
       column-gap: 10.94%;
     }
-    .hero__cue { display: inline-flex; }
   }
 
-  @media (min-width: 64rem) {
+  /* Der Reißverschluss steht ab 768 und nicht erst ab 1024.
+
+     Einspaltig ist jede Kachel so breit wie der Container. Siemens läuft
+     als 4:5 dann mit: 866px hoch bei 768er Fenster, 1011 bei 900, 1120 bei
+     1000 — eine einzelne Kachel, höher als der Bildschirm, und darunter
+     die nächste. Zu zweit sind es an derselben Stelle 320 x 400px.
+
+     Die Versätze sind alle in vw gerechnet und wachsen deshalb mit; es
+     musste kein einziger Wert nachgezogen werden. */
+  @media (min-width: 768px) {
     .work__grid {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: clamp(1.5rem, 3vw, 3rem);
@@ -1685,6 +1716,14 @@ const faqs = [
     .work__item--5 { margin-top: calc(-1 * clamp(5rem, 18.8vw, 17rem)); }
     .work__item--6 { margin-top: clamp(0.75rem, 2.08vw, 2rem); }
 
+  }
+
+  /* Ab hier bleibt es bei 1024: Die drei Disziplinen und die FAQ
+     brauchen kein frueheres Nebeneinander — die Disziplinen tragen ihre
+     Beschriftung im Bild und werden zu dritt in einer 768er Breite zu
+     Briefmarken, die FAQ-Antworten wuerden auf 20 Zeichen je Zeile
+     zusammenlaufen. */
+  @media (min-width: 1024px) {
     /* Video links, Konzept und Foto rechts — aber nichts fluchtet.
 
        Der Aufbau ist derselbe wie zu Anfang. Ordentlich sah er nicht

@@ -624,7 +624,7 @@ button { cursor: pointer; }
 }
 
 /* Bei größerem Schriftgrad wirkt eine 1px-Kontur zu dünn */
-@media (min-width: 62rem) {
+@media (min-width: 992px) {
   .overlay__link { -webkit-text-stroke-width: 1.5px; }
 }
 
@@ -995,7 +995,7 @@ button { cursor: pointer; }
 .legaldoc__body .toc__link:hover { color: var(--petrol); }
 .toc__link:hover span { background-size: 100% 1px; }
 
-@media (min-width: 64rem) {
+@media (min-width: 1024px) {
   .legaldoc__grid {
     grid-template-columns: 0.8fr 1.2fr;
     gap: clamp(3rem, 6vw, 6rem);
@@ -1017,11 +1017,34 @@ button { cursor: pointer; }
 
 /* --------------------------------------------------------------------------
    10. Responsive
+
+   UMBRUCHPUNKTE STEHEN IN PIXELN, NICHT IN REM — und das ist kein
+   Versehen, das jemand "aufräumen" sollte.
+
+   In einer Medienabfrage bezieht sich rem nicht auf die Schriftgröße der
+   Seite, sondern auf die Grundschrift des Browsers. Wer die von 16 auf
+   20px setzt — eine verbreitete Einstellung —, verschiebt damit jeden
+   Umbruchpunkt um ein Viertel nach oben: Aus 64rem werden 1280 statt
+   1024px. Ein Fenster von 1100px bekam dadurch das Layout fürs Telefon,
+   also eine einzige Kachel über die volle Breite.
+
+   Nachgeprüft im Browser: Setzt man die Wurzelschrift der Seite auf 20px,
+   ändert sich jedes rem im CSS mit, die Medienabfrage aber nicht. Sie
+   hängt allein an der Einstellung des Lesers, und die kennt das Layout
+   nicht.
+
+   Die Schrift skaliert weiterhin über rem — wer größer liest, liest
+   größer. Nur wann welche Spaltenzahl gilt, hängt jetzt an der Breite des
+   Fensters und sonst nichts. Umgerechnet ist mit 1rem = 16px, die Werte
+   treffen also genau das, was bisher bei Standardeinstellung galt:
+
+     480 · 640 · 768 · 992 · 1024 · 1312
+
    -------------------------------------------------------------------------- */
-@media (min-width: 62rem) {
+@media (min-width: 992px) {
   /* Die dritte Spalte (Kontakt) trägt E-Mail, Telefonnummer und Anschrift
      und braucht mehr Platz als die Linklisten: Bei gleicher Breite war sie
-     ab 62rem nur 148px breit, die Nummer allein misst 151px. Die übrigen
+     ab 992px nur 148px breit, die Nummer allein misst 151px. Die übrigen
      Spalten kommen mit weniger aus, ihr längstes Wort ist "Datenschutz". */
   .footer__grid {
     grid-template-columns: 1fr 1fr 1.5fr 1fr;
@@ -1029,7 +1052,7 @@ button { cursor: pointer; }
   }
 }
 
-@media (min-width: 40rem) and (max-width: 61.99rem) {
+@media (min-width: 640px) and (max-width: 991.98px) {
   .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 

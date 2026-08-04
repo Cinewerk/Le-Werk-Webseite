@@ -153,8 +153,14 @@ const gestreut = eingepasst.map((b) => {
     border-bottom: 1px solid var(--line-dark);
   }
 
+  /* Die Zeilenlänge ist gedeckelt, sonst läuft der Absatz unter 992px über
+     die volle Breite: Dort steht der Text über dem Haufen statt daneben und
+     kam bei 900px Fenster auf 813px Zeilenbreite, also rund 90 Zeichen.
+     Lesbar sind 45 bis 75. Nebeneinander greift der Deckel nicht — dort ist
+     die Spalte mit 357 bis 521px ohnehin schmaler. */
   .streu__satz {
     container-type: inline-size;
+    max-width: 62ch;
     font-size: clamp(1.0625rem, 1.4vw, 1.1875rem);
     line-height: 1.65;
     color: var(--on-dark-muted);
@@ -304,15 +310,20 @@ const gestreut = eingepasst.map((b) => {
   /* Der Schatten ist auf große Flächen gerechnet. Auf einem Telefon ist der
      Haufen ein Drittel so breit, der Schatten stünde als dunkler Balken
      unter jedem Stück. */
-  @media (max-width: 30rem) {
+  @media (max-width: 480px) {
     .haufen__stueck { box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5); }
   }
 
   /* Ab hier liegen Text und Haufen nebeneinander. Darunter steht der Text
-     über dem Haufen — nicht aus Geschmack, sondern weil die Textspalte vier
+     über dem Haufen — nicht aus Geschmack, sondern weil die Textspalte fünf
      von zwölf Rasterspalten breit ist: auf einem Telefon wären das rund
-     110px, etwa vier Zeichen je Zeile. */
-  @media (min-width: 48rem) {
+     140px, etwa fünf Zeichen je Zeile.
+
+     Von 768 auf 992 hochgesetzt. Bei 768px war die Textspalte 274px breit,
+     einspaltig darunter aber 537 — der Text verlor beim Breiterziehen des
+     Fensters die Hälfte seines Platzes. "Based in Köln, booked worldwide:"
+     braucht 287px und brach dort um. Bei 992px sind es 360px. */
+  @media (min-width: 992px) {
     .streu {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: clamp(1.5rem, 3vw, 3rem);
