@@ -574,31 +574,13 @@ const faqs = [
     </div>
   </section>
 
-  <!-- Der Aufruf steht vor der FAQ und nicht dahinter: Wer bis hierher
-       gelesen hat, ist bereit zu fragen. Die FAQ fängt danach die auf,
-       die noch etwas wissen wollen — sie ist der Nachsatz, nicht der
-       Abschluss.
+  <!-- ═══ 8 · FAQ ═══════════════════════════════════════════════════════ -->
+  <!-- Die offenen Fragen zuerst, der Aufruf danach: Wer bis hierher gelesen
+       hat, soll nicht mit einer Frage im Kopf auf den Knopf schauen.
 
-       ═══ 8 · BOTTOM-CTA ════════════════════════════════════════════════ -->
-  <section class="section section--dark cta" aria-labelledby="cta-title">
-    <div class="container cta__inner" data-reveal>
-      <h2 class="headline headline--xl cta__title" id="cta-title">
-        <span class="editorial editorial--kicker">Erzähl uns</span>{' '}
-        von deinem Projekt
-      </h2>
-      <div class="cta__actions">
-        <a class="btn btn--on-dark" href={withBase("/kontakt")}>
-          Projekt anfragen <span class="btn__arrow" aria-hidden="true">→</span>
-        </a>
-        <a class="btn btn--ghost" href="mailto:contact@lewerk.de">contact@lewerk.de</a>
-      </div>
-    </div>
-  </section>
-  <!-- ═══ 9 · FAQ ═══════════════════════════════════════════════════════ -->
-  <!-- Beige und nicht Weiß: Die FAQ steht zwischen dem dunklen Aufruf und
-       der dunklen Fußzeile und braucht einen eigenen Ton, sonst liest sie
-       sich als deren Fortsetzung. Ursprünglich stand sie hinter den
-       Vorteilen, und dort grenzten zwei weiße Flächen aneinander. -->
+       Beige und nicht Weiß: Die FAQ steht zwischen den hellen Vorteilen und
+       dem dunklen Aufruf und braucht einen eigenen Ton — sonst grenzten
+       zwei weiße Flächen aneinander. -->
   <section class="section section--sand faq" aria-labelledby="faq-title">
     <div class="container faq__grid">
       <header class="faq__head" data-reveal>
@@ -616,6 +598,25 @@ const faqs = [
             <div class="faq__a"><p>{f.a}</p></div>
           </details>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 9 · BOTTOM-CTA ════════════════════════════════════════════════ -->
+  <!-- Der Aufruf schließt die Seite ab und geht in die Fußzeile über. Beide
+       sind dunkel, aber nicht gleich: Die Fußzeile liegt auf
+       --petrol-deeper und setzt sich damit ab. -->
+  <section class="section section--dark cta" aria-labelledby="cta-title">
+    <div class="container cta__inner" data-reveal>
+      <h2 class="headline headline--xl cta__title" id="cta-title">
+        <span class="editorial editorial--kicker">Erzähl uns</span>{' '}
+        von deinem Projekt
+      </h2>
+      <div class="cta__actions">
+        <a class="btn btn--on-dark" href={withBase("/kontakt")}>
+          Projekt anfragen <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--ghost" href="mailto:contact@lewerk.de">contact@lewerk.de</a>
       </div>
     </div>
   </section>
@@ -1260,24 +1261,18 @@ const faqs = [
 
   /* Vier Porträts: zwei Spalten auf dem Handy, vier ab 48rem.
 
-     Kleinere Bilder und schmale Abstände gehen in einer Reihe, die von
-     Kante zu Kante läuft, nicht zusammen — vier Bilder und drei Abstände
-     teilen sich dieselbe Breite. Erst hingen die Porträts mit 300px an der
-     vollen Breite, dann standen sie mit 236px in 123px Abständen: dieselbe
-     Rechnung von beiden Seiten.
+     Die Reihe läuft von Kante zu Kante, und das ist die Vorgabe. Damit ist
+     die Bildgröße festgelegt: Vier Bilder und drei Abstände teilen sich
+     dieselbe Breite, kleinere Bilder heißen also größere Lücken. Zwei
+     Versuche liegen dahinter — 236px Bild mit 123px Abstand, dann dieselben
+     236px mit 40px Abstand und 123px Einrückung je Seite. Beide Male war
+     die Reihe entweder zerfallen oder nicht mehr bündig.
 
-     Deshalb ist die Reihe eingerückt. Die Abstände bleiben bei rund 40px,
-     die Porträts bei 236px, und die 117px, die dabei je Seite übrig
-     bleiben, stehen außen statt zwischen den Gesichtern. Vier Bilder als
-     Gruppe, nicht vier Bilder mit Zwischenraum.
-
-     Alle drei Werte in Prozent, damit das Verhältnis bei jeder
-     Fensterbreite steht. Genau daran scheiterte der Versuch davor: eine
-     Deckelung auf 62rem ist ein fester Wert, der Container wächst aber mit
-     dem Fenster — die Einrückung wuchs von 49 auf 390px mit.
-
-     Erst ab 48rem, also erst bei vier Spalten. Auf dem Handy stehen zwei
-     nebeneinander und brauchen jeden Millimeter. */
+     Wer die Gesichter kleiner haben will, ohne die Kanten aufzugeben, muss
+     an das Seitenverhältnis: Bei 300px Breite und 4:3 statt 1:1 fällt ein
+     Viertel der Fläche weg, Abstand und Kanten bleiben. Das heißt aber,
+     die vier Porträts neu zu beschneiden — die Augenlinie sitzt auf dem
+     Quadrat. */
   .team__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1428,22 +1423,9 @@ const faqs = [
     .statement__text { text-wrap: balance; }
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-    /* Vier Quadrate als eingerückte Gruppe. Die Rechnung dahinter steht
-       oben an .team__grid.
-
-       Die beiden Prozentwerte beziehen sich auf verschiedene Kästen:
-       padding-inline auf die Reihe selbst, column-gap auf den Inhalt, der
-       nach dem Abzug übrig bleibt. Bei 1310px Reihe:
-
-         Einrückung  9,39 % × 1310         = 123px je Seite
-         Inhalt      1310 − 2 × 123        = 1064px
-         Abstand     3,76 % × 1064         = 40px
-         Porträt     (1064 − 3 × 40) ÷ 4   = 236px */
-    .team__grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      column-gap: 3.76%;
-      padding-inline: 9.39%;
-    }
+    /* Vier Quadrate über die volle Breite, bündig an beiden Kanten. Warum
+       daran nichts zu schrauben ist, steht oben an .team__grid. */
+    .team__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .hero__cue { display: inline-flex; }
   }
 

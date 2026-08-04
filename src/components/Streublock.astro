@@ -302,27 +302,24 @@ const gestreut = eingepasst.map((b) => {
   }
 
   /* Ein Vorspann, der einzeilig bleiben muss, bekommt zusätzlich .knapp.
+     Den Platz dafür schafft die Spaltenbreite weiter unten — hier steht
+     nur das Verbot umzubrechen.
 
-     Der Umbruch ist nicht überall gleich: Gemessen misst "Based in Köln,
-     booked worldwide:" bei 17px Poppins 287px, die engste Textspalte ist
-     289px breit — zwei Pixel Luft. Wer die Standardschriftgröße seines
-     Browsers hochgesetzt hat, wächst mit rem über die Spalte hinaus, denn
-     die Spalte hängt am Raster und nicht an der Schrift. Dasselbe passiert
-     mit einer Ersatzschrift, solange Poppins noch lädt. Deshalb sieht der
-     eine Rechner eine Zeile und der andere zwei.
+     Er läuft im Schriftgrad des Fließtextes, nicht kleiner. Ein früherer
+     Versuch deckelte ihn an der Spaltenbreite; er blieb damit zwar
+     einzeilig, war aber sichtbar kleiner als der Absatz darunter.
 
-     min(1em, 5.15cqi) deckelt die Schrift an der Spaltenbreite statt an
-     der Wurzelgröße: 5,15 % der Spalte, das ist die gemessene Zeilenbreite
-     je Schriftgrad (16,9) plus 15 % Sicherheit. Wo Platz ist, ändert sich
-     nichts — bei 408px Spalte käme die Grenze bei 21px heraus, die
-     Schrift bleibt bei ihren 19. Nur an der Engstelle greift sie und geht
-     auf knapp 15px zurück.
+     5.8cqi ist nur noch die Reißleine: 5,8 % der Spalte entsprechen dem
+     Punkt, an dem die Zeile die Spalte ausfüllt. Bei fünf Spalten liegt
+     die Grenze bei rund 29px und damit weit über allem, was eine
+     Grundschrifteinstellung hergibt — sie greift erst, wenn die Zeile
+     sonst aus dem Fenster liefe.
 
-     Das gilt bewusst nicht für jeden Vorspann: "Erfahrung aus hunderten
-     Produktionen:" bräuchte 341px und müsste an derselben Stelle auf 13px
-     schrumpfen — kleiner als der Fließtext darunter. Er darf umbrechen. */
+     .knapp gilt bewusst nicht für jeden Vorspann: "Erfahrung aus
+     hunderten Produktionen:" ist mit dem 20-fachen seines Schriftgrads
+     ein Fünftel länger und darf umbrechen. */
   .streu__satz :global(strong.knapp) {
-    font-size: min(1em, 5.15cqi);
+    font-size: min(1em, 5.8cqi);
     white-space: nowrap;
   }
 
@@ -446,24 +443,27 @@ const gestreut = eingepasst.map((b) => {
       align-items: center;
     }
 
-    .streu--rechts .streu__text { grid-column: 1 / span 4; grid-row: 1; }
+    /* Der Text bekommt fünf Spalten, der Haufen sieben — zusammen die
+       vollen zwölf, ohne Leerspalte dazwischen. Der Spaltenabstand trennt
+       sie, bei 1440px sind das 43px.
+
+       Vorher standen hier vier Spalten für den Text und eine leere als
+       Puffer. Vier reichen für "Based in Köln, booked worldwide:" nicht:
+       Die Zeile misst das 16,9-fache ihres Schriftgrads, bei 19px also
+       321px. Das passt in vier Spalten (405 bis 413px auf gängigen
+       Monitoren) — aber nur, solange die Grundschriftgröße des Browsers
+       bei 16px steht. Wer sie auf 20px setzt, liest den Fließtext mit
+       23,7px, und die Zeile braucht 401px. Die Schrift wächst mit rem,
+       die Spalte hängt am Raster: Sie wächst nicht mit.
+
+       Fünf Spalten sind 468px bei 1280 und 527px bei 1440. Damit trägt die
+       Zeile eine Grundschrift bis 24px, ohne umzubrechen. Der Haufen
+       behält seine sieben Spalten; bezahlt wird mit dem Puffer. */
+    .streu--rechts .streu__text { grid-column: 1 / span 5; grid-row: 1; }
     .streu--rechts .haufen { grid-column: 6 / span 7; grid-row: 1; }
 
     .streu--links .haufen { grid-column: 1 / span 7; grid-row: 1; }
-    .streu--links .streu__text { grid-column: 9 / span 4; grid-row: 1; }
-  }
-
-  /* Zwischenband. Vier von zwölf Spalten sind bei 768px nur 215px breit —
-     22 Zeichen je Zeile, eine Schriftsäule statt eines Absatzes. Der Text
-     bekommt hier deshalb fünf Spalten und der Haufen sechs. Damit liegt die
-     Zeile bei rund 28 Zeichen und trifft den Wert, den der Block auf dem
-     Desktop ohnehin hat. Ab 64rem gilt wieder die Aufteilung von oben. */
-  @media (min-width: 48rem) and (max-width: 63.999rem) {
-    .streu--rechts .streu__text { grid-column: 1 / span 5; }
-    .streu--rechts .haufen { grid-column: 7 / span 6; }
-
-    .streu--links .haufen { grid-column: 1 / span 6; }
-    .streu--links .streu__text { grid-column: 8 / span 5; }
+    .streu--links .streu__text { grid-column: 8 / span 5; grid-row: 1; }
   }
 
   @media (prefers-reduced-motion: reduce) {
