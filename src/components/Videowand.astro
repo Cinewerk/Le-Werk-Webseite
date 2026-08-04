@@ -186,7 +186,7 @@ const hoehe = (ratio: Clip['ratio']) =>
     position: relative;
     aspect-ratio: var(--ratio);
     overflow: hidden;
-    border-radius: var(--radius);
+    border-radius: var(--radius-bild);
     /* Kein Hintergrund — heller Platzhalter blitzt in der Rundung durch,
        siehe .work__figure in index.astro. */
     /* Maske gegen den hellen Saum in der Rundung, sobald das Bild bei
@@ -222,7 +222,7 @@ const hoehe = (ratio: Clip['ratio']) =>
     position: absolute;
     inset: 3px;
     border: 2px solid var(--petrol-light);
-    border-radius: calc(var(--radius) - 3px);
+    border-radius: calc(var(--radius-bild) - 3px);
   }
 
   .clip__play {
@@ -312,7 +312,7 @@ const hoehe = (ratio: Clip['ratio']) =>
     aspect-ratio: var(--ratio, 9 / 16);
     height: min(80dvh, calc(92vw / var(--r, 0.5625)));
     overflow: hidden;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-bild);
     background: #000;
   }
 

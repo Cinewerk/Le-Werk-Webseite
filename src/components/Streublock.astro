@@ -261,7 +261,7 @@ const gestreut = eingepasst.map((b) => {
        Alle drei Werte sind gegenüber dem ersten Anlauf um 30 % gesenkt —
        aus 0,75/1,4vw/1,25rem wurde 0,525/0,98vw/0,875rem. Bei 1440px
        Fensterbreite sind das 14px statt 20px. */
-    border-radius: clamp(0.525rem, 0.98vw, 0.875rem);
+    border-radius: var(--radius-bild);
     /* Kein Hintergrund: Als Platzhalter mit 6 % Weiß war er heller als
        der Abschnitt und blitzte in den abgerundeten Ecken als Bogen
        durch — overflow: hidden schneidet das Bild dort nicht auf den

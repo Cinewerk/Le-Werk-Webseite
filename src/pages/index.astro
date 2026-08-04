@@ -491,7 +491,7 @@ const faqs = [
            gestapelt. -->
       <ol class="disziplinen">
         {disziplinen.map((s, i) => (
-          <li class={`disziplin disziplin--${i + 1}`} data-reveal data-reveal-delay={i * 90}>
+          <li class={`disziplin disziplin--${i + 1}`}>
             <div class="disziplin__inhalt">
               <figure class="disziplin__bild" style={`--ratio:${s.ratio ?? '4 / 3'}`}>
                 <img src={withBase(s.img)} alt="" width="1200" height="900" loading="lazy" decoding="async" />
@@ -998,24 +998,31 @@ const faqs = [
      das stünde einspaltig, wo es kein Links und Rechts gibt, fast alles
      still.
 
-     Der Maßstab ist kleiner als im Haufen: 63px Weg und 4,5 Prozent Größe
+     Der Maßstab ist kleiner als im Haufen: 42px Weg und 3 Prozent Größe
      gegen 165px und 12 Prozent. Die Stücke dort sind Schnipsel, hier sind
      es Kacheln bis 633 x 792px — derselbe Weg sähe an ihnen nicht lebendig
-     aus, sondern lose. Nachgemessen wandert eine Kachel damit rund 45px
-     aus ihrer Ruhelage, waagerecht und senkrecht zusammengenommen.
+     aus, sondern lose.
+
+     Um ein Drittel zurückgenommen: Der Weg lag bei 63px und die Größe bei
+     4,5 Prozent, die Kachelmitte wanderte damit 43 bis 55px. Jetzt sind es
+     29 bis 37px.
 
      Weg und Größe ziehen gegeneinander: Bei --q = 0 steht die Kachel
-     weiter außen, ist aber kleiner — die Außenkante läuft deshalb nur
-     34px, nicht 42px. Das ist gewollt, sonst risse der Rand auf. */
-  .work__item.is-aktiv {
-    --zug: clamp(1.5rem, 4.4vw, 4.25rem);
+     weiter außen, ist aber kleiner — die Außenkante läuft deshalb weniger
+     weit als der Mittelpunkt. Das ist gewollt, sonst risse der Rand auf.
+
+     Dieselben Werte gelten für die Disziplinen weiter unten; sie stehen
+     deshalb als --zug-bild an :root-Ersatz hier oben, nicht zweimal. */
+  .work__item.is-aktiv,
+  .disziplin.is-aktiv {
+    --zug: clamp(1rem, 2.95vw, 2.85rem);
     transform:
       translate3d(
         calc(var(--dx, 0) * var(--zug) * (1 - var(--q, 1))),
         calc(var(--dy, 0.55) * var(--zug) * (1 - var(--q, 1))),
         0
       )
-      scale(calc(0.955 + 0.045 * var(--q, 1)));
+      scale(calc(0.97 + 0.03 * var(--q, 1)));
   }
 
   /* Einspaltig gibt es keine linke und keine rechte Spalte. Damit der
@@ -1051,7 +1058,7 @@ const faqs = [
     position: relative;
     margin: 0;
     overflow: hidden;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-bild);
     /* Die Maske ist der Grund, warum die Rundung beim Überfahren sauber
        bleibt.
 
@@ -1218,6 +1225,27 @@ const faqs = [
   }
 
   /* ── 5 · Disziplinen ──────────────────────────────────────────────────── */
+  /* Kappt waagerecht wie .work und .team: Die drei Kacheln fahren beim
+     Scrollen seitlich auf ihren Platz zu und stehen bei --q = 0 außerhalb
+     des Rasters. */
+  .services { overflow-x: clip; }
+
+  /* Der Weg jeder Kachel, nach derselben Rechnung wie bei Featured Work:
+     Mitte der Kachel minus Mitte des Rasters, geteilt durch die halbe
+     Rasterbreite. Video sitzt links auf Spalte 3,5, Konzept und Foto
+     rechts auf 10 und 9,5.
+
+     Zwei von drei laufen also nach rechts. Das ist keine Unsauberkeit,
+     sondern die Anordnung: eine große Kachel links, zwei gestapelte
+     rechts. Die Bewegung folgt dem Aufbau, nicht einem Muster.
+
+     Die Werte stehen außerhalb der Medienabfrage, weil das Feld auch
+     einspaltig eine Reihenfolge hat — dort läuft Video nach links und die
+     beiden anderen nach rechts, genau wie im Raster. */
+  .disziplin--1 { --dx: -0.50; }
+  .disziplin--2 { --dx:  0.58; }
+  .disziplin--3 { --dx:  0.50; }
+
   /* Bewusst dieselbe Sprache wie die Arbeiten darüber: Bild als Hauptfigur,
      der Name groß im Bild, eine schmale Zeile darunter, versetztes Raster.
      Ein Unterschied ist nötig — die Arbeiten liegen auf dunklem Grund und
@@ -1244,7 +1272,7 @@ const faqs = [
     position: relative;
     margin: 0;
     overflow: hidden;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-bild);
     /* Maske gegen den hellen Saum in der Rundung, sobald das Bild bei
        Hover wächst — ausführlich bei .work__figure in index.astro. */
     -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
@@ -1432,7 +1460,7 @@ const faqs = [
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
-    border-radius: var(--radius);
+    border-radius: var(--radius-bild);
     margin-bottom: var(--space-2);
     filter: grayscale(1);
     transition: filter var(--dur) var(--ease-out);
@@ -1809,7 +1837,7 @@ const faqs = [
   // mit einem Wert aus.
   import { nachlaufBinden } from '../scripts/nachlauf';
 
-  nachlaufBinden(document.querySelectorAll<HTMLElement>('.work__item'));
+  nachlaufBinden(document.querySelectorAll<HTMLElement>('.work__item, .disziplin'));
 </script>
 
 <script>

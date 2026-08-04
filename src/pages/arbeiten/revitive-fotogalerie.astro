@@ -167,7 +167,7 @@ const kapitel = [
     color: var(--ink-muted);
   }
 
-  .kopf__bild { margin: 0; overflow: hidden; border-radius: var(--radius-lg); }
+  .kopf__bild { margin: 0; overflow: hidden; border-radius: var(--radius-bild); }
   .kopf__bild img { display: block; width: 100%; height: auto; }
 
   /* ── Kapitel ──────────────────────────────────────────────────────────── */
@@ -211,7 +211,7 @@ const kapitel = [
     padding: 0;
   }
 
-  .strecke__feld { overflow: hidden; border-radius: var(--radius); }
+  .strecke__feld { overflow: hidden; border-radius: var(--radius-bild); }
 
   /* Jedes Bild sitzt in einem Knopf, damit es sich auch per Tastatur
      vergrößern lässt. Der Knopf bringt eigene Browserstile mit — die
@@ -232,7 +232,7 @@ const kapitel = [
     position: absolute;
     inset: 3px;
     border: 2px solid var(--petrol-light);
-    border-radius: calc(var(--radius) - 3px);
+    border-radius: calc(var(--radius-bild) - 3px);
   }
 
 
