@@ -492,14 +492,21 @@ const faqs = [
       <ol class="disziplinen">
         {disziplinen.map((s, i) => (
           <li class={`disziplin disziplin--${i + 1}`}>
-            <div class="disziplin__inhalt">
-              <figure class="disziplin__bild" style={`--ratio:${s.ratio ?? '4 / 3'}`}>
-                <img src={withBase(s.img)} alt="" width="1200" height="900" loading="lazy" decoding="async" />
-                <figcaption class="disziplin__marke">{s.titel ?? s.label}</figcaption>
-              </figure>
+            <!-- Name und Beschreibung stehen zusammen in der Bildunterschrift
+                 und sitzen beide im unteren Band der Kachel. Der Text ist
+                 immer im Markup und wird vorgelesen; sichtbar wird er beim
+                 Überfahren, indem die Zeile aufgeht und den Namen anhebt.
 
-              <p class="disziplin__zeile">{s.text}</p>
-            </div>
+                 Das innere span trägt das overflow: hidden — ohne einen
+                 zweiten Kasten lässt sich eine Höhe von 0 nicht auf die
+                 tatsächliche Texthöhe aufziehen. -->
+            <figure class="disziplin__bild" style={`--ratio:${s.ratio ?? '4 / 3'}`}>
+              <img src={withBase(s.img)} alt="" width="1200" height="900" loading="lazy" decoding="async" />
+              <figcaption class="disziplin__fuss">
+                <span class="disziplin__marke">{s.titel ?? s.label}</span>
+                <span class="disziplin__text"><span>{s.text}</span></span>
+              </figcaption>
+            </figure>
           </li>
         ))}
       </ol>
@@ -1262,17 +1269,26 @@ const faqs = [
     padding: 0;
   }
 
-  /* Ein div und kein a: Die drei Disziplinen führen nirgendwohin mehr. Es
-     gibt zu ihnen keine Unterseiten, nur Workshops hat eine, und die steht
-     nicht in diesem Abschnitt. Die Adressen bleiben in den Daten — Menü und
-     Fußzeile brauchen sie weiter. */
-  .disziplin__inhalt { display: block; }
+  /* Kein a mehr: Die drei Disziplinen führen nirgendwohin. Es gibt zu ihnen
+     keine Unterseiten, nur Workshops hat eine, und die steht nicht in
+     diesem Abschnitt. Die Adressen bleiben in den Daten — Menü und Fußzeile
+     brauchen sie weiter.
+
+     Auch die Hülle um Bild und Text ist entfallen: Seit der Text in der
+     Kachel liegt, ist die Kachel das Bild. */
 
   /* Kein Hintergrund — siehe .work__figure. Hier war der Platzhalter
      dunkel und der Abschnitt hell, der Bogen in der Rundung entsprechend
      dunkel statt hell. Dieselbe Ursache. */
+  /* Die Kachel ist ihr eigener Bezug. Name und Textblock müssen in das
+     untere Band passen, und wie groß das ist, hängt an der Kachel — nicht
+     am Fenster. Bei 1024px Fensterbreite ist die Konzept-Kachel nur
+     344 x 229px, während 4.4vw dort noch 45px Schrift ergeben hätten:
+     "Idee & Konzept" brach zweizeilig um und der Block reichte bis 73 %
+     der Kachelhöhe. */
   .disziplin__bild {
     position: relative;
+    container-type: inline-size;
     margin: 0;
     overflow: hidden;
     border-radius: var(--radius-bild);
@@ -1323,7 +1339,24 @@ const faqs = [
      kleiner, die Schrift liegt über anderen Bildstellen und der Fuß von
      0.88 reichte nur noch für 4.36:1 bei Foto. Mit 0.92 sind es
      Foto 5.54, Idee & Konzept 7.87, Video 11.20 — wieder über der
-     strengeren Schwelle von 4.5 und mit Reserve für andere Motive. */
+     strengeren Schwelle von 4.5 und mit Reserve für andere Motive.
+
+     ER BLEIBT AUCH BEIM ÜBERFAHREN UNVERÄNDERT. Das war nicht zu erwarten:
+     Dann steht das Bild in Farbe statt in Graustufen, und der Name rückt
+     nach oben, weil die Beschreibung unter ihm Platz braucht. Beides macht
+     es schwerer. Nachgerechnet auf den Farbfassungen, je Band an der
+     hellsten 12px-Säule statt am Mittelwert:
+
+                        Beschreibung   Name
+       Video               10.34       7.76
+       Idee & Konzept      10.94       6.88
+       Foto                 8.78       5.88
+
+     Bei 1440px stimmt das. Eng wird es bei 1024: Dort ist die Foto-Kachel
+     nur 418 x 279px, der Name steht zwischen 36 und 50 % der Höhe und
+     bekommt 3.54. Für große fette Schrift genügt das (Schwelle 3.0), für
+     den Anspruch hier nicht. Deshalb die zweite Lage an ::before, die
+     ausschließlich beim Überfahren einblendet — siehe dort. */
   .disziplin__bild::after {
     content: '';
     position: absolute;
@@ -1338,14 +1371,64 @@ const faqs = [
     );
   }
 
-  .disziplin__marke {
+  /* Die zweite Lage, nur beim Überfahren. Sie tut genau so viel, wie der
+     angehobene Name braucht, und keinen Deut mehr.
+
+     Vier Kandidaten durchgerechnet, über beide Bänder und alle drei Motive
+     in ihren Kachelgrößen bei 1024 und 1440px. Der schlechteste Wert je
+     Kandidat:
+
+       ohne   3.54      unter der Schwelle
+       z1     4.79      genommen
+       z2     5.55
+       z3     6.67
+
+     z1 ist die leichteste Lage, die 4.5 hält. Unten am Fuß kommen zu den
+     0.92 noch 0.35 dazu — zusammen 0.948, also praktisch dasselbe. Sichtbar
+     wird sie nur im mittleren Teil des Bandes, wo sie aus 0.35 rund 0.56
+     macht. Über 60 % der Höhe ist sie null: Der obere Teil des Motivs
+     bleibt beim Überfahren unangetastet, und genau darum ging es.
+
+     Als eigene Lage und nicht als getauschter Verlauf: Ein Hintergrundbild
+     lässt sich nicht weich überblenden, eine Deckkraft schon. */
+  .disziplin__bild::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease-out);
+    background: linear-gradient(
+      0deg,
+      rgba(4, 37, 44, 0.35) 0%,
+      rgba(4, 37, 44, 0.32) 34%,
+      rgba(4, 37, 44, 0) 60%
+    );
+  }
+
+  .disziplin:hover .disziplin__bild::before { opacity: 1; }
+
+  /* Name und Beschreibung stehen zusammen im unteren Band, am Boden der
+     Kachel verankert. Geht die Beschreibung auf, schiebt sie den Namen nach
+     oben — die Kachel macht Platz, statt etwas zu überdecken. */
+  .disziplin__fuss {
     position: absolute;
     left: clamp(1rem, 3vw, 2rem);
+    right: clamp(1rem, 3vw, 2rem);
     bottom: clamp(0.875rem, 2.5vw, 1.75rem);
     z-index: 1;
+  }
+
+  /* 9cqi statt 4.4vw: neun Prozent der Kachelbreite. Damit bleibt der Name
+     auf jeder Kachel einzeilig — "Idee & Konzept" ist der längste und
+     misst bei 9 Prozent rund drei Viertel der verfügbaren Breite. */
+  .disziplin__marke {
+    display: block;
     font-family: var(--font-ui);
     font-weight: 800;
-    font-size: clamp(1.75rem, 4.4vw, 3.25rem);
+    font-size: clamp(1.5rem, 9cqi, 3.25rem);
     line-height: 1;
     letter-spacing: var(--track-display);
     text-transform: uppercase;
@@ -1353,15 +1436,89 @@ const faqs = [
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
   }
 
-  /* Nur noch der Beschreibungstext. Rechts stand hier ein "Mehr erfahren"
-     mit Pfeil — entfallen, weil es zu den Disziplinen keine Unterseiten
-     mehr geben soll. Damit fällt auch die Flex-Zeile weg: Ein einzelner
-     Absatz braucht keine zwei Enden. */
-  .disziplin__zeile {
-    margin-top: var(--space-2);
-    max-width: 46ch;
+  /* Der Beschreibungstext im unteren Band.
+
+     WARUM UNTEN UND NICHT MITTEN INS BILD. Ein erster Versuch setzte eine
+     deckende Karte oben links in die Kachel. Sie verdeckte genau das, was
+     der Hover eigentlich zeigen will — auf dem Foto-Motiv lag sie über den
+     beiden Personen. Das untere Band ist dagegen ohnehin abgedunkelt, damit
+     der Name lesbar ist. Text, der dort steht, kostet keinen Bildbereich,
+     der nicht schon getönt wäre.
+
+     WARUM DER NAME MITGEHT. Unter dem Namen ist kein Platz — er sitzt 27px
+     über der Unterkante. Also geht die Zeile auf und hebt ihn an. Die
+     Kachel macht Platz, statt etwas zu überdecken, und die Lesefolge
+     stimmt: erst der Name, dann die Erklärung.
+
+     0fr auf 1fr statt max-height: Damit läuft die Bewegung genau bis zur
+     tatsächlichen Texthöhe, ohne dass irgendwo ein Maximalwert gepflegt
+     werden muss. Wo ein Browser das nicht weich rechnet, springt es —
+     richtig steht es überall.
+
+     34ch, damit die Zeile auf der breiten Video-Kachel nicht quer über das
+     Motiv läuft. Der längste Text hat 92 Zeichen und braucht drei Zeilen. */
+  .disziplin__text {
+    display: grid;
+    grid-template-rows: 0fr;
+    max-width: 34ch;
+    margin-top: 0;
+    font-family: var(--font-ui);
     font-size: var(--fs-small);
-    color: var(--ink-muted);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0;
+    text-transform: none;
+    color: rgba(255, 255, 255, 0.92);
+    opacity: 0;
+    transition: grid-template-rows var(--dur-slow) var(--ease-out),
+                opacity var(--dur) var(--ease-out),
+                margin-top var(--dur-slow) var(--ease-out);
+  }
+
+  .disziplin__text > span { overflow: hidden; }
+
+  .disziplin:hover .disziplin__text {
+    grid-template-rows: 1fr;
+    margin-top: 0.625rem;
+    opacity: 1;
+  }
+
+  /* Ohne Zeigegerät gibt es kein Überfahren — dort steht der Text immer.
+     Dieselbe Entscheidung wie beim Farbwechsel darüber: Was nur der Hover
+     zeigt, ist auf dem Telefon sonst nicht vorhanden. */
+  @media (hover: none) {
+    .disziplin__text {
+      grid-template-rows: 1fr;
+      margin-top: 0.625rem;
+      opacity: 1;
+    }
+
+    /* Und weil er dort immer steht, muss der Verlauf ihn auch immer tragen.
+       Auf dem Telefon sind die Kacheln kurz — die Foto-Kachel misst bei
+       375px Fenster nur 308 x 205px, und der Block reicht dann bis 58 % der
+       Höhe statt bis 41 % auf dem Desktop.
+
+       Das kostet hier nichts: Ohne Zeigegerät gibt es kein Vorher, mit dem
+       man den stärkeren Verlauf vergleichen könnte. Auf dem Desktop wäre
+       genau das der Einwand — dort bleibt er deshalb unangetastet. */
+    .disziplin__bild::before { opacity: 1; }
+
+    /* Zusätzlich zur zweiten Lage: Auf dem Telefon sind die Kacheln kurz —
+       die Foto-Kachel misst bei 375px Fenster nur 308 x 205px, und der Block
+       reicht bis 57 % der Höhe statt bis 41 % auf dem Desktop. Der
+       Grundverlauf muss deshalb weiter hinaufreichen.
+
+       Das kostet hier nichts: Ohne Zeigegerät gibt es kein Vorher, mit dem
+       man den stärkeren Verlauf vergleichen könnte. Auf dem Desktop wäre
+       genau das der Einwand. */
+    .disziplin__bild::after {
+      background: linear-gradient(
+        0deg,
+        rgba(4, 37, 44, 0.94) 0%,
+        rgba(4, 37, 44, 0.72) 35%,
+        rgba(4, 37, 44, 0) 68%
+      );
+    }
   }
 
 
@@ -1823,6 +1980,12 @@ const faqs = [
     .marquee__track { animation-name: none; }
     .marquee__track [aria-hidden='true'] { display: none; }
     .hero__cue { animation-name: none; }
+
+    /* Der Text erscheint weiterhin beim Überfahren, die Zeile geht nur nicht
+       mehr auf, sondern steht sofort. Ihn ganz wegzulassen wäre falsch:
+       Reduzierte Bewegung heißt weniger Bewegung, nicht weniger Inhalt. */
+    .disziplin__text { transition: opacity var(--dur-fast) linear; }
+    .disziplin__bild::before { transition: opacity var(--dur-fast) linear; }
   }
 </style>
 
