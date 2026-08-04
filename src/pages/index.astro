@@ -520,7 +520,7 @@ const faqs = [
 
         <Streublock nr="02" seite="links" bilder={krafthaus} label="Unsere Räume im Krafthaus" hoehe={0.95}>
           <p>
-            <strong>Based in Köln, booked worldwide:</strong> Unsere
+            <strong class="knapp">Based in Köln, booked worldwide:</strong> Unsere
             Räumlichkeiten liegen im Krafthaus, im Rheinauhafen. Gedreht wird
             in Köln, bundesweit oder auch international.
           </p>
@@ -1260,29 +1260,28 @@ const faqs = [
 
   /* Vier Porträts: zwei Spalten auf dem Handy, vier ab 48rem.
 
-     Der Spaltenabstand ist der Hebel für die Größe der Gesichter. Die
-     Reihe läuft von Kante zu Kante — was der Abstand bekommt, geben die
-     Porträts ab. Bei drei Abständen zu 9,33 % bleiben 72 % für vier
-     Bilder, also 18 % der Reihe je Porträt: bei 1440px sind das 236px
-     statt 300px, gut ein Fünftel weniger Kantenlänge und ein Drittel
-     weniger Fläche.
+     Kleinere Bilder und schmale Abstände gehen in einer Reihe, die von
+     Kante zu Kante läuft, nicht zusammen — vier Bilder und drei Abstände
+     teilen sich dieselbe Breite. Erst hingen die Porträts mit 300px an der
+     vollen Breite, dann standen sie mit 236px in 123px Abständen: dieselbe
+     Rechnung von beiden Seiten.
 
-     Der Bezug ist der Bildhaufen direkt darunter, gegen den die vier
-     Gesichter zu schwer wirkten. Über dessen zwölf Bilder gemittelt:
-     53.000px². Die Porträts lagen bei 90.000 und liegen jetzt bei 56.000.
+     Deshalb ist die Reihe eingerückt. Die Abstände bleiben bei rund 40px,
+     die Porträts bei 236px, und die 117px, die dabei je Seite übrig
+     bleiben, stehen außen statt zwischen den Gesichtern. Vier Bilder als
+     Gruppe, nicht vier Bilder mit Zwischenraum.
 
-     In Prozent statt in vw oder rem, weil sich der Wert damit auf die
-     Reihe selbst bezieht. Genau daran scheiterte der Versuch davor: eine
-     Deckelung auf 62rem ist ein fester Wert, der Container wächst aber
-     mit dem Fenster — die Reihe hörte je nach Bildschirm woanders auf.
+     Alle drei Werte in Prozent, damit das Verhältnis bei jeder
+     Fensterbreite steht. Genau daran scheiterte der Versuch davor: eine
+     Deckelung auf 62rem ist ein fester Wert, der Container wächst aber mit
+     dem Fenster — die Einrückung wuchs von 49 auf 390px mit.
 
-     Zeilen- und Spaltenabstand getrennt: Auf dem Handy stehen zwei Reihen
-     untereinander, und dort wäre derselbe Wert eine Lücke, kein Abstand. */
+     Erst ab 48rem, also erst bei vier Spalten. Auf dem Handy stehen zwei
+     nebeneinander und brauchen jeden Millimeter. */
   .team__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(1.25rem, 3vw, 2.25rem);
-    column-gap: 9.33%;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -1429,10 +1428,22 @@ const faqs = [
     .statement__text { text-wrap: balance; }
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-    /* Vier Quadrate über die volle Breite. Kleiner werden sie über den
-       Spaltenabstand, nicht über eine Deckelung — warum, steht oben an
-       .team__grid. */
-    .team__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    /* Vier Quadrate als eingerückte Gruppe. Die Rechnung dahinter steht
+       oben an .team__grid.
+
+       Die beiden Prozentwerte beziehen sich auf verschiedene Kästen:
+       padding-inline auf die Reihe selbst, column-gap auf den Inhalt, der
+       nach dem Abzug übrig bleibt. Bei 1310px Reihe:
+
+         Einrückung  9,39 % × 1310         = 123px je Seite
+         Inhalt      1310 − 2 × 123        = 1064px
+         Abstand     3,76 % × 1064         = 40px
+         Porträt     (1064 − 3 × 40) ÷ 4   = 236px */
+    .team__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 3.76%;
+      padding-inline: 9.39%;
+    }
     .hero__cue { display: inline-flex; }
   }
 

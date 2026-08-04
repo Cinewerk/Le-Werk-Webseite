@@ -283,6 +283,7 @@ const gestreut = eingepasst.map((b) => {
   }
 
   .streu__satz {
+    container-type: inline-size;
     font-size: clamp(1.0625rem, 1.4vw, 1.1875rem);
     line-height: 1.65;
     color: var(--on-dark-muted);
@@ -293,19 +294,36 @@ const gestreut = eingepasst.map((b) => {
   /* Der fette Vorspann steht auf eigener Zeile, der Fließtext beginnt
      darunter. Als Inline-Text brach er dort um, wo die Spalte zufällig
      endete — auf dem einen Schirm mitten in "booked worldwide", auf dem
-     anderen gar nicht. Beides sah nach Zufall aus, weil es Zufall war.
-
-     Kein nowrap: "Erfahrung aus hunderten Produktionen:" braucht 341px
-     und hat bei 1024px Fensterbreite nur 289 — dort bricht der Vorspann
-     in zwei Zeilen, und das ist richtig so. Erzwungen würde er aus der
-     Spalte laufen. "Based in Köln, booked worldwide:" misst 287px und
-     bleibt damit überall einzeilig; 1024px ist die engste Stelle
-     überhaupt, weil der Text dort von fünf auf vier Rasterspalten
-     zurückgeht. */
+     anderen gar nicht. Beides sah nach Zufall aus, weil es Zufall war. */
   .streu__satz :global(strong) {
     display: block;
     font-weight: 600;
     color: var(--on-dark);
+  }
+
+  /* Ein Vorspann, der einzeilig bleiben muss, bekommt zusätzlich .knapp.
+
+     Der Umbruch ist nicht überall gleich: Gemessen misst "Based in Köln,
+     booked worldwide:" bei 17px Poppins 287px, die engste Textspalte ist
+     289px breit — zwei Pixel Luft. Wer die Standardschriftgröße seines
+     Browsers hochgesetzt hat, wächst mit rem über die Spalte hinaus, denn
+     die Spalte hängt am Raster und nicht an der Schrift. Dasselbe passiert
+     mit einer Ersatzschrift, solange Poppins noch lädt. Deshalb sieht der
+     eine Rechner eine Zeile und der andere zwei.
+
+     min(1em, 5.15cqi) deckelt die Schrift an der Spaltenbreite statt an
+     der Wurzelgröße: 5,15 % der Spalte, das ist die gemessene Zeilenbreite
+     je Schriftgrad (16,9) plus 15 % Sicherheit. Wo Platz ist, ändert sich
+     nichts — bei 408px Spalte käme die Grenze bei 21px heraus, die
+     Schrift bleibt bei ihren 19. Nur an der Engstelle greift sie und geht
+     auf knapp 15px zurück.
+
+     Das gilt bewusst nicht für jeden Vorspann: "Erfahrung aus hunderten
+     Produktionen:" bräuchte 341px und müsste an derselben Stelle auf 13px
+     schrumpfen — kleiner als der Fließtext darunter. Er darf umbrechen. */
+  .streu__satz :global(strong.knapp) {
+    font-size: min(1em, 5.15cqi);
+    white-space: nowrap;
   }
 
   /* Der Text kommt von seiner Seite herein und geht beim Zurückscrollen
