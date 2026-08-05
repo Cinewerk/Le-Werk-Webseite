@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Salz — Le Werk Entwurf</title>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img, video { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+:where(h1,h2,h3,h4,p,figure,ul,ol,dl,dd,blockquote) { margin: 0; padding: 0; }
+:where(ul,ol) { list-style: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: italic;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('../src/styles/fonts/bodoni-moda-opsz11-italic-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('../src/styles/fonts/bodoni-moda-opsz11-normal-latin.woff2') format('woff2');
+}
+
+:root {
+  --kobalt: #2743f5;
+  --nacht: #0a0a0a;
+  --weiss: #f4f2ee;
+  --serif: 'Bodoni Moda', Didot, Georgia, serif;
+  --grotesk: 'Helvetica Neue', Arial, sans-serif;
+  --leiste: 46px;
+}
+
+body {
+  background: var(--nacht);
+  color: var(--weiss);
+  font: 400 15px/1.5 var(--grotesk);
+  margin-left: var(--leiste);
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Die kobaltblaue Randleiste ── */
+.leiste {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--leiste);
+  z-index: 60;
+  background: var(--kobalt);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+}
+
+.leiste a, .leiste b {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.leiste b { font-weight: 500; font-family: var(--serif); font-style: italic; font-size: 14px; }
+.leiste nav { display: flex; flex-direction: column; gap: 26px; align-items: center; }
+.leiste nav a { text-transform: uppercase; font-weight: 500; }
+.leiste nav a:hover { opacity: 0.7; }
+
+/* ── Held: Video + Projektliste ── */
+.held { position: relative; min-height: 100svh; overflow: hidden; display: grid; align-content: center; }
+
+.held video, .held .wechsel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.held .wechsel { opacity: 0; transition: opacity 450ms ease; }
+.held .wechsel.an { opacity: 1; }
+
+.held::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 55%);
+  pointer-events: none;
+}
+
+.projekte {
+  position: relative;
+  z-index: 1;
+  padding: 90px clamp(1.5rem, 4vw, 4rem);
+  display: grid;
+  gap: 0.2em;
+}
+
+.projekt {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  width: fit-content;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2rem, 4.8vw, 4.25rem);
+  line-height: 1.06;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: rgba(244, 242, 238, 0.34);
+  -webkit-text-stroke: 1px rgba(244, 242, 238, 0.25);
+  transition: color 260ms ease, -webkit-text-stroke-color 260ms ease;
+}
+
+.projekt:hover { color: var(--weiss); -webkit-text-stroke-color: transparent; }
+
+.projekt .credits {
+  font-family: var(--grotesk);
+  font-style: normal;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  line-height: 1.45;
+  color: var(--weiss);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 260ms ease, transform 320ms ease;
+  white-space: nowrap;
+}
+
+.projekt:hover .credits { opacity: 1; transform: none; }
+
+/* ── Culture: klebendes Riesenwort über dem Raster ── */
+.culture { position: relative; padding: 12vh clamp(1rem, 2.5vw, 2.5rem) 10vh; }
+
+.culture .wort {
+  position: sticky;
+  top: 4vh;
+  z-index: 2;
+  pointer-events: none;
+  text-align: center;
+  font-family: var(--grotesk);
+  font-weight: 700;
+  font-size: clamp(4.5rem, 15.5vw, 15rem);
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  mix-blend-mode: difference;
+  margin-bottom: -0.35em;
+}
+
+.gitter { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.75rem); }
+
+.kachel { display: grid; gap: 10px; align-content: start; margin-top: var(--rutsch, 0); }
+.kachel img { width: 100%; aspect-ratio: var(--r, 3 / 4); object-fit: cover; filter: grayscale(1) contrast(1.08); transition: filter 350ms; }
+.kachel:hover img { filter: none; }
+
+.kachel .zeile { display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+.kachel .pille {
+  border: 1px solid var(--weiss);
+  border-radius: 999px;
+  padding: 2px 10px;
+  letter-spacing: 0.04em;
+}
+.kachel .pille--blau { background: var(--kobalt); border-color: var(--kobalt); }
+.kachel .jahr { letter-spacing: 0.08em; }
+.kachel .titel { font-family: var(--serif); font-weight: 500; font-size: clamp(1rem, 1.6vw, 1.375rem); line-height: 1.2; text-transform: uppercase; letter-spacing: 0.02em; }
+
+.kachel--2 { --rutsch: 14vh; }
+.kachel--4 { --rutsch: 7vh; }
+
+/* ── Info in der Sprache der Vorlage ── */
+.info { padding: 10vh clamp(1.5rem, 4vw, 4rem); max-width: 74rem; }
+.info .satz { font-family: var(--serif); font-style: italic; font-size: clamp(1.5rem, 3.2vw, 2.75rem); line-height: 1.25; max-width: 28ch; margin-bottom: 5vh; }
+.info .kunden { display: flex; flex-wrap: wrap; gap: 0.4em 1.4em; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(244, 242, 238, 0.6); margin-bottom: 5vh; }
+.info .kunden b { color: var(--weiss); font-weight: 500; }
+
+.info .reihen { display: grid; gap: 0; border-top: 1px solid rgba(244, 242, 238, 0.25); }
+.info details { border-bottom: 1px solid rgba(244, 242, 238, 0.25); }
+.info summary { list-style: none; cursor: pointer; padding: 14px 0; display: flex; justify-content: space-between; gap: 1rem; }
+.info summary::-webkit-details-marker { display: none; }
+.info summary .t { font-family: var(--serif); font-weight: 500; text-transform: uppercase; letter-spacing: 0.03em; font-size: clamp(1rem, 1.8vw, 1.375rem); }
+.info summary .z { font-size: 12px; letter-spacing: 0.1em; color: rgba(244, 242, 238, 0.55); }
+.info details p { padding: 0 0 16px; max-width: 62ch; color: rgba(244, 242, 238, 0.75); }
+
+/* ── Kontakt ── */
+.kontakt { padding: 14vh clamp(1.5rem, 4vw, 4rem) 10vh; }
+.kontakt .zeile { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(2rem, 5.4vw, 4.75rem); line-height: 1.1; text-transform: uppercase; max-width: 14em; }
+.kontakt a { border-bottom: 2px solid var(--kobalt); }
+.kontakt a:hover { color: var(--kobalt); }
+.kontakt .unten { margin-top: 8vh; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244, 242, 238, 0.55); }
+
+@media (max-width: 860px) {
+  .gitter { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kachel--2, .kachel--4 { --rutsch: 0; }
+  .projekt { font-size: clamp(1.5rem, 7vw, 2.5rem); flex-wrap: wrap; gap: 0.5rem; }
+  .projekt .credits { display: none; }
+}
+
+</style>
+</head>
+<body>
+
+<aside class="leiste">
+  <b>le&werk</b>
+  <nav>
+    <a href="#projekte">Projects</a>
+    <a href="#culture">Culture</a>
+    <a href="#kontakt">Contact</a>
+  </nav>
+</aside>
+
+<section class="held" id="projekte">
+  <video src="../public/videos/lewerk-hero.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
+  <img class="wechsel" src="../public/images/work/siemens.webp" alt="" aria-hidden="true"><img class="wechsel" src="../public/images/work/allianz.webp" alt="" aria-hidden="true"><img class="wechsel" src="../public/images/work/revitive.jpg" alt="" aria-hidden="true"><img class="wechsel" src="../public/images/work/street-one.webp" alt="" aria-hidden="true"><img class="wechsel" src="../public/images/work/bvb-ea-sports.webp" alt="" aria-hidden="true"><img class="wechsel" src="../public/images/work/formel-d.jpg" alt="" aria-hidden="true">
+  <div class="projekte">
+    
+    <a class="projekt" href="#" onclick="return false" data-nr="0">
+      Siemens
+      <span class="credits">SOCIAL MEDIA KAMPAGNE<br>4:5 — 2026</span>
+    </a>
+    <a class="projekt" href="#" onclick="return false" data-nr="1">
+      Allianz × Olympia
+      <span class="credits">SOCIAL VIDEOS<br>9:16 · 16:9 — 2025</span>
+    </a>
+    <a class="projekt" href="#" onclick="return false" data-nr="2">
+      Revitive
+      <span class="credits">FOTOGRAFIE UND WEB CONTENT<br>3:2 · 16:9 — 2026</span>
+    </a>
+    <a class="projekt" href="#" onclick="return false" data-nr="3">
+      Street One
+      <span class="credits">SOCIAL CONTENT<br>9:16 — 2025</span>
+    </a>
+    <a class="projekt" href="#" onclick="return false" data-nr="4">
+      BVB × EA Sports
+      <span class="credits">SOCIAL AD<br>9:16 — 2026</span>
+    </a>
+    <a class="projekt" href="#" onclick="return false" data-nr="5">
+      Formel D
+      <span class="credits">FOTOGRAFIE<br>3:2 — 2025</span>
+    </a>
+  </div>
+</section>
+
+<section class="culture" id="culture">
+  <h2 class="wort">Culture</h2>
+  <div class="gitter">
+    
+    <figure class="kachel kachel--1" style="--r: 3 / 4">
+      <img src="../public/images/bts/bts-halle.jpg" alt="Setlicht in der Halle" loading="lazy">
+      <span class="zeile"><span class="pille pille--blau">Bts</span><span class="jahr">[2025]</span></span>
+      <p class="titel">Setlicht in der Halle</p>
+    </figure>
+    <figure class="kachel kachel--2" style="--r: 3 / 4">
+      <img src="../public/images/bts/bts-loft.jpg" alt="Interview-Set im Loft" loading="lazy">
+      <span class="zeile"><span class="pille ">Story</span><span class="jahr">[2026]</span></span>
+      <p class="titel">Interview-Set im Loft</p>
+    </figure>
+    <figure class="kachel kachel--3" style="--r: 3 / 4">
+      <img src="../public/images/bts/bts-schnitt.jpg" alt="Nachtschicht im Schnitt" loading="lazy">
+      <span class="zeile"><span class="pille pille--blau">Bts</span><span class="jahr">[2025]</span></span>
+      <p class="titel">Nachtschicht im Schnitt</p>
+    </figure>
+    <figure class="kachel kachel--4" style="--r: 3 / 4">
+      <img src="../public/images/bts/bts-studio.jpg" alt="Studio-Aufbau" loading="lazy">
+      <span class="zeile"><span class="pille pille--blau">Bts</span><span class="jahr">[2026]</span></span>
+      <p class="titel">Studio-Aufbau</p>
+    </figure>
+    <figure class="kachel kachel--1" style="--r: 3 / 4">
+      <img src="../public/images/bts/bts-transporter.jpg" alt="Unterwegs zum Dreh" loading="lazy">
+      <span class="zeile"><span class="pille ">Story</span><span class="jahr">[2025]</span></span>
+      <p class="titel">Unterwegs zum Dreh</p>
+    </figure>
+    <figure class="kachel kachel--2" style="--r: 4 / 3">
+      <img src="../public/images/krafthaus/haus-drohne.jpg" alt="Krafthaus von oben" loading="lazy">
+      <span class="zeile"><span class="pille ">Screening</span><span class="jahr">[2026]</span></span>
+      <p class="titel">Krafthaus von oben</p>
+    </figure>
+    <figure class="kachel kachel--3" style="--r: 3 / 4">
+      <img src="../public/images/bts/bts-buero.jpg" alt="Office Party" loading="lazy">
+      <span class="zeile"><span class="pille ">Story</span><span class="jahr">[2026]</span></span>
+      <p class="titel">Office Party</p>
+    </figure>
+    <figure class="kachel kachel--4" style="--r: 4 / 3">
+      <img src="../public/images/krafthaus/haus-02.jpg" alt="Rheinauhafen" loading="lazy">
+      <span class="zeile"><span class="pille pille--blau">Bts</span><span class="jahr">[2025]</span></span>
+      <p class="titel">Rheinauhafen</p>
+    </figure>
+  </div>
+</section>
+
+<section class="info">
+  <p class="satz">Le Werk is a visual content studio crafting brand content worth watching. — Gegründet von Filmemachern. Le Werk ist spezialisiert auf Storytelling, Film und Foto für Social und Branded Content.</p>
+  <p class="kunden"><b>Siemens</b><span>·</span><b>Street One</b><span>·</span><b>Douglas</b><span>·</span><b>Allianz</b><span>·</span><b>Olympische Spiele</b><span>·</span><b>Paralympisches Komitee</b><span>·</span><b>EA</b><span>·</span><b>Formel D</b><span>·</span><b>Seven.One</b><span>·</span><b>Zehnder Group</b><span>·</span><b>HUGO BOSS</b><span>·</span><b>Johnson & Johnson</b></p>
+  <div class="reihen">
+    
+    <details><summary><span class="t">Video</span><span class="z">Service</span></summary><p>Vertikale und horizontale Formate. Komplett aus einer Hand. Visuell ansprechend, mit inhaltlicher Tiefe und Auge fürs Detail. Für Kampagne und organischen Content.</p></details>
+    <details><summary><span class="t">Idee & Konzept</span><span class="z">Service</span></summary><p>Wo wir einsteigen, entscheidet ihr. Entweder setzen wir eure fertigen Ideen um. Oder wir kommen schon früher mit an Board und übernehmen die Ideenentwicklung und Konzeptarbeit. Es muss erst ein Fundament geschaffen werden? Gerne fangen wir bei der Content Strategy an.</p></details>
+    <details><summary><span class="t">Foto</span><span class="z">Service</span></summary><p>Aus derselben Produktion wie Video oder als eigener Shoot. Fotografie und Nachbearbeitung für Content, Kampagne, Event oder Marke.</p></details>
+    
+    <details><summary><span class="t">Content darf gut aussehen</span><span class="z">[01]</span></summary><p>Hochwertig produzierte Visuals in Bild und Bewegtbild — mit den Maßstäben an Licht, Bildgestaltung und Postproduktion, wie man es aus der Filmproduktion kennt.</p></details>
+    <details><summary><span class="t">Inhaltliche Substanz</span><span class="z">[02]</span></summary><p>Redaktionelle Tiefe, ehrlich erzählte Geschichten, menschliche Momente. Interviewbasiert und dokumentarisch, mit Blick für Charaktere.</p></details>
+    <details><summary><span class="t">Social First</span><span class="z">[03]</span></summary><p>Marken müssen dort sichtbar sein, wo die Aufmerksamkeit ihrer Kunden liegt. Wir denken social first und produzieren den richtigen Content für die richtigen Kanäle.</p></details>
+    
+    <details><summary><span class="t">Philipp Maxhofer</span><span class="z">Team</span></summary><p>Concept · Creative Director</p></details>
+    <details><summary><span class="t">Cem-Pierre Schuch</span><span class="z">Team</span></summary><p>Head of Production · Self-Shooting Director</p></details>
+    <details><summary><span class="t">Joscha Ortmeier</span><span class="z">Team</span></summary><p>Head of Post-Production · Photographer</p></details>
+    <details><summary><span class="t">Tom Beckers</span><span class="z">Team</span></summary><p>Producer · Content Creator</p></details>
+    
+    <details><summary><span class="t">Was kostet eine Produktion bei Le Werk?</span><span class="z">FAQ</span></summary><p>Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.</p></details>
+    <details><summary><span class="t">Macht ihr auch UGC- oder Handy-Content?</span><span class="z">FAQ</span></summary><p>Nein. Das ist ein anderer Markt mit anderen Preisen und anderem Anspruch. Bei uns entstehen Visuals auf Kampagnenniveau — auch dann, wenn sie am Ende vertikal im Feed laufen. Wer schnellen, günstigen Durchsatz sucht, ist bei uns falsch.</p></details>
+    <details><summary><span class="t">Bekommen wir Foto und Video aus einer Produktion?</span><span class="z">FAQ</span></summary><p>Ja, das ist der Kern unserer Arbeitsweise. Wir planen Sets so, dass bewegte und stehende Bilder parallel entstehen. Das spart einen kompletten Produktionstag und sorgt dafür, dass Foto und Video wie eine Kampagne aussehen — nicht wie zwei.</p></details>
+    <details><summary><span class="t">Warum denkt ihr vom vertikalen Format aus?</span><span class="z">FAQ</span></summary><p>Weil dort die Aufmerksamkeit liegt. Ein Bildaufbau, der als 16:9 entsteht und später hochkant beschnitten wird, verliert immer — Blickführung, Text und Rhythmus stimmen dann nicht mehr. Wir planen umgekehrt: vertikal als Kern, Landscape und Stills als Ableitung derselben Produktion.</p></details>
+    <details><summary><span class="t">Wie lange dauert es von der Anfrage bis zum fertigen Material?</span><span class="z">FAQ</span></summary><p>Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.</p></details>
+  </div>
+</section>
+
+<section class="kontakt" id="kontakt">
+  <p class="zeile">Erzähl uns von deinem Projekt — <a href="mailto:contact@lewerk.de">contact@lewerk.de</a></p>
+  <p class="unten">
+    <span>Le Werk — Visual Content Studio, Köln</span>
+    <span>Based in Köln, booked worldwide:</span>
+    <span>Konzept · Produktion · Postproduktion</span>
+  </p>
+</section>
+
+<script>
+(function () {
+  /* Der Grund wechselt zur überfahrenen Projektzeile. Platzhalter mit
+     Standbildern — die Vorlage blendet je Projekt ein eigenes Video um. */
+  var wechsel = document.querySelectorAll('.wechsel');
+  document.querySelectorAll('[data-nr]').forEach(function (p) {
+    p.addEventListener('pointerenter', function () {
+      wechsel.forEach(function (w, n) { w.classList.toggle('an', String(n) === p.dataset.nr); });
+    });
+    p.addEventListener('pointerleave', function () {
+      wechsel.forEach(function (w) { w.classList.remove('an'); });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
