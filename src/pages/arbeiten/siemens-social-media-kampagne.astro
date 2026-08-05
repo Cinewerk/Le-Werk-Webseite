@@ -324,13 +324,24 @@ const naechster = arbeiten[(stelle + 1) % arbeiten.length];
 
   /* ══ 1 · Kopf ══════════════════════════════════════════════════════════ */
 
-  /* Oben Platz für die Kopfzeile, unten keiner: Der Titel ragt aus der
-     Fläche heraus und bringt seinen Abstand selbst mit.
+  /* KEIN ABSTAND, WEDER OBEN NOCH UNTEN NOCH SEITLICH.
 
-     Die Rinne fällt weg, der Kopf läuft über die volle Breite. */
+     Oben stand hier ein Abstand von 9rem, damit die Fläche unter der
+     Kopfzeile beginnt. Das ergab einen Balken: Die Kopfzeile ist 96px
+     hoch, der Abstand war 180 — die übrigen 84px waren blanker Abschnitt,
+     und auf Simons Bildschirm mit seiner größeren Grundschrift noch mehr.
+
+     Die Kopfzeile ist ohnehin fixiert und bis 40px Scrollweg
+     durchsichtig; sie gehört über den Teaser, nicht über eine leere
+     Fläche davor. Genau so steht es auf der Startseite: Das Video liegt
+     dort absolut über den ganzen Abschnitt, der Abstand schiebt nur den
+     Text.
+
+     Unten keiner, weil der Titel aus der Fläche herausragt und seinen
+     Abstand selbst mitbringt. Seitlich keiner, weil der Kopf über die
+     volle Fensterbreite läuft. */
   .fall-kopf {
-    padding-block: clamp(9rem, 20vh, 13rem) 0;
-    padding-inline: 0;
+    padding: 0;
     overflow-x: clip;
   }
 
@@ -515,19 +526,44 @@ const naechster = arbeiten[(stelle + 1) % arbeiten.length];
      Der Übergang ist damit nicht weich, sondern nicht vorhanden.
 
      Über dem Knopf liegt der Verlauf nicht: pointer-events: none, sonst
-     schluckt er den Klick. */
+     schluckt er den Klick.
+
+     OBEN KOMMT EINE ZWEITE LAGE DAZU, seit die Fläche bis an den
+     Seitenrand reicht. Die Kopfzeile schwebt jetzt darüber und ist bis
+     40px Scrollweg durchsichtig — Wortmarke und Menüknopf stehen also
+     weiß auf dem Teaser. Gemessen an derselben Stelle:
+
+                     ohne     mit
+       Wortmarke     5.70     7.64
+       Menüknopf     3.86     5.47
+
+     Die Wortmarke trug schon vorher, der Menüknopf mit 3,86 nicht: Er
+     sitzt rechts, wo der unscharfe Grund am hellsten ist. Für ein
+     Bedienelement genügen zwar 3,0 — für eines, das die einzige
+     Navigation der Seite öffnet, ist das zu knapp.
+
+     In neutralem Schwarz und nicht in Petrol, wie auf der Startseite aus
+     demselben Grund: Ein farbiger Verlauf legt sich als Stich über das
+     Material. Schwarz dunkelt ab, ohne einzufärben. Bei 18 Prozent ist er
+     aus — das ist gerade die Höhe der Kopfzeile plus etwas Auslauf. */
   .fall-kopf__film::after {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background: linear-gradient(
-      0deg,
-      rgba(4, 37, 44, 0.88) 0%,
-      rgba(4, 37, 44, 0.40) 10%,
-      rgba(4, 37, 44, 0) 20%
-    );
+    background:
+      linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0) 18%
+      ),
+      linear-gradient(
+        0deg,
+        rgba(4, 37, 44, 0.88) 0%,
+        rgba(4, 37, 44, 0.4) 10%,
+        rgba(4, 37, 44, 0) 20%
+      );
   }
 
   /* Der Knopf über dem Verlauf, sonst ist er nicht anklickbar. */
