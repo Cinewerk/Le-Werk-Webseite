@@ -94,34 +94,83 @@ const naechster = arbeiten[(stelle + 1) % arbeiten.length];
   heroDark={true}
 >
   <!-- ═══ 1 · KOPF ═══════════════════════════════════════════════════════
-       Referenz bei 1440px: Bild 1163 x 588, mittig, 131px von jeder Seite.
-       Darüber der Titel, mittig, zweizeilig — die Versalzeile liegt auf
-       der Unterkante des Bildes und ragt zu drei Vierteln darunter hinaus.
+       Referenz bei 1440px: Video 1163 x 588, mittig, 131px von jeder
+       Seite. Darüber der Titel, mittig, zweizeilig — die Versalzeile liegt
+       auf der Unterkante und ragt zu drei Vierteln darunter hinaus.
+
+       ZWEI ABWEICHUNGEN, BEIDE VON SIMON BESTELLT:
+
+       Erstens läuft die Fläche über die ganze Fensterbreite statt im
+       Container zu stehen.
+
+       Zweitens ist der Teaser hochkant. Die Referenz zeigt Querformat und
+       kann es einfach breit ziehen; ein 9:16 in einer breiten Fläche geht
+       das nicht. Gelöst wie in Simons Vorlage: Das Video steht mittig in
+       seinem eigenen Format, links und rechts füllt eine unscharf
+       gezogene Fassung desselben Bildes die Fläche. Kein schwarzer
+       Balken, kein Beschnitt, und die Farben des Films tragen bis an den
+       Rand.
+
+       Der Klick auf den Teaser öffnet den Hauptfilm — data-startet zeigt
+       auf die Videowand weiter unten, Begründung dort in der Komponente.
   -->
   <section class="section section--dark fall-kopf">
-    <div class="container">
-      <!-- Die Zeichenzahl steht hier oben und nicht an der Zeile selbst:
-           Aus ihr rechnet sich die Titelgröße, und die brauchen drei
-           Elemente darunter — Kundenname, Versalzeile und der Halter, an
-           dem der Überstand hängt. Nur von hier aus erbt sie alle drei. -->
-      <div class="fall-kopf__buehne" style={`--laenge: ${sacheLaenge}`}>
-        <figure class="fall-kopf__bild" data-reveal>
-          <img
-            src={withBase('/images/work/siemens.webp')}
-            alt="Frau mit regenbogenbunt gefärbtem Haar und großflächigem Rückentattoo am Ufer eines Sees"
-            width="1920" height="1080" fetchpriority="high" decoding="async"
-          />
-        </figure>
+    <!-- Die Zeichenzahl steht hier oben und nicht an der Zeile selbst:
+         Aus ihr rechnet sich die Titelgröße, und die brauchen drei
+         Elemente darunter — Kundenname, Versalzeile und der Halter, an
+         dem der Überstand hängt. Nur von hier aus erbt sie alle drei. -->
+    <div class="fall-kopf__buehne" style={`--laenge: ${sacheLaenge}`}>
+      <div class="fall-kopf__film">
+        <!-- Der unscharfe Grund. Eigenes Bild und nicht dasselbe noch
+             einmal: 96px breit genügt hinter blur(), spart 97 Prozent
+             und lädt vor dem Player. -->
+        <img
+          class="fall-kopf__grund" src={withBase('/images/siemens/teaser-grund.webp')}
+          alt="" aria-hidden="true" width="96" height="171" fetchpriority="high"
+        />
 
-        <!-- Zwei Elemente und nicht eins: Der Halter trägt den Überstand,
-             die Überschrift das Erscheinen beim Scrollen. Zusammengelegt
-             hebt das eine das andere auf — [data-reveal].is-in setzt
-             transform: none, und der Überstand wäre weg. -->
-        <div class="fall-kopf__halter">
-          <h1 class="fall-kopf__titel" data-reveal data-reveal-delay="120">
-            <span class="editorial fall-kopf__kunde">{kunde}</span>
-            <span class="headline fall-kopf__sache">{sache}</span>
-          </h1>
+        <div class="fall-kopf__spur">
+          <img
+            class="fall-kopf__standbild" src={withBase('/images/siemens/teaser.webp')}
+            alt="" aria-hidden="true" width="720" height="1280" fetchpriority="high"
+          />
+          <!-- background=1 macht daraus einen Player ohne Bedienelemente,
+               der stumm und in Schleife läuft. dnt=1 bittet Vimeo, keine
+               Sitzungsdaten zu sammeln. -->
+          <iframe
+            class="fall-kopf__spieler"
+            src="https://player.vimeo.com/video/1035916505?h=3f2440b6d1&background=1&dnt=1"
+            title="Vorschau: Siemens — Social Media Kampagne"
+            allow="autoplay" tabindex="-1" aria-hidden="true" loading="eager"
+          ></iframe>
+        </div>
+
+        <button class="fall-kopf__start" type="button" data-startet="hauptfilm">
+          <span class="fall-kopf__play" aria-hidden="true"></span>
+          <span class="visually-hidden">Hauptfilm abspielen: Lydia, 0:49</span>
+        </button>
+      </div>
+
+      <!-- DREI HÜLLEN, JEDE MIT EINER AUFGABE. Das sieht nach zu viel aus,
+           ist aber je einmal begründet:
+
+             halter   liegt über der ganzen Fläche und setzt seine
+                      Unterkante auf deren Unterkante
+             mitte    ist der Container — an seiner Breite hängt die
+                      Titelgröße, nicht an der des Fensters
+             schub    trägt den Überstand
+
+           Warum der Schub nicht die Überschrift selbst ist: Die trägt
+           data-reveal, und [data-reveal].is-in setzt transform: none. Der
+           Überstand wäre beim Hereinscrollen wieder weg. -->
+      <div class="fall-kopf__halter">
+        <div class="fall-kopf__mitte container">
+          <div class="fall-kopf__schub">
+            <h1 class="fall-kopf__titel" data-reveal data-reveal-delay="120">
+              <span class="editorial fall-kopf__kunde">{kunde}</span>
+              <span class="headline fall-kopf__sache">{sache}</span>
+            </h1>
+          </div>
         </div>
       </div>
     </div>
@@ -203,7 +252,7 @@ const naechster = arbeiten[(stelle + 1) % arbeiten.length];
       <!-- Datenschutz: Vor dem Klick steht nur ein Standbild von unserem
            eigenen Server, es geht keine Anfrage an Vimeo raus. -->
       <div class="fall-film__wand" data-reveal data-reveal-delay="120">
-        <Videowand clips={[hauptfilm]} poster="/images/siemens/poster" spalten={1} />
+        <Videowand clips={[hauptfilm]} poster="/images/siemens/poster" spalten={1} id="hauptfilm" />
       </div>
     </div>
   </section>
@@ -275,83 +324,214 @@ const naechster = arbeiten[(stelle + 1) % arbeiten.length];
 
   /* ══ 1 · Kopf ══════════════════════════════════════════════════════════ */
 
-  /* Oben Platz für die Kopfzeile, unten keiner: Der Titel ragt aus dem
-     Bild heraus und bringt seinen Abstand selbst mit. */
-  .fall-kopf { padding-block: clamp(9rem, 20vh, 13rem) 0; }
+  /* Oben Platz für die Kopfzeile, unten keiner: Der Titel ragt aus der
+     Fläche heraus und bringt seinen Abstand selbst mit.
 
-  /* Bild und Titel liegen im selben Feld übereinander. Ein negativer
+     Die Rinne fällt weg, der Kopf läuft über die volle Breite. */
+  .fall-kopf {
+    padding-block: clamp(9rem, 20vh, 13rem) 0;
+    padding-inline: 0;
+    overflow-x: clip;
+  }
+
+  /* Film und Titel liegen im selben Feld übereinander. Ein negativer
      Abstand täte es auch, aber dann müsste die Zahl an der Schriftgröße
      hängen und bei jeder Fensterbreite nachgerechnet werden. */
-  /* container-type, weil die Größe der Versalzeile in cqw steht — sie muss
-     sich auf die Breite beziehen, in der die Zeile Platz hat. */
-  .fall-kopf__buehne {
-    display: grid;
-    container-type: inline-size;
-  }
+  .fall-kopf__buehne { display: grid; }
 
   .fall-kopf__buehne > * { grid-area: 1 / 1; }
 
-  .fall-kopf__bild {
+  /* WIE HOCH DIE FLÄCHE IST. Ein 9:16 in voller Fensterbreite wäre bei
+     1440px Fenster 2560px hoch — die Seite bestünde aus einem Teaser.
+     Die Höhe kommt deshalb vom Fenster und nicht vom Format: 78vh lassen
+     unten Luft, sodass sichtbar bleibt, dass es weitergeht.
+
+     Die Grenzen fangen die Extreme: Auf einem flachen Fenster (600px hoch)
+     wären 78vh nur 468px und das Hochformat 263px breit — daher 28rem
+     nach unten. Nach oben 52rem, damit der Teaser auf einem hohen
+     Bildschirm nicht ins Endlose wächst.
+
+     UND DANN DIE ZWEITE GRENZE, 100vw × 16/9. Sie greift auf dem Telefon:
+     Bei 375px Fenster und 702px Höhe wollte die Spur 395px breit werden —
+     zwanzig mehr, als der Bildschirm hat. Sie wäre beschnitten worden oder
+     hätte die Seite seitlich scrollen lassen.
+
+     Die Höhe darf deshalb nie größer sein als die, bei der die Spur genau
+     die Fensterbreite ausfüllt. Bei 375px sind das 667, und die Spur ist
+     dann 375 breit: Der Teaser steht randlos, der unscharfe Grund
+     entfällt von selbst, weil nichts mehr zu füllen ist. Genau richtig —
+     auf einem Telefon ist ein Hochformat ohnehin das ganze Bild. */
+  .fall-kopf__film {
     position: relative;
-    margin: 0;
+    height: min(clamp(28rem, 78vh, 52rem), calc(100vw * 16 / 9));
     overflow: hidden;
-    border-radius: var(--radius-bild);
   }
 
-  .fall-kopf__bild img {
-    display: block;
+  /* Der unscharfe Grund füllt die ganze Fläche. scale, weil blur() die
+     Kanten ausfranst — ohne die Vergrößerung stünde ringsum ein weicher
+     Saum, durch den der Abschnitt durchscheint.
+
+     saturate hoch, brightness runter: Das Motiv ist hell, und der scharfe
+     Teaser in der Mitte soll sich absetzen. Gedämpft wirkt der Grund wie
+     Licht aus dem Film statt wie ein zweites Bild. */
+  .fall-kopf__grund {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(2.5rem) saturate(1.25) brightness(0.52);
+    transform: scale(1.15);
   }
 
-  /* Lesbarkeitsverlauf, auf dem echten Motiv gemessen. In der Referenz
-     braucht es ihn nicht — dort ist das Heldenbild ein dunkles Video.
-     Hier steht der Titel über einem hellen See, und ohne Verlauf kommt er
-     auf 1,02:1. Das ist nicht schwach, das ist unsichtbar.
+  /* Die scharfe Spur: das Video in seinem eigenen Format, mittig, über
+     die volle Höhe. Die Breite ergibt sich aus 9:16 — bei 780px Höhe sind
+     das 439. */
+  .fall-kopf__spur {
+    position: absolute;
+    inset-block: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    aspect-ratio: 9 / 16;
+    height: 100%;
+    /* Doppelter Boden zur Höhenrechnung oben: Sollte die je danebenliegen
+       — andere Bildlaufleiste, anderer Browser —, wird die Spur schmaler
+       statt die Seite breiter. */
+    max-width: 100%;
+    overflow: hidden;
+    background: var(--petrol-deep, #04252c);
+  }
 
-     Zwei Bänder zählen, beide von der Unterkante aus gemessen: Die
-     Bodoni-Zeile liegt zwischen 20 und 100px und damit ganz im Bild, von
-     der Versalzeile liegen nur die oberen 20px darauf — der Rest ragt
-     heraus und steht auf Petrol.
+  .fall-kopf__standbild,
+  .fall-kopf__spieler {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    object-fit: cover;
+  }
 
-     Fassungen durchgerechnet, schlechtester Wert je Fassung — es ist
-     immer die Bodoni-Zeile, nie die Versalzeile:
+  /* Der Player liegt über dem Standbild und blendet es zu. Bis er läuft —
+     oder wenn Vimeo nicht erreichbar ist — steht das Standbild da, und
+     zwar von unserem eigenen Server.
 
-       .60 / .30 / 0 @ 20 %     2.42
-       .74 / .42 / 0 @ 24 %     3.77
-       .78 / .46 / 0 @ 30 %     4.87
-       .78 / .46 / 0 @ 52 %     6.04     wie die Team-Kacheln
-       .88 / .62 / 0 @ 34 %     7.45     genommen
-       .90 / .68 / 0 @ 36 %     8.51
+     pointer-events: none, weil der Klick nicht im Player landen darf: Er
+     gehört dem Knopf darüber, der den Hauptfilm öffnet. Ein Player ohne
+     Bedienelemente schluckt ihn sonst wortlos. */
+  .fall-kopf__spieler { pointer-events: none; }
 
-     GENOMMEN IST NICHT DIE ERSTE, DIE 4,5 HÄLT. Sonst wäre es die dritte
-     Fassung mit 4,87 geworden. Der Grund steht in der Schrift: 4,5 gilt
-     für massive Buchstaben, und Bodoni Moda hat Haarstriche. Bei 80px
-     sind die dünnsten Stellen keine zwei Pixel breit — was dort an
-     Kontrast fehlt, fehlt am ganzen Wort. Die Norm kennt diesen
-     Unterschied nicht, das Auge schon.
+  /* Bei reduzierter Bewegung läuft nichts von selbst. Der Player wird
+     dann gar nicht erst angezeigt, und es bleibt beim Standbild — das ist
+     mehr als ihn nur anzuhalten: Es geht auch keine Anfrage an Vimeo
+     raus, weil display: none das Nachladen des iframes verhindert.
 
-     Und sie ist trotzdem enger als die Fassung der Team-Kacheln: 34 statt
-     52 Prozent bei mehr Kontrast. Das ist kein Widerspruch, sondern die
-     Lage der Schrift — sie sitzt hier in den unteren 100px eines 704px
-     hohen Bildes. Ein Verlauf bis 52 Prozent tönte 366px für 100px
-     Schrift, und zwar schwächer.
+     Der Knopf bleibt. Wer den Film sehen will, klickt ihn an; reduzierte
+     Bewegung heißt weniger Bewegung, nicht weniger Inhalt. */
+  @media (prefers-reduced-motion: reduce) {
+    .fall-kopf__spieler { display: none; }
+  }
 
-     Die Zahlen erzeugt scratchpad/kopf-kontrast.js. Wer das Heldenbild
-     tauscht, rechnet neu: Auf einem dunklen Motiv trägt viel weniger. */
-  .fall-kopf__bild::after {
+  .fall-kopf__start {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  /* Derselbe Knopf wie in der Videowand, nur größer. Er sitzt in der
+     Mitte des Teasers und nicht in der Mitte der Fläche — sonst stünde er
+     bei breiten Fenstern im Unscharfen. */
+  .fall-kopf__play {
+    position: relative;
+    width: clamp(3.5rem, 6vw, 5.5rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgba(4, 37, 44, 0.55);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    transition: transform var(--dur) var(--ease-out),
+                background var(--dur) var(--ease-out);
+  }
+
+  /* Dreieck aus Rändern statt Zeichen: Ein ▶ aus der Schrift sitzt je nach
+     Font unterschiedlich hoch und lässt sich nicht optisch zentrieren. */
+  .fall-kopf__play::before {
+    content: '';
+    position: absolute;
+    left: 54%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-style: solid;
+    border-width: 0.6rem 0 0.6rem 1rem;
+    border-color: transparent transparent transparent #fff;
+  }
+
+  .fall-kopf__start:hover .fall-kopf__play {
+    transform: scale(1.08);
+    background: rgba(4, 37, 44, 0.75);
+  }
+
+  .fall-kopf__start:focus-visible { outline: none; }
+  .fall-kopf__start:focus-visible .fall-kopf__play {
+    outline: 2px solid var(--petrol-light);
+    outline-offset: 4px;
+  }
+
+  /* Lesbarkeitsverlauf über der ganzen Fläche — er trägt die Schrift und
+     schließt die Fläche zugleich nach unten ab.
+
+     Er liegt über allem, auch über dem unscharfen Grund: Die Versalzeile
+     ist breiter als die scharfe Spur und läuft über beide.
+
+     GEMESSEN AM ZUSAMMENGESETZTEN BILD, nicht an einer Lage einzeln. Der
+     Aufbau hat drei Schichten — unscharfer Grund, scharfe Spur, Verlauf —
+     und was am Ende unter der Schrift liegt, sieht man erst, wenn man sie
+     übereinanderlegt. Nachgebaut im Canvas mit denselben Filtern, dann der
+     schlechteste Wert an der hellsten 24px-Säule je Zeile:
+
+       .34 / .18 / 0 @ 20 %     6.63
+       .92 / .30 / 0 @ 15 %     6.47
+       .88 / .34 / 0 @ 17 %     6.76
+       .88 / .40 / 0 @ 20 %     7.63     genommen
+       .46 / .26 / 0 @ 22 %     7.34
+       .88 / .62 / 0 @ 34 %    11.96     erster Versuch, weit zu viel
+
+     Der erste Versuch stammte noch vom alten Standbild und war für diese
+     Fläche doppelt zu stark: Die untere Hälfte des Teasers ist ohnehin
+     dunkel — dort steht ihr Shirt —, und der unscharfe Grund ist auf 52
+     Prozent Helligkeit gedimmt. Beides zusammen trägt die Schrift schon
+     fast allein.
+
+     ZWEI ANFORDERUNGEN, NICHT EINE. Deshalb nicht die schwächste Fassung
+     über 4,5. Der Verlauf muss auch die Unterkante schließen: Dort
+     grenzt die Fläche ohne Rundung an den Abschnitt, und ein sichtbarer
+     Absatz sähe aus wie ein Fehler. Bei .88 am Fuß rechnet sich die
+     unterste Zeile auf rgb(5, 37, 44) — der Abschnitt ist rgb(4, 37, 44).
+     Der Übergang ist damit nicht weich, sondern nicht vorhanden.
+
+     Über dem Knopf liegt der Verlauf nicht: pointer-events: none, sonst
+     schluckt er den Klick. */
+  .fall-kopf__film::after {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: inherit;
+    z-index: 1;
     pointer-events: none;
     background: linear-gradient(
       0deg,
       rgba(4, 37, 44, 0.88) 0%,
-      rgba(4, 37, 44, 0.62) 18%,
-      rgba(4, 37, 44, 0) 34%
+      rgba(4, 37, 44, 0.40) 10%,
+      rgba(4, 37, 44, 0) 20%
     );
   }
+
+  /* Der Knopf über dem Verlauf, sonst ist er nicht anklickbar. */
+  .fall-kopf__start { z-index: 2; }
 
   /* WIE WEIT DER TITEL HERAUSRAGT. In der Referenz steht die Versalzeile
      bei 669 bis 751px, die Unterkante des Bildes bei 689 — von den 82px
@@ -374,13 +554,34 @@ const naechster = arbeiten[(stelle + 1) % arbeiten.length];
      Zeile heraus — bei einer Zeile wie bei zweien, auf jedem Gerät. */
   .fall-kopf__halter {
     align-self: end;
-    font-size: var(--fs-titel);
-    transform: translateY(0.7em);
     position: relative;
-    z-index: 1;
+    z-index: 3;
+    /* Der Halter liegt über der ganzen Fläche, hat aber nur in der Mitte
+       Schrift. Ohne das schlucken seine leeren Ränder den Klick auf den
+       Teaser. */
+    pointer-events: none;
   }
 
-  .fall-kopf__titel { margin: 0; text-align: center; }
+  /* Der Container und zugleich die Bezugsgröße der Titelrechnung. Die
+     Fläche darüber läuft über das ganze Fenster; cqw dort hieße, dass der
+     Titel bei 1920px Fenster 40 Prozent größer würde als der Container
+     erlaubt, und über seine Kanten hinausliefe. */
+  .fall-kopf__mitte { container-type: inline-size; }
+
+  .fall-kopf__schub {
+    font-size: var(--fs-titel);
+    transform: translateY(0.7em);
+  }
+
+  /* font-size: inherit, weil h1 vom Browser 2em bekommt — auf dem Schub
+     mit seinen 88px wären das 176. Sichtbar wird das nicht, die beiden
+     Zeilen setzen ihre Größe selbst; die Zeilenhöhe der Überschrift
+     stünde aber auf 290px und riebe sich mit jedem späteren Zusatz. */
+  .fall-kopf__titel {
+    margin: 0;
+    font-size: inherit;
+    text-align: center;
+  }
 
   /* DIE GRÖSSE DES TITELS — eine Rechnung, drei Nutzer.
 
@@ -404,7 +605,7 @@ const naechster = arbeiten[(stelle + 1) % arbeiten.length];
      Eine Titelzeile, die sich kleinrechnet, um einzeilig zu bleiben, hat
      die Rangfolge verloren. Ab hier bricht sie lieber um: Der Überstand
      rechnet in Zeilenhöhen und trägt zwei Zeilen genauso wie eine. */
-  .fall-kopf__buehne {
+  .fall-kopf__mitte {
     --fs-titel: clamp(
       2rem,
       min(6.3vw, calc(96cqw / (var(--laenge, 20) * 0.595))),

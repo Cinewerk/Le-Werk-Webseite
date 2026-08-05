@@ -19,9 +19,22 @@ interface Props {
   poster: string;
   /** Kacheln je Reihe ab 48rem. Bei ein bis zwei Videos weniger. */
   spalten?: 1 | 2 | 4;
+  /**
+   * Name der Wand, damit sie sich von außen öffnen lässt.
+   *
+   * Wer ihn setzt, kann irgendwo auf der Seite ein Element mit
+   * data-startet="<name>" hinstellen; ein Klick darauf öffnet den ersten
+   * Clip dieser Wand. Gebraucht für den Teaser im Kopf der Fallseiten:
+   * Er zeigt eine Vorschau und soll den Hauptfilm starten, steht aber in
+   * einem ganz anderen Abschnitt.
+   *
+   * Ohne Namen bleibt alles wie bisher — die Wand öffnet nur über ihre
+   * eigenen Kacheln.
+   */
+  id?: string;
 }
 
-const { clips, poster, spalten = 4 } = Astro.props;
+const { clips, poster, spalten = 4, id } = Astro.props;
 
 // Höhe des Standbilds aus dem Format, damit der Platz vor dem Laden steht
 // und die Seite beim Nachladen nicht springt.
@@ -29,7 +42,7 @@ const hoehe = (ratio: Clip['ratio']) =>
   ratio === '9 / 16' ? 1138 : ratio === '3 / 4' ? 853 : 800;
 ---
 
-<div class="videowand">
+<div class="videowand" data-wand={id}>
   <ul class={`clips clips--${spalten}`}>
     {clips.map((c, i) => (
       <li
@@ -106,43 +119,58 @@ const hoehe = (ratio: Clip['ratio']) =>
       auslöser = null;
     };
 
+    // Öffnen als eigene Funktion, weil zwei Wege hineinführen: die Kachel
+    // selbst und ein Auslöser irgendwo sonst auf der Seite. Beide müssen
+    // denselben Weg gehen — vor allem beim Fokus, der am Ende genau dorthin
+    // zurückkehren soll, wo der Klick herkam.
+    const oeffnen = (clip: HTMLElement, quelle: HTMLElement) => {
+      const { id, hash, titel, laenge, ratio, r } = clip.dataset;
+
+      const params = new URLSearchParams({
+        autoplay: '1',
+        title: '0',
+        byline: '0',
+        portrait: '0',
+        dnt: '1',
+      });
+      if (hash) params.set('h', hash);
+
+      const rahmen = document.createElement('iframe');
+      rahmen.src = `https://player.vimeo.com/video/${id}?${params}`;
+      rahmen.title = titel ?? 'Video';
+      rahmen.allow = 'autoplay; fullscreen; picture-in-picture';
+      rahmen.setAttribute('allowfullscreen', '');
+
+      // Zwei Angaben zum Format: aspect-ratio für die Form, die Zahl für
+      // die Höhenrechnung. Ohne die Zahl könnte CSS nicht ausrechnen, ab
+      // wann die Breite und nicht mehr die Höhe das Maß vorgibt.
+      buehne.style.setProperty('--ratio', ratio ?? '9 / 16');
+      buehne.style.setProperty('--r', r ?? '0.5625');
+      buehne.replaceChildren(rahmen);
+
+      zeile.textContent = laenge ? `${titel} · ${laenge}` : (titel ?? '');
+      kasten.setAttribute('aria-label', titel ?? 'Video');
+
+      auslöser = quelle;
+      kasten.showModal();
+      document.body.style.overflow = 'hidden';
+    };
+
     wand.querySelectorAll<HTMLElement>('.clip').forEach((clip) => {
       const knopf = clip.querySelector<HTMLButtonElement>('.clip__start');
       if (!knopf) return;
-
-      knopf.addEventListener('click', () => {
-        const { id, hash, titel, laenge, ratio, r } = clip.dataset;
-
-        const params = new URLSearchParams({
-          autoplay: '1',
-          title: '0',
-          byline: '0',
-          portrait: '0',
-          dnt: '1',
-        });
-        if (hash) params.set('h', hash);
-
-        const rahmen = document.createElement('iframe');
-        rahmen.src = `https://player.vimeo.com/video/${id}?${params}`;
-        rahmen.title = titel ?? 'Video';
-        rahmen.allow = 'autoplay; fullscreen; picture-in-picture';
-        rahmen.setAttribute('allowfullscreen', '');
-
-        // Zwei Angaben zum Format: aspect-ratio für die Form, die Zahl für
-        // die Höhenrechnung. Ohne die Zahl könnte CSS nicht ausrechnen, ab
-        // wann die Breite und nicht mehr die Höhe das Maß vorgibt.
-        buehne.style.setProperty('--ratio', ratio ?? '9 / 16');
-        buehne.style.setProperty('--r', r ?? '0.5625');
-        buehne.replaceChildren(rahmen);
-
-        zeile.textContent = laenge ? `${titel} · ${laenge}` : (titel ?? '');
-        kasten.setAttribute('aria-label', titel ?? 'Video');
-
-        auslöser = knopf;
-        kasten.showModal();
-        document.body.style.overflow = 'hidden';
-      });
+      knopf.addEventListener('click', () => oeffnen(clip, knopf));
     });
+
+    // Auslöser außerhalb der Wand. Sie öffnen immer den ersten Clip — der
+    // Teaser im Seitenkopf zeigt den Hauptfilm, und der steht vorn.
+    const marke = wand.dataset.wand;
+    const erste = wand.querySelector<HTMLElement>('.clip');
+    if (marke && erste) {
+      document
+        .querySelectorAll<HTMLElement>(`[data-startet="${marke}"]`)
+        .forEach((el) => el.addEventListener('click', () => oeffnen(erste, el)));
+    }
 
     kasten.querySelector('.leuchtkasten__zu')?.addEventListener('click', schliessen);
 
