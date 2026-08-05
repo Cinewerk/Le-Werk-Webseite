@@ -3,20 +3,89 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjektAbschluss from '../../components/ProjektAbschluss.astro';
 import Videowand from '../../components/Videowand.astro';
 import type { Clip } from '../../components/Videowand.astro';
+import { arbeiten } from '../../data/arbeiten';
 import { withBase } from '../../lib/paths';
 
-// Eigene Seite statt der Sammelroute — Kennzeichen eigeneSeite in
-// src/data/arbeiten.ts.
+// ═══════════════════════════════════════════════════════════════════════
+// DIE FALLSEITE
+// ═══════════════════════════════════════════════════════════════════════
 //
-// ACHTUNG, Texte sind ein Entwurf. Zum Projekt lagen keine Angaben vor.
-// Was hier steht, stammt aus dem, was in den Filmen selbst zu sehen ist:
-// zwei Porträts, Hochformat 4:5, rund 50 Sekunden, deutsche Untertitel
-// fest im Bild. Keine Zahl, kein Ergebnis, keine Aussage über den Auftrag.
+// Aufbau nach der Referenz, die Simon am 5. August 2026 als
+// Bildschirmaufnahme geliefert hat: 27km.com/work/vision-m-next. Die
+// Reihenfolge der Abschnitte ist von dort übernommen, ebenso die
+// Grundidee jedes einzelnen — was übersetzt wurde und warum, steht
+// jeweils beim Abschnitt im Stylesheet.
+//
+// ÜBERSETZT UND NICHT KOPIERT. Die Referenz setzt Druk Wide auf
+// Fast-Schwarz mit 36px Seitenrand und einem 100-Spalten-Raster. Le Werk
+// hat eine eigene Sprache, und die Seite muss sich in sie einfügen:
+//
+//   Druk Wide 700 versal    →  Poppins 800 versal   (.headline)
+//   PP Editorial New 200    →  Bodoni Moda          (.editorial)
+//   TWK Lausanne 400        →  Poppins 400
+//   Grund #0e0e0e           →  Petrol #04252c       (.section--dark)
+//   Fließtext Weiß 40 %     →  --on-dark-muted (68 %)
+//   Radius 16px             →  --radius-bild (9px)
+//   Seitenrand 36px         →  --gutter
+//   100-Spalten-Raster      →  12 Spalten, wie überall sonst hier
+//
+// Die Maßverhältnisse dagegen sind übernommen, und zwar gemessen statt
+// geschätzt: Die Referenzseite wurde bei 1440px Fensterbreite ausgelesen,
+// die Werte stehen jeweils beim Abschnitt.
+//
+// ═══════════════════════════════════════════════════════════════════════
+//
+// ACHTUNG, ES FEHLT MATERIAL. Zum Projekt liegen bis heute keine Angaben
+// vor; die Texte sind ein Entwurf aus dem, was in den Filmen selbst zu
+// sehen ist. Offen sind außerdem:
+//
+//   · zwei Bilder für den Projektsteckbrief (hoch und quer)
+//   · Bilder für einen Abschnitt "Behind the Scenes" — es gibt keine
+//   · die Stabangaben für "Credits" — Regie, Kamera, Schnitt
+//
+// Die Steckbrief-Bilder stehen unten als Datenfeld. Sobald sie da sind,
+// eintragen; ohne sie rückt der Text an ihre Stelle und der Abschnitt
+// bleibt heil.
 
-const clips: Clip[] = [
-  { id: '999442059', titel: 'Lydia', laenge: '0:49', ratio: '4 / 5' },
+const kunde = 'Siemens';
+const sache = 'Social Media Kampagne';
+
+// Zeichenzahl der Versalzeile — daran hängt ihre Größe, damit sie auf
+// jeder Fensterbreite einzeilig bleibt. Begründung bei .fall-kopf__sache.
+const sacheLaenge = sache.length;
+
+const steckbrief = {
+  text:
+    'Kein Imagefilm über ein Unternehmen, sondern zwei Menschen, die ' +
+    'erzählen, woran sie arbeiten. Interviewbasiert und dokumentarisch: ' +
+    'keine Sprecherstimme, kein Skript im Mund der Beteiligten.',
+  zeilen: [
+    { was: 'Kunde', wer: 'Siemens' },
+    { was: 'Produktion', wer: 'Le Werk' },
+    { was: 'Format', wer: '4:5, deutsch untertitelt' },
+    { was: 'Umfang', wer: 'Zwei Filme, je rund 50 Sekunden' },
+  ],
+  // Sobald das Material da ist: { src, alt } eintragen, dann erscheinen
+  // die Kästen von selbst. Formate wie in der Referenz — hochkant 4:5,
+  // quer 3:2.
+  hoch: null as { src: string; alt: string } | null,
+  quer: null as { src: string; alt: string } | null,
+};
+
+const disziplinen = ['Konzept', 'Interview', 'Kamera', 'Postproduktion', 'Untertitel'];
+
+// Der erste Film steht groß und allein, alles Weitere darunter — so hat
+// Simon es bestellt: "wenn es mehr als ein Video gibt füge unter Main
+// film ein Abschnitt mit weitere Assets hinzu".
+const hauptfilm: Clip = { id: '999442059', titel: 'Lydia', laenge: '0:49', ratio: '4 / 5' };
+const weitere: Clip[] = [
   { id: '1022788421', hash: '9b0829c0b7', titel: 'Vedad', laenge: '0:54', ratio: '4 / 5' },
 ];
+
+// Nächster Fall: der übernächste Eintrag in der Reihenfolge, in der die
+// Projekte auf der Startseite stehen. Am Ende der Liste wieder von vorn.
+const stelle = arbeiten.findIndex((a) => a.slug === 'siemens-social-media-kampagne');
+const naechster = arbeiten[(stelle + 1) % arbeiten.length];
 ---
 
 <BaseLayout
@@ -24,69 +93,160 @@ const clips: Clip[] = [
   description="Porträtfilme für Siemens: zwei Menschen erzählen von ihrer Arbeit. Interviewbasiert, dokumentarisch, im Hochformat für Social Media — produziert von Le Werk in Köln."
   heroDark={true}
 >
-  <!-- ═══ KOPF ═══════════════════════════════════════════════════════════ -->
-  <section class="section section--dark kopf">
-    <div class="container kopf__grid">
-      <div class="kopf__text" data-reveal>
-        <p class="label label--accent">Arbeiten</p>
-        <h1 class="kopf__titel">
-          <span class="editorial editorial--kicker">Siemens</span>{' '}
-          <span class="headline headline--xl">Zwei Porträts, ein Format</span>
-        </h1>
-        <p class="kopf__leistungen">
-          Konzept · Interview · Kamera · Postproduktion · Untertitel
-        </p>
-      </div>
-
-      <figure class="kopf__bild" data-reveal data-reveal-delay="120">
-        <img
-          src={withBase('/images/work/siemens.webp')}
-          alt="Frau mit regenbogenbunt gefärbtem Haar und großflächigem Rückentattoo am Ufer eines Sees"
-          width="1920" height="1080" fetchpriority="high" decoding="async"
-        />
-      </figure>
-    </div>
-  </section>
-
-  <!-- ═══ HALTUNG ════════════════════════════════════════════════════════ -->
-  <section class="section section--sand haltung" aria-labelledby="haltung-titel">
-    <div class="container haltung__grid">
-      <h2 class="visually-hidden" id="haltung-titel">Ansatz</h2>
-
-      <p class="haltung__satz" data-reveal>
-        Kein Imagefilm über ein Unternehmen.{' '}
-        <em>Zwei Menschen, die erzählen, woran sie arbeiten.</em>
-      </p>
-
-      <div class="haltung__spalten">
-        <p class="haltung__text" data-reveal>
-          Interviewbasiert und dokumentarisch: keine Sprecherstimme, kein
-          Skript im Mund der Beteiligten. Was im Film steht, haben sie selbst
-          gesagt — der Schnitt sortiert, er legt niemandem etwas hinein.
-        </p>
-        <p class="haltung__text" data-reveal data-reveal-delay="80">
-          Gedreht im Hochformat 4:5 und untertitelt, weil im Feed ohne Ton
-          geschaut wird. Die Untertitel sind kein Nachtrag, sondern von
-          Anfang an Teil der Gestaltung.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══ DIE FILME ══════════════════════════════════════════════════════ -->
-  <section class="section section--dark filme" aria-labelledby="filme-titel">
+  <!-- ═══ 1 · KOPF ═══════════════════════════════════════════════════════
+       Referenz bei 1440px: Bild 1163 x 588, mittig, 131px von jeder Seite.
+       Darüber der Titel, mittig, zweizeilig — die Versalzeile liegt auf
+       der Unterkante des Bildes und ragt zu drei Vierteln darunter hinaus.
+  -->
+  <section class="section section--dark fall-kopf">
     <div class="container">
-      <header class="sec-head" data-reveal>
-        <p class="label">Die Filme</p>
-        <h2 class="headline" id="filme-titel">
-          <span class="editorial editorial--kicker">Lydia</span>{' '}
-          und Vedad
-        </h2>
-      </header>
+      <!-- Die Zeichenzahl steht hier oben und nicht an der Zeile selbst:
+           Aus ihr rechnet sich die Titelgröße, und die brauchen drei
+           Elemente darunter — Kundenname, Versalzeile und der Halter, an
+           dem der Überstand hängt. Nur von hier aus erbt sie alle drei. -->
+      <div class="fall-kopf__buehne" style={`--laenge: ${sacheLaenge}`}>
+        <figure class="fall-kopf__bild" data-reveal>
+          <img
+            src={withBase('/images/work/siemens.webp')}
+            alt="Frau mit regenbogenbunt gefärbtem Haar und großflächigem Rückentattoo am Ufer eines Sees"
+            width="1920" height="1080" fetchpriority="high" decoding="async"
+          />
+        </figure>
+
+        <!-- Zwei Elemente und nicht eins: Der Halter trägt den Überstand,
+             die Überschrift das Erscheinen beim Scrollen. Zusammengelegt
+             hebt das eine das andere auf — [data-reveal].is-in setzt
+             transform: none, und der Überstand wäre weg. -->
+        <div class="fall-kopf__halter">
+          <h1 class="fall-kopf__titel" data-reveal data-reveal-delay="120">
+            <span class="editorial fall-kopf__kunde">{kunde}</span>
+            <span class="headline fall-kopf__sache">{sache}</span>
+          </h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 2 · PROJEKTSTECKBRIEF ══════════════════════════════════════════
+       Referenz "In a nutshell", bei 1440px: hochkantes Bild links bei 4 %
+       der Breite über 40 %, Textspalte bei 49 % über 25 %, querformatiges
+       Bild darunter rechts bei 64 % — es läuft über den rechten Rand
+       hinaus.
+  -->
+  <section class="section section--dark fall-steckbrief" aria-labelledby="steckbrief-titel">
+    <div class="container fall-steckbrief__grid">
+      {steckbrief.hoch && (
+        <figure class="fall-steckbrief__hoch" data-reveal>
+          <img src={withBase(steckbrief.hoch.src)} alt={steckbrief.hoch.alt}
+               loading="lazy" decoding="async" />
+        </figure>
+      )}
+
+      <div class="fall-steckbrief__text" data-reveal data-reveal-delay="80">
+        <h2 class="fall-h2" id="steckbrief-titel">Projekt&shy;steckbrief</h2>
+        <p class="fall-steckbrief__satz">{steckbrief.text}</p>
+
+        <dl class="fall-steckbrief__liste">
+          {steckbrief.zeilen.map((z) => (
+            <div class="fall-steckbrief__zeile">
+              <dt>{z.was}</dt>
+              <dd>{z.wer}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      {steckbrief.quer && (
+        <figure class="fall-steckbrief__quer" data-reveal>
+          <img src={withBase(steckbrief.quer.src)} alt={steckbrief.quer.alt}
+               loading="lazy" decoding="async" />
+        </figure>
+      )}
+    </div>
+  </section>
+
+  <!-- ═══ 3 · DISZIPLINEN ════════════════════════════════════════════════
+       Referenz: Überschrift am linken Rand, darunter die Begriffe in einer
+       Zeile mit rund 100px Abstand. Kein Raster, keine Aufzählungszeichen.
+  -->
+  <section class="section section--dark fall-diszi" aria-labelledby="diszi-titel">
+    <div class="container" data-reveal>
+      <h2 class="fall-h2" id="diszi-titel">Disziplinen</h2>
+      <ul class="fall-diszi__liste">
+        {disziplinen.map((d) => <li>{d}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ 4 · HAUPTFILM ══════════════════════════════════════════════════
+       Referenz "Main film", bei 1440px: Textspalte links bei 9 % über
+       22 %, rechtsbündig gesetzt — Überschrift wie Fließtext. Der Player
+       rechts daneben, tiefer beginnend als der Text.
+
+       Bei Siemens sind die Filme hochkant statt quer. Der Player steht
+       deshalb schmaler als in der Referenz, sonst würde er den Abschnitt
+       allein tragen.
+  -->
+  <section class="section section--dark fall-film" aria-labelledby="film-titel">
+    <div class="container fall-film__grid">
+      <div class="fall-film__text" data-reveal>
+        <h2 class="fall-h2" id="film-titel">Hauptfilm</h2>
+        <p>
+          Was im Film steht, haben die beiden selbst gesagt — der Schnitt
+          sortiert, er legt niemandem etwas hinein. Gedreht im Hochformat
+          und untertitelt, weil im Feed ohne Ton geschaut wird. Die
+          Untertitel sind kein Nachtrag, sondern von Anfang an Teil der
+          Gestaltung.
+        </p>
+      </div>
 
       <!-- Datenschutz: Vor dem Klick steht nur ein Standbild von unserem
            eigenen Server, es geht keine Anfrage an Vimeo raus. -->
-      <Videowand clips={clips} poster="/images/siemens/poster" spalten={2} />
+      <div class="fall-film__wand" data-reveal data-reveal-delay="120">
+        <Videowand clips={[hauptfilm]} poster="/images/siemens/poster" spalten={1} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 5 · WEITERE ASSETS ═════════════════════════════════════════════
+       Nicht aus der Referenz — dort hat der Fall nur einen Film. Von Simon
+       bestellt für alle Fälle mit mehr als einem Video.
+  -->
+  {weitere.length > 0 && (
+    <section class="section section--dark fall-assets" aria-labelledby="assets-titel">
+      <div class="container">
+        <h2 class="fall-h2 fall-assets__titel" id="assets-titel" data-reveal>Weitere Assets</h2>
+        <div class="fall-assets__wand">
+          <Videowand clips={weitere} poster="/images/siemens/poster" spalten={2} />
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ═══ 6 · WEITER ═════════════════════════════════════════════════════
+       Referenz: Bild links über den Rand hinaus, daneben "Back to
+       Overview" mit Pfeil davor und darunter versetzt "Next Case" mit
+       Pfeil dahinter. Die Pfeile zeigen in die Richtung, in die es geht.
+  -->
+  <section class="section section--dark fall-weiter" aria-label="Weiter">
+    <div class="container fall-weiter__grid">
+      <figure class="fall-weiter__bild" data-reveal>
+        <img
+          src={withBase(naechster.bild)} alt={naechster.alt}
+          loading="lazy" decoding="async"
+        />
+      </figure>
+
+      <a class="fall-weiter__link fall-weiter__link--zurueck" href={withBase('/#arbeiten')}>
+        <span class="fall-weiter__pfeil" aria-hidden="true">←</span>
+        <span class="headline fall-weiter__wort">Zur Übersicht</span>
+      </a>
+
+      <a class="fall-weiter__link fall-weiter__link--naechster" href={withBase(`/arbeiten/${naechster.slug}`)}>
+        <span class="headline fall-weiter__wort">Nächster Fall</span>
+        <span class="fall-weiter__pfeil" aria-hidden="true">→</span>
+        <span class="fall-weiter__name">{naechster.kunde}</span>
+      </a>
     </div>
   </section>
 
@@ -94,69 +254,460 @@ const clips: Clip[] = [
 </BaseLayout>
 
 <style>
-  /* ── Kopf ─────────────────────────────────────────────────────────────── */
-  .kopf { padding-block: clamp(9rem, 20vh, 13rem) var(--section-y); }
+  /* ══ Gemeinsames ═══════════════════════════════════════════════════════ */
 
-  .kopf__grid { display: grid; gap: clamp(2.5rem, 6vw, 4rem); }
-  .kopf__text .label { margin-bottom: var(--space-3); }
-  .kopf__titel { margin-bottom: var(--space-4); }
-  .kopf__titel .headline { display: block; }
+  /* Die Abschnittsüberschrift der Fallseiten. In der Referenz sind alle
+     gleich groß — "In a nutshell", "Disciplines", "Main film", "Behind the
+     Scenes", "Full credits" — und deutlich kleiner als der Titel oben.
+     Gemessen: 35,3px bei 1425px Seitenbreite, also 2,48 %.
 
-  .kopf__leistungen {
-    padding-top: var(--space-3);
-    border-top: 1px solid var(--line-dark);
+     2.5vw trifft das (36px bei 1440). Die Untergrenze steht bei 1.5rem,
+     damit die Zeile auf dem Telefon nicht unter die Fließtextgröße fällt. */
+  .fall-h2 {
     font-family: var(--font-ui);
-    font-size: var(--fs-label);
-    font-weight: 600;
-    letter-spacing: var(--track-label);
-    line-height: 1.9;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+    line-height: 1.05;
+    letter-spacing: var(--track-display);
     text-transform: uppercase;
+    color: var(--on-dark);
+  }
+
+  /* ══ 1 · Kopf ══════════════════════════════════════════════════════════ */
+
+  /* Oben Platz für die Kopfzeile, unten keiner: Der Titel ragt aus dem
+     Bild heraus und bringt seinen Abstand selbst mit. */
+  .fall-kopf { padding-block: clamp(9rem, 20vh, 13rem) 0; }
+
+  /* Bild und Titel liegen im selben Feld übereinander. Ein negativer
+     Abstand täte es auch, aber dann müsste die Zahl an der Schriftgröße
+     hängen und bei jeder Fensterbreite nachgerechnet werden. */
+  /* container-type, weil die Größe der Versalzeile in cqw steht — sie muss
+     sich auf die Breite beziehen, in der die Zeile Platz hat. */
+  .fall-kopf__buehne {
+    display: grid;
+    container-type: inline-size;
+  }
+
+  .fall-kopf__buehne > * { grid-area: 1 / 1; }
+
+  .fall-kopf__bild {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-bild);
+  }
+
+  .fall-kopf__bild img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Lesbarkeitsverlauf, auf dem echten Motiv gemessen. In der Referenz
+     braucht es ihn nicht — dort ist das Heldenbild ein dunkles Video.
+     Hier steht der Titel über einem hellen See, und ohne Verlauf kommt er
+     auf 1,02:1. Das ist nicht schwach, das ist unsichtbar.
+
+     Zwei Bänder zählen, beide von der Unterkante aus gemessen: Die
+     Bodoni-Zeile liegt zwischen 20 und 100px und damit ganz im Bild, von
+     der Versalzeile liegen nur die oberen 20px darauf — der Rest ragt
+     heraus und steht auf Petrol.
+
+     Fassungen durchgerechnet, schlechtester Wert je Fassung — es ist
+     immer die Bodoni-Zeile, nie die Versalzeile:
+
+       .60 / .30 / 0 @ 20 %     2.42
+       .74 / .42 / 0 @ 24 %     3.77
+       .78 / .46 / 0 @ 30 %     4.87
+       .78 / .46 / 0 @ 52 %     6.04     wie die Team-Kacheln
+       .88 / .62 / 0 @ 34 %     7.45     genommen
+       .90 / .68 / 0 @ 36 %     8.51
+
+     GENOMMEN IST NICHT DIE ERSTE, DIE 4,5 HÄLT. Sonst wäre es die dritte
+     Fassung mit 4,87 geworden. Der Grund steht in der Schrift: 4,5 gilt
+     für massive Buchstaben, und Bodoni Moda hat Haarstriche. Bei 80px
+     sind die dünnsten Stellen keine zwei Pixel breit — was dort an
+     Kontrast fehlt, fehlt am ganzen Wort. Die Norm kennt diesen
+     Unterschied nicht, das Auge schon.
+
+     Und sie ist trotzdem enger als die Fassung der Team-Kacheln: 34 statt
+     52 Prozent bei mehr Kontrast. Das ist kein Widerspruch, sondern die
+     Lage der Schrift — sie sitzt hier in den unteren 100px eines 704px
+     hohen Bildes. Ein Verlauf bis 52 Prozent tönte 366px für 100px
+     Schrift, und zwar schwächer.
+
+     Die Zahlen erzeugt scratchpad/kopf-kontrast.js. Wer das Heldenbild
+     tauscht, rechnet neu: Auf einem dunklen Motiv trägt viel weniger. */
+  .fall-kopf__bild::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      0deg,
+      rgba(4, 37, 44, 0.88) 0%,
+      rgba(4, 37, 44, 0.62) 18%,
+      rgba(4, 37, 44, 0) 34%
+    );
+  }
+
+  /* WIE WEIT DER TITEL HERAUSRAGT. In der Referenz steht die Versalzeile
+     bei 669 bis 751px, die Unterkante des Bildes bei 689 — von den 82px
+     der Zeile liegen also 20 im Bild und 62 darunter. Drei Viertel der
+     Zeile stehen unter der Kante, ein Viertel darüber.
+
+     align-self: end setzt die Unterkante des Titels auf die des Bildes,
+     die Verschiebung schiebt ihn darunter.
+
+     IN EM UND NICHT IN PROZENT. Das war der erste Versuch: 38 Prozent der
+     Blockhöhe trafen bei 1440px genau die 76 Prozent der Zeile. Auf dem
+     Telefon waren es 96 — die Zeile lag dann fast vollständig unter dem
+     Bild und berührte es kaum noch. Der Grund ist der Block: Er besteht
+     aus zwei Zeilen mit verschiedenen Untergrenzen, und sein Verhältnis
+     zur Versalzeile verschiebt sich mit der Fensterbreite.
+
+     Der Halter trägt deshalb dieselbe Schriftgröße wie die Versalzeile,
+     und die Verschiebung steht in em: 0,92em ist die Zeilenhöhe, 76
+     Prozent davon sind 0,70. Damit ragt immer genau derselbe Anteil der
+     Zeile heraus — bei einer Zeile wie bei zweien, auf jedem Gerät. */
+  .fall-kopf__halter {
+    align-self: end;
+    font-size: var(--fs-titel);
+    transform: translateY(0.7em);
+    position: relative;
+    z-index: 1;
+  }
+
+  .fall-kopf__titel { margin: 0; text-align: center; }
+
+  /* DIE GRÖSSE DES TITELS — eine Rechnung, drei Nutzer.
+
+     Sie steht als Variable, weil drei Stellen sie brauchen: die
+     Versalzeile, der Kundenname darüber und der Halter, an dem der
+     Überstand hängt.
+
+     Die Versalzeile ist das Rückgrat des Kopfes. In Poppins 800 versal
+     misst ein Zeichen samt Laufweitenabzug im Mittel 0,595em — die Zahl
+     ist an "CEM-PIERRE SCHUCH" auf der Startseite nachgemessen, nicht
+     geschätzt. Die Containerbreite geteilt durch (Zeichenzahl × 0,595)
+     ist damit die Größe, bei der die Zeile genau aufgeht; 96cqw statt
+     100 lassen etwas Luft zur Kante.
+
+     min() davon und der Wunschgröße: Kurze Titel bleiben bei 6,3vw wie in
+     der Referenz, lange schrumpfen so weit, wie sie müssen.
+
+     UND DANN EINE UNTERGRENZE VON 2rem. Ohne sie kam "Social Media
+     Kampagne" auf dem Telefon auf 25px — einzeilig, aber kleiner als der
+     Kundenname darüber und kleiner als manche Überschrift weiter unten.
+     Eine Titelzeile, die sich kleinrechnet, um einzeilig zu bleiben, hat
+     die Rangfolge verloren. Ab hier bricht sie lieber um: Der Überstand
+     rechnet in Zeilenhöhen und trägt zwei Zeilen genauso wie eine. */
+  .fall-kopf__buehne {
+    --fs-titel: clamp(
+      2rem,
+      min(6.3vw, calc(96cqw / (var(--laenge, 20) * 0.595))),
+      5.5rem
+    );
+  }
+
+  /* Der Kundenname in Bodoni, genauso groß wie die Versalzeile darunter.
+     Das ist der Kniff aus der Referenz: gleiche Schriftgröße, aber eine
+     schmale Serifenschrift über einer fetten Groteske. Die eine wirkt
+     dadurch halb so groß wie die andere, ohne dass eine Zahl es sagt —
+     und sie bleiben in jeder Fensterbreite im selben Verhältnis. */
+  .fall-kopf__kunde {
+    display: block;
+    font-size: var(--fs-titel);
+    line-height: 1;
+    color: var(--on-dark);
+    text-shadow: 0 2px 32px rgba(0, 0, 0, 0.5);
+  }
+
+  .fall-kopf__sache {
+    display: block;
+    font-size: var(--fs-titel);
+    line-height: var(--lh-tight);
+    color: var(--on-dark);
+  }
+
+  /* ══ 2 · Projektsteckbrief ═════════════════════════════════════════════ */
+
+  /* Der Abschnitt kappt waagerecht: Das querformatige Bild läuft rechts
+     über den Container hinaus, wie in der Referenz. clip und nicht hidden
+     — hidden machte daraus einen Scrollcontainer, ausführlich bei .team
+     in index.astro. */
+  .fall-steckbrief { overflow-x: clip; }
+
+  .fall-steckbrief__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .fall-steckbrief__hoch,
+  .fall-steckbrief__quer {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-bild);
+  }
+
+  .fall-steckbrief__hoch img,
+  .fall-steckbrief__quer img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .fall-steckbrief__hoch img { aspect-ratio: 4 / 5; }
+  .fall-steckbrief__quer img { aspect-ratio: 3 / 2; }
+
+  /* &shy; in "Projekt|steckbrief": Das Wort ist 18 Zeichen lang und passt
+     auf dem Telefon in keine Spalte. Ohne die weiche Trennstelle bräche
+     es an einer beliebigen Stelle oder ragte hinaus. */
+  .fall-steckbrief__satz {
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
+    font-size: var(--fs-lead);
+    line-height: 1.35;
+    color: var(--on-dark-muted);
+    text-wrap: pretty;
+  }
+
+  /* Zwei Spalten, Bezeichnung und Angabe. In der Referenz ist die linke
+     113px breit und die rechte schließt direkt an; die Bezeichnung steht
+     weiß, die Angabe grau. Hier andersherum gewichtet: Die Bezeichnung
+     ist gedämpft, die Angabe steht weiß — sie ist der Inhalt, das andere
+     nur ihr Name. */
+  .fall-steckbrief__liste {
+    margin: clamp(1.75rem, 3.5vw, 2.75rem) 0 0;
+  }
+
+  .fall-steckbrief__zeile {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, 9.5rem) minmax(0, 1fr);
+    gap: 0 var(--space-2);
+    padding-block: 0.3rem;
+  }
+
+  .fall-steckbrief__zeile dt {
+    font-size: var(--fs-small);
     color: var(--on-dark-muted);
   }
 
-  .kopf__bild { margin: 0; overflow: hidden; border-radius: var(--radius-bild); }
-  .kopf__bild img { display: block; width: 100%; height: auto; }
-
-  /* ── Haltung ──────────────────────────────────────────────────────────── */
-  /* Ein großer Satz in Bodoni, darunter zwei schmale Spalten Fließtext —
-     dasselbe Muster wie der Positionierungsabsatz auf der Startseite. Es
-     trägt hier, weil es um eine Haltung geht und nicht um Leistungen. */
-  .haltung__satz {
-    font-family: var(--font-editorial);
-    font-size: clamp(1.5rem, 4vw, 2.75rem);
-    line-height: 1.2;
-    letter-spacing: -0.005em;
-    text-wrap: pretty;
-    max-width: 30ch;
-    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  .fall-steckbrief__zeile dd {
+    margin: 0;
+    font-size: var(--fs-small);
+    color: var(--on-dark);
   }
 
-  .haltung__satz em { font-style: italic; }
+  /* ══ 3 · Disziplinen ═══════════════════════════════════════════════════ */
 
-  .haltung__spalten { display: grid; gap: clamp(1.5rem, 4vw, 3rem); }
+  /* Kürzer als die anderen Abschnitte: In der Referenz sind es 240px
+     gegen 700 bis 1300 — vier Wörter unter einer Überschrift brauchen
+     keine Fläche, sie sind ein Zwischenruf. */
+  .fall-diszi { padding-block: clamp(3rem, 7vw, 5.5rem); }
 
-  .haltung__text {
-    color: var(--ink-muted);
-    line-height: 1.65;
-    max-width: 34rem;
+  /* Reihe mit Umbruch statt Raster: Die Begriffe sind verschieden lang,
+     und in gleich breiten Spalten stünden sie mit ungleichen Lücken. So
+     hängt der Abstand am Abstand und nicht an der Wortlänge.
+
+     6,4vw sind rund 92px bei 1440 — die Referenz hat 100. */
+  .fall-diszi__liste {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(0.75rem, 2vw, 1.25rem) clamp(1.5rem, 6.4vw, 5.75rem);
+    margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-lead);
+    color: var(--on-dark-muted);
   }
 
-  /* ── Breakpoints ──────────────────────────────────────────────────────── */
-  @media (min-width: 1024px) {
-    .kopf__grid {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      column-gap: clamp(1.5rem, 3vw, 3rem);
-      align-items: end;
-    }
-    .kopf__text { grid-column: 1 / span 5; }
-    .kopf__bild { grid-column: 7 / span 6; }
+  /* ══ 4 · Hauptfilm ═════════════════════════════════════════════════════ */
 
-    .haltung__grid {
-      display: grid;
+  .fall-film__grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  /* Rechtsbündig, Überschrift wie Fließtext. Das ist der auffälligste Zug
+     der Referenz und der Grund, warum der Abschnitt nicht wie ein
+     Textblock neben einem Video aussieht: Die Spalte hat eine harte Kante
+     zum Video hin und eine ausgefranste nach außen. */
+  .fall-film__text p {
+    margin-top: clamp(1rem, 2vw, 1.5rem);
+    color: var(--on-dark-muted);
+    line-height: var(--lh-body);
+  }
+
+  /* ══ 5 · Weitere Assets ════════════════════════════════════════════════ */
+
+  .fall-assets__titel { margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+
+  /* ══ 6 · Weiter ════════════════════════════════════════════════════════ */
+
+  /* Kappt waagerecht wie der Steckbrief — das Bild läuft links hinaus. */
+  .fall-weiter { overflow-x: clip; }
+
+  .fall-weiter__grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .fall-weiter__bild {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-bild);
+  }
+
+  .fall-weiter__bild img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+  }
+
+  .fall-weiter__link {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.75rem, 1.6vw, 1.25rem);
+    text-decoration: none;
+    color: var(--on-dark);
+  }
+
+  .fall-weiter__wort {
+    font-size: clamp(1.375rem, 2.5vw, 2.25rem);
+    line-height: 1.05;
+  }
+
+  /* Der Pfeil sitzt im Kreis und wandert beim Überfahren in seine
+     Richtung — dieselbe Geste wie am Knopf im Abschluss, nur größer. */
+  .fall-weiter__pfeil {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: clamp(2rem, 3vw, 2.75rem);
+    aspect-ratio: 1;
+    border: 1px solid var(--line-dark);
+    border-radius: 50%;
+    font-size: var(--fs-small);
+    line-height: 1;
+    transition: transform var(--dur) var(--ease-out),
+                border-color var(--dur) var(--ease-out);
+  }
+
+  .fall-weiter__link:hover .fall-weiter__pfeil { border-color: var(--on-dark); }
+  .fall-weiter__link--zurueck:hover .fall-weiter__pfeil { transform: translateX(-0.25rem); }
+  .fall-weiter__link--naechster:hover .fall-weiter__pfeil { transform: translateX(0.25rem); }
+
+  /* Der Kundenname des nächsten Falls, klein hinter dem Pfeil. Steht
+     nicht in der Referenz — dort heißt es nur "Next Case". Hier schon:
+     Wer weiterklickt, soll wissen wohin. */
+  .fall-weiter__name {
+    font-size: var(--fs-small);
+    color: var(--on-dark-muted);
+  }
+
+  /* ══ Breite Bildschirme ════════════════════════════════════════════════ */
+
+  @media (min-width: 992px) {
+    /* ── Steckbrief ──────────────────────────────────────────────────────
+       Referenz bei 1425px Seitenbreite, umgerechnet auf zwölf Spalten:
+
+         hochkant   x   4 %   Breite 40 %   →  Spalte 1, fünf breit
+         Text       x  49 %   Breite 25 %   →  Spalte 7, vier breit
+         quer       x  64 %   Breite 37 %   →  Spalte 9, fünf breit
+
+       Die Textspalte ist eine Spalte breiter als die Referenz. Deutsch
+       braucht sie: "Postproduktion" allein misst 14 Zeichen, und bei drei
+       Spalten stand in der Zeile kaum mehr als ein Wort.
+
+       Der Text beginnt tiefer als das Bild — in der Referenz 113px, das
+       sind 8 % der Seitenbreite. Das querformatige Bild sitzt in der
+       zweiten Reihe und läuft rechts hinaus. */
+    .fall-steckbrief__grid {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: clamp(1.5rem, 3vw, 3rem);
+      row-gap: clamp(3rem, 7vw, 6rem);
     }
-    .haltung__satz { grid-column: 1 / span 7; margin-bottom: 0; }
-    .haltung__spalten { grid-column: 9 / span 4; align-content: end; }
+
+    .fall-steckbrief__hoch { grid-column: 1 / span 5; grid-row: 1; }
+    .fall-steckbrief__text { grid-column: 7 / span 4; grid-row: 1; margin-top: 8%; }
+    .fall-steckbrief__quer { grid-column: 9 / span 5; grid-row: 2; }
+
+    /* Ohne die beiden Bilder stünde die Textspalte allein am rechten Rand
+       und die linke Hälfte wäre leer. Dann rückt sie nach links und wird
+       breiter — der Abschnitt trägt auch ohne Bildmaterial. */
+    .fall-steckbrief__grid:not(:has(.fall-steckbrief__hoch)) .fall-steckbrief__text {
+      grid-column: 1 / span 6;
+      margin-top: 0;
+    }
+
+    /* ── Hauptfilm ───────────────────────────────────────────────────────
+       Referenz: Text bei 9 % über 22 %, Player bei 41 % über 50 %. Der
+       Player steht hier schmaler, weil die Filme hochkant sind — bei
+       sechs Spalten wäre er 782px hoch und der Abschnitt bestünde aus
+       nichts anderem mehr.
+
+       Der Text steht tiefer als der Player, in der Referenz um 140px bei
+       1425px Seitenbreite — also knapp ein Zehntel davon.
+
+       In vw und nicht in Prozent: Ein Prozentwert am Randabstand bezieht
+       sich auf die Breite des Elternfelds, und das ist hier die vier
+       Spalten schmale Textspalte. 11 Prozent davon waren 43px statt 140.
+       Einmal gemessen, statt es zu glauben. */
+    .fall-film__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+      align-items: start;
+    }
+
+    .fall-film__text {
+      grid-column: 2 / span 4;
+      text-align: right;
+      margin-top: clamp(2rem, 9.8vw, 9rem);
+    }
+
+    .fall-film__wand { grid-column: 8 / span 5; }
+
+    /* ── Weitere Assets ──────────────────────────────────────────────────
+       Rechts und schmaler als die Seite: Der Hauptfilm steht rechts, die
+       weiteren darunter ebenfalls — sie gehören zu ihm. Zwei Drittel
+       Breite, damit zwei Kacheln nebeneinander noch tragen und eine
+       einzelne nicht breiter wird als der Hauptfilm darüber. */
+    .fall-assets__wand { width: 66.7%; margin-left: auto; }
+    .fall-assets__titel { text-align: right; }
+
+    /* ── Weiter ──────────────────────────────────────────────────────────
+       Referenz: Bild links über den Rand hinaus (x = -16 bei 356 Breite),
+       die beiden Links rechts daneben, der zweite tiefer und weiter
+       rechts als der erste. */
+    .fall-weiter__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: clamp(1.5rem, 3vw, 3rem);
+      align-items: center;
+    }
+
+    .fall-weiter__bild {
+      grid-column: 1 / span 3;
+      grid-row: 1 / span 2;
+      /* Über den linken Rand hinaus und dann weg — die Rinne plus ein
+         Stück. Gekappt wird am Fensterrand, siehe overflow-x oben. */
+      margin-left: calc(var(--gutter) * -1 - 1.5rem);
+    }
+
+    .fall-weiter__link--zurueck { grid-column: 5 / span 6; grid-row: 1; }
+
+    /* Rechts angeschlagen statt auf einer Spalte festgemacht: Wie breit
+       "Nächster Fall" plus Pfeil plus Kundenname wird, hängt am Namen —
+       bei "BVB × EA Sports" ist die Zeile 90px länger als bei "Allianz".
+       justify-self: end hält die rechte Kante fest, egal welcher Fall
+       als nächster drankommt. */
+    .fall-weiter__link--naechster {
+      grid-column: 5 / span 8;
+      grid-row: 2;
+      justify-self: end;
+      margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    }
   }
 </style>
