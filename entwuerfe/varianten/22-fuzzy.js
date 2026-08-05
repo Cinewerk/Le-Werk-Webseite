@@ -81,80 +81,60 @@ a { color: inherit; text-decoration: none; }
 .kopf .neu img { width: 26px; height: 26px; object-fit: cover; margin-right: 8px; }
 .kopf a.punkt:hover { background: var(--papier); color: var(--nacht); }
 
-/* ── Glitch-Held ── */
+/* ── Video-Held mit Vieleck-Auftritt ──
+   Der Ladeauftritt der Vorlage, aus Simons Aufnahme abgelesen: Beim
+   Ankommen steht eine kobaltblaue Fläche, in der Mitte öffnet sich ein
+   kleines Vieleck-Fenster mit dem bereits laufenden Video und wächst,
+   bis es den ganzen Held füllt. Erst danach tritt die Firmenzeile auf.
+
+   Als clip-path-Animation zwischen zwei Sechsecken mit gleicher
+   Punktzahl — nur so rechnet der Browser den Übergang weich. Das große
+   Sechseck ragt weit über die Kanten hinaus, damit am Ende keine
+   Schräge mehr im Bild steht. */
 .held {
   position: relative;
   min-height: calc(100svh - 49px);
   display: grid;
-  align-content: space-between;
+  align-content: end;
   overflow: hidden;
-  padding: 8vh 24px 20px;
+  padding: 0 24px 20px;
+  background: var(--kobalt);
 }
 
-.objekte {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
-  align-items: center;
-  max-width: 74rem;
-  margin: 0 auto;
-  width: 100%;
-  perspective: 900px;
-}
-
-.objekt { position: relative; justify-self: center; width: clamp(9rem, 16vw, 14rem); }
-
-.objekt .lage {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  clip-path: polygon(22% 2%, 78% 10%, 96% 46%, 72% 96%, 18% 88%, 4% 38%);
-  display: block;
-  animation: kippen 9s ease-in-out infinite;
-}
-
-.objekt .lage--r, .objekt .lage--b {
+.held video {
   position: absolute;
   inset: 0;
-  mix-blend-mode: screen;
-  opacity: 0.55;
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  clip-path: polygon(50% 30%, 62% 42%, 62% 58%, 50% 70%, 38% 58%, 38% 42%);
+  animation: fenster-auf 1700ms cubic-bezier(0.65, 0, 0.2, 1) 500ms forwards;
 }
 
-.objekt .lage--r { filter: url(#rot) grayscale(1) brightness(0.9) sepia(1) hue-rotate(-50deg) saturate(5); animation-delay: 60ms; }
-.objekt .lage--b { filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(160deg) saturate(5); animation-delay: 120ms; }
-
-.objekt:nth-child(2) .lage { animation-duration: 11s; animation-direction: reverse; }
-.objekt:nth-child(3) .lage { animation-duration: 10s; }
-
-@keyframes kippen {
-  0%, 100% { transform: rotateY(-16deg) rotateZ(-3deg); }
-  50% { transform: rotateY(18deg) rotateZ(2deg); }
+@keyframes fenster-auf {
+  to { clip-path: polygon(50% -80%, 160% 10%, 160% 90%, 50% 180%, -60% 90%, -60% 10%); }
 }
-
-/* Messrahmen wie aus dem Tracker */
-.messung {
-  position: absolute;
-  border: 1px solid var(--marker);
-  pointer-events: none;
-  font-size: 8px;
-  letter-spacing: 0.08em;
-  color: var(--marker);
-  padding: 1px 3px;
-  animation: zittern 4s steps(2) infinite;
-}
-
-.messung--a { left: 6%; top: 8%; width: 34%; height: 22%; }
-.messung--b { right: 10%; bottom: 14%; width: 28%; height: 16%; animation-delay: 1s; }
-@keyframes zittern { 50% { transform: translate(2px, -1px); } }
 
 .held .firmenzeile {
+  position: relative;
+  z-index: 1;
   font-family: var(--fett);
   font-weight: 800;
   font-size: clamp(1.5rem, 3.8vw, 3.4rem);
   letter-spacing: 0.005em;
   text-transform: uppercase;
   line-height: 1;
+  text-shadow: 0 2px 26px rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transform: translateY(0.4em);
+  animation: zeile-auf 700ms cubic-bezier(0.22, 0.61, 0.36, 1) 1900ms forwards;
+}
+
+@keyframes zeile-auf { to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .held video { clip-path: none; animation: none; }
+  .held .firmenzeile { opacity: 1; transform: none; animation: none; }
 }
 
 /* ── WORK ── */
@@ -362,16 +342,9 @@ const koerper = (i) => {
 </header>
 
 <section class="held">
-  <div class="objekte" aria-hidden="true">
-    ${['bts/bts-halle.jpg', 'work/bvb-ea-sports.webp', 'bts/bts-studio.jpg'].map((bild) => `
-    <div class="objekt">
-      <img class="lage" src="${b(bild)}" alt="">
-      <img class="lage lage--r" src="${b(bild)}" alt="">
-      <img class="lage lage--b" src="${b(bild)}" alt="">
-      <span class="messung messung--a">TRK_01</span>
-      <span class="messung messung--b">0.42 / F2.8</span>
-    </div>`).join('')}
-  </div>
+  <!-- muted und playsinline sind Bedingung dafür, dass mobile Browser
+       selbst starten — dieselbe Datei wie im Held der laufenden Seite. -->
+  <video src="../public/videos/lewerk-hero.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
   <p class="firmenzeile">Brand Content worth watching — ${i.gattung}, Köln</p>
 </section>
 
