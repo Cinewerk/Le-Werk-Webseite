@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meilenweit — Le Werk Entwurf</title>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img, video { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+:where(h1,h2,h3,h4,p,figure,ul,ol,dl,dd,blockquote) { margin: 0; padding: 0; }
+:where(ul,ol) { list-style: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root {
+  --eis-hell: #d6edf5;
+  --eis: #c4e2ee;
+  --rot: #e01f1f;
+  --dunkel: #101418;
+  --grotesk: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --eng: 'Arial Narrow', 'Helvetica Neue Condensed', Impact, sans-serif;
+  --rand: clamp(1.25rem, 3.5vw, 3rem);
+}
+
+body {
+  background: linear-gradient(180deg, var(--eis-hell) 0%, var(--eis) 55%, #e8f4f8 100%);
+  color: var(--dunkel);
+  font: 400 15.5px/1.6 var(--grotesk);
+  cursor: none;
+}
+
+a, button, summary { cursor: none; }
+
+@media (hover: none) {
+  body, a, button, summary { cursor: auto; }
+  .kreis-cursor { display: none; }
+}
+
+/* Der Kreis-Cursor mit Punkt */
+.kreis-cursor {
+  position: fixed;
+  z-index: 200;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--dunkel);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  transition: scale 180ms ease, border-color 180ms ease;
+}
+
+.kreis-cursor::after { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--dunkel); }
+body:has(a:hover, button:hover, summary:hover) .kreis-cursor { scale: 1.5; border-color: var(--rot); }
+
+/* ── Kopf ── */
+.kopf {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 30;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem var(--rand);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.kopf .marke b { font-weight: 700; }
+.kopf .marke span { font-weight: 400; color: #52646d; }
+
+/* Die drei Striche in der Mitte */
+.kopf .menueknopf {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 0;
+  background: none;
+  padding: 0.6rem;
+  display: grid;
+  gap: 4px;
+}
+
+.kopf .menueknopf i { display: block; width: 44px; height: 2.5px; background: var(--dunkel); transition: transform 200ms; }
+.kopf .menueknopf:hover i:first-child { transform: translateY(-2px); }
+.kopf .menueknopf:hover i:last-child { transform: translateY(2px); }
+
+.kopf .kontakt { text-decoration: none; }
+.kopf .kontakt:hover { color: var(--rot); }
+
+/* ── Das Overlay-Menü ── */
+.menue {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: linear-gradient(180deg, var(--eis-hell), var(--eis));
+  padding: 6rem var(--rand) 3rem;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 320ms ease, visibility 0s 320ms;
+}
+
+.menue.offen { opacity: 1; visibility: visible; transition: opacity 320ms ease; }
+
+.menue .zu {
+  position: absolute;
+  top: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 46px;
+  height: 46px;
+  border: 1.5px solid var(--rot);
+  border-radius: 50%;
+  background: none;
+  color: var(--rot);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.menue .zu:hover { background: var(--rot); color: var(--eis-hell); }
+
+.menue ol { max-width: 46rem; margin: 0 auto; position: relative; z-index: 1; }
+
+.menue .gruppe {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rot);
+  margin: 1.75rem 0 0.4rem;
+}
+
+.menue a {
+  display: block;
+  padding: 0.45rem 0;
+  border-bottom: 1.5px solid rgba(16, 20, 24, 0.4);
+  text-decoration: none;
+  font-family: var(--eng);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3.6vw, 2.5rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transition: color 160ms, padding-left 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.menue a:hover { color: var(--rot); padding-left: 0.75rem; }
+
+/* Das Bild, das hinter dem überfahrenen Punkt aufsteigt */
+.menue .bild {
+  position: fixed;
+  right: clamp(1rem, 8vw, 9rem);
+  bottom: 0;
+  width: clamp(11rem, 22vw, 18rem);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(18%);
+  transition: opacity 300ms ease, transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.menue .bild.an { opacity: 1; transform: translateY(0); }
+.menue .bild img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+
+/* ── Auftakt ── */
+.auftakt {
+  position: relative;
+  min-height: 100svh;
+  padding: 7rem var(--rand) 3rem;
+  display: grid;
+  align-content: start;
+  overflow: hidden;
+}
+
+.auftakt .ansage {
+  text-align: center;
+  color: var(--rot);
+  text-transform: uppercase;
+  margin-bottom: clamp(1.5rem, 4vh, 3rem);
+}
+
+.auftakt .ansage b { display: block; font-size: clamp(14px, 1.6vw, 19px); font-weight: 700; letter-spacing: 0.14em; }
+.auftakt .ansage span { display: block; font-size: clamp(12px, 1.4vw, 17px); letter-spacing: 0.1em; margin-top: 0.3rem; }
+
+/* Die Bühne: Riesenwort + drei Bilder in Schichten */
+.buehne { position: relative; min-height: clamp(20rem, 58vh, 34rem); }
+
+/* 15.5vw statt frei gewählt: "WORTH WATCHING" hat 14 Zeichen, in Arial
+   Narrow fett rund 0,47em je Zeichen — 14 × 0,47 × 15,5vw ≈ 102vw. Das
+   Wort füllt die Breite und schneidet nur an den Endbuchstaben an, wie
+   MILES AHEAD in der Referenz. Bei 24vw stand nur noch RTH WATCH im Bild. */
+.riese {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  transform: translateX(-50%);
+  z-index: 2;
+  margin: 0;
+  font-family: var(--eng);
+  font-weight: 700;
+  font-size: clamp(4.5rem, 15.5vw, 15rem);
+  line-height: 0.8;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--rot);
+}
+
+/* Die Buchstaben kommen einzeln von unten — der Ladeauftritt des Videos */
+.riese span { display: inline-block; transform: translateY(110%); opacity: 0; animation: auftritt 700ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards; animation-delay: calc(var(--n) * 55ms + 200ms); }
+@keyframes auftritt { to { transform: translateY(0); opacity: 1; } }
+
+.buehne .foto { position: absolute; overflow: hidden; }
+.buehne .foto img { width: 100%; height: 100%; object-fit: cover; }
+
+/* links und rechts unter der Schrift, die Mitte auch — das Wort läuft
+   über alle drei, wie in der Referenz */
+.foto--links { left: 8%; top: 34%; width: clamp(7rem, 14vw, 12rem); aspect-ratio: 3 / 4; z-index: 1; }
+.foto--mitte { left: 50%; top: 0; transform: translateX(-50%); width: clamp(11rem, 22vw, 19rem); aspect-ratio: 3 / 4; z-index: 1; }
+.foto--rechts { right: 6%; top: 42%; width: clamp(6.5rem, 12vw, 10.5rem); aspect-ratio: 3 / 4; z-index: 3; }
+
+.auftakt .unten {
+  position: absolute;
+  bottom: 1.5rem;
+  left: var(--rand);
+  right: var(--rand);
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #52646d;
+}
+
+/* ── Geisterwort-Abschnitte: Wort hinten, Bildsäule steigt ── */
+.geist {
+  position: relative;
+  padding: clamp(5rem, 12vh, 9rem) var(--rand);
+  overflow: hidden;
+  text-align: center;
+}
+
+.geist .ansage { color: var(--rot); font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 1rem; }
+
+.geist .wort {
+  font-family: var(--eng);
+  font-weight: 700;
+  font-size: clamp(4rem, 15vw, 13rem);
+  line-height: 0.85;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--rot);
+  opacity: 0.9;
+  position: relative;
+  z-index: 0;
+}
+
+.geist .saeule {
+  position: relative;
+  z-index: 1;
+  width: clamp(13rem, 26vw, 21rem);
+  margin: calc(clamp(2rem, 6vw, 5rem) * -1) auto 0;
+  transform: translateY(26%);
+  opacity: 0;
+  transition: transform 800ms cubic-bezier(0.22, 0.61, 0.36, 1), opacity 500ms ease;
+}
+
+.geist.wach .saeule { transform: translateY(0); opacity: 1; }
+.geist .saeule img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+
+.geist .karte {
+  position: absolute;
+  inset: auto 0 0 0;
+  margin: 0 auto -1.5rem;
+  width: min(86%, 17rem);
+  background: var(--eis-hell);
+  padding: 1.1rem 1.2rem;
+  text-align: left;
+  font-size: 13px;
+  box-shadow: 0 18px 44px rgba(16, 20, 24, 0.22);
+}
+
+.geist .karte h3 { font-family: var(--eng); font-weight: 700; font-size: 1.5rem; text-transform: uppercase; margin-bottom: 0.4rem; }
+
+/* ── Rote Vollfläche: das Karussell ── */
+.rot {
+  background: linear-gradient(160deg, #b81a1a 0%, var(--rot) 45%, #c31c1c 100%);
+  color: var(--eis-hell);
+  padding: clamp(4rem, 10vh, 7rem) var(--rand);
+  position: relative;
+}
+
+.rot .ansage { text-align: center; font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: clamp(2rem, 5vh, 3.5rem); }
+
+.rutsche { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: clamp(1.5rem, 4vw, 3.5rem); scrollbar-width: none; }
+.rutsche::-webkit-scrollbar { display: none; }
+
+.dia {
+  flex: none;
+  width: min(100%, 30rem);
+  margin: 0 auto;
+  scroll-snap-align: center;
+  position: relative;
+  padding: clamp(1rem, 3vw, 2rem) 0 clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem);
+}
+
+.dia img { width: 78%; aspect-ratio: 3 / 4; object-fit: cover; display: block; margin-left: auto; }
+
+.dia .karte {
+  position: absolute;
+  left: 0;
+  top: clamp(2.5rem, 7vw, 4.5rem);
+  width: 62%;
+  background: var(--eis-hell);
+  color: var(--dunkel);
+  padding: 1.2rem 1.3rem 1.4rem;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.3);
+}
+
+.dia .karte h3 { font-family: var(--eng); font-weight: 700; font-size: clamp(1.375rem, 2.6vw, 2rem); text-transform: uppercase; line-height: 0.95; }
+.dia .karte .was { margin-top: 0.5rem; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; }
+.dia .karte .fmt { margin-top: 0.9rem; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; color: var(--rot); text-transform: uppercase; }
+
+.rot .pfeile {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  inset: 50% var(--rand) auto;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.rot .pfeile button {
+  pointer-events: auto;
+  border: 0;
+  background: none;
+  color: var(--eis-hell);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1;
+  transition: transform 200ms;
+}
+
+.rot .pfeile .vor:hover { transform: translateX(0.4rem); }
+.rot .pfeile .zurueck:hover { transform: translateX(-0.4rem); }
+
+/* ── Kunden: die Menüliste als Abschnitt ── */
+.kunden { padding: clamp(4rem, 10vh, 7rem) var(--rand); }
+.kunden .innen { max-width: 46rem; margin: 0 auto; }
+.kunden .ansage { color: var(--rot); font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.25rem; text-align: center; }
+
+.kunden li { border-bottom: 1.5px solid rgba(16, 20, 24, 0.4); }
+.kunden li:first-child { border-top: 1.5px solid rgba(16, 20, 24, 0.4); }
+
+.kunden .zeile {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.45rem 0;
+  font-family: var(--eng);
+  font-weight: 700;
+  font-size: clamp(1.25rem, 3vw, 2.125rem);
+  text-transform: uppercase;
+  transition: color 160ms, padding-left 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.kunden .zeile:hover { color: var(--rot); padding-left: 0.75rem; }
+.kunden .zeile i { font-family: var(--grotesk); font-style: normal; font-size: 11px; letter-spacing: 0.16em; color: #52646d; }
+
+/* ── Team ── */
+.team { padding: 0 var(--rand) clamp(4rem, 10vh, 7rem); }
+.team ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.25rem, 3vw, 2.25rem); max-width: 70rem; margin: 0 auto; }
+.team img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; filter: grayscale(1) contrast(1.05); transition: filter 320ms; }
+.team li:hover img { filter: none; }
+.team .name { margin-top: 0.7rem; font-family: var(--eng); font-weight: 700; font-size: clamp(1.125rem, 2vw, 1.5rem); text-transform: uppercase; }
+.team li:hover .name { color: var(--rot); }
+.team .rolle { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #52646d; }
+
+.team .saetze { max-width: 70rem; margin: clamp(2.5rem, 6vh, 4rem) auto 0; display: grid; gap: 1.25rem 4rem; }
+.team .saetze p { max-width: 46ch; }
+.team .saetze b { color: var(--rot); text-transform: uppercase; font-size: 14px; letter-spacing: 0.06em; }
+
+/* ── Gründe: rote Fläche, Kreis hinter der Zahl ── */
+.gruende { background: linear-gradient(160deg, #b81a1a, var(--rot)); color: var(--eis-hell); padding: clamp(4rem, 10vh, 7rem) var(--rand); }
+.gruende .innen { max-width: 62rem; margin: 0 auto; display: grid; gap: clamp(2.5rem, 6vh, 4rem); }
+
+.grund { text-align: center; position: relative; }
+
+.grund .kreis {
+  width: clamp(5rem, 10vw, 7.5rem);
+  height: clamp(5rem, 10vw, 7.5rem);
+  margin: 0 auto 0.75rem;
+  border: 1.5px solid var(--eis-hell);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--eng);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+}
+
+.grund h3 { font-family: var(--eng); font-weight: 700; font-size: clamp(1.75rem, 4vw, 3rem); text-transform: uppercase; line-height: 0.95; }
+.grund p { max-width: 52ch; margin: 0.75rem auto 0; font-size: 15px; color: rgba(214, 237, 245, 0.85); }
+
+/* ── FAQ ── */
+.faq { padding: clamp(4rem, 10vh, 7rem) var(--rand); }
+.faq .innen { max-width: 46rem; margin: 0 auto; }
+.faq .ansage { color: var(--rot); font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.25rem; text-align: center; }
+
+.faq details { border-bottom: 1.5px solid rgba(16, 20, 24, 0.4); }
+.faq details:first-of-type { border-top: 1.5px solid rgba(16, 20, 24, 0.4); }
+.faq summary { list-style: none; padding: 0.8rem 0; font-family: var(--eng); font-weight: 700; font-size: clamp(1.125rem, 2.2vw, 1.625rem); text-transform: uppercase; transition: color 160ms, padding-left 240ms; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary:hover, .faq details[open] summary { color: var(--rot); padding-left: 0.75rem; }
+.faq details p { padding: 0 0 1.2rem; color: #37444c; max-width: 60ch; }
+
+/* ── Schluss: Riesenwort, angeschnitten ── */
+.schluss { position: relative; overflow: hidden; padding: clamp(4rem, 10vh, 7rem) 0 0; text-align: center; }
+
+.schluss .ansage { color: var(--rot); font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+
+.schluss a.riese2 {
+  display: block;
+  margin-top: 1rem;
+  text-decoration: none;
+  font-family: var(--eng);
+  font-weight: 700;
+  font-size: clamp(4.5rem, 19vw, 17rem);
+  line-height: 0.78;
+  text-transform: uppercase;
+  color: var(--rot);
+  white-space: nowrap;
+  transform: translateY(0.08em);
+}
+
+.schluss a.riese2:hover { color: #b81a1a; }
+.schluss .mail { position: absolute; right: var(--rand); top: 1rem; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+
+@media (min-width: 860px) {
+  .team ul { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .team .saetze { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+</style>
+</head>
+<body>
+
+<div class="kreis-cursor" aria-hidden="true"></div>
+
+<header class="kopf">
+  <span class="marke"><b>Le Werk</b> <span>Visual Content Studio</span></span>
+  <button class="menueknopf" type="button" aria-label="Menü öffnen" data-menue-auf>
+    <i></i><i></i><i></i>
+  </button>
+  <a class="kontakt" href="#kontakt">Kontakt</a>
+</header>
+
+<nav class="menue" aria-label="Übersicht">
+  <button class="zu" type="button" aria-label="Menü schließen" data-menue-zu>×</button>
+  <ol>
+    <li class="gruppe">Start</li>
+    <li><a href="#oben" data-bild="../public/images/work/siemens.webp">Home</a></li>
+    <li class="gruppe">Featured Work</li>
+    
+    <li><a href="#arbeiten" data-bild="../public/images/work/siemens.webp">Siemens</a></li>
+    <li><a href="#arbeiten" data-bild="../public/images/work/allianz.webp">Allianz × Olympia</a></li>
+    <li><a href="#arbeiten" data-bild="../public/images/work/revitive.jpg">Revitive</a></li>
+    <li><a href="#arbeiten" data-bild="../public/images/work/street-one.webp">Street One</a></li>
+    <li class="gruppe">Studio</li>
+    <li><a href="#machen" data-bild="../public/images/services/video.jpg">Was wir machen</a></li>
+    <li><a href="#team" data-bild="../public/images/bts/bts-studio.jpg">Unser Kernteam</a></li>
+    <li><a href="#kontakt" data-bild="../public/images/krafthaus/haus-drohne.jpg">Kontakt</a></li>
+  </ol>
+  <figure class="bild" aria-hidden="true"><img alt=""></figure>
+</nav>
+
+<section class="auftakt" id="oben">
+  <div class="ansage">
+    <b>Wir sind Le Werk — Visual Content Studio, Köln</b>
+    <span>Le Werk is a visual content studio crafting brand content worth watching.</span>
+  </div>
+
+  <div class="buehne">
+    <figure class="foto foto--links"><img src="../public/images/bts/bts-transporter.jpg" alt="Setfoto am Transporter"></figure>
+    <figure class="foto foto--mitte"><img src="../public/images/work/bvb-ea-sports.webp" alt="BVB × EA Sports — Social Ad"></figure>
+    <h1 class="riese" aria-label="Worth Watching"><span style="--n:0">W</span><span style="--n:1">O</span><span style="--n:2">R</span><span style="--n:3">T</span><span style="--n:4">H</span><span style="--n:5">&nbsp;</span><span style="--n:6">W</span><span style="--n:7">A</span><span style="--n:8">T</span><span style="--n:9">C</span><span style="--n:10">H</span><span style="--n:11">I</span><span style="--n:12">N</span><span style="--n:13">G</span></h1>
+    <figure class="foto foto--rechts"><img src="../public/images/work/street-one.webp" alt="Street One — Social Content"></figure>
+  </div>
+
+  <p class="unten">
+    <span>Gegründet von Filmemachern.</span>
+    <span>Konzept — Produktion — Postproduktion — Based in Köln, Booked Worldwide</span>
+  </p>
+</section>
+
+<section class="geist" data-wach>
+  <p class="ansage">Konzept · Produktion · Postproduktion</p>
+  <p class="wort">Storytelling</p>
+  <figure class="saeule">
+    <img src="../public/images/work/siemens.webp" alt="Siemens — Social Media Kampagne">
+    <span class="karte"><h3>Le Werk</h3>Le Werk ist spezialisiert auf Storytelling, Film und Foto für Social und Branded Content.</span>
+  </figure>
+</section>
+
+<section class="rot" id="arbeiten">
+  <p class="ansage">Featured Work — mit den Pfeilen blättern</p>
+  <div class="rutsche" data-rutsche>
+    
+    <div class="dia">
+      <img src="../public/images/work/siemens.webp" alt="Siemens — Social Media Kampagne" loading="lazy">
+      <div class="karte">
+        <h3>Siemens</h3>
+        <p class="was">Social Media Kampagne</p>
+        <p class="fmt">Format 4:5</p>
+      </div>
+    </div>
+    <div class="dia">
+      <img src="../public/images/work/allianz.webp" alt="Allianz × Olympia — Social Videos" loading="lazy">
+      <div class="karte">
+        <h3>Allianz × Olympia</h3>
+        <p class="was">Social Videos</p>
+        <p class="fmt">Formate 9:16 · 16:9</p>
+      </div>
+    </div>
+    <div class="dia">
+      <img src="../public/images/work/revitive.jpg" alt="Revitive — Fotografie und Web Content" loading="lazy">
+      <div class="karte">
+        <h3>Revitive</h3>
+        <p class="was">Fotografie und Web Content</p>
+        <p class="fmt">Formate 3:2 · 16:9</p>
+      </div>
+    </div>
+    <div class="dia">
+      <img src="../public/images/work/street-one.webp" alt="Street One — Social Content" loading="lazy">
+      <div class="karte">
+        <h3>Street One</h3>
+        <p class="was">Social Content</p>
+        <p class="fmt">Format 9:16</p>
+      </div>
+    </div>
+    <div class="dia">
+      <img src="../public/images/work/bvb-ea-sports.webp" alt="BVB × EA Sports — Social Ad" loading="lazy">
+      <div class="karte">
+        <h3>BVB × EA Sports</h3>
+        <p class="was">Social Ad</p>
+        <p class="fmt">Format 9:16</p>
+      </div>
+    </div>
+    <div class="dia">
+      <img src="../public/images/work/formel-d.jpg" alt="Formel D — Fotografie" loading="lazy">
+      <div class="karte">
+        <h3>Formel D</h3>
+        <p class="was">Fotografie</p>
+        <p class="fmt">Format 3:2</p>
+      </div>
+    </div>
+  </div>
+  <div class="pfeile">
+    <button class="zurueck" type="button" aria-label="Zurück" data-zurueck>←</button>
+    <button class="vor" type="button" aria-label="Weiter" data-vor>→</button>
+  </div>
+</section>
+
+<section class="kunden" id="kunden">
+  <div class="innen">
+    <p class="ansage">Ausgewählte Kunden</p>
+    <ul>
+      
+      <li><span class="zeile">Siemens<i>01</i></span></li>
+      <li><span class="zeile">Street One<i>02</i></span></li>
+      <li><span class="zeile">Douglas<i>03</i></span></li>
+      <li><span class="zeile">Allianz<i>04</i></span></li>
+      <li><span class="zeile">Olympische Spiele<i>05</i></span></li>
+      <li><span class="zeile">Paralympisches Komitee<i>06</i></span></li>
+      <li><span class="zeile">EA<i>07</i></span></li>
+      <li><span class="zeile">Formel D<i>08</i></span></li>
+      <li><span class="zeile">Seven.One<i>09</i></span></li>
+      <li><span class="zeile">Zehnder Group<i>10</i></span></li>
+      <li><span class="zeile">HUGO BOSS<i>11</i></span></li>
+      <li><span class="zeile">Johnson & Johnson<i>12</i></span></li>
+    </ul>
+  </div>
+</section>
+
+<div id="machen">
+  
+  <section class="geist" data-wach>
+    <p class="ansage">Was wir machen — 01</p>
+    <p class="wort">Video</p>
+    <figure class="saeule">
+      <img src="../public/images/services/video.jpg" alt="Video" loading="lazy">
+      <span class="karte"><h3>Video</h3>Vertikale und horizontale Formate. Komplett aus einer Hand. Visuell ansprechend, mit inhaltlicher Tiefe und Auge fürs Detail. Für Kampagne und organischen Content.</span>
+    </figure>
+  </section>
+  <section class="geist" data-wach>
+    <p class="ansage">Was wir machen — 02</p>
+    <p class="wort">Idee & Konzept</p>
+    <figure class="saeule">
+      <img src="../public/images/services/konzept.jpg" alt="Idee & Konzept" loading="lazy">
+      <span class="karte"><h3>Idee & Konzept</h3>Wo wir einsteigen, entscheidet ihr. Entweder setzen wir eure fertigen Ideen um. Oder wir kommen schon früher mit an Board und übernehmen die Ideenentwicklung und Konzeptarbeit. Es muss erst ein Fundament geschaffen werden? Gerne fangen wir bei der Content Strategy an.</span>
+    </figure>
+  </section>
+  <section class="geist" data-wach>
+    <p class="ansage">Was wir machen — 03</p>
+    <p class="wort">Foto</p>
+    <figure class="saeule">
+      <img src="../public/images/services/foto.jpg" alt="Foto" loading="lazy">
+      <span class="karte"><h3>Foto</h3>Aus derselben Produktion wie Video oder als eigener Shoot. Fotografie und Nachbearbeitung für Content, Kampagne, Event oder Marke.</span>
+    </figure>
+  </section>
+</div>
+
+<section class="geist" data-wach id="team" style="padding-bottom: 2rem">
+  <p class="ansage">Wer dahintersteht</p>
+  <p class="wort">Kernteam</p>
+</section>
+
+<section class="team">
+  <ul>
+    
+    <li>
+      <img src="../public/images/team/philipp-maxhofer.jpg" alt="Porträt von Philipp Maxhofer" loading="lazy">
+      <p class="name">Philipp Maxhofer</p>
+      <p class="rolle">Concept · Creative Director</p>
+    </li>
+    <li>
+      <img src="../public/images/team/cem-schuch.jpg" alt="Porträt von Cem-Pierre Schuch" loading="lazy">
+      <p class="name">Cem-Pierre Schuch</p>
+      <p class="rolle">Head of Production · Self-Shooting Director</p>
+    </li>
+    <li>
+      <img src="../public/images/team/joscha-ortmeier.jpg" alt="Porträt von Joscha Ortmeier" loading="lazy">
+      <p class="name">Joscha Ortmeier</p>
+      <p class="rolle">Head of Post-Production · Photographer</p>
+    </li>
+    <li>
+      <img src="../public/images/team/tom-beckers.jpg" alt="Porträt von Tom Beckers" loading="lazy">
+      <p class="name">Tom Beckers</p>
+      <p class="rolle">Producer · Content Creator</p>
+    </li>
+  </ul>
+  <div class="saetze">
+    <p><b>Erfahrung aus hunderten Produktionen:</b> Wir kombinieren ein schlagkräftiges Kernteam mit kreativen Spezialisten aus verschiedenen Feldern.</p><p><b>Based in Köln, booked worldwide:</b> Unsere Räumlichkeiten liegen im Krafthaus, im Rheinauhafen. Gedreht wird in Köln, bundesweit oder auch international.</p>
+  </div>
+</section>
+
+<section class="gruende">
+  <div class="innen">
+    <p class="ansage" style="text-align:center; font-size:13px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase">Warum Le Werk</p>
+    
+    <div class="grund">
+      <span class="kreis">01</span>
+      <h3>Content darf gut aussehen</h3>
+      <p>Hochwertig produzierte Visuals in Bild und Bewegtbild — mit den Maßstäben an Licht, Bildgestaltung und Postproduktion, wie man es aus der Filmproduktion kennt.</p>
+    </div>
+    <div class="grund">
+      <span class="kreis">02</span>
+      <h3>Inhaltliche Substanz</h3>
+      <p>Redaktionelle Tiefe, ehrlich erzählte Geschichten, menschliche Momente. Interviewbasiert und dokumentarisch, mit Blick für Charaktere.</p>
+    </div>
+    <div class="grund">
+      <span class="kreis">03</span>
+      <h3>Social First</h3>
+      <p>Marken müssen dort sichtbar sein, wo die Aufmerksamkeit ihrer Kunden liegt. Wir denken social first und produzieren den richtigen Content für die richtigen Kanäle.</p>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="innen">
+    <p class="ansage">Häufige Fragen — Kurz beantwortet</p>
+    <details><summary>Was kostet eine Produktion bei Le Werk?</summary><p>Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.</p></details><details><summary>Macht ihr auch UGC- oder Handy-Content?</summary><p>Nein. Das ist ein anderer Markt mit anderen Preisen und anderem Anspruch. Bei uns entstehen Visuals auf Kampagnenniveau — auch dann, wenn sie am Ende vertikal im Feed laufen. Wer schnellen, günstigen Durchsatz sucht, ist bei uns falsch.</p></details><details><summary>Bekommen wir Foto und Video aus einer Produktion?</summary><p>Ja, das ist der Kern unserer Arbeitsweise. Wir planen Sets so, dass bewegte und stehende Bilder parallel entstehen. Das spart einen kompletten Produktionstag und sorgt dafür, dass Foto und Video wie eine Kampagne aussehen — nicht wie zwei.</p></details><details><summary>Warum denkt ihr vom vertikalen Format aus?</summary><p>Weil dort die Aufmerksamkeit liegt. Ein Bildaufbau, der als 16:9 entsteht und später hochkant beschnitten wird, verliert immer — Blickführung, Text und Rhythmus stimmen dann nicht mehr. Wir planen umgekehrt: vertikal als Kern, Landscape und Stills als Ableitung derselben Produktion.</p></details><details><summary>Wie lange dauert es von der Anfrage bis zum fertigen Material?</summary><p>Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.</p></details>
+  </div>
+</section>
+
+<section class="schluss" id="kontakt">
+  <p class="ansage">Erzähl uns von deinem Projekt — Projekt anfragen</p>
+  <a class="mail" href="mailto:contact@lewerk.de">contact@lewerk.de</a>
+  <a class="riese2" href="mailto:contact@lewerk.de">Let's talk</a>
+</section>
+
+<script>
+(() => {
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Kreis-Cursor mit Nachlauf
+  const kreis = document.querySelector('.kreis-cursor');
+  if (!matchMedia('(hover: none)').matches) {
+    let zx = innerWidth / 2, zy = innerHeight / 2, x = zx, y = zy, laeuft = false;
+    addEventListener('pointermove', (e) => {
+      zx = e.clientX; zy = e.clientY;
+      if (!laeuft) { laeuft = true; requestAnimationFrame(tick); }
+    });
+    const tick = () => {
+      x += (zx - x) * 0.3; y += (zy - y) * 0.3;
+      kreis.style.left = x + 'px'; kreis.style.top = y + 'px';
+      if (Math.abs(zx - x) > 0.3 || Math.abs(zy - y) > 0.3) requestAnimationFrame(tick);
+      else laeuft = false;
+    };
+  }
+
+  // Overlay-Menü
+  const menue = document.querySelector('.menue');
+  document.querySelector('[data-menue-auf]').addEventListener('click', () => {
+    menue.classList.add('offen');
+    document.body.style.overflow = 'hidden';
+  });
+  const zu = () => { menue.classList.remove('offen'); document.body.style.overflow = ''; };
+  document.querySelector('[data-menue-zu]').addEventListener('click', zu);
+  menue.querySelectorAll('a').forEach((a) => a.addEventListener('click', zu));
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') zu(); });
+
+  // Menü-Hover: Bild steigt auf
+  const mb = menue.querySelector('.bild');
+  const mbi = mb.querySelector('img');
+  menue.querySelectorAll('[data-bild]').forEach((a) => {
+    a.addEventListener('pointerenter', () => { mbi.src = a.dataset.bild; mb.classList.add('an'); });
+    a.addEventListener('pointerleave', () => mb.classList.remove('an'));
+  });
+
+  // Geisterabschnitte wachen beim Hereinscrollen auf
+  if (ruhig) {
+    document.querySelectorAll('[data-wach]').forEach((s) => s.classList.add('wach'));
+  } else {
+    const io = new IntersectionObserver((eintraege) => {
+      eintraege.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('wach'); io.unobserve(e.target); } });
+    }, { threshold: 0.35 });
+    document.querySelectorAll('[data-wach]').forEach((s) => io.observe(s));
+  }
+
+  // Karussell
+  const spur = document.querySelector('[data-rutsche]');
+  const breite = () => spur.querySelector('.dia').getBoundingClientRect().width + 24;
+  document.querySelector('[data-vor]').addEventListener('click', () => spur.scrollBy({ left: breite(), behavior: ruhig ? 'auto' : 'smooth' }));
+  document.querySelector('[data-zurueck]').addEventListener('click', () => spur.scrollBy({ left: -breite(), behavior: ruhig ? 'auto' : 'smooth' }));
+})();
+</script>
+
+</body>
+</html>

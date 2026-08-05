@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 4321
+    },
+    {
+      "name": "entwuerfe",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["entwuerfe/server.js"],
+      "port": 4400
     }
   ]
 }

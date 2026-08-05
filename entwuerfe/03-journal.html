@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journal — Le Werk Entwurf</title>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img, video { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+:where(h1,h2,h3,h4,p,figure,ul,ol,dl,dd,blockquote) { margin: 0; padding: 0; }
+:where(ul,ol) { list-style: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('../src/styles/fonts/bodoni-moda-opsz11-normal-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: italic;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('../src/styles/fonts/bodoni-moda-opsz11-italic-latin.woff2') format('woff2');
+}
+
+:root {
+  --papier: #f6f3ec;
+  --tinte: #1c1a16;
+  --linie: #c9c3b4;
+  --rot: #a33420;
+  --serif: 'Bodoni Moda', Didot, Georgia, serif;
+  --klein: 11px;
+  --rand: clamp(1rem, 3vw, 2.5rem);
+}
+
+body {
+  background: var(--papier);
+  color: var(--tinte);
+  font: 400 17px/1.6 var(--serif);
+}
+
+.blatt { max-width: 76rem; margin: 0 auto; border-inline: 1px solid var(--linie); }
+
+/* ── Zeitungskopf ── */
+.kopf { text-align: center; padding: 2.5rem var(--rand) 1.25rem; border-bottom: 3px double var(--tinte); }
+
+.kopf .oben {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--klein);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.kopf h1 {
+  font-size: clamp(3rem, 10vw, 8rem);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+}
+
+.kopf .unter {
+  margin-top: 1rem;
+  font-style: italic;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+}
+
+/* ── Marginalspalten-Raster ── */
+.artikel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border-bottom: 1px solid var(--linie);
+}
+
+.artikel .rand {
+  padding: 1.25rem var(--rand);
+  font-size: var(--klein);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rot);
+  border-bottom: 1px solid var(--linie);
+}
+
+.artikel .haupt { padding: clamp(1.5rem, 4vw, 3rem) var(--rand); }
+
+/* ── Leitartikel ── */
+.leit .haupt p:first-child {
+  font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+  line-height: 1.25;
+  text-wrap: pretty;
+}
+
+.leit .haupt p:first-child::first-letter {
+  float: left;
+  font-size: 3.2em;
+  line-height: 0.8;
+  padding: 0.08em 0.12em 0 0;
+  color: var(--rot);
+}
+
+.leit .haupt em { font-style: italic; }
+
+.leit .zeile {
+  margin-top: 1.5rem;
+  font-size: var(--klein);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #6d675a;
+}
+
+/* ── Arbeiten als Ausgaben ── */
+.hefte { display: grid; }
+
+.heft {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem) var(--rand);
+  border-bottom: 1px solid var(--linie);
+  align-items: start;
+}
+
+.heft:last-child { border-bottom: 0; }
+
+.heft img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; filter: sepia(0.14); }
+
+.heft .nr {
+  font-size: var(--klein);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rot);
+}
+
+.heft h3 { font-size: clamp(1.75rem, 3.4vw, 2.75rem); font-weight: 500; line-height: 1.05; margin: 0.35rem 0; }
+.heft .was { font-style: italic; }
+.heft .fmt { margin-top: 0.5rem; font-size: 13px; color: #6d675a; }
+
+/* ── Kunden als Fließtext-Zeile, mit Kommas wie in einem Impressum ── */
+.kundenzeile { padding: clamp(1.5rem, 4vw, 2.5rem) var(--rand); font-size: clamp(1.25rem, 2.6vw, 2rem); line-height: 1.5; font-style: italic; }
+.kundenzeile b { font-style: normal; font-weight: 500; }
+
+/* ── Disziplinen: drei Spalten wie Zeitungsspalten ── */
+.spalten { display: grid; }
+.spalten > div { padding: clamp(1.25rem, 3vw, 2rem) var(--rand); border-bottom: 1px solid var(--linie); }
+.spalten > div:last-child { border-bottom: 0; }
+
+.spalten h3 {
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.spalten h3 .zaehler { color: var(--rot); font-style: italic; margin-right: 0.3em; }
+.spalten p { font-size: 15.5px; line-height: 1.65; }
+
+/* ── Team als Impressum ── */
+.impressum { display: grid; gap: 0; }
+
+.person {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1rem var(--rand);
+  border-bottom: 1px solid var(--linie);
+}
+
+.person img { width: 5.5rem; aspect-ratio: 1; object-fit: cover; border-radius: 50%; filter: grayscale(1); }
+.person:hover img { filter: none; }
+.person .name { font-size: clamp(1.25rem, 2.2vw, 1.75rem); font-weight: 500; }
+.person .rolle { font-style: italic; font-size: 15px; color: #6d675a; }
+
+.notizen { padding: clamp(1.25rem, 3vw, 2rem) var(--rand); }
+.notizen p { max-width: 58ch; margin-bottom: 1rem; font-size: 16px; }
+.notizen b { font-weight: 500; }
+
+/* ── Gründe als nummerierte Thesen ── */
+.thesen li { padding: clamp(1.25rem, 3vw, 2rem) var(--rand); border-bottom: 1px solid var(--linie); }
+.thesen li:last-child { border-bottom: 0; }
+
+.thesen h3 { font-size: clamp(1.75rem, 3.6vw, 3rem); font-weight: 500; line-height: 1.1; }
+.thesen h3 i { color: var(--rot); }
+.thesen p { max-width: 56ch; margin-top: 0.6rem; font-size: 16px; }
+
+/* ── FAQ als Leserfragen ── */
+.faq details { border-bottom: 1px solid var(--linie); }
+.faq details:last-of-type { border-bottom: 0; }
+
+.faq summary {
+  list-style: none;
+  padding: 1.1rem var(--rand);
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-style: italic;
+  cursor: pointer;
+  position: relative;
+}
+
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before { content: 'F.'; color: var(--rot); font-style: normal; margin-right: 0.5em; }
+.faq details p { padding: 0 var(--rand) 1.25rem; max-width: 62ch; font-size: 16px; }
+.faq details p::before { content: 'A.'; color: var(--rot); margin-right: 0.5em; font-weight: 500; }
+
+/* ── Schluss als Kleinanzeige ── */
+.schluss { text-align: center; padding: clamp(3rem, 8vw, 6rem) var(--rand); }
+
+.schluss .rahmen {
+  display: inline-block;
+  border: 3px double var(--tinte);
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(2.5rem, 7vw, 6rem);
+}
+
+.schluss .auftakt { font-style: italic; font-size: clamp(1.25rem, 2.4vw, 1.75rem); }
+.schluss h2 { font-size: clamp(2rem, 5.5vw, 4rem); font-weight: 500; line-height: 1; margin: 0.4rem 0 1.5rem; }
+
+.schluss a.knopf {
+  display: inline-block;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--tinte);
+  padding: 0.9em 2.2em;
+}
+
+.schluss a.knopf:hover { background: var(--tinte); color: var(--papier); }
+.schluss .mail { display: block; margin-top: 1.25rem; font-style: italic; }
+
+@media (min-width: 860px) {
+  .artikel { grid-template-columns: 14rem minmax(0, 1fr); }
+  .artikel .rand { border-bottom: 0; border-right: 1px solid var(--linie); }
+  .heft { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .heft:nth-child(even) .bildzelle { order: 2; }
+  .spalten { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .spalten > div { border-bottom: 0; border-right: 1px solid var(--linie); }
+  .spalten > div:last-child { border-right: 0; }
+  .impressum { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .person:nth-child(odd) { border-right: 1px solid var(--linie); }
+}
+
+</style>
+</head>
+<body>
+
+<div class="blatt">
+  <header class="kopf">
+    <p class="oben"><span>Ausgabe Köln</span><span>05. August 2026</span><span>Gegründet von Filmemachern</span></p>
+    <h1>Le Werk</h1>
+    <p class="unter">Le Werk is a visual content studio crafting brand content worth watching.</p>
+  </header>
+
+  <section class="artikel leit" id="oben">
+    <p class="rand">Leitartikel</p>
+    <div class="haupt">
+      <p>Gegründet von Filmemachern. <em>Le Werk ist spezialisiert auf Storytelling, Film und Foto für Social und Branded Content.</em></p>
+      <p class="zeile">Konzept · Produktion · Postproduktion · Based in Köln, Booked Worldwide</p>
+    </div>
+  </section>
+
+  <section class="artikel" id="arbeiten">
+    <p class="rand">Featured Work</p>
+    <div class="hefte">
+      
+      <article class="heft">
+        <div class="bildzelle"><img src="../public/images/work/siemens.webp" alt="Siemens — Social Media Kampagne" loading="lazy"></div>
+        <div>
+          <p class="nr">Nº 01</p>
+          <h3>Siemens</h3>
+          <p class="was">Social Media Kampagne</p>
+          <p class="fmt">Format 4:5</p>
+        </div>
+      </article>
+      <article class="heft">
+        <div class="bildzelle"><img src="../public/images/work/allianz.webp" alt="Allianz × Olympia — Social Videos" loading="lazy"></div>
+        <div>
+          <p class="nr">Nº 02</p>
+          <h3>Allianz × Olympia</h3>
+          <p class="was">Social Videos</p>
+          <p class="fmt">Formate 9:16 · 16:9</p>
+        </div>
+      </article>
+      <article class="heft">
+        <div class="bildzelle"><img src="../public/images/work/revitive.jpg" alt="Revitive — Fotografie und Web Content" loading="lazy"></div>
+        <div>
+          <p class="nr">Nº 03</p>
+          <h3>Revitive</h3>
+          <p class="was">Fotografie und Web Content</p>
+          <p class="fmt">Formate 3:2 · 16:9</p>
+        </div>
+      </article>
+      <article class="heft">
+        <div class="bildzelle"><img src="../public/images/work/street-one.webp" alt="Street One — Social Content" loading="lazy"></div>
+        <div>
+          <p class="nr">Nº 04</p>
+          <h3>Street One</h3>
+          <p class="was">Social Content</p>
+          <p class="fmt">Format 9:16</p>
+        </div>
+      </article>
+      <article class="heft">
+        <div class="bildzelle"><img src="../public/images/work/bvb-ea-sports.webp" alt="BVB × EA Sports — Social Ad" loading="lazy"></div>
+        <div>
+          <p class="nr">Nº 05</p>
+          <h3>BVB × EA Sports</h3>
+          <p class="was">Social Ad</p>
+          <p class="fmt">Format 9:16</p>
+        </div>
+      </article>
+      <article class="heft">
+        <div class="bildzelle"><img src="../public/images/work/formel-d.jpg" alt="Formel D — Fotografie" loading="lazy"></div>
+        <div>
+          <p class="nr">Nº 06</p>
+          <h3>Formel D</h3>
+          <p class="was">Fotografie</p>
+          <p class="fmt">Format 3:2</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="artikel" id="kunden">
+    <p class="rand">Ausgewählte Kunden</p>
+    <p class="kundenzeile"><b>Siemens</b>, <b>Street One</b>, <b>Douglas</b>, <b>Allianz</b>, <b>Olympische Spiele</b>, <b>Paralympisches Komitee</b>, <b>EA</b>, <b>Formel D</b>, <b>Seven.One</b>, <b>Zehnder Group</b>, <b>HUGO BOSS</b>, <b>Johnson & Johnson</b>.</p>
+  </section>
+
+  <section class="artikel">
+    <p class="rand">Was wir machen</p>
+    <div class="spalten">
+      
+      <div><h3><span class="zaehler">I.</span>Video</h3><p>Vertikale und horizontale Formate. Komplett aus einer Hand. Visuell ansprechend, mit inhaltlicher Tiefe und Auge fürs Detail. Für Kampagne und organischen Content.</p></div>
+      <div><h3><span class="zaehler">II.</span>Idee & Konzept</h3><p>Wo wir einsteigen, entscheidet ihr. Entweder setzen wir eure fertigen Ideen um. Oder wir kommen schon früher mit an Board und übernehmen die Ideenentwicklung und Konzeptarbeit. Es muss erst ein Fundament geschaffen werden? Gerne fangen wir bei der Content Strategy an.</p></div>
+      <div><h3><span class="zaehler">III.</span>Foto</h3><p>Aus derselben Produktion wie Video oder als eigener Shoot. Fotografie und Nachbearbeitung für Content, Kampagne, Event oder Marke.</p></div>
+    </div>
+  </section>
+
+  <section class="artikel" id="team">
+    <p class="rand">Wer dahintersteht</p>
+    <div>
+      <div class="impressum">
+        
+        <div class="person">
+          <img src="../public/images/team/philipp-maxhofer.jpg" alt="Porträt von Philipp Maxhofer" loading="lazy">
+          <div><p class="name">Philipp Maxhofer</p><p class="rolle">Concept · Creative Director</p></div>
+        </div>
+        <div class="person">
+          <img src="../public/images/team/cem-schuch.jpg" alt="Porträt von Cem-Pierre Schuch" loading="lazy">
+          <div><p class="name">Cem-Pierre Schuch</p><p class="rolle">Head of Production · Self-Shooting Director</p></div>
+        </div>
+        <div class="person">
+          <img src="../public/images/team/joscha-ortmeier.jpg" alt="Porträt von Joscha Ortmeier" loading="lazy">
+          <div><p class="name">Joscha Ortmeier</p><p class="rolle">Head of Post-Production · Photographer</p></div>
+        </div>
+        <div class="person">
+          <img src="../public/images/team/tom-beckers.jpg" alt="Porträt von Tom Beckers" loading="lazy">
+          <div><p class="name">Tom Beckers</p><p class="rolle">Producer · Content Creator</p></div>
+        </div>
+      </div>
+      <div class="notizen">
+        <p><b>Erfahrung aus hunderten Produktionen:</b> Wir kombinieren ein schlagkräftiges Kernteam mit kreativen Spezialisten aus verschiedenen Feldern.</p><p><b>Based in Köln, booked worldwide:</b> Unsere Räumlichkeiten liegen im Krafthaus, im Rheinauhafen. Gedreht wird in Köln, bundesweit oder auch international.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="artikel">
+    <p class="rand">Warum Le Werk</p>
+    <ol class="thesen">
+      <li><h3><i>These 01.</i> Content darf gut aussehen</h3><p>Hochwertig produzierte Visuals in Bild und Bewegtbild — mit den Maßstäben an Licht, Bildgestaltung und Postproduktion, wie man es aus der Filmproduktion kennt.</p></li><li><h3><i>These 02.</i> Inhaltliche Substanz</h3><p>Redaktionelle Tiefe, ehrlich erzählte Geschichten, menschliche Momente. Interviewbasiert und dokumentarisch, mit Blick für Charaktere.</p></li><li><h3><i>These 03.</i> Social First</h3><p>Marken müssen dort sichtbar sein, wo die Aufmerksamkeit ihrer Kunden liegt. Wir denken social first und produzieren den richtigen Content für die richtigen Kanäle.</p></li>
+    </ol>
+  </section>
+
+  <section class="artikel faq">
+    <p class="rand">Häufige Fragen</p>
+    <div>
+      <details><summary>Was kostet eine Produktion bei Le Werk?</summary><p>Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.</p></details><details><summary>Macht ihr auch UGC- oder Handy-Content?</summary><p>Nein. Das ist ein anderer Markt mit anderen Preisen und anderem Anspruch. Bei uns entstehen Visuals auf Kampagnenniveau — auch dann, wenn sie am Ende vertikal im Feed laufen. Wer schnellen, günstigen Durchsatz sucht, ist bei uns falsch.</p></details><details><summary>Bekommen wir Foto und Video aus einer Produktion?</summary><p>Ja, das ist der Kern unserer Arbeitsweise. Wir planen Sets so, dass bewegte und stehende Bilder parallel entstehen. Das spart einen kompletten Produktionstag und sorgt dafür, dass Foto und Video wie eine Kampagne aussehen — nicht wie zwei.</p></details><details><summary>Warum denkt ihr vom vertikalen Format aus?</summary><p>Weil dort die Aufmerksamkeit liegt. Ein Bildaufbau, der als 16:9 entsteht und später hochkant beschnitten wird, verliert immer — Blickführung, Text und Rhythmus stimmen dann nicht mehr. Wir planen umgekehrt: vertikal als Kern, Landscape und Stills als Ableitung derselben Produktion.</p></details><details><summary>Wie lange dauert es von der Anfrage bis zum fertigen Material?</summary><p>Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.</p></details>
+    </div>
+  </section>
+
+  <section class="schluss" id="kontakt">
+    <div class="rahmen">
+      <p class="auftakt">Erzähl uns</p>
+      <h2>von deinem Projekt</h2>
+      <a class="knopf" href="mailto:contact@lewerk.de">Projekt anfragen</a>
+      <a class="mail" href="mailto:contact@lewerk.de">contact@lewerk.de</a>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

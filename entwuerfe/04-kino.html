@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kinosaal — Le Werk Entwurf</title>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img, video { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+:where(h1,h2,h3,h4,p,figure,ul,ol,dl,dd,blockquote) { margin: 0; padding: 0; }
+:where(ul,ol) { list-style: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root {
+  --saal: #0b0d0e;
+  --leinwand: #101314;
+  --licht: #f2efe9;
+  --gedimmt: rgba(242, 239, 233, 0.55);
+  --linie: rgba(242, 239, 233, 0.14);
+  --akzent: #d3fb51;
+  --grotesk: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+  --rand: clamp(1.25rem, 3.5vw, 3rem);
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../src/styles/fonts/poppins-400-normal-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../src/styles/fonts/poppins-600-normal-latin.woff2') format('woff2');
+}
+
+body {
+  background: var(--saal);
+  color: var(--licht);
+  font: 400 16px/1.6 var(--grotesk);
+}
+
+/* ── Kopf: schwebend, minimal ── */
+.kopf {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem var(--rand);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  mix-blend-mode: difference;
+}
+
+.kopf a { text-decoration: none; }
+.kopf a:hover { color: var(--akzent); }
+.kopf nav { display: flex; gap: 1.75rem; }
+
+/* ── Saal: Letterbox-Hero ── */
+.saal {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  position: relative;
+  padding: var(--rand);
+}
+
+.saal__kasten {
+  width: min(100%, 64rem);
+  aspect-ratio: 21 / 9;
+  background: var(--leinwand);
+  overflow: hidden;
+  position: relative;
+}
+
+.saal__kasten img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+/* Der Claim als Untertitel — mittig unter der Bildmitte, wie eingebrannt */
+.saal__untertitel {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  width: min(88%, 46em);
+  text-align: center;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  line-height: 1.45;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.9);
+  text-wrap: balance;
+}
+
+.saal__zeile {
+  position: absolute;
+  bottom: calc(var(--rand) * 0.75);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--rand);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gedimmt);
+}
+
+/* ── Position: eine Texttafel ── */
+.tafel {
+  padding: clamp(5rem, 12vw, 9rem) var(--rand);
+  text-align: center;
+}
+
+.tafel .auftakt { color: var(--akzent); font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.25rem; }
+
+.tafel .satz {
+  max-width: 30ch;
+  margin: 0 auto;
+  font-size: clamp(1.5rem, 3.6vw, 3rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.tafel .zeile { margin-top: 2rem; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gedimmt); }
+
+/* ── Filmstreifen: Arbeiten quer scrollend ── */
+.streifen { border-block: 1px solid var(--linie); padding-block: clamp(2rem, 5vw, 3.5rem); }
+
+.streifen h2 {
+  padding: 0 var(--rand) clamp(1.5rem, 3vw, 2.5rem);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gedimmt);
+}
+
+.streifen h2 b { color: var(--licht); font-weight: 600; }
+
+.spur {
+  display: flex;
+  gap: clamp(1rem, 2vw, 2rem);
+  overflow-x: auto;
+  padding: 0 var(--rand) 1rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--akzent) transparent;
+}
+
+.kader {
+  flex: none;
+  width: clamp(16rem, 32vw, 26rem);
+  scroll-snap-align: start;
+}
+
+.kader figure { position: relative; overflow: hidden; background: var(--leinwand); }
+.kader img { width: 100%; aspect-ratio: var(--r); object-fit: cover; transition: transform 500ms cubic-bezier(0.22,0.61,0.36,1), opacity 300ms; opacity: 0.88; }
+.kader:hover img { transform: scale(1.04); opacity: 1; }
+
+/* Lochstreifen oben und unten wie am Filmrand */
+.kader figure::before, .kader figure::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 8px;
+  background-image: radial-gradient(circle at 6px 4px, var(--saal) 2.6px, transparent 3px);
+  background-size: 16px 8px;
+  z-index: 1;
+}
+.kader figure::before { top: 0; }
+.kader figure::after { bottom: 0; }
+
+.kader figcaption { display: flex; justify-content: space-between; gap: 1rem; padding-top: 0.8rem; font-size: 12.5px; }
+.kader .wer { font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.kader .was { color: var(--gedimmt); text-align: right; }
+
+/* ── Kunden: Abspannrolle ── */
+.abspann { padding: clamp(4rem, 9vw, 7rem) var(--rand); text-align: center; }
+.abspann h2 { font-size: 12px; font-weight: 400; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gedimmt); margin-bottom: 2rem; }
+.abspann ul { display: grid; gap: 0.6rem; }
+.abspann li { font-size: clamp(1.25rem, 2.6vw, 2rem); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.abspann li:hover { color: var(--akzent); }
+
+/* ── Disziplinen: drei Leuchtkästen ── */
+.faecher { padding: 0 var(--rand) clamp(4rem, 9vw, 7rem); display: grid; gap: 1px; background: transparent; }
+
+.fach {
+  position: relative;
+  overflow: hidden;
+  background: var(--leinwand);
+  border: 1px solid var(--linie);
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  min-height: 18rem;
+  display: grid;
+  align-content: end;
+  gap: 0.8rem;
+}
+
+.fach img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.28;
+  filter: grayscale(0.6);
+  transition: opacity 400ms, filter 400ms;
+}
+
+.fach:hover img { opacity: 0.55; filter: none; }
+.fach h3 { position: relative; font-size: clamp(1.5rem, 2.6vw, 2.25rem); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.fach p { position: relative; max-width: 46ch; color: rgba(242, 239, 233, 0.8); font-size: 15px; }
+
+/* ── Team: Setfoto-Reihe ── */
+.crew { padding: 0 var(--rand) clamp(4rem, 9vw, 7rem); }
+.crew h2 { font-size: 12px; font-weight: 400; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gedimmt); margin-bottom: 2rem; }
+.crew h2 b { color: var(--licht); }
+
+.crew ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 2.4vw, 2rem); }
+.crew img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; filter: grayscale(1) brightness(0.92); transition: filter 350ms; }
+.crew li:hover img { filter: none; }
+.crew .name { margin-top: 0.7rem; font-weight: 600; }
+.crew .rolle { font-size: 13px; color: var(--gedimmt); }
+
+.crew .saetze { margin-top: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 1.25rem 4rem; }
+.crew .saetze p { max-width: 44ch; color: rgba(242, 239, 233, 0.8); }
+.crew .saetze b { color: var(--licht); }
+
+/* ── Gründe: drei Akte ── */
+.akte { border-top: 1px solid var(--linie); }
+
+.akt {
+  display: grid;
+  gap: 0.75rem;
+  padding: clamp(1.75rem, 4vw, 3rem) var(--rand);
+  border-bottom: 1px solid var(--linie);
+}
+
+.akt .nr { color: var(--akzent); font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; }
+.akt h3 { font-size: clamp(1.5rem, 3.2vw, 2.5rem); font-weight: 600; letter-spacing: -0.01em; }
+.akt p { max-width: 56ch; color: rgba(242, 239, 233, 0.72); }
+
+/* ── FAQ ── */
+.fragen { padding: clamp(4rem, 9vw, 7rem) var(--rand); max-width: 56rem; margin: 0 auto; }
+.fragen h2 { font-size: 12px; font-weight: 400; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gedimmt); margin-bottom: 2rem; }
+.fragen details { border-top: 1px solid var(--linie); }
+.fragen details:last-of-type { border-bottom: 1px solid var(--linie); }
+.fragen summary { list-style: none; cursor: pointer; padding: 1.1rem 2rem 1.1rem 0; position: relative; font-weight: 600; font-size: clamp(1rem, 1.7vw, 1.25rem); }
+.fragen summary::-webkit-details-marker { display: none; }
+.fragen summary::after { content: '›'; position: absolute; right: 0.25rem; top: 50%; transform: translateY(-50%) rotate(90deg); color: var(--akzent); transition: transform 200ms; }
+.fragen details[open] summary::after { transform: translateY(-50%) rotate(-90deg); }
+.fragen details p { padding-bottom: 1.25rem; max-width: 60ch; color: rgba(242, 239, 233, 0.72); }
+
+/* ── Schluss ── */
+.ende { text-align: center; padding: clamp(5rem, 12vw, 10rem) var(--rand); }
+.ende .auftakt { font-size: 13px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gedimmt); }
+.ende h2 { font-size: clamp(2rem, 6vw, 4.5rem); font-weight: 600; letter-spacing: -0.01em; text-transform: uppercase; margin: 0.5rem 0 2rem; }
+.ende a.knopf {
+  display: inline-block;
+  padding: 1em 2.4em;
+  border-radius: 999px;
+  background: var(--akzent);
+  color: #0b0d0e;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.ende a.knopf:hover { filter: brightness(1.1); }
+.ende .mail { display: block; margin-top: 1.25rem; color: var(--gedimmt); }
+
+@media (min-width: 900px) {
+  .faecher { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); }
+  .abspann ul { gap: 0.8rem; }
+  .crew ul { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .crew .saetze { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .akt { grid-template-columns: 10rem minmax(0, 1fr); align-items: baseline; }
+  .akt h3 { grid-column: 2; }
+  .akt p { grid-column: 2; }
+  .akt .nr { grid-row: 1 / span 2; }
+}
+
+</style>
+</head>
+<body>
+
+<header class="kopf">
+  <a href="#oben"><b>Le Werk</b></a>
+  <nav>
+    <a href="#arbeiten">Arbeiten</a>
+    <a href="#kunden">Kunden</a>
+    <a href="#team">Team</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+</header>
+
+<section class="saal" id="oben">
+  <div class="saal__kasten">
+    <img src="../public/images/bts/bts-halle.jpg" alt="Setfoto: Produktionshalle im Gegenlicht">
+    <p class="saal__untertitel">Le Werk is a visual content studio crafting brand content worth watching.</p>
+  </div>
+  <p class="saal__zeile"><span>Visual Content Studio</span><span>Köln</span><span>Scroll</span></p>
+</section>
+
+<section class="tafel">
+  <p class="auftakt">Gegründet von Filmemachern.</p>
+  <p class="satz">Le Werk ist spezialisiert auf Storytelling, Film und Foto für Social und Branded Content.</p>
+  <p class="zeile">Konzept — Produktion — Postproduktion — Based in Köln, Booked Worldwide</p>
+</section>
+
+<section class="streifen" id="arbeiten">
+  <h2><b>Featured Work</b> — seitwärts scrollen</h2>
+  <div class="spur">
+    
+    <div class="kader">
+      <figure><img src="../public/images/work/siemens.webp" alt="Siemens — Social Media Kampagne" style="--r: 4 / 5" loading="lazy"></figure>
+      <figcaption>
+        <span class="wer">Siemens</span>
+        <span class="was">Social Media Kampagne<br>Format 4:5</span>
+      </figcaption>
+    </div>
+    <div class="kader">
+      <figure><img src="../public/images/work/allianz.webp" alt="Allianz × Olympia — Social Videos" style="--r: 9 / 16" loading="lazy"></figure>
+      <figcaption>
+        <span class="wer">Allianz × Olympia</span>
+        <span class="was">Social Videos<br>Formate 9:16 · 16:9</span>
+      </figcaption>
+    </div>
+    <div class="kader">
+      <figure><img src="../public/images/work/revitive.jpg" alt="Revitive — Fotografie und Web Content" style="--r: 3 / 2" loading="lazy"></figure>
+      <figcaption>
+        <span class="wer">Revitive</span>
+        <span class="was">Fotografie und Web Content<br>Formate 3:2 · 16:9</span>
+      </figcaption>
+    </div>
+    <div class="kader">
+      <figure><img src="../public/images/work/street-one.webp" alt="Street One — Social Content" style="--r: 9 / 16" loading="lazy"></figure>
+      <figcaption>
+        <span class="wer">Street One</span>
+        <span class="was">Social Content<br>Format 9:16</span>
+      </figcaption>
+    </div>
+    <div class="kader">
+      <figure><img src="../public/images/work/bvb-ea-sports.webp" alt="BVB × EA Sports — Social Ad" style="--r: 9 / 16" loading="lazy"></figure>
+      <figcaption>
+        <span class="wer">BVB × EA Sports</span>
+        <span class="was">Social Ad<br>Format 9:16</span>
+      </figcaption>
+    </div>
+    <div class="kader">
+      <figure><img src="../public/images/work/formel-d.jpg" alt="Formel D — Fotografie" style="--r: 3 / 2" loading="lazy"></figure>
+      <figcaption>
+        <span class="wer">Formel D</span>
+        <span class="was">Fotografie<br>Format 3:2</span>
+      </figcaption>
+    </div>
+  </div>
+</section>
+
+<section class="abspann" id="kunden">
+  <h2>Ausgewählte Kunden</h2>
+  <ul><li>Siemens</li><li>Street One</li><li>Douglas</li><li>Allianz</li><li>Olympische Spiele</li><li>Paralympisches Komitee</li><li>EA</li><li>Formel D</li><li>Seven.One</li><li>Zehnder Group</li><li>HUGO BOSS</li><li>Johnson & Johnson</li></ul>
+</section>
+
+<section>
+  <h2 class="crew" style="padding-bottom:0"><b>Was wir machen</b></h2>
+  <div class="faecher" style="margin-top:1.5rem">
+    
+    <div class="fach">
+      <img src="../public/images/services/video.jpg" alt="" aria-hidden="true" loading="lazy">
+      <h3>Video</h3>
+      <p>Vertikale und horizontale Formate. Komplett aus einer Hand. Visuell ansprechend, mit inhaltlicher Tiefe und Auge fürs Detail. Für Kampagne und organischen Content.</p>
+    </div>
+    <div class="fach">
+      <img src="../public/images/services/konzept.jpg" alt="" aria-hidden="true" loading="lazy">
+      <h3>Idee & Konzept</h3>
+      <p>Wo wir einsteigen, entscheidet ihr. Entweder setzen wir eure fertigen Ideen um. Oder wir kommen schon früher mit an Board und übernehmen die Ideenentwicklung und Konzeptarbeit. Es muss erst ein Fundament geschaffen werden? Gerne fangen wir bei der Content Strategy an.</p>
+    </div>
+    <div class="fach">
+      <img src="../public/images/services/foto.jpg" alt="" aria-hidden="true" loading="lazy">
+      <h3>Foto</h3>
+      <p>Aus derselben Produktion wie Video oder als eigener Shoot. Fotografie und Nachbearbeitung für Content, Kampagne, Event oder Marke.</p>
+    </div>
+  </div>
+</section>
+
+<section class="crew" id="team">
+  <h2>Wer dahintersteht — <b>Unser Kernteam</b></h2>
+  <ul>
+    
+    <li>
+      <img src="../public/images/team/philipp-maxhofer.jpg" alt="Porträt von Philipp Maxhofer" loading="lazy">
+      <p class="name">Philipp Maxhofer</p>
+      <p class="rolle">Concept · Creative Director</p>
+    </li>
+    <li>
+      <img src="../public/images/team/cem-schuch.jpg" alt="Porträt von Cem-Pierre Schuch" loading="lazy">
+      <p class="name">Cem-Pierre Schuch</p>
+      <p class="rolle">Head of Production · Self-Shooting Director</p>
+    </li>
+    <li>
+      <img src="../public/images/team/joscha-ortmeier.jpg" alt="Porträt von Joscha Ortmeier" loading="lazy">
+      <p class="name">Joscha Ortmeier</p>
+      <p class="rolle">Head of Post-Production · Photographer</p>
+    </li>
+    <li>
+      <img src="../public/images/team/tom-beckers.jpg" alt="Porträt von Tom Beckers" loading="lazy">
+      <p class="name">Tom Beckers</p>
+      <p class="rolle">Producer · Content Creator</p>
+    </li>
+  </ul>
+  <div class="saetze">
+    <p><b>Erfahrung aus hunderten Produktionen:</b> Wir kombinieren ein schlagkräftiges Kernteam mit kreativen Spezialisten aus verschiedenen Feldern.</p><p><b>Based in Köln, booked worldwide:</b> Unsere Räumlichkeiten liegen im Krafthaus, im Rheinauhafen. Gedreht wird in Köln, bundesweit oder auch international.</p>
+  </div>
+</section>
+
+<section class="akte">
+  
+  <div class="akt">
+    <span class="nr">Akt 01 — Warum Le Werk</span>
+    <h3>Content darf gut aussehen</h3>
+    <p>Hochwertig produzierte Visuals in Bild und Bewegtbild — mit den Maßstäben an Licht, Bildgestaltung und Postproduktion, wie man es aus der Filmproduktion kennt.</p>
+  </div>
+  <div class="akt">
+    <span class="nr">Akt 02 — Warum Le Werk</span>
+    <h3>Inhaltliche Substanz</h3>
+    <p>Redaktionelle Tiefe, ehrlich erzählte Geschichten, menschliche Momente. Interviewbasiert und dokumentarisch, mit Blick für Charaktere.</p>
+  </div>
+  <div class="akt">
+    <span class="nr">Akt 03 — Warum Le Werk</span>
+    <h3>Social First</h3>
+    <p>Marken müssen dort sichtbar sein, wo die Aufmerksamkeit ihrer Kunden liegt. Wir denken social first und produzieren den richtigen Content für die richtigen Kanäle.</p>
+  </div>
+</section>
+
+<section class="fragen">
+  <h2>Häufige Fragen — Kurz beantwortet</h2>
+  <details><summary>Was kostet eine Produktion bei Le Werk?</summary><p>Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.</p></details><details><summary>Macht ihr auch UGC- oder Handy-Content?</summary><p>Nein. Das ist ein anderer Markt mit anderen Preisen und anderem Anspruch. Bei uns entstehen Visuals auf Kampagnenniveau — auch dann, wenn sie am Ende vertikal im Feed laufen. Wer schnellen, günstigen Durchsatz sucht, ist bei uns falsch.</p></details><details><summary>Bekommen wir Foto und Video aus einer Produktion?</summary><p>Ja, das ist der Kern unserer Arbeitsweise. Wir planen Sets so, dass bewegte und stehende Bilder parallel entstehen. Das spart einen kompletten Produktionstag und sorgt dafür, dass Foto und Video wie eine Kampagne aussehen — nicht wie zwei.</p></details><details><summary>Warum denkt ihr vom vertikalen Format aus?</summary><p>Weil dort die Aufmerksamkeit liegt. Ein Bildaufbau, der als 16:9 entsteht und später hochkant beschnitten wird, verliert immer — Blickführung, Text und Rhythmus stimmen dann nicht mehr. Wir planen umgekehrt: vertikal als Kern, Landscape und Stills als Ableitung derselben Produktion.</p></details><details><summary>Wie lange dauert es von der Anfrage bis zum fertigen Material?</summary><p>Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.</p></details>
+</section>
+
+<section class="ende" id="kontakt">
+  <p class="auftakt">Erzähl uns</p>
+  <h2>von deinem Projekt</h2>
+  <a class="knopf" href="mailto:contact@lewerk.de">Projekt anfragen →</a>
+  <a class="mail" href="mailto:contact@lewerk.de">contact@lewerk.de</a>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier — Le Werk Entwurf</title>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img, video { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+:where(h1,h2,h3,h4,p,figure,ul,ol,dl,dd,blockquote) { margin: 0; padding: 0; }
+:where(ul,ol) { list-style: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../src/styles/fonts/poppins-400-normal-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../src/styles/fonts/poppins-500-normal-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  font-style: italic;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('../src/styles/fonts/bodoni-moda-opsz11-italic-latin.woff2') format('woff2');
+}
+
+:root {
+  --creme: #faf6ef;
+  --tinte: #3c3833;
+  --sanft: #8f887e;
+  --salbei: #b9c6ae;
+  --rose: #e8cfc0;
+  --rund: 22px;
+  --grotesk: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+  --serif: 'Bodoni Moda', Georgia, serif;
+  --rand: clamp(1.5rem, 5vw, 4.5rem);
+}
+
+body {
+  background: var(--creme);
+  color: var(--tinte);
+  font: 400 16.5px/1.75 var(--grotesk);
+  letter-spacing: 0.005em;
+}
+
+/* ── Kopf ── */
+.kopf {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.75rem var(--rand);
+  font-size: 14px;
+}
+
+.kopf b { font-weight: 500; }
+.kopf nav { display: flex; gap: 1.75rem; }
+.kopf a { text-decoration: none; color: var(--sanft); }
+.kopf a:hover { color: var(--tinte); }
+
+/* ── Auftakt: leise, viel Luft ── */
+.auftakt { padding: clamp(4rem, 12vh, 9rem) var(--rand) clamp(4rem, 10vw, 7rem); }
+
+.auftakt h1 {
+  max-width: 22ch;
+  font-size: clamp(1.875rem, 4.6vw, 4rem);
+  font-weight: 400;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+}
+
+.auftakt h1 em { font-family: var(--serif); font-style: italic; letter-spacing: 0; }
+
+.auftakt .zeile { margin-top: 2.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; font-size: 13px; color: var(--sanft); }
+
+/* ── ein ruhiges Bildband ── */
+.band { padding: 0 var(--rand); }
+.band img { width: 100%; aspect-ratio: 21 / 9; object-fit: cover; border-radius: var(--rund); }
+
+/* ── Position ── */
+.position { padding: clamp(4rem, 10vw, 8rem) var(--rand); max-width: 56rem; }
+.position .klein { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sanft); margin-bottom: 1.25rem; }
+.position p.gross { font-size: clamp(1.375rem, 2.8vw, 2.25rem); line-height: 1.4; font-weight: 400; }
+.position p.gross em { font-family: var(--serif); font-style: italic; }
+
+/* ── Arbeiten: zwei ruhige Spalten ── */
+.arbeiten { padding: 0 var(--rand) clamp(4rem, 10vw, 8rem); }
+.arbeiten .klein { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sanft); margin-bottom: 2rem; }
+
+.arbeiten ul { display: grid; gap: clamp(2rem, 5vw, 4rem); }
+
+.arbeiten li a { display: block; text-decoration: none; }
+.arbeiten img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--rund); transition: transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1); }
+.arbeiten li:hover img { transform: scale(1.015); }
+
+.arbeiten .zeile { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1rem; }
+.arbeiten .wer { font-weight: 500; }
+.arbeiten .was { color: var(--sanft); font-size: 14.5px; text-align: right; }
+
+/* ── Kunden: schlichte Zeilen mit Punkt ── */
+.kunden { background: #fff; border-radius: var(--rund) var(--rund) 0 0; padding: clamp(4rem, 10vw, 7rem) var(--rand); }
+.kunden .klein { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sanft); margin-bottom: 2rem; }
+.kunden ul { display: flex; flex-wrap: wrap; gap: 0.75rem 0; max-width: 60rem; font-size: clamp(1.25rem, 2.4vw, 1.875rem); font-weight: 400; }
+.kunden li::after { content: '·'; margin: 0 0.65em; color: var(--salbei); }
+.kunden li:last-child::after { content: ''; }
+
+/* ── Disziplinen: drei weiche Karten ── */
+.machen { background: #fff; padding: 0 var(--rand) clamp(4rem, 10vw, 7rem); }
+.machen ol { display: grid; gap: 1.25rem; }
+
+.machen li {
+  border-radius: var(--rund);
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.machen li:nth-child(1) { background: var(--salbei); }
+.machen li:nth-child(2) { background: var(--creme); }
+.machen li:nth-child(3) { background: var(--rose); }
+
+.machen h3 { font-size: clamp(1.375rem, 2.4vw, 1.875rem); font-weight: 500; letter-spacing: -0.01em; }
+.machen h3 i { font-family: var(--serif); font-weight: 400; }
+.machen p { font-size: 15.5px; }
+
+/* ── Team ── */
+.team { padding: clamp(4rem, 10vw, 8rem) var(--rand); }
+.team .klein { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sanft); }
+.team h2 { font-size: clamp(1.75rem, 3.6vw, 3rem); font-weight: 400; margin: 0.5rem 0 2.5rem; }
+.team h2 em { font-family: var(--serif); font-style: italic; }
+
+.team ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.25rem, 3vw, 2.25rem); }
+.team img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: calc(var(--rund) * 3); transition: border-radius 400ms cubic-bezier(0.22, 0.61, 0.36, 1); }
+.team li:hover img { border-radius: var(--rund); }
+.team .name { margin-top: 0.9rem; font-weight: 500; }
+.team .rolle { font-size: 14px; color: var(--sanft); }
+
+.team .saetze { margin-top: clamp(2.5rem, 6vw, 4.5rem); display: grid; gap: 1.5rem 4rem; max-width: 74rem; }
+.team .saetze p { max-width: 44ch; }
+.team .saetze b { font-weight: 500; }
+
+/* ── Gründe: nummeriert mit Serifenziffer ── */
+.gruende { background: #fff; border-radius: var(--rund); margin: 0 var(--rand); padding: clamp(2.5rem, 6vw, 4.5rem); }
+.gruende h2 { font-size: clamp(1.75rem, 3.6vw, 3rem); font-weight: 400; margin-bottom: 2rem; }
+.gruende h2 em { font-family: var(--serif); font-style: italic; }
+.gruende ol { display: grid; gap: 2rem; }
+.gruende li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.5rem; }
+.gruende .nr { font-family: var(--serif); font-style: italic; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; color: var(--salbei); }
+.gruende h3 { font-weight: 500; font-size: clamp(1.125rem, 2vw, 1.5rem); margin-bottom: 0.4rem; }
+.gruende p { max-width: 56ch; font-size: 15.5px; }
+
+/* ── FAQ ── */
+.faq { padding: clamp(4rem, 10vw, 8rem) var(--rand); max-width: 56rem; }
+.faq .klein { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sanft); margin-bottom: 2rem; }
+.faq details { border-bottom: 1px solid #e4ddd1; }
+.faq summary { list-style: none; cursor: pointer; padding: 1.2rem 2rem 1.2rem 0; position: relative; font-weight: 500; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: '↓'; position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: var(--sanft); transition: transform 250ms; }
+.faq details[open] summary::after { transform: translateY(-50%) rotate(180deg); }
+.faq details p { padding-bottom: 1.4rem; max-width: 58ch; color: #5d574e; }
+
+/* ── Schluss ── */
+.schluss { padding: 0 var(--rand) clamp(4rem, 10vw, 7rem); }
+
+.schluss .karte {
+  background: var(--salbei);
+  border-radius: var(--rund);
+  padding: clamp(3rem, 8vw, 6rem);
+  text-align: center;
+}
+
+.schluss h2 { font-size: clamp(1.75rem, 4.4vw, 3.5rem); font-weight: 400; line-height: 1.15; }
+.schluss h2 em { font-family: var(--serif); font-style: italic; }
+
+.schluss a.knopf {
+  display: inline-block;
+  margin-top: 2rem;
+  background: var(--tinte);
+  color: var(--creme);
+  border-radius: 999px;
+  padding: 0.95em 2.2em;
+  font-size: 14.5px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.schluss a.knopf:hover { background: #262320; }
+.schluss .mail { display: block; margin-top: 1rem; font-size: 14.5px; }
+
+@media (min-width: 860px) {
+  .arbeiten ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .arbeiten li:nth-child(odd) { transform: translateY(clamp(1.5rem, 4vw, 3.5rem)); }
+  .machen ol { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .team ul { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .team .saetze { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+</style>
+</head>
+<body>
+
+<header class="kopf">
+  <b>le Werk</b>
+  <nav>
+    <a href="#arbeiten">arbeiten</a>
+    <a href="#team">team</a>
+    <a href="#kontakt">kontakt</a>
+  </nav>
+</header>
+
+<section class="auftakt">
+  <h1>Le Werk is a visual content studio crafting brand content <em>worth watching</em>.</h1>
+  <p class="zeile">konzept  —  produktion  —  postproduktion  —  based in Köln, Booked Worldwide</p>
+</section>
+
+<div class="band">
+  <img src="../public/images/krafthaus/haus-drohne.jpg" alt="Das Krafthaus im Kölner Rheinauhafen aus der Luft">
+</div>
+
+<section class="position">
+  <p class="klein">visual Content Studio</p>
+  <p class="gross">Gegründet von Filmemachern. <em>Le Werk ist spezialisiert auf Storytelling, Film und Foto für Social und Branded Content.</em></p>
+</section>
+
+<section class="arbeiten" id="arbeiten">
+  <p class="klein">featured Work</p>
+  <ul>
+    
+    <li>
+      <a href="#" onclick="return false">
+        <img src="../public/images/work/siemens.webp" alt="Siemens — Social Media Kampagne" loading="lazy">
+        <span class="zeile"><span class="wer">Siemens</span>
+        <span class="was">Social Media Kampagne · 4:5</span></span>
+      </a>
+    </li>
+    <li>
+      <a href="#" onclick="return false">
+        <img src="../public/images/work/allianz.webp" alt="Allianz × Olympia — Social Videos" loading="lazy">
+        <span class="zeile"><span class="wer">Allianz × Olympia</span>
+        <span class="was">Social Videos · 9:16 · 16:9</span></span>
+      </a>
+    </li>
+    <li>
+      <a href="#" onclick="return false">
+        <img src="../public/images/work/revitive.jpg" alt="Revitive — Fotografie und Web Content" loading="lazy">
+        <span class="zeile"><span class="wer">Revitive</span>
+        <span class="was">Fotografie und Web Content · 3:2 · 16:9</span></span>
+      </a>
+    </li>
+    <li>
+      <a href="#" onclick="return false">
+        <img src="../public/images/work/street-one.webp" alt="Street One — Social Content" loading="lazy">
+        <span class="zeile"><span class="wer">Street One</span>
+        <span class="was">Social Content · 9:16</span></span>
+      </a>
+    </li>
+    <li>
+      <a href="#" onclick="return false">
+        <img src="../public/images/work/bvb-ea-sports.webp" alt="BVB × EA Sports — Social Ad" loading="lazy">
+        <span class="zeile"><span class="wer">BVB × EA Sports</span>
+        <span class="was">Social Ad · 9:16</span></span>
+      </a>
+    </li>
+    <li>
+      <a href="#" onclick="return false">
+        <img src="../public/images/work/formel-d.jpg" alt="Formel D — Fotografie" loading="lazy">
+        <span class="zeile"><span class="wer">Formel D</span>
+        <span class="was">Fotografie · 3:2</span></span>
+      </a>
+    </li>
+  </ul>
+</section>
+
+<section class="kunden" id="kunden">
+  <p class="klein">ausgewählte Kunden</p>
+  <ul><li>Siemens</li><li>Street One</li><li>Douglas</li><li>Allianz</li><li>Olympische Spiele</li><li>Paralympisches Komitee</li><li>EA</li><li>Formel D</li><li>Seven.One</li><li>Zehnder Group</li><li>HUGO BOSS</li><li>Johnson & Johnson</li></ul>
+</section>
+
+<section class="machen">
+  <ol>
+    
+    <li><h3><i>video</i></h3><p>Vertikale und horizontale Formate. Komplett aus einer Hand. Visuell ansprechend, mit inhaltlicher Tiefe und Auge fürs Detail. Für Kampagne und organischen Content.</p></li>
+    <li><h3><i>idee & Konzept</i></h3><p>Wo wir einsteigen, entscheidet ihr. Entweder setzen wir eure fertigen Ideen um. Oder wir kommen schon früher mit an Board und übernehmen die Ideenentwicklung und Konzeptarbeit. Es muss erst ein Fundament geschaffen werden? Gerne fangen wir bei der Content Strategy an.</p></li>
+    <li><h3><i>foto</i></h3><p>Aus derselben Produktion wie Video oder als eigener Shoot. Fotografie und Nachbearbeitung für Content, Kampagne, Event oder Marke.</p></li>
+  </ol>
+</section>
+
+<section class="team" id="team">
+  <p class="klein">wer dahintersteht</p>
+  <h2>unser <em>Kernteam</em></h2>
+  <ul>
+    
+    <li>
+      <img src="../public/images/team/philipp-maxhofer.jpg" alt="Porträt von Philipp Maxhofer" loading="lazy">
+      <p class="name">Philipp Maxhofer</p>
+      <p class="rolle">Concept · Creative Director</p>
+    </li>
+    <li>
+      <img src="../public/images/team/cem-schuch.jpg" alt="Porträt von Cem-Pierre Schuch" loading="lazy">
+      <p class="name">Cem-Pierre Schuch</p>
+      <p class="rolle">Head of Production · Self-Shooting Director</p>
+    </li>
+    <li>
+      <img src="../public/images/team/joscha-ortmeier.jpg" alt="Porträt von Joscha Ortmeier" loading="lazy">
+      <p class="name">Joscha Ortmeier</p>
+      <p class="rolle">Head of Post-Production · Photographer</p>
+    </li>
+    <li>
+      <img src="../public/images/team/tom-beckers.jpg" alt="Porträt von Tom Beckers" loading="lazy">
+      <p class="name">Tom Beckers</p>
+      <p class="rolle">Producer · Content Creator</p>
+    </li>
+  </ul>
+  <div class="saetze">
+    <p><b>Erfahrung aus hunderten Produktionen:</b> Wir kombinieren ein schlagkräftiges Kernteam mit kreativen Spezialisten aus verschiedenen Feldern.</p><p><b>Based in Köln, booked worldwide:</b> Unsere Räumlichkeiten liegen im Krafthaus, im Rheinauhafen. Gedreht wird in Köln, bundesweit oder auch international.</p>
+  </div>
+</section>
+
+<section class="gruende">
+  <h2>warum <em>le Werk</em></h2>
+  <ol>
+    
+    <li><span class="nr">01</span><div><h3>Content darf gut aussehen</h3><p>Hochwertig produzierte Visuals in Bild und Bewegtbild — mit den Maßstäben an Licht, Bildgestaltung und Postproduktion, wie man es aus der Filmproduktion kennt.</p></div></li>
+    <li><span class="nr">02</span><div><h3>Inhaltliche Substanz</h3><p>Redaktionelle Tiefe, ehrlich erzählte Geschichten, menschliche Momente. Interviewbasiert und dokumentarisch, mit Blick für Charaktere.</p></div></li>
+    <li><span class="nr">03</span><div><h3>Social First</h3><p>Marken müssen dort sichtbar sein, wo die Aufmerksamkeit ihrer Kunden liegt. Wir denken social first und produzieren den richtigen Content für die richtigen Kanäle.</p></div></li>
+  </ol>
+</section>
+
+<section class="faq">
+  <p class="klein">häufige Fragen — kurz beantwortet</p>
+  <details><summary>Was kostet eine Produktion bei Le Werk?</summary><p>Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.</p></details><details><summary>Macht ihr auch UGC- oder Handy-Content?</summary><p>Nein. Das ist ein anderer Markt mit anderen Preisen und anderem Anspruch. Bei uns entstehen Visuals auf Kampagnenniveau — auch dann, wenn sie am Ende vertikal im Feed laufen. Wer schnellen, günstigen Durchsatz sucht, ist bei uns falsch.</p></details><details><summary>Bekommen wir Foto und Video aus einer Produktion?</summary><p>Ja, das ist der Kern unserer Arbeitsweise. Wir planen Sets so, dass bewegte und stehende Bilder parallel entstehen. Das spart einen kompletten Produktionstag und sorgt dafür, dass Foto und Video wie eine Kampagne aussehen — nicht wie zwei.</p></details><details><summary>Warum denkt ihr vom vertikalen Format aus?</summary><p>Weil dort die Aufmerksamkeit liegt. Ein Bildaufbau, der als 16:9 entsteht und später hochkant beschnitten wird, verliert immer — Blickführung, Text und Rhythmus stimmen dann nicht mehr. Wir planen umgekehrt: vertikal als Kern, Landscape und Stills als Ableitung derselben Produktion.</p></details><details><summary>Wie lange dauert es von der Anfrage bis zum fertigen Material?</summary><p>Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.</p></details>
+</section>
+
+<section class="schluss" id="kontakt">
+  <div class="karte">
+    <h2>erzähl uns <em>von deinem Projekt</em></h2>
+    <a class="knopf" href="mailto:contact@lewerk.de">Projekt anfragen</a>
+    <a class="mail" href="mailto:contact@lewerk.de">contact@lewerk.de</a>
+  </div>
+</section>
+
+</body>
+</html>
