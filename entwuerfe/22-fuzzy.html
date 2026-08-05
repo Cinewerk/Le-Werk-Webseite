@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fellwarm — Le Werk Entwurf</title>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img, video { max-width: 100%; display: block; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+:where(h1,h2,h3,h4,p,figure,ul,ol,dl,dd,blockquote) { margin: 0; padding: 0; }
+:where(ul,ol) { list-style: none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../src/styles/fonts/poppins-800-normal-latin.woff2') format('woff2');
+}
+
+:root {
+  --nacht: #101014;
+  --papier: #f2f0eb;
+  --senf: #d9b832;
+  --kobalt: #2b2fd6;
+  --marker: #b8e34d;
+  --grotesk: 'Helvetica Neue', Arial, sans-serif;
+  --fett: 'Poppins', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  background: var(--nacht);
+  color: var(--papier);
+  font: 500 15px/1.5 var(--grotesk);
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Zellenkopf ── */
+.kopf {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto auto;
+  align-items: stretch;
+  background: var(--nacht);
+  border-bottom: 1px solid rgba(242, 240, 235, 0.25);
+  font-size: 13px;
+}
+
+.kopf > * {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  border-right: 1px solid rgba(242, 240, 235, 0.25);
+  white-space: nowrap;
+}
+
+.kopf > :last-child { border-right: 0; }
+.kopf .marke { font-family: var(--fett); font-weight: 800; font-size: 17px; letter-spacing: 0.01em; }
+.kopf .satz { color: rgba(242, 240, 235, 0.7); overflow: hidden; text-overflow: ellipsis; }
+.kopf .satz u { color: var(--papier); text-underline-offset: 3px; }
+.kopf .neu img { width: 26px; height: 26px; object-fit: cover; margin-right: 8px; }
+.kopf a.punkt:hover { background: var(--papier); color: var(--nacht); }
+
+/* ── Glitch-Held ── */
+.held {
+  position: relative;
+  min-height: calc(100svh - 49px);
+  display: grid;
+  align-content: space-between;
+  overflow: hidden;
+  padding: 8vh 24px 20px;
+}
+
+.objekte {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: center;
+  max-width: 74rem;
+  margin: 0 auto;
+  width: 100%;
+  perspective: 900px;
+}
+
+.objekt { position: relative; justify-self: center; width: clamp(9rem, 16vw, 14rem); }
+
+.objekt .lage {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  clip-path: polygon(22% 2%, 78% 10%, 96% 46%, 72% 96%, 18% 88%, 4% 38%);
+  display: block;
+  animation: kippen 9s ease-in-out infinite;
+}
+
+.objekt .lage--r, .objekt .lage--b {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.objekt .lage--r { filter: url(#rot) grayscale(1) brightness(0.9) sepia(1) hue-rotate(-50deg) saturate(5); animation-delay: 60ms; }
+.objekt .lage--b { filter: grayscale(1) brightness(0.9) sepia(1) hue-rotate(160deg) saturate(5); animation-delay: 120ms; }
+
+.objekt:nth-child(2) .lage { animation-duration: 11s; animation-direction: reverse; }
+.objekt:nth-child(3) .lage { animation-duration: 10s; }
+
+@keyframes kippen {
+  0%, 100% { transform: rotateY(-16deg) rotateZ(-3deg); }
+  50% { transform: rotateY(18deg) rotateZ(2deg); }
+}
+
+/* Messrahmen wie aus dem Tracker */
+.messung {
+  position: absolute;
+  border: 1px solid var(--marker);
+  pointer-events: none;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  color: var(--marker);
+  padding: 1px 3px;
+  animation: zittern 4s steps(2) infinite;
+}
+
+.messung--a { left: 6%; top: 8%; width: 34%; height: 22%; }
+.messung--b { right: 10%; bottom: 14%; width: 28%; height: 16%; animation-delay: 1s; }
+@keyframes zittern { 50% { transform: translate(2px, -1px); } }
+
+.held .firmenzeile {
+  font-family: var(--fett);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 3.8vw, 3.4rem);
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* ── WORK ── */
+.werkteil { padding: 8vh 24px 10vh; }
+
+.werkteil .kopfzeile { display: flex; justify-content: space-between; align-items: end; margin-bottom: 20px; }
+.werkteil h2 {
+  font-family: var(--fett);
+  font-weight: 800;
+  font-size: clamp(4rem, 12vw, 11rem);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.werkteil .mehr { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 4px; }
+
+.raster { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
+
+.stueck { position: relative; }
+.stueck img, .stueck .flaeche { width: 100%; object-fit: cover; display: block; }
+.stueck figcaption { display: flex; justify-content: space-between; padding-top: 8px; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; }
+.stueck .jahr { color: rgba(242, 240, 235, 0.55); }
+
+.stueck--a { grid-column: 1 / span 3; }
+.stueck--a img { aspect-ratio: 1 / 1; }
+.stueck--b { grid-column: 4 / span 4; align-self: start; }
+.stueck--b img { aspect-ratio: 16 / 10; }
+.stueck--c { grid-column: 8 / span 5; }
+
+/* Die Farbfläche mit dem Vieleck-Fenster am Zeiger */
+.fensterkachel { position: relative; aspect-ratio: 5 / 4; background: #21c55d; overflow: hidden; cursor: none; }
+
+.fensterkachel img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 68%;
+  aspect-ratio: 4 / 3;
+  clip-path: polygon(50% 0%, 93% 25%, 84% 78%, 38% 98%, 4% 60%, 12% 16%);
+  transform: translate(-50%, -50%) rotate(12deg);
+  opacity: 0;
+  transition: opacity 160ms linear;
+  will-change: left, top, transform;
+}
+
+.fensterkachel:hover img { opacity: 1; }
+
+.raster + .zweite { margin-top: 24px; }
+.zweite { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; }
+.stueck--d { grid-column: 1 / span 5; }
+.stueck--d img { aspect-ratio: 16 / 10; }
+.stueck--e { grid-column: 6 / span 3; }
+.stueck--e img { aspect-ratio: 4 / 5; }
+.stueck--f { grid-column: 9 / span 4; }
+.stueck--f img { aspect-ratio: 1 / 1; }
+
+/* ── Senffläche ── */
+.senf { background: var(--senf); color: var(--nacht); padding: 10vh 24px; }
+
+.senf .gross {
+  font-family: var(--fett);
+  font-weight: 800;
+  font-size: clamp(1.75rem, 4.6vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-align: center;
+  max-width: 22ch;
+  margin: 0 auto;
+}
+
+.senf .tiefer { display: block; width: fit-content; margin: 4vh auto 8vh; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 4px; }
+
+.senf .grabber { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; }
+
+.kategorien { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+
+.kategorie { border: 1px solid rgba(16, 16, 20, 0.35); padding: 20px; display: grid; gap: 16px; }
+
+.kategorie .form {
+  width: 70%;
+  margin: 0 auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  clip-path: polygon(48% 2%, 92% 20%, 98% 64%, 62% 98%, 12% 84%, 4% 30%);
+  transition: transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.kategorie:hover .form { transform: rotate(-8deg) scale(1.05); }
+
+.kategorie .zeile { display: flex; justify-content: space-between; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; }
+.kategorie .anzahl { color: rgba(16, 16, 20, 0.55); }
+.kategorie p.text { font-size: 13.5px; line-height: 1.5; text-transform: none; letter-spacing: 0; }
+
+/* ── Weitere Stimmen der Vorlage: Gründe + FAQ, dunkel dazwischen ── */
+.zwischen { padding: 9vh 24px; max-width: 74rem; margin: 0 auto; }
+.zwischen h2 { font-family: var(--fett); font-weight: 800; text-transform: uppercase; font-size: clamp(1.75rem, 4vw, 3.25rem); line-height: 1; margin-bottom: 3vh; }
+.zwischen .gruende { display: grid; gap: 18px; }
+.zwischen .grund { border-top: 1px solid rgba(242, 240, 235, 0.3); padding-top: 12px; }
+.zwischen .grund b { display: block; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.zwischen .grund p { color: rgba(242, 240, 235, 0.7); max-width: 60ch; }
+
+.zwischen details { border-top: 1px solid rgba(242, 240, 235, 0.3); }
+.zwischen details:last-of-type { border-bottom: 1px solid rgba(242, 240, 235, 0.3); }
+.zwischen summary { list-style: none; cursor: pointer; padding: 12px 0; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: 14px; }
+.zwischen summary::-webkit-details-marker { display: none; }
+.zwischen summary::before { content: '+ '; color: var(--senf); }
+.zwischen details[open] summary::before { content: '– '; }
+.zwischen details p { padding-bottom: 14px; color: rgba(242, 240, 235, 0.7); max-width: 64ch; }
+
+/* Kundenzeile im Zellenstil */
+.kundenzeile { display: flex; flex-wrap: wrap; border: 1px solid rgba(242, 240, 235, 0.3); border-right: 0; }
+.kundenzeile li { flex: 1 1 auto; padding: 12px 16px; border-right: 1px solid rgba(242, 240, 235, 0.3); border-bottom: 1px solid rgba(242, 240, 235, 0.3); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; }
+.kundenzeile li:hover { background: var(--senf); color: var(--nacht); }
+
+/* ── Laufband ── */
+.band { background: var(--senf); color: var(--nacht); overflow: hidden; padding: 10px 0; }
+.band .spur { display: flex; gap: 0.6em; width: max-content; animation: ziehen 16s linear infinite; }
+.band span {
+  font-family: var(--fett);
+  font-weight: 800;
+  font-size: clamp(2.25rem, 6vw, 5rem);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+@keyframes ziehen { to { transform: translateX(-50%); } }
+
+/* ── Kobaltfuß ── */
+.fuss { background: var(--kobalt); position: relative; overflow: hidden; }
+
+.fuss .oben {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  border-bottom: 1px solid rgba(242, 240, 235, 0.35);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.fuss .oben > * { padding: 14px 18px; border-right: 1px solid rgba(242, 240, 235, 0.35); }
+.fuss .oben > :last-child { border-right: 0; }
+.fuss .oben a:hover { background: var(--papier); color: var(--kobalt); }
+
+.fuss .riesenmarke {
+  display: block;
+  text-align: center;
+  font-family: var(--fett);
+  font-weight: 800;
+  font-size: clamp(4rem, 15.5vw, 15rem);
+  line-height: 0.72;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  padding-top: 14vh;
+  transform: translateY(0.12em);
+  white-space: nowrap;
+}
+
+.fuss .aufkleber {
+  position: absolute;
+  left: 6%;
+  bottom: 4%;
+  width: clamp(6rem, 11vw, 9.5rem);
+  aspect-ratio: 1;
+  object-fit: cover;
+  clip-path: polygon(50% 0%, 90% 22%, 100% 62%, 68% 98%, 18% 88%, 0% 40%);
+  animation: taumeln 12s ease-in-out infinite;
+  z-index: 2;
+}
+@keyframes taumeln { 50% { transform: rotate(14deg); } }
+
+.fuss .unten {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  border-top: 1px solid rgba(242, 240, 235, 0.35);
+  padding: 12px 18px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.fuss .unten nav { display: flex; gap: 20px; }
+.fuss .unten a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 860px) {
+  .kopf { grid-template-columns: auto 1fr; }
+  .kopf .satz, .kopf .neu { display: none; }
+  .objekte { grid-template-columns: minmax(0, 1fr); }
+  .raster > *, .zweite > * { grid-column: 1 / -1 !important; }
+  .kategorien { grid-template-columns: minmax(0, 1fr); }
+}
+
+</style>
+</head>
+<body>
+
+<header class="kopf">
+  <span class="marke">Le Werk</span>
+  <span class="satz">Le Werk ist ein Visual Content Studio: <u>mehr dazu</u></span>
+  <span class="neu"><img src="../public/images/work/siemens.webp" alt="">Neueste Arbeit: Siemens</span>
+  <a class="punkt" href="#werk">Work</a>
+  <a class="punkt" href="#info">Info</a>
+  <a class="punkt" href="#kontakt">Contact</a>
+</header>
+
+<section class="held">
+  <div class="objekte" aria-hidden="true">
+    
+    <div class="objekt">
+      <img class="lage" src="../public/images/bts/bts-halle.jpg" alt="">
+      <img class="lage lage--r" src="../public/images/bts/bts-halle.jpg" alt="">
+      <img class="lage lage--b" src="../public/images/bts/bts-halle.jpg" alt="">
+      <span class="messung messung--a">TRK_01</span>
+      <span class="messung messung--b">0.42 / F2.8</span>
+    </div>
+    <div class="objekt">
+      <img class="lage" src="../public/images/work/bvb-ea-sports.webp" alt="">
+      <img class="lage lage--r" src="../public/images/work/bvb-ea-sports.webp" alt="">
+      <img class="lage lage--b" src="../public/images/work/bvb-ea-sports.webp" alt="">
+      <span class="messung messung--a">TRK_01</span>
+      <span class="messung messung--b">0.42 / F2.8</span>
+    </div>
+    <div class="objekt">
+      <img class="lage" src="../public/images/bts/bts-studio.jpg" alt="">
+      <img class="lage lage--r" src="../public/images/bts/bts-studio.jpg" alt="">
+      <img class="lage lage--b" src="../public/images/bts/bts-studio.jpg" alt="">
+      <span class="messung messung--a">TRK_01</span>
+      <span class="messung messung--b">0.42 / F2.8</span>
+    </div>
+  </div>
+  <p class="firmenzeile">Brand Content worth watching — Visual Content Studio, Köln</p>
+</section>
+
+<section class="werkteil" id="werk">
+  <div class="kopfzeile">
+    <h2>Work</h2>
+    <a class="mehr" href="#werk">See more work</a>
+  </div>
+  <div class="raster">
+    <figure class="stueck stueck--a">
+      <img src="../public/images/work/street-one.webp" alt="Street One — Social Content">
+      <figcaption><span>Street One</span><span class="jahr">2025</span></figcaption>
+    </figure>
+    <figure class="stueck stueck--b">
+      <img src="../public/images/work/formel-d.jpg" alt="Formel D — Fotografie">
+      <figcaption><span>Formel D</span><span class="jahr">2025</span></figcaption>
+    </figure>
+    <figure class="stueck stueck--c">
+      <div class="fensterkachel" data-fenster>
+        <img src="../public/images/work/siemens.webp" alt="Siemens — Social Media Kampagne">
+      </div>
+      <figcaption><span>Siemens</span><span class="jahr">2026</span></figcaption>
+    </figure>
+  </div>
+  <div class="zweite">
+    <figure class="stueck stueck--d">
+      <img src="../public/images/work/revitive.jpg" alt="Revitive — Fotografie und Web Content">
+      <figcaption><span>Revitive</span><span class="jahr">2026</span></figcaption>
+    </figure>
+    <figure class="stueck stueck--e">
+      <img src="../public/images/work/allianz.webp" alt="Allianz × Olympia — Social Videos">
+      <figcaption><span>Allianz × Olympia</span><span class="jahr">2025</span></figcaption>
+    </figure>
+    <figure class="stueck stueck--f">
+      <img src="../public/images/work/bvb-ea-sports.webp" alt="BVB × EA Sports — Social Ad">
+      <figcaption><span>BVB × EA Sports</span><span class="jahr">2026</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="senf">
+  <p class="gross">Video & Idee & Konzept & Foto — Le Werk ist spezialisiert auf Storytelling, Film und Foto für Social und Branded Content.</p>
+  <a class="tiefer" href="#info">Dig deeper</a>
+  <p class="grabber">Content darf gut aussehen.</p>
+  <div class="kategorien">
+    
+    <div class="kategorie">
+      <img class="form" src="../public/images/services/video.jpg" alt="Video" loading="lazy">
+      <p class="zeile"><span>Video</span><span class="anzahl">(6)</span></p>
+      <p class="text">Vertikale und horizontale Formate. Komplett aus einer Hand. Visuell ansprechend, mit inhaltlicher Tiefe und Auge fürs Detail. Für Kampagne und organischen Content.</p>
+    </div>
+    <div class="kategorie">
+      <img class="form" src="../public/images/services/konzept.jpg" alt="Idee & Konzept" loading="lazy">
+      <p class="zeile"><span>Idee & Konzept</span><span class="anzahl">(3)</span></p>
+      <p class="text">Wo wir einsteigen, entscheidet ihr. Entweder setzen wir eure fertigen Ideen um. Oder wir kommen schon früher mit an Board und übernehmen die Ideenentwicklung und Konzeptarbeit. Es muss erst ein Fundament geschaffen werden? Gerne fangen wir bei der Content Strategy an.</p>
+    </div>
+    <div class="kategorie">
+      <img class="form" src="../public/images/services/foto.jpg" alt="Foto" loading="lazy">
+      <p class="zeile"><span>Foto</span><span class="anzahl">(2)</span></p>
+      <p class="text">Aus derselben Produktion wie Video oder als eigener Shoot. Fotografie und Nachbearbeitung für Content, Kampagne, Event oder Marke.</p>
+    </div>
+  </div>
+</section>
+
+<section class="zwischen" id="info">
+  <h2>Warum Le Werk</h2>
+  <div class="gruende">
+    <div class="grund"><b>01 — Content darf gut aussehen</b><p>Hochwertig produzierte Visuals in Bild und Bewegtbild — mit den Maßstäben an Licht, Bildgestaltung und Postproduktion, wie man es aus der Filmproduktion kennt.</p></div><div class="grund"><b>02 — Inhaltliche Substanz</b><p>Redaktionelle Tiefe, ehrlich erzählte Geschichten, menschliche Momente. Interviewbasiert und dokumentarisch, mit Blick für Charaktere.</p></div><div class="grund"><b>03 — Social First</b><p>Marken müssen dort sichtbar sein, wo die Aufmerksamkeit ihrer Kunden liegt. Wir denken social first und produzieren den richtigen Content für die richtigen Kanäle.</p></div>
+  </div>
+  <h2 style="margin-top:8vh">Ausgewählte Kunden</h2>
+  <ul class="kundenzeile"><li>Siemens</li><li>Street One</li><li>Douglas</li><li>Allianz</li><li>Olympische Spiele</li><li>Paralympisches Komitee</li><li>EA</li><li>Formel D</li><li>Seven.One</li><li>Zehnder Group</li><li>HUGO BOSS</li><li>Johnson & Johnson</li></ul>
+  <h2 style="margin-top:8vh">Unser Kernteam + Kurz beantwortet</h2>
+  <div class="gruende" style="margin-bottom:3vh">
+    <div class="grund"><b>Philipp Maxhofer</b><p>Concept · Creative Director</p></div><div class="grund"><b>Cem-Pierre Schuch</b><p>Head of Production · Self-Shooting Director</p></div><div class="grund"><b>Joscha Ortmeier</b><p>Head of Post-Production · Photographer</p></div><div class="grund"><b>Tom Beckers</b><p>Producer · Content Creator</p></div>
+    <div class="grund"><b>Erfahrung aus hunderten Produktionen:</b><p>Wir kombinieren ein schlagkräftiges Kernteam mit kreativen Spezialisten aus verschiedenen Feldern.</p></div><div class="grund"><b>Based in Köln, booked worldwide:</b><p>Unsere Räumlichkeiten liegen im Krafthaus, im Rheinauhafen. Gedreht wird in Köln, bundesweit oder auch international.</p></div>
+  </div>
+  <details><summary>Was kostet eine Produktion bei Le Werk?</summary><p>Das hängt an Drehtagen, Team und Formatumfang. Kompakte Social-Produktionen starten im mittleren vierstelligen Bereich, größere Kampagnen liegen fünfstellig. Nach einem 20-minütigen Gespräch bekommt ihr eine belastbare Spanne — kein Zahlenraten.</p></details><details><summary>Macht ihr auch UGC- oder Handy-Content?</summary><p>Nein. Das ist ein anderer Markt mit anderen Preisen und anderem Anspruch. Bei uns entstehen Visuals auf Kampagnenniveau — auch dann, wenn sie am Ende vertikal im Feed laufen. Wer schnellen, günstigen Durchsatz sucht, ist bei uns falsch.</p></details><details><summary>Bekommen wir Foto und Video aus einer Produktion?</summary><p>Ja, das ist der Kern unserer Arbeitsweise. Wir planen Sets so, dass bewegte und stehende Bilder parallel entstehen. Das spart einen kompletten Produktionstag und sorgt dafür, dass Foto und Video wie eine Kampagne aussehen — nicht wie zwei.</p></details><details><summary>Warum denkt ihr vom vertikalen Format aus?</summary><p>Weil dort die Aufmerksamkeit liegt. Ein Bildaufbau, der als 16:9 entsteht und später hochkant beschnitten wird, verliert immer — Blickführung, Text und Rhythmus stimmen dann nicht mehr. Wir planen umgekehrt: vertikal als Kern, Landscape und Stills als Ableitung derselben Produktion.</p></details><details><summary>Wie lange dauert es von der Anfrage bis zum fertigen Material?</summary><p>Für eine kompakte Produktion rechnet mit drei bis vier Wochen: eine Woche Konzept, ein bis zwei Drehtage, ein bis zwei Wochen Post. Bei laufenden Content-Paketen verkürzt sich das deutlich, weil Setup und Look bereits stehen.</p></details>
+</section>
+
+<div class="band" aria-hidden="true">
+  <div class="spur">
+    <span>Erzähl uns von deinem Projekt —</span><span>Erzähl uns von deinem Projekt —</span><span>Erzähl uns von deinem Projekt —</span><span>Erzähl uns von deinem Projekt —</span><span>Erzähl uns von deinem Projekt —</span><span>Erzähl uns von deinem Projekt —</span>
+  </div>
+</div>
+
+<footer class="fuss" id="kontakt">
+  <div class="oben">
+    <a href="mailto:contact@lewerk.de">contact@lewerk.de</a>
+    <a href="#werk">Work</a>
+    <a href="#info">Info</a>
+    <a href="#kontakt">Contact</a>
+  </div>
+  <span class="riesenmarke">Le Werk</span>
+  <img class="aufkleber" src="../public/images/bts/bts-transporter.jpg" alt="" aria-hidden="true">
+  <div class="unten">
+    <nav>
+      <a href="#" onclick="return false">Instagram</a>
+      <a href="#" onclick="return false">LinkedIn</a>
+    </nav>
+    <span>© Le Werk — Visual Content Studio, Köln</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* Das Vieleck-Fenster folgt dem Zeiger und dreht sich leicht mit der
+     Bewegung — der Kern der Werkkachel aus der Vorlage. */
+  var kachel = document.querySelector('[data-fenster]');
+  var bild = kachel.querySelector('img');
+  var winkel = 12;
+  kachel.addEventListener('pointermove', function (e) {
+    var r = kachel.getBoundingClientRect();
+    var x = e.clientX - r.left;
+    var y = e.clientY - r.top;
+    winkel += (e.movementX || 0) * 0.15;
+    winkel = Math.max(-30, Math.min(40, winkel));
+    bild.style.left = x + 'px';
+    bild.style.top = y + 'px';
+    bild.style.transform = 'translate(-50%, -50%) rotate(' + winkel.toFixed(1) + 'deg)';
+  });
+})();
+</script>
+
+</body>
+</html>
