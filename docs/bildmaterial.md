@@ -238,7 +238,10 @@ sie fest; ohne das stimmen die `ar`-Werte in `index.astro` nicht mit dem
 ### Die Team-Porträts
 
 Zwei Maße halten die Reihe zusammen, beide nachgemessen an der
-Anzeigegröße von 304px:
+Anzeigehöhe von 304px. Sie gelten unverändert weiter, seit die Kachel im
+Format 4:5 steht: Beschnitten wird nur seitlich, die Kachel ist mit 303px
+praktisch genauso hoch wie zuvor das Quadrat, und beide Maße hängen an der
+Höhe.
 
 - **Augenlinie 44 Prozent** der Kachelhöhe, bei allen vier.
 - **Kopfhöhe 178px**, vom Scheitel bis zum Kinn. Gemessen liegen die vier
@@ -546,26 +549,51 @@ eigenen Farbstich; grau bindet sie zu einer Reihe. Ohne Zeigegerät
 (`hover: none`) stehen sie von vornherein farbig, sonst gäbe es die Farbe
 auf dem Handy nie zu sehen.
 
-Namen und Rollen stehen vollständig im `team`-Array. Die Rollen sind
-Doppelnennungen mit Schrägstrich („Head of Production / Self-Shooting
-Director") und laufen bei zwei von vieren über die Kachelbreite hinaus;
-den Umbruch regelt `text-wrap: balance` an `.team__role`. Ohne die Angabe
-füllt die erste Zeile sich bis zum Rand und lässt ein einzelnes Wort
-darunter stehen.
+**Name und Rolle stehen seit dem 5. August 2026 auf dem Bild**, nicht mehr
+als zwei Zeilen darunter. Der Name ist immer da, die Rolle klappt beim
+Überfahren unter ihm auf und hebt ihn dabei an — dasselbe Muster wie bei
+den Disziplinen unter „Was wir machen".
+
+Beides steht weiterhin vollständig im `team`-Array. Die Rollen sind
+Doppelnennungen mit senkrechtem Strich („Head of Production | Self-Shooting
+Director"); der Strich bezeichnet nur noch die Trennstelle, die Vorlage
+teilt an ihm und setzt die beiden Hälften untereinander. Vorher brach die
+Zeile bei zwei von vieren genau dort um und ließ den Strich am Zeilenende
+hängen.
+
+Unterhalb von 560px Fensterbreite fällt die Beschriftung zurück unter das
+Bild. Zweispaltig misst die Kachel dort nur noch 155px, und Schrift, die an
+der Kachelbreite hängt, wäre auf ihr 12px klein. Der Aufklapper ist ohnehin
+eine Hover-Geste, und ein Telefon hat keinen Zeiger.
 
 **Alle vier liegen als fertiges Quadrat vor**, in unterschiedlicher
 Kantenlänge — die Maße und der Grund dafür stehen oben unter „Die
-Team-Porträts". Der Zuschnitt steckt in der Datei und nicht im CSS: Die
-Aufnahmen sind quer und zeigen die Personen klein im Raum, ein Beschnitt
-per `object-fit` hätte sie nur verschoben statt näher herangeholt. Die
-ursprünglichen Querformate (1400 × 933) liegen in der Git-Historie.
+Team-Porträts". Der enge Zuschnitt steckt in der Datei und nicht im CSS:
+Die Aufnahmen sind quer und zeigen die Personen klein im Raum, ein
+Beschnitt per `object-fit` hätte sie nur verschoben statt näher
+herangeholt. Die ursprünglichen Querformate (1400 × 933) liegen in der
+Git-Historie.
+
+Angezeigt werden sie **im Format 4:5**, also 70px je Seite schmaler als die
+Datei. Das ist der einzige Beschnitt, der im CSS steckt, und er ist
+unkritisch: Die Köpfe stehen mittig und rund 300px breit, sie liegen mit
+Abstand innerhalb. Am Kopf selbst ändert sich dabei nichts — die Kachel ist
+303px hoch statt 304, die Köpfe bleiben bei 178px und die Augenlinie bei 44
+Prozent. Der Grund für 4:5 ist die Beschriftung: Im Quadrat saß der Name
+auf Höhe von Kinn und Hals.
 
 Zum Ersetzen: Quadrat unter demselben Namen ablegen — Augen auf 44 Prozent
 der Höhe, Kopf auf 58 Prozent, siehe oben — dann Name und Rolle im
-`team`-Array in `src/pages/index.astro` eintragen. Die Reihenfolge im Array bestimmt die
-Reihenfolge auf der Seite. Wer eine Aufnahme im Hochformat liefert,
-schneidet sie besser selbst quadratisch zu — ein Beschnitt per CSS würde
-die Person nur verschieben, nicht näher heranholen.
+`team`-Array in `src/pages/index.astro` eintragen. Die Reihenfolge im Array
+bestimmt die Reihenfolge auf der Seite. Wer eine Aufnahme im Hochformat
+liefert, schneidet sie besser selbst quadratisch zu — ein Beschnitt per CSS
+würde die Person nur verschieben, nicht näher heranholen.
+
+Beim Austausch lohnt ein Blick auf den Lesbarkeitsverlauf: Er ist auf die
+vier vorhandenen Motive eingemessen und hält im schlechtesten Fall 5,7:1
+gegen die Schwelle von 4,5. Ein Porträt mit hellem Hintergrund bis ganz
+unten ins Bild kann das unterschreiten. Die Rechnung steht im Kommentar bei
+`.team__bild::after` in `src/pages/index.astro`.
 
 Die Setfotos im Streublock stehen in Farbe, die Porträts in Graustufen —
 siehe oben. Der Filter lag zwischenzeitlich auf beiden und war einmal

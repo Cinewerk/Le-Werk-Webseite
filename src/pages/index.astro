@@ -271,22 +271,23 @@ const krafthaus = [
 //
 // Die Originale liegen alle vier unter quellbilder/team.
 //
-// Die Rollen sind Doppelnennungen mit Schrägstrich und laufen bei zwei
-// von vieren über die Kachelbreite hinaus. Am Umbruch hängen drei Dinge:
+// Die Rollen sind Doppelnennungen, getrennt durch einen senkrechten
+// Strich. Der Strich steht nur noch in den Daten: Die Vorlage teilt an ihm
+// und setzt die beiden Hälften untereinander — Begründung bei .team__zeile
+// im Stylesheet. Er bleibt hier, weil er die Trennstelle bezeichnet, und
+// eine Zeichenkette mit klarer Trennstelle ist leichter zu pflegen als
+// zwei Felder.
 //
-//   text-wrap: balance   an .team__role verteilt die Zeilen gleichmäßig.
-//                        Ohne die Angabe füllt die erste Zeile sich bis
-//                        zum Rand und lässt ein einzelnes Wort darunter.
-//   U+2011               steht als Bindestrich in "Post‑Production" und
-//                        "Self‑Shooting" — ein gewöhnlicher Bindestrich
-//                        ist eine Trennstelle, und Joschas Zeile brach
-//                        genau dort: "Head of Post-" über "Production /
-//                        Photographer". Der Umbruch gehört an den
-//                        Schrägstrich, nicht in den Begriff.
-//   U+2009               steht als schmales Leerzeichen um die
-//                        Schrägstriche. Nur Optik, keine Umbruchregel —
-//                        es ist ein trennbares Leerzeichen wie jedes
-//                        andere.
+// Zwei Sonderzeichen sind trotzdem nötig:
+//
+//   U+2011   steht als Bindestrich in "Post‑Production" und
+//            "Self‑Shooting" — ein gewöhnlicher Bindestrich ist eine
+//            Trennstelle, und Joschas Zeile brach genau dort: "Head of
+//            Post-" über "Production". Der Umbruch gehört zwischen die
+//            beiden Nennungen, nicht in einen Begriff.
+//   U+2009   steht als schmales Leerzeichen um den Strich. Beim Teilen
+//            fällt es mit weg; es trägt nur, solange die Zeichenkette
+//            ungeteilt irgendwo auftaucht.
 const team = [
   { img: '/images/team/philipp-maxhofer.jpg', name: 'Philipp Maxhofer', role: 'Concept | Creative Director', alt: 'Porträt von Philipp Maxhofer im Rollkragenpullover, Studio im Hintergrund' },
   { img: '/images/team/cem-schuch.jpg', name: 'Cem-Pierre Schuch', role: 'Head of Production | Self‑Shooting Director', alt: 'Porträt von Cem-Pierre Schuch in dunkler Sweatjacke, lachend, im Hintergrund ein Sprossenfenster' },
@@ -540,17 +541,29 @@ const faqs = [
         </h2>
       </header>
 
-      <!-- Erst die Gesichter … -->
+      <!-- Erst die Gesichter … Name und Rolle stehen auf dem Bild, wie bei
+           den Disziplinen weiter oben: Der Name ist immer da, die Rolle
+           klappt beim Überfahren darunter auf und hebt ihn dabei an. -->
       <ul class="team__grid">
         {team.map((m, i) => (
           <li class="team__member" data-reveal data-reveal-delay={i * 70}>
-            <img
-              class="team__portrait"
-              src={withBase(m.img)} alt={m.alt}
-              width="700" height="700" loading="lazy" decoding="async"
-            />
-            <p class="team__name">{m.name}</p>
-            <p class="team__role">{m.role}</p>
+            <figure class="team__bild">
+              <img
+                class="team__portrait"
+                src={withBase(m.img)} alt={m.alt}
+                width="700" height="700" loading="lazy" decoding="async"
+              />
+              <figcaption class="team__fuss">
+                <span class="team__name">{m.name}</span>
+                <span class="team__role">
+                  <span>
+                    {m.role.split('|').map((t) => (
+                      <span class="team__zeile">{t.trim()}</span>
+                    ))}
+                  </span>
+                </span>
+              </figcaption>
+            </figure>
           </li>
         ))}
       </ul>
@@ -1608,24 +1621,40 @@ const faqs = [
      Porträts direkt darunter die Fläche übernehmen. */
   .sec-head--knapp { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
 
-  /* Vier Porträts: zwei Spalten auf dem Handy, vier ab 48rem.
+  /* Vier Porträts: zwei Spalten auf dem Handy, vier ab 992px.
 
-     Zwei Vorgaben stehen fest: Die Reihe liegt bündig an beiden Kanten,
-     und die Gesichter sind gut ein Viertel kleiner als in voller Breite.
-     Beides zusammen heißt zwangsläufig große Abstände — vier Bilder und
-     drei Abstände teilen sich dieselbe Breite, was das eine verliert,
-     gewinnt das andere. Bei 1310px Reihe sind das 220px Bild und 143px
-     Abstand gegen 300px und 36px vorher.
+     Name und Rolle standen bis zum 5. August 2026 als zwei Zeilen unter
+     dem Bild. Das gab der Reihe ein unruhiges Fußende — die Rollen sind
+     Doppelnennungen, zwei von vieren brachen um, und die Reihe stand auf
+     vier verschieden hohen Textblöcken. Jetzt sitzen sie im Bild, nach
+     demselben Muster wie die Disziplinen weiter oben: Der Name ist immer
+     da, die Rolle klappt beim Überfahren auf.
+
+     Damit ändert sich auch das Format. Im Quadrat saß der Name auf Höhe
+     von Kinn und Hals — bei Joscha und Tom stand er den Gesichtern
+     buchstäblich im Weg. 4:5 gibt unterhalb des Kinns eine Fläche, auf
+     die eine Zeile gehört. Der Ausschnitt kostet nichts: Die Vorlagen
+     sind 700 × 700 und quadratisch beschnitten, 4:5 nimmt je Seite 70px
+     ab. Die Köpfe stehen mittig und rund 300px breit, sie liegen also mit
+     Abstand innerhalb. Nachgesehen an allen vier.
+
+     ABSTAND UND GRÖSSE. Zwei Vorgaben stehen weiter fest: Die Reihe liegt
+     bündig an beiden Kanten, und die Gesichter bleiben kleiner als die
+     Stücke im Haufen darunter, damit sie ihn einleiten statt mit ihm zu
+     konkurrieren. Der Spaltenabstand sinkt dafür von 137 auf 94px:
+
+       3 × 94                 = 282px für die Abstände
+       (1252 − 282) ÷ 4       = 243px je Bild
+
+     bei 1252px Reihe also 243 × 303px gegen 210 × 300 vorher. Die Reihe
+     ist damit genauso hoch wie zuvor mit den Textzeilen — der Abschnitt
+     wiegt in der Seite unverändert schwer, nur sein Fußende ist ruhig.
+     Und 243px stehen weiter unter den größten Haufenstücken, die bei
+     derselben Fensterbreite 300 bis 330px messen.
 
      Der Versuch, den Überhang stattdessen nach außen zu legen (40px
-     Abstand, 123px Einrückung je Seite), fiel durch: Die Reihe stand dann
-     nicht mehr bündig.
-
-     Ohne die großen Abstände ginge es nur über das Seitenverhältnis — bei
-     voller Breite und 4:3 statt 1:1 fiele ein Viertel der Fläche weg, ohne
-     dass sich ein Abstand ändert. Dafür fehlt Joscha: Seine Vorlage misst
-     1086 × 1448, der quadratische Ausschnitt schöpft die Breite fast aus,
-     und 4:3 bräuchte 1439px. */
+     Abstand, 123px Einrückung je Seite), fiel schon früher durch: Die
+     Reihe stand dann nicht mehr bündig. */
   .team__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1637,21 +1666,33 @@ const faqs = [
 
   .team__member { margin: 0; }
 
-  /* Quadratisch statt 2:3. Vier hohe Porträts über die volle Breite waren
-     rund 450px hoch und nahmen dem Abschnitt die Ruhe — die Gesichter
-     sollen den Text und das Raster darunter einleiten, nicht mit ihnen
-     konkurrieren. Im Quadrat sind es 220px.
+  /* container-type, weil die Beschriftung in cqi steht — sie hängt an der
+     Kachel, nicht am Fenster. Das ist hier wichtiger als bei den
+     Disziplinen: Die Team-Kacheln sind schmal, und eine rem-Größe wäre auf
+     ihnen je nach Browser-Grundschrift mal knapp und mal zu breit.
 
-     Graustufen, Farbe erst bei Hover. Die vier Aufnahmen stammen aus
+     Maske gegen den hellen Saum in der Rundung — ausführlich bei
+     .work__figure. */
+  .team__bild {
+    position: relative;
+    container-type: inline-size;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-bild);
+    -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
+    mask-image: linear-gradient(#000, #000);
+  }
+
+  /* Graustufen, Farbe erst bei Hover. Die vier Aufnahmen stammen aus
      verschiedenen Situationen — Studio, Sofa, Loft — und haben jede einen
      eigenen Farbstich. Grau bindet sie zu einer Reihe; die Farbe kommt
      zurück, sobald jemand hinsieht. */
   .team__portrait {
+    display: block;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 5;
     object-fit: cover;
-    border-radius: var(--radius-bild);
-    margin-bottom: var(--space-2);
+    border-radius: inherit;
     filter: grayscale(1);
     transition: filter var(--dur) var(--ease-out);
   }
@@ -1665,26 +1706,223 @@ const faqs = [
     .team__portrait { filter: none; }
   }
 
-  .team__name {
-    font-size: var(--fs-small);
-    font-weight: 600;
-    color: var(--on-dark);
+  /* Lesbarkeitsverlauf, auf den echten Porträts gemessen statt geschätzt:
+     4:5-Zuschnitt in Kachelgröße, Graustufen wie Farbe, Verlauf darüber,
+     dann der schlechteste Wert auf den Zeilenkästen — je Band an der
+     hellsten 12px-Säule, nicht am Mittelwert.
+
+     ER IST DÜNNER ALS DER BEI DEN DISZIPLINEN, und zwar aus Messung, nicht
+     aus Geschmack. Deren Werte übernommen (0.92 / 0.62 / 0 bei 62 %) ergab
+     im schlechtesten Fall 9,3:1 — doppelt so viel wie nötig, und jeder
+     Punkt darüber ist verdecktes Bild. Der Grund ist der Zuschnitt: Bei
+     4:5 liegt das Schriftband über Schultern und Kleidung, nicht über
+     hellem Hintergrund wie bei den Disziplinen.
+
+     Vier leichtere Fassungen durchgerechnet, über alle vier Porträts, beide
+     Kachelgrößen und alle drei Bänder. Der schlechteste Wert je Fassung:
+
+       .92 / .62 / 0 @ 62 %      9.28     doppelt so viel wie nötig
+       .78 / .46 / 0 @ 52 %      5.73     genommen
+       .66 / .36 / 0 @ 48 %      4.40     unter der Schwelle
+       .55 / .28 / 0 @ 44 %      3.53     unter der Schwelle
+
+     Der enge Fall ist Philipp im offenen Zustand: Sein Studiohintergrund
+     reicht bis ins Schriftband, und der Name steht dann am höchsten. Cem
+     kommt an derselben Stelle auf 12,2 — der Verlauf richtet sich nach dem
+     schwierigsten der vier, nicht nach dem Schnitt.
+
+     Gerechnet ist mit zwei Rollenzeilen auf allen vier Kacheln. Das ist
+     seit dem Stapeln der Fall (siehe .team__zeile) und hat die Reserve
+     gekostet: Mit ein und zwei Zeilen gemischt stand K1 noch bei 6,77.
+
+     Die Zahlen erzeugt scratchpad/team-kontrast.js. */
+  .team__bild::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      0deg,
+      rgba(4, 37, 44, 0.78) 0%,
+      rgba(4, 37, 44, 0.46) 32%,
+      rgba(4, 37, 44, 0) 52%
+    );
   }
 
-  /* balance, weil die Rollen Doppelnennungen sind und die längeren
-     zwei Zeilen brauchen. Ohne die Angabe füllt die erste Zeile sich bis
-     zum Rand und lässt ein einzelnes Wort darunter stehen — bei Cem
-     stand "Director" allein auf 59px unter einer 258px langen Zeile.
+  /* Zweite Lage, nur beim Überfahren — dieselbe Begründung wie bei den
+     Disziplinen: Dann steht das Bild in Farbe, und der Name rückt nach
+     oben, weil die Rolle unter ihm Platz braucht. Beides macht es
+     schwerer. Sie steckt in derselben Rechnung wie der Grundverlauf oben;
+     die 6,77 gelten für beide Lagen zusammen.
 
-     Die Schriftgröße hing zwischenzeitlich an der Kachelbreite (4.6cqi),
-     damit die Rollen auf breiten Bildschirmen in eine Zeile passen. Das
-     ist zurückgenommen: Sie steht wieder wie Name und Bildzeilen auf
-     --fs-small. Wie viele Zeichen damit einzeilig bleiben, hängt an der
-     Kachelbreite und steht in docs/bildmaterial.md. */
+     Über 52 % der Höhe ist sie null. Der offene Block reicht bis 28 % —
+     das Gesicht bleibt in jedem Zustand unangetastet.
+
+     Als eigene Lage und nicht als getauschter Verlauf: Ein Hintergrundbild
+     lässt sich nicht weich überblenden, eine Deckkraft schon. */
+  .team__bild::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease-out);
+    background: linear-gradient(
+      0deg,
+      rgba(4, 37, 44, 0.26) 0%,
+      rgba(4, 37, 44, 0.22) 34%,
+      rgba(4, 37, 44, 0) 52%
+    );
+  }
+
+  .team__member:hover .team__bild::before,
+  .team__member:focus-within .team__bild::before { opacity: 1; }
+
+  /* Alles in cqi, also in Prozent der Kachelbreite. Bei 243px Kachel sind
+     das 14,6px Rand, 18,5px Name und 13,9px Rolle. Weil Rand und Schrift
+     an derselben Größe hängen, bleibt das Verhältnis in jeder Kachelbreite
+     gleich: Der längste Name, "Cem-Pierre Schuch", füllt immer 84 % der
+     verfügbaren Breite — nie mehr, nie weniger.
+
+     Ausnahme ist das Band zwischen 992 und rund 1180px Fenster. Dort steht
+     die Reihe schon vierspaltig, aber die Kachel misst erst 169 bis 200px,
+     und in reinem cqi wäre der Name 12,8px klein. Deshalb die Untergrenzen
+     in max(): 13,5px für den Namen, 11,5 für die Rolle. Bei 169px Kachel
+     füllt der längste Name damit 91 % statt 84 — eng, aber er passt, und
+     ab 1180px greift wieder die reine cqi-Rechnung.
+
+     In px und nicht in rem: rem hinge an der Browser-Grundschrift, und die
+     hat mit der Kachelbreite nichts zu tun. */
+  .team__fuss {
+    position: absolute;
+    left: 6cqi;
+    right: 6cqi;
+    bottom: 5.2cqi;
+    z-index: 1;
+  }
+
+  /* Gemischt und halbfett, nicht versal und extrafett wie die Disziplinen.
+     Der Unterschied ist gewollt: "VIDEO" ist eine Marke und darf rufen, ein
+     Mensch heißt einfach so. Versal käme "CEM-PIERRE SCHUCH" außerdem auf
+     107 % der Kachelbreite und passte gar nicht. */
+  .team__name {
+    display: block;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    font-size: max(13.5px, 7.6cqi);
+    line-height: 1.2;
+    color: #fff;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+  }
+
+  /* 0fr auf 1fr statt max-height: Damit läuft die Bewegung genau bis zur
+     tatsächlichen Texthöhe. Zwei der vier Rollen brauchen zwei Zeilen,
+     zwei kommen mit einer aus — der Name hebt sich also unterschiedlich
+     weit an, und genau das soll er. */
   .team__role {
-    font-size: var(--fs-small);
-    color: var(--on-dark-muted);
-    text-wrap: balance;
+    display: grid;
+    grid-template-rows: 0fr;
+    margin-top: 0;
+    font-size: max(11.5px, 5.7cqi);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.92);
+    opacity: 0;
+    transition: grid-template-rows var(--dur-slow) var(--ease-out),
+                opacity var(--dur) var(--ease-out),
+                margin-top var(--dur-slow) var(--ease-out);
+  }
+
+  .team__role > span { overflow: hidden; }
+
+  /* Die beiden Hälften der Rolle stehen untereinander, der senkrechte
+     Strich aus den Daten fällt weg.
+
+     Er stand vorher zwischen ihnen, und bei zwei von vieren brach die
+     Zeile genau dort um — "Head of Production |" mit hängendem Strich am
+     Zeilenende, darunter "Self‑Shooting Director". Ein Trennzeichen, das
+     nichts mehr trennt, weil der Umbruch die Arbeit schon getan hat.
+
+     Gestapelt stehen alle vier gleich: zwei Zeilen, keine Striche, und der
+     Name hebt sich auf jeder Kachel gleich weit an. Das ist auch der
+     richtige Ton — in einer Produktion steht so der Abspann. */
+  .team__zeile { display: block; }
+
+  .team__member:hover .team__role,
+  .team__member:focus-within .team__role {
+    grid-template-rows: 1fr;
+    margin-top: 3.4cqi;
+    opacity: 1;
+  }
+
+  /* Ohne Zeigegerät gibt es kein Überfahren — dort steht die Rolle immer,
+     und der Verlauf muss sie immer tragen. Dieselbe Entscheidung wie bei
+     den Disziplinen. */
+  @media (hover: none) {
+    .team__role {
+      grid-template-rows: 1fr;
+      margin-top: 3.4cqi;
+      opacity: 1;
+    }
+
+    .team__bild::before { opacity: 1; }
+  }
+
+  /* UNTERHALB VON 560px ZURÜCK UNTER DAS BILD.
+
+     Zweispaltig wird die Kachel auf dem Telefon schmal: bei 375px Fenster
+     misst sie 155px. In cqi wäre der Name dort 11,8px und die Rolle 8,8 —
+     unlesbar. Eine rem-Untergrenze hilft nicht, sie ließe den Namen über
+     die Kachel hinauslaufen.
+
+     Also fällt die Beschriftung dort zurück unter das Bild, wo sie umbrechen
+     darf. Das kostet nichts: Der Aufklapper ist eine Hover-Geste, und ein
+     Telefon hat keinen Zeiger. 560px ist die Stelle, an der die zweispaltige
+     Kachel unter 236px fällt — darüber trägt die Schrift auf dem Bild.
+
+     In px und nicht in rem, wie alle Umbruchstellen hier: rem hängt in
+     Medienabfragen an der Browser-Grundschrift, nicht an der Seite. */
+  @media (max-width: 559.98px) {
+    .team__bild::after,
+    .team__bild::before { content: none; }
+
+    /* Rundung und Kappen wandern von der Figur auf das Bild. Steht die
+       Beschriftung im Fluss statt darüber, ist sie Teil der Figur — ihre
+       letzte Zeile sitzt dann bündig auf deren Unterkante, und die 9px
+       Rundung schnitte die Unterlängen an. */
+    .team__bild {
+      overflow: visible;
+      border-radius: 0;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .team__portrait { border-radius: var(--radius-bild); }
+
+    .team__fuss {
+      position: static;
+      margin-top: var(--space-2);
+    }
+
+    .team__name {
+      font-size: var(--fs-small);
+      color: var(--on-dark);
+      text-shadow: none;
+    }
+
+    /* text-wrap: balance, weil die Rollen Doppelnennungen sind. Ohne die
+       Angabe füllt die erste Zeile sich bis zum Rand und lässt ein
+       einzelnes Wort darunter stehen. */
+    .team__role {
+      display: block;
+      margin-top: 0;
+      font-size: var(--fs-small);
+      color: var(--on-dark-muted);
+      opacity: 1;
+      text-wrap: balance;
+    }
   }
 
   /* Die beiden Streublöcke stehen mit Abstand untereinander und mit
@@ -1784,27 +2022,58 @@ const faqs = [
        und bei 1440 dann 399. */
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-    /* Vier Quadrate über die volle Breite, bündig an beiden Kanten. Der
-       Spaltenabstand setzt die Bildgröße:
+    /* Vier Porträts über die volle Breite, bündig an beiden Kanten. Der
+       Spaltenabstand setzt die Bildgröße — bei 1252px Reihe sind es 94px
+       Abstand und 243px Bild:
 
-         3 × 10,94 %              = 32,82 % für die Abstände
-         (100 − 32,82) ÷ 4        = 16,80 % je Bild
+         3 × 94                   = 282px für die Abstände
+         (1252 − 282) ÷ 4         = 243px je Bild
 
-       bei 1310px Reihe also 220px Bild und 143px Abstand — 27 Prozent
-       weniger Kantenlänge als die 300px, die vier Bilder ohne Abstand
-       ergäben. In Prozent, damit das Verhältnis bei jeder Fensterbreite
-       steht; nur so bleibt die Reihe an beiden Kanten bündig.
+       WARUM DER ABSTAND MITLÄUFT UND NICHT FEST IN PROZENT STEHT. Bei 7,5
+       Prozent wäre er unten in der Abfrage 26px und oben 94 — dasselbe
+       Verhältnis überall, aber nicht dieselbe Kachel: Bei 992px Fenster
+       misst die Reihe nur 873px, und vier Bilder darin kamen auf 166px.
+       Für Schrift im Bild ist das zu eng; der Name wäre auf seine
+       Untergrenze von 13,5px gefallen und hätte 92 Prozent der Kachel
+       gefüllt.
 
-       Erst ab 992 und nicht schon ab 768: Bei 768px kamen vier Bilder mit
-       diesem Abstand auf 116px Kantenlänge — zweispaltig darunter waren es
-       259. Die Gesichter wurden also kleiner, während das Fenster größer
-       wurde. Zwei Reihen zu zweit tragen diese Breite besser.
+       Deshalb wächst der Abstand mit dem Fenster statt mit der Reihe: 26px
+       bei 992, 94 bei 1440 und darüber gedeckelt. Das sind 15,18vw minus
+       124,6px, die Gerade durch beide Punkte. Bündig bleibt die Reihe
+       dabei — der Abstand ist eine Länge, die von der vollen Breite
+       abgeht, kein Rand.
+
+       Gemessen:
+
+         Fenster   Abstand   Kachel     Name
+          992        26      195 x 244  14,8px
+         1200        58      217 x 271  16,5
+         1440        94      243 x 303  18,4
+         1920        94      246 x 307  18,7
+
+       Im Browser nachgemessen, nicht gerechnet: vw zählt die Bildlaufleiste
+       mit, die Reihe nicht.
+
+       Die Reihe steht also unten dicht und oben luftig. Das ist gewollt:
+       Auf einem schmalen Bildschirm zählt die Größe der Gesichter, auf
+       einem breiten die Ruhe zwischen ihnen.
+
+       Der Abstand war bis zum 5. August 2026 10,94 Prozent und die Kachel
+       damit 210px. Er ist gesunken, weil Name und Rolle seither im Bild
+       stehen: Der Textblock unter der Reihe fällt weg, und die Kachel darf
+       die Höhe übernehmen, die er gebraucht hat. Die vollständige Rechnung
+       steht oben bei .team__grid.
+
+       Erst ab 992 und nicht schon ab 768: Bei 768px kämen vier Bilder auf
+       165px Breite — zweispaltig darunter sind es 326. Die Gesichter
+       würden also kleiner, während das Fenster größer wird. Zwei Reihen zu
+       zweit tragen diese Breite besser.
 
        Nur hier und nicht an .team__grid: Zweispaltig wäre derselbe Wert
        eine Lücke, kein Abstand. */
     .team__grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      column-gap: 10.94%;
+      column-gap: clamp(26px, 15.18vw - 124.6px, 94px);
     }
   }
 
@@ -2035,6 +2304,11 @@ const faqs = [
        Reduzierte Bewegung heißt weniger Bewegung, nicht weniger Inhalt. */
     .disziplin__text { transition: opacity var(--dur-fast) linear; }
     .disziplin__bild::before { transition: opacity var(--dur-fast) linear; }
+
+    /* Dasselbe für die Rollen im Team-Abschnitt — gleicher Aufklapper,
+       gleiche Entscheidung. */
+    .team__role { transition: opacity var(--dur-fast) linear; }
+    .team__bild::before { transition: opacity var(--dur-fast) linear; }
   }
 </style>
 
