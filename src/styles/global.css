@@ -199,6 +199,22 @@ button { cursor: pointer; }
   padding-inline: var(--gutter);
 }
 
+/* Volle Fensterbreite statt gedeckelter Spalte.
+
+   Der Inhalt steht dann auf --edge, also auf derselben Kante wie das Logo
+   im Header und der Satz auf der Bühne. Auf der Startseite läuft ab
+   "Featured Work" alles so; die Unterseiten stehen noch in der gedeckelten
+   Spalte.
+
+   Was den Zeilen dabei nicht passiert: Sie werden nicht länger. Jede
+   Textspalte hat ihren eigenen Deckel in Zeichen (--measure, 58ch in den
+   FAQ-Antworten, 62ch bei den Gründen). Breit läuft, was Fläche ist —
+   Bilder, Raster, Laufband. */
+.container--breit {
+  max-width: none;
+  padding-inline: var(--edge);
+}
+
 .section { padding-block: var(--section-y); }
 
 .section--dark {

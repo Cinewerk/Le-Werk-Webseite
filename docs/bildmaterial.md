@@ -15,8 +15,8 @@ Ordnername sagt, wozu die Bilder gehören:
 
 | Ordner | Inhalt | Wo es erscheint |
 |---|---|---|
-| `bts/` | sechs Setfotos, alle im Einsatz | Team, Streublock 01 |
-| `krafthaus/` | sechs Aufnahmen, alle im Einsatz | Team, Streublock 02 |
+| `bts/` | sechs Setfotos, alle im Einsatz | Team, Kulisse |
+| `krafthaus/` | sechs Aufnahmen, alle im Einsatz | Team, Kulisse |
 | `team/` | vier Porträts, nach Personen benannt | Team, Porträtreihe |
 | `work/` | sechs Vorschaubilder der Projekte | Featured Work |
 | `street-one/` | Fallstudie samt Video-Standbildern | `/arbeiten/street-one-…` |
@@ -189,7 +189,12 @@ große Plätze, 1000 px für kleine, Qualität 55 bis 58. Die Nacht-Luftbilder
 sind mit rund 250 KB die schwersten Dateien im Projekt — tausende kleine
 Fahrzeuge lassen sich kaum komprimieren.
 
-### Die Seitenverhältnisse der Streublöcke
+### Die Seitenverhältnisse der Kulissenbilder
+
+> **Überholt seit dem 6. August 2026.** Die Kulisse zeigt alle zwölf
+> Aufnahmen in nur noch zwei Formaten: quer aufgenommene als 4:3,
+> hochkant aufgenommene als 3:4. Der Abschnitt unten beschreibt den
+> Zustand davor.
 
 Seit dem Austausch im August steht **jedes Stück in beiden Haufen in seinem
 eigenen Seitenverhältnis** — 3:2, 3:4, 5:4, 2:3 — statt in einem für alle
@@ -311,6 +316,13 @@ passt das; bei anderen Filmen kann es stören. Ein eigenes Standbild
 einfach unter derselben ID ablegen, dann gilt das.
 
 ## Die Streublöcke im Team-Abschnitt
+
+> **Überholt seit dem 6. August 2026.** Die beiden Streublöcke sind
+> entfallen. Unter den Porträts steht jetzt ein Rasterfeld aus zwölf
+> Aufnahmen — vier Spalten, versetzte Reihen —, in dem die beiden Sätze
+> auf je einem Bildplatz stehen statt daneben. Aufbau und Begründung
+> stehen im Frontmatter von `src/pages/index.astro` bei `kulisseRoh`.
+> Was hier folgt, beschreibt den Zustand davor.
 
 Unter den Porträts stehen zwei Blöcke, in denen der Text von seiner Seite
 hereinkommt und die Bilder beim Scrollen unterschiedlich schnell wandern:

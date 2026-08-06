@@ -404,7 +404,7 @@ const faqs = [
 
   <!-- ═══ 4 · TRUSTBAR (Logo-Marquee) ════════════════════════════════════ -->
   <section class="section section--tight trust" id="trust" aria-label="Auswahl unserer Kunden">
-    <div class="container">
+    <div class="container container--breit">
       <!-- Vorher "Vertrauen auf Le Werk" — als Imperativ lesbar und
            werblich. Die Zeile benennt jetzt nur noch, was zu sehen ist. -->
       <p class="label trust__label">Ausgewählte Kunden</p>
@@ -455,7 +455,7 @@ const faqs = [
 
   <!-- ═══ 5 · LEISTUNGEN ═════════════════════════════════════════════════ -->
   <section class="section section--sand services" aria-labelledby="services-title">
-    <div class="container">
+    <div class="container container--breit">
       <!-- Marginalienstil wie bei "Warum Le Werk", nicht die große
            Überschrift der übrigen Abschnitte. Steht als h2 und nicht als
            p — ohne Überschrift auf dieser Ebene bliebe eine Lücke in der
@@ -505,7 +505,7 @@ const faqs = [
 
   <!-- ═══ 6 · UNSER KERNTEAM ═════════════════════════════════════════════ -->
   <section class="section section--dark team" aria-labelledby="team-title">
-    <div class="container">
+    <div class="container container--breit">
       <header class="sec-head sec-head--knapp" data-reveal>
         <p class="label">Wer dahintersteht</p>
         <h2 class="headline" id="team-title">
@@ -575,7 +575,7 @@ const faqs = [
 
   <!-- ═══ 7 · DREI GRÜNDE ════════════════════════════════════════════════ -->
   <section class="section benefits" aria-labelledby="benefits-title">
-    <div class="container">
+    <div class="container container--breit">
       <!-- Ohne große Überschrift: "Drei Gründe, uns anzurufen" ist
            verworfen, der Abschnitt trägt jetzt nur noch die Marginalie.
            Sie steht als h2 und nicht als p — die drei Punkte darunter sind
@@ -626,7 +626,7 @@ const faqs = [
        dem dunklen Aufruf und braucht einen eigenen Ton — sonst grenzten
        zwei weiße Flächen aneinander. -->
   <section class="section section--sand faq" aria-labelledby="faq-title">
-    <div class="container faq__grid">
+    <div class="container container--breit faq__grid">
       <header class="faq__head" data-reveal>
         <p class="label">Häufige Fragen</p>
         <h2 class="headline" id="faq-title">Kurz beantwortet</h2>
@@ -651,7 +651,7 @@ const faqs = [
        sind dunkel, aber nicht gleich: Die Fußzeile liegt auf
        --petrol-deeper und setzt sich damit ab. -->
   <section class="section section--dark cta" aria-labelledby="cta-title">
-    <div class="container cta__inner" data-reveal>
+    <div class="container container--breit cta__inner" data-reveal>
       <h2 class="headline headline--xl cta__title" id="cta-title">
         <span class="editorial editorial--kicker">Erzähl uns</span>{' '}
         von deinem Projekt
@@ -1918,14 +1918,15 @@ const faqs = [
   }
 
   /* ── 11 · Bottom-CTA ──────────────────────────────────────────────────── */
-  .cta { text-align: center; }
-  .cta__inner { display: grid; justify-items: center; gap: var(--space-3); }
+  /* Linksbündig wie alles ab der Kundenleiste. Zentriert stand der
+     Abschluss sonst als einziger Block auf einer Achse, die die Seite
+     sonst nirgends mehr hat. */
+  .cta__inner { display: grid; justify-items: start; gap: var(--space-3); }
   .cta__title { max-width: 16ch; }
 
   .cta__actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: var(--space-2);
     margin-top: var(--space-2);
   }
@@ -1943,11 +1944,16 @@ const faqs = [
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
     /* Vier Porträts über die volle Breite, bündig an beiden Kanten. Der
-       Spaltenabstand setzt die Bildgröße — bei 1252px Reihe sind es 94px
-       Abstand und 243px Bild:
+       Spaltenabstand setzt die Bildgröße — bei 1353px Reihe sind es 94px
+       Abstand und 268px Bild:
 
          3 × 94                   = 282px für die Abstände
-         (1252 − 282) ÷ 4         = 243px je Bild
+         (1353 − 282) ÷ 4         = 268px je Bild
+
+       Die Reihe misst 1353 und nicht mehr 1252, seit der Abschnitt am
+       6. August 2026 auf die volle Fensterbreite gegangen ist
+       (.container--breit). Die Formel für den Abstand ist dieselbe
+       geblieben, die Kacheln sind dadurch um 25px gewachsen.
 
        WARUM DER ABSTAND MITLÄUFT UND NICHT FEST IN PROZENT STEHT. Bei 7,5
        Prozent wäre er unten in der Abfrage 26px und oben 94 — dasselbe
@@ -1965,11 +1971,11 @@ const faqs = [
 
        Gemessen:
 
-         Fenster   Abstand   Kachel     Name
-          992        26      195 x 244  14,8px
-         1200        58      217 x 271  16,5
-         1440        94      243 x 303  18,4
-         1920        94      246 x 307  18,7
+         Fenster   Abstand   Reihe   Kachel     Name
+          992        26       927    212 x 265  16,1px
+         1200        58      1105    233 x 291  17,7
+         1440        94      1353    268 x 335  20,3
+         1920        94      1825    386 x 482  29,3
 
        Im Browser nachgemessen, nicht gerechnet: vw zählt die Bildlaufleiste
        mit, die Reihe nicht.
@@ -1984,8 +1990,15 @@ const faqs = [
        die Höhe übernehmen, die er gebraucht hat. Die vollständige Rechnung
        steht oben bei .team__grid.
 
+       Auf sehr breiten Schirmen wächst die Kachel mit: bei 1920px sind
+       es 386px, bei 2560 rund 550. Das ist die Folge der vollen Breite
+       und gewollt — der Name steht in cqi und wächst mit, das Verhältnis
+       in der Kachel bleibt also gleich. Kleiner als die Stücke der
+       Kulisse darunter bleiben die Gesichter weiterhin: 386 gegen 435
+       bei 1920px.
+
        Erst ab 992 und nicht schon ab 768: Bei 768px kämen vier Bilder auf
-       165px Breite — zweispaltig darunter sind es 326. Die Gesichter
+       159px Breite — zweispaltig darunter sind es 344. Die Gesichter
        würden also kleiner, während das Fenster größer wird. Zwei Reihen zu
        zweit tragen diese Breite besser.
 
