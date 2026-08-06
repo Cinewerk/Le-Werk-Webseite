@@ -468,8 +468,17 @@ const faqs = [
            "Content, holistisch gedacht" stand hier früher als Headline,
            davor zusätzlich ein Fließtext, der die Disziplinen abstufte
            ("Hauptdisziplin", "klare Zweite"). Beides ist entfallen. -->
-      <header class="sec-head sec-head--nur-marke" data-reveal>
-        <h2 class="label" id="services-title">Was wir machen</h2>
+      <!-- "Was wir machen" trug den Abschnitt bis zum 6. August 2026 als
+           einzige Zeile in Marginalienschrift. Jetzt steht darunter die
+           Überschrift wie in den anderen Abschnitten: kleine Zeile oben,
+           Wort in Poppins darunter.
+
+           Die Überschrift ist "Services" und die Marginalie "Was wir
+           machen" — nicht umgekehrt. Der Abschnitt heißt damit im
+           Vorlesen wie im Menü und in der Fußzeile. -->
+      <header class="sec-head sec-head--knapp" data-reveal>
+        <p class="label">Was wir machen</p>
+        <h2 class="headline" id="services-title">Services</h2>
       </header>
 
       <!-- Nur die drei Produktionsdisziplinen. Workshops sind bewusst nicht
@@ -797,7 +806,48 @@ const faqs = [
 
   /* ── 2 · Trustbar ─────────────────────────────────────────────────────── */
   .trust__label { margin-bottom: 0; }
-  .trust .marquee { margin-top: clamp(1.5rem, 3vw, 2.5rem); }
+
+  /* Die Leiste steht als Band zwischen zwei Haarlinien, und beim
+     Überfahren läuft der Akzent von links durch — übernommen aus
+     Entwurf 04c-XII, dieselbe Geste wie an den FAQ-Zeilen weiter unten.
+
+     Das Band liegt über die volle Fensterbreite und nicht im Rand: Der
+     Sweep soll die Seite queren, nicht in einer Spalte enden.
+
+     ::before und nicht ein Hintergrund mit Übergang: Eine Fläche, die
+     von null auf volle Breite wächst, läuft sichtbar durch. Ein
+     Farbwechsel blendete nur um. */
+  .trust .marquee {
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    position: relative;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding-block: clamp(1.1rem, 2.5vw, 1.8rem);
+  }
+
+  .trust .marquee::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 0;
+    background: var(--akzent);
+    transition: width 350ms var(--ease-out);
+  }
+
+  .trust .marquee:hover::before,
+  .trust .marquee:focus-within::before { width: 100%; }
+
+  /* Die Logos liegen über dem Sweep — sonst deckte er sie zu. */
+  .trust .marquee__track { position: relative; }
+
+  /* Auf dem Blau bleiben die Logos weiß und gehen auf volle Deckung:
+     Weiß auf #2451D8 steht bei 6.47:1, die 72 Prozent Deckung der
+     Ruhelage kämen dort nur auf 3.9. */
+  .trust .marquee:hover .marquee__logo img { opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trust .marquee::before { transition: none; }
+  }
 
   .marquee {
     /* Die volle Kastenbreite. Alles andere in der Leiste hängt daran: die
@@ -1045,11 +1095,23 @@ const faqs = [
      Weiß um; die Deckungsstufen der Leiste bleiben unverändert. */
   .trust .marquee__logo img { filter: invert(1); }
 
-  /* Der weiße Knopf behält seine Fläche, die Schrift wechselt vom tiefen
-     Petrol auf das Schwarz des Grundes; der Hover dimmt die Fläche statt
-     sie einzufärben — Petrol-Hell gehört nicht mehr in diese Welt. */
-  .cta .btn--on-dark { color: #0d0d0d; }
-  .cta .btn--on-dark:hover { background: rgba(255, 255, 255, 0.82); color: #0d0d0d; }
+  /* "Projekt anfragen" trägt den Akzent als Fläche. Weiß darauf steht bei
+     6.47:1 — der einzige Ort, an dem das Blau eine Fläche ist und nicht
+     eine Linie oder eine Ziffer, und deshalb der Ort, an dem es am
+     meisten trägt.
+
+     Der Hover dunkelt die Fläche ab statt sie zu wechseln: dieselbe
+     Farbe, 20 Prozent Schwarz darin. Weiß steht darauf bei 8.7:1. */
+  .cta .btn--on-dark {
+    background: var(--akzent);
+    color: #fff;
+    border-color: var(--akzent);
+  }
+
+  .cta .btn--on-dark:hover {
+    background: color-mix(in srgb, var(--akzent) 80%, #000);
+    color: #fff;
+  }
 
   /* Der Footer liegt eine Stufe tiefer als die Abschnitte — dieselbe
      Logik wie vorher Petrol-Deep zu Petrol-Deeper. Er steht im Layout,
@@ -1552,8 +1614,9 @@ const faqs = [
      ohnehin sähe. */
   .team { overflow-x: clip; }
 
-  /* Der Team-Kopf steht enger, weil "UNSER KERNTEAM" kurz ist und die
-     Porträts direkt darunter die Fläche übernehmen. */
+  /* Der Kopf steht enger, wo die Überschrift kurz ist und das Bildfeld
+     direkt darunter die Fläche übernimmt — bei "SERVICES" wie bei
+     "UNSER KERNTEAM". */
   .sec-head--knapp { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
 
   /* Das Vorwort in der Überschriftenzeile, an der Stelle des früheren
@@ -1612,7 +1675,9 @@ const faqs = [
   .team__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(1.25rem, 3vw, 2.25rem);
+    /* Derselbe Abstand wie in der Kulisse darunter — die beiden Raster
+       teilen sich ab 992px auch die Spalten. */
+    gap: clamp(1rem, 2vw, 1.75rem);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -1916,8 +1981,49 @@ const faqs = [
 
   .faq__head .label { margin-bottom: var(--space-2); }
 
-  .faq__item { border-top: 1px solid var(--line); }
+  /* Jede Frage trägt ihre Nummer und füllt sich beim Überfahren von links
+     mit dem Akzent — übernommen aus Entwurf 04c-XII, dieselbe Geste wie
+     an der Kundenleiste weiter oben.
+
+     Drei Teile:
+       ::before    die Fläche, wächst von 0 auf volle Breite
+       padding     die Zeile rückt dabei ein, der Text weicht dem Sweep
+       counter     die Nummer geht von gedämpft auf voll
+
+     overflow: hidden ist Bedingung — ohne es liefe die wachsende Fläche
+     über die Zeile hinaus. Und .faq__item > * braucht position, sonst
+     läge der Sweep über Text und Zeichen statt darunter.
+
+     Der offene Zustand hält die Fläche: Eine aufgeklappte Antwort soll
+     als geöffnet erkennbar bleiben, auch wenn der Zeiger weiterzieht. */
+  .faq__list { counter-reset: faq; }
+
+  .faq__item {
+    position: relative;
+    overflow: hidden;
+    counter-increment: faq;
+    border-top: 1px solid var(--line);
+    transition: padding-left 350ms var(--ease-out);
+  }
+
   .faq__item:last-child { border-bottom: 1px solid var(--line); }
+
+  .faq__item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 0;
+    background: var(--akzent);
+    transition: width 350ms var(--ease-out);
+  }
+
+  .faq__item:hover::before,
+  .faq__item[open]::before { width: 100%; }
+
+  .faq__item:hover,
+  .faq__item[open] { padding-left: clamp(18px, 2.4vw, 36px); }
+
+  .faq__item > * { position: relative; }
 
   .faq__q {
     display: flex;
@@ -1931,6 +2037,47 @@ const faqs = [
     letter-spacing: -0.01em;
     cursor: pointer;
     list-style: none;
+  }
+
+  /* Die Nummer in der Redaktionsschrift, kursiv — dieselbe Rolle wie die
+     Ziffern der Gründe weiter oben. Sie steht vor der Frage und nicht
+     hinter ihr, damit die fünf Zeilen eine gemeinsame Textkante haben.
+
+     Als generierter Inhalt und nicht im Markup: Sie zählt nur, was
+     ohnehin dasteht. Eine Sprachausgabe liest sie mit vor — "01, Was
+     kostet eine Produktion" —, und das ist richtig so. */
+  .faq__q::before {
+    content: '0' counter(faq);
+    flex-shrink: 0;
+    margin-right: clamp(14px, 2.4vw, 32px);
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(15px, 1.6vw, 20px);
+    color: var(--ink-muted);
+    transition: color 350ms var(--ease-out);
+  }
+
+  .faq__item:hover .faq__q::before,
+  .faq__item[open] .faq__q::before { color: #fff; }
+
+  /* Auf dem Blau ist das gedämpfte Weiß der Antworten zu schwach: 65
+     Prozent Deckung kämen dort auf 3.4:1. Volles Weiß steht bei 6.47. */
+  .faq__item:hover .faq__a,
+  .faq__item[open] .faq__a { color: #fff; }
+
+  /* Das Plus muss mit — es steht in derselben Farbe wie der Sweep und
+     wäre auf ihm sonst schlicht verschwunden. Nicht knapp, sondern
+     vollständig: gleiche Farbe auf gleicher Farbe ist 1:1. */
+  .faq__item:hover .faq__icon::before,
+  .faq__item:hover .faq__icon::after,
+  .faq__item[open] .faq__icon::before,
+  .faq__item[open] .faq__icon::after { background: #fff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq__item,
+    .faq__item::before,
+    .faq__q::before { transition: none; }
   }
 
   .faq__q::-webkit-details-marker { display: none; }
@@ -1983,70 +2130,44 @@ const faqs = [
     .benefits__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
     /* Vier Porträts über die volle Breite, bündig an beiden Kanten. Der
-       Spaltenabstand setzt die Bildgröße — bei 1353px Reihe sind es 94px
-       Abstand und 268px Bild:
+       Beide Raster des Abschnitts teilen sich ab hier die Spalten: vier
+       Spalten, derselbe Abstand wie in der Kulisse darunter. Vorher lief
+       die Reihe auf einer eigenen Rechnung — Abstand
+       clamp(26px, 15.18vw - 124.6px, 94px) — und ihre Spaltenkanten lagen
+       17 bis 48px neben denen der Kulisse. Nachgemessen bei 1440px:
 
-         3 × 94                   = 282px für die Abstände
-         (1353 − 282) ÷ 4         = 268px je Bild
+         Porträts   36 · 398 · 759 · 1121
+         Kulisse    36 · 381 · 727 · 1073
 
-       Die Reihe misst 1353 und nicht mehr 1252, seit der Abschnitt am
-       6. August 2026 auf die volle Fensterbreite gegangen ist
-       (.container--breit). Die Formel für den Abstand ist dieselbe
-       geblieben, die Kacheln sind dadurch um 25px gewachsen.
+       Das ist der Fall, der am unruhigsten wirkt: zwei Raster, die sich
+       fast treffen. Sichtbar wird es nicht als Versatz, sondern als
+       Gefühl, die Gesichter seien zu schwer für das, was folgt.
 
-       WARUM DER ABSTAND MITLÄUFT UND NICHT FEST IN PROZENT STEHT. Bei 7,5
-       Prozent wäre er unten in der Abfrage 26px und oben 94 — dasselbe
-       Verhältnis überall, aber nicht dieselbe Kachel: Bei 992px Fenster
-       misst die Reihe nur 873px, und vier Bilder darin kamen auf 166px.
-       Für Schrift im Bild ist das zu eng; der Name wäre auf seine
-       Untergrenze von 13,5px gefallen und hätte 92 Prozent der Kachel
-       gefüllt.
+       DAS PORTRÄT FÜLLT SEINE SPALTE NICHT AUS. Auf voller Spaltenbreite
+       wäre es 317px — breiter als heute und genauso breit wie die
+       Kulissenstücke. Auf drei Vierteln sind es 238 x 297px. Gemessen an
+       der Fläche:
 
-       Deshalb wächst der Abstand mit dem Fenster statt mit der Reihe: 26px
-       bei 992, 94 bei 1440 und darüber gedeckelt. Das sind 15,18vw minus
-       124,6px, die Gerade durch beide Punkte. Bündig bleibt die Reihe
-       dabei — der Abstand ist eine Länge, die von der vollen Breite
-       abgeht, kein Rand.
+         Porträt vorher      268 x 335    90k
+         Porträt jetzt       238 x 297    71k
+         Kulisse quer        317 x 306    97k
+         Kulisse hoch        317 x 491   156k
 
-       Gemessen:
+       Die Gesichter sind damit das leichteste Bild des Abschnitts, ihre
+       linken Kanten liegen aber genau auf den Spalten der Kulisse.
 
-         Fenster   Abstand   Reihe   Kachel     Name
-          992        26       927    212 x 265  16,1px
-         1200        58      1105    233 x 291  17,7
-         1440        94      1353    268 x 335  20,3
-         1920        94      1825    386 x 482  29,3
-
-       Im Browser nachgemessen, nicht gerechnet: vw zählt die Bildlaufleiste
-       mit, die Reihe nicht.
-
-       Die Reihe steht also unten dicht und oben luftig. Das ist gewollt:
-       Auf einem schmalen Bildschirm zählt die Größe der Gesichter, auf
-       einem breiten die Ruhe zwischen ihnen.
-
-       Der Abstand war bis zum 5. August 2026 10,94 Prozent und die Kachel
-       damit 210px. Er ist gesunken, weil Name und Rolle seither im Bild
-       stehen: Der Textblock unter der Reihe fällt weg, und die Kachel darf
-       die Höhe übernehmen, die er gebraucht hat. Die vollständige Rechnung
-       steht oben bei .team__grid.
-
-       Auf sehr breiten Schirmen wächst die Kachel mit: bei 1920px sind
-       es 386px, bei 2560 rund 550. Das ist die Folge der vollen Breite
-       und gewollt — der Name steht in cqi und wächst mit, das Verhältnis
-       in der Kachel bleibt also gleich. Kleiner als die Stücke der
-       Kulisse darunter bleiben die Gesichter weiterhin: 386 gegen 435
-       bei 1920px.
-
-       Erst ab 992 und nicht schon ab 768: Bei 768px kämen vier Bilder auf
-       159px Breite — zweispaltig darunter sind es 344. Die Gesichter
-       würden also kleiner, während das Fenster größer wird. Zwei Reihen zu
-       zweit tragen diese Breite besser.
+       Nur ab 992px: Zweispaltig darunter füllt das Porträt seine Spalte,
+       sonst stünden zwei Briefmarken nebeneinander.
 
        Nur hier und nicht an .team__grid: Zweispaltig wäre derselbe Wert
        eine Lücke, kein Abstand. */
-    .team__grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      column-gap: clamp(26px, 15.18vw - 124.6px, 94px);
-    }
+    .team__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    /* Das Porträt füllt seine Spalte nicht aus, sondern steht auf drei
+       Vierteln davon, linksbündig. Rechts bleibt bei jedem Gesicht
+       derselbe Streifen frei — viermal gleich, also Rhythmus und nicht
+       Zufall. */
+    .team__member { width: 75%; }
   }
 
   /* Das Disziplinenfeld erst ab 1200 nebeneinander.
