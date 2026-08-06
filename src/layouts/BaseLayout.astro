@@ -17,7 +17,7 @@ interface Props {
 const { title, description, heroDark = false } = Astro.props;
 
 // Astro.url.pathname enthält das Basisverzeichnis (unter GitHub Pages
-// /Le-Werk/services), die href-Werte in mainNav dagegen nicht. Vor dem
+// /Le-Werk-Webseite/services), die href-Werte in mainNav dagegen nicht. Vor dem
 // Vergleich muss die Basis also weg, sonst ist nie eine Seite als aktuell
 // markiert.
 const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');

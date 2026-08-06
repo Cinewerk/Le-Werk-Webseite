@@ -2,15 +2,15 @@
  * Stellt internen Pfaden das konfigurierte Basisverzeichnis voran.
  *
  * Nötig, weil die Seite unter GitHub Pages nicht im Wurzelverzeichnis liegt,
- * sondern unter /Le-Werk/. Ein hart geschriebenes href="/kontakt" zeigte dort
+ * sondern unter /Le-Werk-Webseite/. Ein hart geschriebenes href="/kontakt" zeigte dort
  * ins Leere. Astro schreibt solche Pfade nicht selbst um — deshalb läuft
  * jeder interne Link und jeder Verweis auf public/ durch diese Funktion.
  *
  * Zieht die Seite später auf eine eigene Domain um, genügt es, `base` in
  * astro.config.mjs zu entfernen; hier ist dann nichts anzupassen.
  *
- *   withBase('/kontakt')          → '/Le-Werk/kontakt'
- *   withBase('/images/hero.jpg')  → '/Le-Werk/images/hero.jpg'
+ *   withBase('/kontakt')          → '/Le-Werk-Webseite/kontakt'
+ *   withBase('/images/hero.jpg')  → '/Le-Werk-Webseite/images/hero.jpg'
  *   withBase('mailto:…')          → unverändert
  */
 const BASE = import.meta.env.BASE_URL;
