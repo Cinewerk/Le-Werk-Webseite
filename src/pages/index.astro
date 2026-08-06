@@ -107,7 +107,10 @@ const kunden = [
 // Idee & Konzept rechts oben, Foto rechts unten. Sie steht über die Adresse
 // und nicht über den Listenplatz — sonst würde eine Umsortierung in
 // services.ts das Layout still verschieben.
-const reihenfolge = ['/services/video', '/services/konzept', '/services/foto'];
+// Die Reihenfolge ist der Arbeitsweg und nicht die Wichtigkeit: erst die
+// Idee, dann der Dreh, dann das Bild. Seit die Liste nummeriert ist, muss
+// sie das auch sein — eine Nummer behauptet eine Folge.
+const reihenfolge = ['/services/konzept', '/services/video', '/services/foto'];
 const disziplinen = services
   .filter((s) => s.disziplin)
   .sort((a, b) => reihenfolge.indexOf(a.href) - reihenfolge.indexOf(b.href));
@@ -310,13 +313,28 @@ const faqs = [
          die ganze Breite. Randabstand = --edge, damit er mit dem Logo im
          Header auf einer Achse liegt.
 
-         Der feste Umbruch nach "studio" teilt den Satz in seine zwei
-         Hälften — Gattung vorn, Behauptung hinten. Unter 820px übernimmt
-         der natürliche Umbruch, sonst liefe die erste Zeile aus dem Bild. -->
+         DER SATZ STEHT IN ZWEI MASKEN, eine je Hälfte — Gattung vorn,
+         Behauptung hinten. Sie tun zwei Dinge auf einmal:
+
+           Sie teilen   Der Umbruch nach "studio" steckt in der Struktur
+                        statt in einem <br>, das unter 820px wieder weg
+                        müsste. Jede Hälfte bricht darin selbst um, so
+                        breit das Fenster gerade ist.
+           Sie tragen   Beim Laden steigt jede Hälfte aus ihrer Maske
+                        herauf, versetzt. Die Maske ist der Grund, warum
+                        man sie vorher nicht sieht — der Satz kommt nicht
+                        aus dem Nichts, sondern aus dem Bild heraus.
+
+         Von unten und nicht eingeblendet: Ein Studio, das Filme macht,
+         zieht seinen Titel herauf wie einen Vorspann. -->
     <div class="hero__inner">
       <h1 class="hero__statement" id="hero-title" lang="en">
-        <span class="brand">Le Werk</span> is a visual content studio<br class="hero__br" />
-        crafting brand content <em>worth watching.</em>
+        <span class="hero__zeile" style="--zeile: 0"><span>
+          <span class="brand">Le Werk</span> is a visual content studio
+        </span></span>
+        <span class="hero__zeile" style="--zeile: 1"><span>
+          crafting brand content <em>worth watching.</em>
+        </span></span>
       </h1>
     </div>
 
@@ -475,31 +493,32 @@ const faqs = [
         <h2 class="headline" id="services-title">Services</h2>
       </header>
 
-      <!-- Nur die drei Produktionsdisziplinen. Workshops sind bewusst nicht
-           auf der Startseite und ausschließlich über das Menü erreichbar.
+      <!-- Eine Indexliste statt dreier Bildkacheln, übernommen aus
+           Entwurf 04c-XII: Nummer, Name in voller Größe, und die
+           Beschreibung klappt beim Überfahren auf. Der Akzent läuft dabei
+           von links durch — dieselbe Geste wie an der Kundenleiste und an
+           den FAQ-Zeilen.
 
-           Bewusst keine Karten: Gleich große Kästen mit Rahmen und Schatten
-           sehen nach Baukasten aus. Hier trägt die Anordnung — Video groß
-           über die volle Höhe links, Idee & Konzept und Foto rechts
-           gestapelt. -->
-      <ol class="disziplinen">
+           Damit fallen die drei Motive weg, die hier standen. Zwei davon
+           waren ohnehin Platzhalter aus einer Bilddatenbank; auf einer
+           Seite, die von der eigenen Bildsprache lebt, standen sie an
+           genau der falschen Stelle.
+
+           Workshops fehlen bewusst: keine Produktionsdisziplin, nur über
+           Menü, Fußzeile und /services erreichbar. -->
+      <ol class="dienste">
         {disziplinen.map((s, i) => (
-          <li class={`disziplin disziplin--${i + 1}`}>
-            <!-- Name und Beschreibung stehen zusammen in der Bildunterschrift
-                 und sitzen beide im unteren Band der Kachel. Der Text ist
-                 immer im Markup und wird vorgelesen; sichtbar wird er beim
-                 Überfahren, indem die Zeile aufgeht und den Namen anhebt.
-
-                 Das innere span trägt das overflow: hidden — ohne einen
-                 zweiten Kasten lässt sich eine Höhe von 0 nicht auf die
-                 tatsächliche Texthöhe aufziehen. -->
-            <figure class="disziplin__bild" style={`--ratio:${s.ratio ?? '4 / 3'}`}>
-              <img src={withBase(s.img)} alt="" width="1200" height="900" loading="lazy" decoding="async" />
-              <figcaption class="disziplin__fuss">
-                <span class="disziplin__marke">{s.titel ?? s.label}</span>
-                <span class="disziplin__text"><span>{s.text}</span></span>
-              </figcaption>
-            </figure>
+          <li class="dienst">
+            <span class="dienst__nr" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div class="dienst__block">
+              <h3 class="dienst__name">{s.titel ?? s.label}</h3>
+              <!-- Das innere Element trägt das Kappen: Eine Höhe von 0 auf
+                   die tatsächliche Texthöhe aufzuziehen braucht zwei
+                   Kästen. Der Text steht immer im Markup und wird
+                   vorgelesen — sichtbar wird er beim Überfahren. -->
+              <div class="dienst__text"><p>{s.text}</p></div>
+            </div>
+            <span class="dienst__pfeil" aria-hidden="true">→</span>
           </li>
         ))}
       </ol>
@@ -780,10 +799,57 @@ const faqs = [
   .hero__statement,
   .hero__cue { will-change: opacity, transform; }
 
-  /* Der feste Umbruch gilt nur, solange beide Hälften in eine Zeile
-     passen — darunter bricht der Satz frei. */
-  @media (max-width: 819.98px) {
-    .hero__br { display: none; }
+  /* Die Maske je Satzhälfte.
+
+     Der Fußabstand mit dem gleich großen negativen Rand ist kein
+     Feinschliff, sondern Bedingung: overflow: hidden schneidet exakt am
+     Zeilenkasten ab, und die Unterlängen von "g" und "y" reichen
+     darunter. Ohne die zwei Angaben stünde "crafting" beschnitten da.
+     Der Rand nimmt den Abstand wieder heraus, damit die beiden Hälften
+     nicht auseinanderrücken. */
+  .hero__zeile {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.16em;
+    margin-bottom: -0.16em;
+  }
+
+  /* Der Auftritt: jede Hälfte steigt aus ihrer Maske herauf, die zweite
+     130ms nach der ersten.
+
+     110 statt 100 Prozent, damit auch die Unterlängen unter der Kante
+     starten — bei genau 100 blitzt der Fuß eines "g" im ersten Bild auf.
+
+     Die Kurve ist die der Vorlagen: schnell los, lang aus. Ein
+     gleichmäßiger Verlauf sähe nach Fahrstuhl aus.
+
+     Der Vorlauf von 260ms gibt dem Video Zeit, sein erstes Bild zu
+     zeigen — der Satz kommt in ein Bild hinein, nicht in eine Fläche. */
+  .hero__zeile > span {
+    display: block;
+    transform: translateY(110%);
+    animation: buehne-auf 1000ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+    animation-delay: calc(260ms + var(--zeile, 0) * 130ms);
+  }
+
+  @keyframes buehne-auf {
+    to { transform: translateY(0); }
+  }
+
+  /* Das Bild setzt sich: Das Video steht sechs Prozent zu groß und geht
+     über zwei Sekunden auf sein Maß zurück. Der Blick kommt damit zur
+     Ruhe, während der Satz aufsteigt — dieselbe Bewegung, die eine
+     Kamera am Ende einer Fahrt macht.
+
+     both, damit der Anfangswert schon vor dem ersten Bild gilt und das
+     Video nicht kurz in voller Größe aufblitzt. */
+  .hero__media video {
+    animation: buehne-setzen 2000ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes buehne-setzen {
+    from { transform: scale(1.06); }
+    to   { transform: scale(1); }
   }
 
 
@@ -801,12 +867,28 @@ const faqs = [
     border-radius: 50%;
     color: #fff;
     text-decoration: none;
-    animation: cue 2.4s var(--ease-out) infinite;
+    animation: cue 2.4s var(--ease-out) infinite,
+               buehne-blende 700ms var(--ease-out) 1500ms backwards;
   }
 
+  /* NUR DER WEG, KEINE DECKKRAFT. Die Deckkraft stand hier mit drin und
+     hat das Ausblenden beim Scrollen unbrauchbar gemacht: Eine laufende
+     Animation schlägt in der Rangfolge jeden Stilwert am Element, also
+     auch den, den das Skript schreibt. Der Pfeil pulsierte weiter bei
+     0.75, während im Stilwert längst 0 stand — im Browser nachgemessen.
+
+     Jetzt trägt die Animation nur den Weg, die Deckkraft gehört dem
+     Skript. Der Auftritt beim Laden läuft als zweite Animation daneben
+     und mit backwards statt forwards: Sie hält den Anfangswert vor ihrem
+     Beginn, gibt die Eigenschaft danach aber wieder frei. */
   @keyframes cue {
-    0%, 100% { transform: translateY(0); opacity: 0.75; }
-    50%      { transform: translateY(6px); opacity: 1; }
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(6px); }
+  }
+
+  @keyframes buehne-blende {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 
   /* ── 2 · Trustbar ─────────────────────────────────────────────────────── */
@@ -1372,238 +1454,137 @@ const faqs = [
     .werk:nth-child(3n) { --rutsch: 0; }
   }
 
-  /* ── 5 · Disziplinen ──────────────────────────────────────────────────── */
-  /* Kappt waagerecht wie .team: Die drei Kacheln fahren beim Scrollen
-     seitlich auf ihren Platz zu und stehen bei --q = 0 außerhalb des
-     Rasters. */
-  .services { overflow-x: clip; }
+  /* ── 5 · Services ─────────────────────────────────────────────────────── */
+  /* Eine Indexliste nach Entwurf 04c-XII. Die frühere Fassung — drei
+     Bildkacheln im Zwölfspaltigen, Name und Text im unteren Band, zwei
+     gemessene Lesbarkeitsverläufe darüber, dazu die seitliche
+     Scrollbewegung — ist damit abgelöst. Ihre Maße stehen in der
+     Git-Historie.
 
-  /* Die Kacheln laufen beim Scrollen auf ihren Platz zu — dasselbe
-     Bewegungsgesetz wie die Stücke im Streublock, nur auf die andere
-     Anordnung gelegt. Der Weg steht je Kachel als --dx darunter, --q
-     schreibt das Skript am Ende der Datei.
-
-     Der Maßstab ist bewusst klein: 32px Weg und 2,2 Prozent Größe gegen
-     165px und 12 Prozent im Haufen. Die Stücke dort sind Schnipsel, hier
-     sind es Kacheln bis 641 x 801px — derselbe Weg sähe an ihnen nicht
-     lebendig aus, sondern lose.
-
-     Weg und Größe ziehen gegeneinander: Bei --q = 0 steht die Kachel
-     weiter außen, ist aber kleiner — die Außenkante läuft deshalb weniger
-     weit als der Mittelpunkt. Das ist gewollt, sonst risse der Rand auf.
-
-     Featured Work lief bis zum 6. August 2026 nach demselben Gesetz und
-     teilte sich diese Regel; dort trägt jetzt der Versatz der Spalten. */
-  .disziplin.is-aktiv {
-    --zug: clamp(0.75rem, 2.2vw, 2.15rem);
-    transform:
-      translate3d(
-        calc(var(--dx, 0) * var(--zug) * (1 - var(--q, 1))),
-        calc(var(--dy, 0.55) * var(--zug) * (1 - var(--q, 1))),
-        0
-      )
-      scale(calc(0.978 + 0.022 * var(--q, 1)));
-  }
-
-  /* Der Weg jeder Kachel: Mitte der Kachel minus Mitte des Rasters,
-     geteilt durch die halbe Rasterbreite. Video sitzt links auf Spalte
-     3,5, Konzept und Foto rechts auf 10 und 9,5.
-
-     Zwei von drei laufen also nach rechts. Das ist keine Unsauberkeit,
-     sondern die Anordnung: eine große Kachel links, zwei gestapelte
-     rechts. Die Bewegung folgt dem Aufbau, nicht einem Muster.
-
-     Die Werte stehen außerhalb der Medienabfrage, weil das Feld auch
-     einspaltig eine Reihenfolge hat — dort läuft Video nach links und die
-     beiden anderen nach rechts, genau wie im Raster. */
-  .disziplin--1 { --dx: -0.50; }
-  .disziplin--2 { --dx:  0.58; }
-  .disziplin--3 { --dx:  0.50; }
-
-  /* Bewusst dieselbe Sprache wie die Arbeiten darüber: Bild als Hauptfigur,
-     der Name groß im Bild, eine schmale Zeile darunter, versetztes Raster.
-     Ein Unterschied ist nötig — die Arbeiten liegen auf dunklem Grund und
-     ihre Motive sind dunkel, hier stehen helle Motive auf Sand. Weiße
-     Schrift braucht deshalb einen Verlauf unter sich. */
-  .disziplinen {
-    display: grid;
-    gap: clamp(2.5rem, 6vw, 4rem);
+     Die Zeile ist derselbe Griff wie an der Kundenleiste und an den
+     FAQ-Zeilen: Der Akzent läuft von links durch, die Zeile rückt ein.
+     Dreimal dieselbe Geste auf einer Seite ist keine Wiederholung,
+     sondern eine Sprache. */
+  .dienste {
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  /* Kein a mehr: Die drei Disziplinen führen nirgendwohin. Es gibt zu ihnen
-     keine Unterseiten, nur Workshops hat eine, und die steht nicht in
-     diesem Abschnitt. Die Adressen bleiben in den Daten — Menü und Fußzeile
-     brauchen sie weiter.
+  /* Drei Spalten: Nummer, Block, Pfeil. Die Nummernspalte wächst mit,
+     bleibt aber zwischen 44 und 80px — schmaler trägt die Ziffer nicht,
+     breiter reißt sie vom Namen ab.
 
-     Auch die Hülle um Bild und Text ist entfallen: Seit der Text in der
-     Kachel liegt, ist die Kachel das Bild. */
+     overflow: hidden ist Bedingung: Ohne es liefe die wachsende Fläche
+     über die Zeile hinaus. Und .dienst > * braucht position, sonst läge
+     sie über Ziffer, Name und Text statt darunter.
 
-  /* Die Kachel ist ihr eigener Bezug. Name und Textblock müssen in das
-     untere Band passen, und wie groß das ist, hängt an der Kachel — nicht
-     am Fenster. Bei 1024px Fensterbreite ist die Konzept-Kachel nur
-     344 x 229px, während 4.4vw dort noch 45px Schrift ergeben hätten:
-     "Idee & Konzept" brach zweizeilig um und der Block reichte bis 73 %
-     der Kachelhöhe. */
-  /* Ohne Maske und ohne Filter: Die Maske hielt den Rundungssaum fern
-     (Rundung ist jetzt null), Graustufen und Lesbarkeitsverläufe sind
-     auf Simons Ansage vom 6. August 2026 entfallen — die Motive stehen
-     roh und von Anfang an in Farbe. Die Kontrastmessungen zu den
-     früheren Verläufen stehen in der Git-Historie; ohne sie trägt die
-     Schrift im Bild nur noch ihren Schatten. */
-  .disziplin__bild {
+     cursor: default und nicht pointer: Die drei Disziplinen führen
+     nirgendwohin — es gibt zu ihnen keine Unterseiten im Abschnitt. Der
+     Pfeil ist eine Geste, kein Versprechen. */
+  .dienst {
     position: relative;
-    container-type: inline-size;
-    margin: 0;
+    display: grid;
+    grid-template-columns: minmax(44px, 80px) 1fr auto;
+    gap: clamp(16px, 3vw, 48px);
+    align-items: start;
+    padding: clamp(22px, 3.4vw, 42px) clamp(10px, 1.5vw, 20px);
+    border-bottom: 1px solid var(--line);
     overflow: hidden;
-    border-radius: var(--radius-bild);
+    transition: padding-left 350ms var(--ease-out);
   }
 
-  .disziplin__bild img {
-    border-radius: inherit;
-    display: block;
-    width: 100%;
-    /* Jede Disziplin in ihrem eigenen Format — kommt aus den Daten */
-    aspect-ratio: var(--ratio);
-    object-fit: cover;
-  }
+  .dienst:first-child { border-top: 1px solid var(--line); }
 
-  /* Name und Beschreibung stehen zusammen im unteren Band, am Boden der
-     Kachel verankert. Geht die Beschreibung auf, schiebt sie den Namen nach
-     oben — die Kachel macht Platz, statt etwas zu überdecken. */
-  .disziplin__fuss {
+  .dienst::before {
+    content: '';
     position: absolute;
-    left: clamp(1rem, 3vw, 2rem);
-    right: clamp(1rem, 3vw, 2rem);
-    bottom: clamp(0.875rem, 2.5vw, 1.75rem);
-    z-index: 1;
+    inset: 0;
+    width: 0;
+    background: var(--akzent);
+    transition: width 350ms var(--ease-out);
   }
 
-  /* 9cqi statt 4.4vw: neun Prozent der Kachelbreite. Damit bleibt der Name
-     auf jeder Kachel einzeilig — "Idee & Konzept" ist der längste und
-     misst bei 9 Prozent rund drei Viertel der verfügbaren Breite. */
-  .disziplin__marke {
-    display: block;
+  .dienst:hover::before { width: 100%; }
+  .dienst:hover { padding-left: clamp(24px, 3vw, 44px); }
+  .dienst > * { position: relative; }
+
+  /* Die Ziffer in der Redaktionsschrift, kursiv — wie die Nummern der
+     Gründe und der FAQ-Zeilen. line-height 2.2, damit sie auf der
+     Grundlinie des Namens sitzt und nicht an dessen Oberkante. */
+  .dienst__nr {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-size: clamp(15px, 1.6vw, 20px);
+    line-height: 2.2;
+    color: var(--ink-muted);
+    transition: color 350ms var(--ease-out);
+  }
+
+  .dienst:hover .dienst__nr { color: #fff; }
+
+  .dienst__name {
     font-family: var(--font-ui);
     font-weight: 800;
-    font-size: clamp(1.5rem, 9cqi, 3.25rem);
+    font-size: clamp(28px, 5vw, 64px);
     line-height: 1;
     letter-spacing: var(--track-display);
     text-transform: uppercase;
     color: #fff;
-    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
   }
 
-  /* Der Beschreibungstext im unteren Band.
-
-     WARUM UNTEN UND NICHT MITTEN INS BILD. Ein erster Versuch setzte eine
-     deckende Karte oben links in die Kachel. Sie verdeckte genau das, was
-     der Hover eigentlich zeigen will — auf dem Foto-Motiv lag sie über den
-     beiden Personen. Das untere Band ist dagegen ohnehin abgedunkelt, damit
-     der Name lesbar ist. Text, der dort steht, kostet keinen Bildbereich,
-     der nicht schon getönt wäre.
-
-     WARUM DER NAME MITGEHT. Unter dem Namen ist kein Platz — er sitzt 27px
-     über der Unterkante. Also geht die Zeile auf und hebt ihn an. Die
-     Kachel macht Platz, statt etwas zu überdecken, und die Lesefolge
-     stimmt: erst der Name, dann die Erklärung.
-
-     0fr auf 1fr statt max-height: Damit läuft die Bewegung genau bis zur
+  /* 0fr auf 1fr statt max-height: Damit läuft die Bewegung genau bis zur
      tatsächlichen Texthöhe, ohne dass irgendwo ein Maximalwert gepflegt
-     werden muss. Wo ein Browser das nicht weich rechnet, springt es —
-     richtig steht es überall.
-
-     34ch, damit die Zeile auf der breiten Video-Kachel nicht quer über das
-     Motiv läuft. Der längste Text hat 92 Zeichen und braucht drei Zeilen. */
-  .disziplin__text {
+     werden müsste. */
+  .dienst__text {
     display: grid;
     grid-template-rows: 0fr;
-    max-width: 80cqi;
     margin-top: 0;
-    font-family: var(--font-ui);
-    font-size: clamp(0.875rem, 3cqi, var(--fs-body));
-    font-weight: 400;
-    line-height: 1.5;
-    letter-spacing: 0;
-    text-transform: none;
-    color: rgba(255, 255, 255, 0.92);
+    transition: grid-template-rows 500ms var(--ease-out),
+                margin-top 500ms var(--ease-out);
+  }
+
+  .dienst__text p {
+    overflow: hidden;
+    max-width: 56ch;
+    font-size: var(--fs-small);
+    color: rgba(255, 255, 255, 0.84);
     opacity: 0;
-    transition: grid-template-rows var(--dur-slow) var(--ease-out),
-                opacity var(--dur) var(--ease-out),
-                margin-top var(--dur-slow) var(--ease-out);
+    transform: translateY(8px);
+    transition: opacity 400ms var(--ease-out) 80ms,
+                transform 500ms var(--ease-out) 80ms;
   }
 
-  .disziplin__text > span { overflow: hidden; }
+  .dienst:hover .dienst__text { grid-template-rows: 1fr; margin-top: 0.8em; }
+  .dienst:hover .dienst__text p { opacity: 1; transform: none; }
 
-  .disziplin:hover .disziplin__text {
-    grid-template-rows: 1fr;
-    margin-top: 0.625rem;
-    opacity: 1;
+  /* Der Pfeil kommt von links herein. In Weiß und nicht im Akzent: Er
+     erscheint nur auf dem Akzent, und dort wäre er unsichtbar. */
+  .dienst__pfeil {
+    align-self: center;
+    font-size: clamp(20px, 2.4vw, 30px);
+    color: #fff;
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: opacity 300ms linear, transform 350ms var(--ease-out);
   }
 
-  /* Ohne Zeigegerät gibt es kein Überfahren — dort steht der Text immer.
-     Dieselbe Entscheidung wie beim Farbwechsel darüber: Was nur der Hover
-     zeigt, ist auf dem Telefon sonst nicht vorhanden. */
-  /* Einspaltig ist jede Kachel so breit wie der Container, und damit wird
-     die Zeile kurz: Bei 375px Fenster passen 33 Zeichen darauf, der
-     Konzept-Text braucht dann neun Zeilen. Im Quadrat füllte der Block 81
-     Prozent der Kachel. Hochkant sind es 62.
+  .dienst:hover .dienst__pfeil { opacity: 1; transform: none; }
 
-     Nur diese eine Kachel — Video und Foto kommen mit zwei und drei Zeilen
-     aus und brauchen die Höhe nicht. Über die Bildhöhe und nicht über
-     --ratio, weil das Format als Inline-Stil aus den Daten kommt und eine
-     Regel im Stylesheet sonst nicht dagegen ankäme. */
-  @media (max-width: 767.98px) {
-    .disziplin--2 .disziplin__bild img { aspect-ratio: 2 / 3; }
-    .disziplin--3 .disziplin__bild img { aspect-ratio: 1 / 1; }
-  }
-
+  /* Ohne Zeigegerät gibt es kein Überfahren — dort steht der Text immer,
+     und der Pfeil entfällt, weil er nichts mehr ankündigt. Dieselbe
+     Entscheidung wie überall sonst auf dieser Seite. */
   @media (hover: none) {
-    .disziplin__text {
-      grid-template-rows: 1fr;
-      margin-top: 0.625rem;
-      opacity: 1;
-    }
+    .dienst__pfeil { display: none; }
+    .dienst__text { grid-template-rows: 1fr; margin-top: 0.8em; }
+    .dienst__text p { opacity: 1; transform: none; }
   }
 
-
-  /* ── 6 · Vorteile ─────────────────────────────────────────────────────── */
-  .benefits__list {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(2.5rem, 5vw, 3.5rem);
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  @media (prefers-reduced-motion: reduce) {
+    .dienst,
+    .dienst::before,
+    .dienst__nr { transition: none; }
   }
-
-  .benefit { border-top: 1px solid var(--line); padding-top: var(--space-3); }
-
-  .benefit__num {
-    display: block;
-    font-family: var(--font-editorial);
-    font-style: italic;
-    font-size: 1.25rem;
-    color: var(--petrol);
-    margin-bottom: var(--space-2);
-  }
-
-  .benefit__title {
-    font-size: var(--fs-h3);
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    margin-bottom: var(--space-1);
-    text-wrap: balance;
-  }
-
-  /* Gedeckelt wie der Streublock-Text: Unter 992px steht ein Grund über die
-     volle Breite und käme bei 900px Fenster auf 813px Zeilenlänge, also
-     rund 90 Zeichen. Nebeneinander greift der Deckel nicht — dort sind die
-     Spalten 266 bis 399px breit. */
-  .benefit__text { max-width: 62ch; color: var(--ink-muted); }
 
   /* ── 6 · Studio ───────────────────────────────────────────────────────── */
   /* Der Abschnitt kappt waagerecht. Gebraucht wurde das von den
@@ -2161,80 +2142,6 @@ const faqs = [
        der verschöbe die Spalten wieder gegen die Kulisse. */
   }
 
-  /* Das Disziplinenfeld erst ab 1200 nebeneinander.
-
-     Bei 1024 misst die Konzept-Kachel im Zwoelfspaltigen 428px und traegt
-     268 Zeichen — der Textblock fuellte dort drei Viertel der Kachel.
-     Einspaltig hat sie an derselben Stelle 886px und kommt mit sechs
-     Zeilen aus. Zwischen 1024 und 1200 steht das Feld deshalb
-     untereinander. */
-  @media (min-width: 1200px) {
-    /* Video links, Konzept und Foto rechts — aber nichts fluchtet.
-
-       Der Aufbau ist derselbe wie zu Anfang. Ordentlich sah er nicht
-       deshalb aus, sondern weil alles bündig abschloss: Konzept und Foto
-       exakt gleich breit, exakt übereinander, linke wie rechte Kanten auf
-       einer Linie, und Videos Unterkante genau auf der von Foto.
-
-       Jetzt liegt keine Kante auf einer anderen:
-
-         Video    641 × 801   513k   links,  x   0 …  641
-         Foto     641 × 427   274k   rechts, x 684 … 1325
-         Konzept  527 × 351   185k   rechts, x 798 … 1325
-
-       Drei verschiedene linke Kanten, drei verschiedene Höhen, drei
-       verschiedene Unterkanten. Konzept ist schmaler als Foto und rückt
-       von links ein, ragt also nicht mit ihm gleich weit.
-
-       Die rechte Kante teilen sich Konzept und Foto. Das ist Absicht: Ein
-       einziger durchgehender Strich hält das Feld zusammen, während alles
-       andere versetzt liegt — dieselbe Regel wie bei Featured Work. Alle
-       drei ohne jede gemeinsame Kante zerfielen in Einzelteile.
-
-       Die Abstände sind bewusst knapp. Eine frühere Fassung setzte Foto
-       100px unter die Zeile und Konzept 50px unter Video; zwischen den
-       Kacheln stand dadurch mehr Leere als Bild.
-
-       Dazu drei verschiedene Höhen: Konzept setzt tiefer an als Video,
-       Foto noch einmal tiefer als die Zeile es verlangt. Die Versätze
-       gehen ausschließlich nach unten — ein Zug nach oben hatte in einem
-       früheren Anlauf den Text der Kachel darüber verdeckt.
-
-       Video steht über beide Zeilen, füllt sie aber nicht mehr aus: Mit
-       align-self: start behält es sein eigenes 4:5 aus den Daten und endet
-       deutlich über dem unteren Rand des Abschnitts, statt mit Foto
-       abzuschließen. Genau diese Bündigkeit war vorher das Ordentlichste
-       am ganzen Feld. */
-    .disziplinen {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      column-gap: clamp(1rem, 2.2vw, 2.25rem);
-      row-gap: clamp(2rem, 4vw, 3rem);
-    }
-
-    /* Die beiden rechten Plätze sind getauscht: Konzept sitzt jetzt unten
-       auf sechs Spalten, Foto oben auf fünf. Nur die Plätze — die Folge im
-       Text bleibt Video, Konzept, Foto.
-
-       Grund ist die Textlänge. Konzept trägt 268 Zeichen, Video 79 und
-       Foto 92. Auf dem kleinsten Platz brauchte Konzept neun Zeilen und
-       der Block reichte bis 115 Prozent der Kachelhöhe — der Text stand
-       über den Rand hinaus und das Motiv war vollständig verdeckt. Der
-       längste Text gehört auf die größte Fläche.
-
-       Video wächst von 4:5 auf 2:3 mit. Sonst stünde die rechte Spalte
-       994px hoch neben 764px links; jetzt sind es 994 zu 917. */
-    .disziplin--1 { grid-column: 1 / span 6; grid-row: 1 / span 2; align-self: start; }
-    .disziplin--2 { grid-column: 8 / span 5; grid-row: 1; }
-    .disziplin--3 { grid-column: 7 / span 6; grid-row: 2; }
-
-    .disziplin--2 { margin-top: clamp(2rem, 5.8vw, 6.25rem); }
-    .disziplin--3 { margin-top: clamp(1rem, 2.6vw, 2.75rem); }
-
-    /* Ab hier drei Spalten wie in der Referenz. Darunter zwei, damit die
-       Bilder auf dem Handy nicht zu Briefmarken werden. */
-
-  }
-
   /* FAQ zweispaltig ab 1024: Die Antworten wuerden in einer 768er Breite
      auf 20 Zeichen je Zeile zusammenlaufen. */
   @media (min-width: 1024px) {
@@ -2320,15 +2227,20 @@ const faqs = [
     }
     .marquee__track { animation-name: none; }
     .marquee__track [aria-hidden='true'] { display: none; }
-    .hero__cue { animation-name: none; }
+    .hero__cue { animation-name: none; opacity: 1; }
 
-    /* Der Text erscheint weiterhin beim Überfahren, die Zeile geht nur nicht
-       mehr auf, sondern steht sofort. Ihn ganz wegzulassen wäre falsch:
-       Reduzierte Bewegung heißt weniger Bewegung, nicht weniger Inhalt. */
-    .disziplin__text { transition: opacity var(--dur-fast) linear; }
+    /* Der Auftritt entfällt, der Satz steht sofort. Die Maske bleibt —
+       sie schneidet dann nichts mehr ab, weil nichts darunter liegt. */
+    .hero__zeile > span { transform: none; animation-name: none; }
+    .hero__media video { animation-name: none; transform: none; }
 
-    /* Dasselbe für die Rollen im Team-Abschnitt — gleicher Aufklapper,
-       gleiche Entscheidung. */
+    /* Die Texte erscheinen weiterhin beim Überfahren, die Zeile geht nur
+       nicht mehr auf, sondern steht sofort. Sie ganz wegzulassen wäre
+       falsch: Reduzierte Bewegung heißt weniger Bewegung, nicht weniger
+       Inhalt. Gilt für die Beschreibungen der Dienste wie für die Rollen
+       im Studio-Abschnitt. */
+    .dienst__text,
+    .dienst__text p,
     .team__role { transition: opacity var(--dur-fast) linear; }
 
     /* Der Positionsabsatz steht vollständig aufgefärbt, ohne Scrollverlauf;
@@ -2338,25 +2250,6 @@ const faqs = [
     .statement__meta { opacity: 1; }
   }
 </style>
-
-<script>
-  // Die Disziplinen-Kacheln laufen beim Scrollen auf ihren Platz zu.
-  //
-  // Dieselbe Rechnung wie die Streublöcke weiter unten, aus einem Modul:
-  // gleiche Zeitkonstante, gleicher Nachlauf, gleiches Verhalten beim
-  // Verlassen des Fensters. Nur der Weg unterscheidet sich, und der steht
-  // im CSS bei --dx.
-  //
-  // Je Kachel und nicht je Abschnitt: Ein gemeinsamer Wert hieße, dass
-  // die unteren Kacheln längst stehen, bevor sie jemand sieht. Der Haufen
-  // ist ein kompakter Block und kommt deshalb mit einem Wert aus.
-  //
-  // Featured Work hing bis zum 6. August 2026 mit hier drin; dort trägt
-  // jetzt das klebende Riesenwort die Bewegung.
-  import { nachlaufBinden } from '../scripts/nachlauf';
-
-  nachlaufBinden(document.querySelectorAll<HTMLElement>('.disziplin'));
-</script>
 
 <script>
   // Der Positionsabsatz färbt sich beim Scrollen Wort für Wort auf.
