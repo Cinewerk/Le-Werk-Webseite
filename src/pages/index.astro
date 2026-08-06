@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Streublock from '../components/Streublock.astro';
 import { services } from '../data/services';
 import { arbeiten } from '../data/arbeiten';
 import { withBase } from '../lib/paths';
@@ -113,123 +112,94 @@ const disziplinen = services
   .filter((s) => s.disziplin)
   .sort((a, b) => reihenfolge.indexOf(a.href) - reihenfolge.indexOf(b.href));
 
-// Echte Aufnahmen vom Set, ausgewählt aus dem gelieferten Ordner. Neun von
-// zwanzig — die Auswahl erzählt eine Produktion von vorn bis hinten: Team,
-// Set, Dreh, Detail, Schnitt. Aussortiert wurde alles, was keine
-// Produktion zeigt (Reise- und Straßenmotive) sowie doppelte Situationen.
+// Die Kulisse unter den Porträts: zwölf Aufnahmen aus dem Studio und vom
+// Set, dazwischen die beiden Sätze, die den Abschnitt tragen.
 //
-// Die Reihenfolge steuert das Raster: Reihe 1 und 3 liegen quer, Reihe 2
-// steht hoch. Die Originale liegen unter quellbilder/bts und sind nicht
-// Teil des Repos; hier stehen auf Webmaß gerechnete Fassungen.
+// AUFBAU. Vier Spalten, die Reihen versetzt. Die beiden Textfelder stehen
+// dort, wo sonst ein Bild stünde, und laufen über zwei Spalten — nicht
+// neben dem Bilderfeld, sondern darin. Jeder Satz sitzt zwischen den
+// Aufnahmen, die zu ihm gehören:
 //
-// x und w sind Prozente der Haufenbreite, y ist Prozent der Haufenhöhe.
-// Wie weit ein Stück beim Scrollen wandert, steht hier bewusst nicht: Das
-// rechnet Streublock.astro aus der Lage aus — der Weg zeigt von der Mitte
-// der Fläche weg, ein mittiges Stück wandert kaum, ein äußeres am weitesten.
+//   Satz 01 (Team)      zwischen den Set-Aufnahmen, Reihe 1
+//   Satz 02 (Köln)      zwischen den Haus-Aufnahmen, Reihe 4
 //
-// Die Anordnung ist an der Referenz nachgemessen und nicht geschätzt: Dort
-// überlappen sich sechs Bilder kräftig, die Größen reichen von 30 bis 45
-// Prozent der Breite, und die Fläche steht hochkant. Genau das macht den
-// Haufen aus — meine erste Fassung lag zu weit auseinander und las sich
-// als Collage statt als Stapel.
+// Der Platz jedes Stücks entsteht von selbst — der Browser setzt sie der
+// Reihe nach, ein Textfeld belegt zwei Plätze. Die Spalte wird im
+// Frontmatter mitgezählt (siehe kulisse weiter unten), weil der Versatz
+// je Spalte daran hängt. Wer umsortiert, muss nichts nachziehen.
 //
-// Beim Umsortieren gilt: y (in Höhenprozent) mal Höhe plus die aus w und
-// ar folgende Höhe muss unter 100 bleiben, sonst hängt ein Stück heraus.
-const bts = [
-  // Sechs Aufnahmen, fünf davon aus der Lieferung vom 4. August 2026. Nur
-  // das Loft-Bild in der Mitte stammt noch aus dem ersten Satz.
-  //
-  // Ausgewählt ist nach Situation, nicht nach Motivqualität allein: Keine
-  // zwei Bilder zeigen denselben Raum. Werkhalle, Transporter, Loft,
-  // Studio, Büro, Schnittplatz — das ist die Bandbreite, die der Absatz
-  // daneben behauptet ("Spezialisten aus verschiedenen Feldern"), und die
-  // vorige Auswahl löste sie nicht ein: Vier der sechs Bilder standen in
-  // einem hellen Studio.
-  //
-  // Farbe war die zweite Vorgabe. Die Reihe trägt jetzt einen Leitton je
-  // Bild — Gelb an der Maschine, Rot am Tankstellendach, Blau und Orange
-  // im Studio, Petrol an der Bürowand, Grün am Schnittplatz. Vorher war
-  // der Haufen fast durchgehend weiß-grau.
-  //
-  // Aus den zwölf gelieferten Dateien sind sechs nicht verwendet: vier
-  // sind private Aufnahmen (Filmscans, ein Porträt im Trainingsanzug), und
-  // zwei zeigen dasselbe Studio wie bts-studio, nur enger.
-  //
-  // Jedes Stück steht in seinem eigenen Seitenverhältnis, nicht in einem
-  // vorgegebenen: 3:2, 2:3, 5:4, 3:4. Die Abweichung zum echten Maß der
-  // Datei liegt überall unter 0,1 Prozent — es wird also an keinem Bild
-  // etwas abgeschnitten.
-  //
-  // Die Überlappungen liegen dort, wo die Aufnahme nichts verliert. Jedes
-  // Stück deckt nur die Unterkante oder eine untere Ecke des Stücks
-  // darunter zu; dort sind bei diesen Motiven Boden, Tisch und Vordergrund,
-  // während Gesichter, Kameras und Monitore oben sitzen. Die z-Werte laufen
-  // deshalb streng von oben links nach unten rechts durch.
-  //
-  // ENGER GEZOGEN. Die y-Werte sind zusammengerückt, x und w blieben fast
-  // unverändert — die Breite trägt die Fläche, die Höhe war das Lockere.
-  // Der Haufen misst damit 637 statt 736px bei gleicher Breite, die
-  // Flächendeckung steigt von 73 auf 77 Prozent.
-  //
-  // Am meisten verdeckt ist der Transporter mit 31 Prozent, und zwar von
-  // unten: Die beiden Frauen sitzen in der oberen Hälfte und bleiben frei.
-  // Eine noch engere Fassung lag bei 42 Prozent und schnitt sie an — das
-  // ist die Grenze, an der Dichte in Verlust umschlägt.
-  //
-  // WICHTIG BEIM UMSORTIEREN: Die beiden Hochformate stehen diagonal —
-  // der Transporter oben rechts, der Schnittplatz unten links, waagerechte
-  // Überschneidung null. Zwei Hochformate untereinander lesen sich als
-  // Säule und brechen den Haufen; das ist keine Feinheit, sondern fällt
-  // sofort auf.
-  { img: '/images/bts/bts-halle.jpg',       alt: 'Dreiköpfiges Team in einer Werkhalle: einer beugt sich über die Kamera auf dem Stativ, dahinter ein Monitorplatz und eine Softbox', x: 0,  y: 0,  w: 46, ar: '3 / 2', z: 1 },
-  { img: '/images/bts/bts-transporter.jpg', alt: 'Zwei Frauen sitzen mit einem Laptop im Transporter, die Schiebetür steht offen, dahinter eine Tankstelle',                          x: 67, y: 3,  w: 33, ar: '2 / 3', z: 2 },
-  { img: '/images/bts/bts-loft.jpg',        alt: 'Zwei Personen an einer Kamera auf dem Körperstativ in einem hellen Studio',                                                         x: 29, y: 17, w: 42, ar: '5 / 4', z: 3 },
-  { img: '/images/bts/bts-schnitt.jpg',     alt: 'Zwei Personen am Schnittplatz vor mehreren Monitoren, daneben ein Fenster mit Zimmerpflanzen',                                      x: 0,  y: 37, w: 31, ar: '3 / 4', z: 4 },
-  { img: '/images/bts/bts-studio.jpg',      alt: 'Studioaufbau vor blauer Wand: ein weißer Hocker, zwei Kameras auf Stativen, Softboxen und eine Tonangel über orangem Bodenband',    x: 60, y: 34, w: 40, ar: '3 / 2', z: 5 },
-  { img: '/images/bts/bts-buero.jpg',       alt: 'Zwei Männer vor einer petrolfarbenen Bürowand, davor ein schwarz abgedecktes Gerät',                                                x: 28, y: 51, w: 44, ar: '3 / 2', z: 6 },
+// FORMATE. Zwei statt sechs, wie bei Featured Work: Was quer aufgenommen
+// ist, steht als 4:3, was hoch aufgenommen ist, als 3:4. Die wahren
+// Seitenverhältnisse (3:2, 2:3, 5:4, 3:4) ließen die Reihen so ungleich
+// laufen, dass der Versatz nicht mehr als Muster lesbar wäre.
+//
+// Die frühere Fassung — zwei Streublöcke mit je einem Haufen aus sechs
+// überlappenden Stücken und dem Text daneben, jedes Stück mit x/y/w/z und
+// einem aus der Lage gerechneten Streuweg — ist damit abgelöst. Ihre
+// Maße stehen in der Git-Historie.
+//
+// DIE BESCHRIFTUNGEN SIND MEINE FORMULIERUNG und benennen nur, was zu
+// sehen ist. Sie stehen hier an einer Stelle und lassen sich austauschen,
+// ohne das Layout anzufassen. Eine Jahreszahl steht bewusst nicht dabei —
+// die ist zu keiner der Aufnahmen bekannt; die laufende Nummer nimmt
+// ihren Platz ein.
+//
+// Von den zwölf gelieferten BTS-Dateien sind sechs nicht verwendet: vier
+// sind private Aufnahmen, zwei zeigen dasselbe Studio wie bts-studio, nur
+// enger. Die sechs Haus-Aufnahmen kommen unverändert vom Kunden.
+const kulisseRoh = [
+  { img: '/images/bts/bts-halle.jpg',       hoch: false, pille: 'Dreh',      titel: 'Werkhalle',            alt: 'Dreiköpfiges Team in einer Werkhalle: einer beugt sich über die Kamera auf dem Stativ, dahinter ein Monitorplatz und eine Softbox' },
+  { img: '/images/bts/bts-transporter.jpg', hoch: true,  pille: 'Unterwegs', titel: 'Zwischen zwei Sets',   alt: 'Zwei Frauen sitzen mit einem Laptop im Transporter, die Schiebetür steht offen, dahinter eine Tankstelle' },
+  {
+    // Satz 01 — steht zwischen den Set-Aufnahmen, weil er von der
+    // Zusammensetzung des Teams spricht.
+    text: 'team',
+    vorspann: 'Erfahrung aus hunderten Produktionen:',
+    laenge: 21.7,
+    satz: 'Wir kombinieren ein schlagkräftiges Kernteam mit kreativen Spezialisten aus verschiedenen Feldern.',
+  },
+  { img: '/images/bts/bts-loft.jpg',        hoch: false, pille: 'Dreh',      titel: 'Körperstativ im Loft', alt: 'Zwei Personen an einer Kamera auf dem Körperstativ in einem hellen Studio' },
+  { img: '/images/bts/bts-schnitt.jpg',     hoch: true,  pille: 'Post',      titel: 'Schnittplatz',         alt: 'Zwei Personen am Schnittplatz vor mehreren Monitoren, daneben ein Fenster mit Zimmerpflanzen' },
+  { img: '/images/bts/bts-studio.jpg',      hoch: false, pille: 'Dreh',      titel: 'Aufbau vor Blau',      alt: 'Studioaufbau vor blauer Wand: ein weißer Hocker, zwei Kameras auf Stativen, Softboxen und eine Tonangel über orangem Bodenband' },
+  { img: '/images/bts/bts-buero.jpg',       hoch: false, pille: 'Haus',      titel: 'Petrolwand',           alt: 'Zwei Männer vor einer petrolfarbenen Bürowand, davor ein schwarz abgedecktes Gerät' },
+
+  { img: '/images/krafthaus/haus-01.jpg',     hoch: false, pille: 'Haus',      titel: 'Krafthaus am Abend', alt: 'Das Krafthaus im Abendlicht, dahinter das Kranhaus am Rheinauhafen' },
+  { img: '/images/krafthaus/haus-03.jpg',     hoch: true,  pille: 'Haus',      titel: 'Empfang',            alt: 'Grüner Sessel vor weißer Wand, daneben ein Sideboard mit Lampe und ein Alukoffer' },
+  { img: '/images/krafthaus/haus-02.jpg',     hoch: false, pille: 'Unterwegs', titel: 'Auf dem Weg',        alt: 'Schwarzweiß: leere Autobahn mit Leitplanke und Waldrand' },
+  { img: '/images/krafthaus/haus-05.jpg',     hoch: false, pille: 'Unterwegs', titel: 'Raststätte',         alt: 'Sattelzug an einer Raststätte unter blauem Himmel' },
+  {
+    // Satz 02 — steht zwischen den Haus-Aufnahmen, weil er vom Ort
+    // spricht.
+    text: 'ort',
+    vorspann: 'Based in Köln, booked worldwide:',
+    laenge: 18.3,
+    satz: 'Unsere Räumlichkeiten liegen im Krafthaus, im Rheinauhafen. Gedreht wird in Köln, bundesweit oder auch international.',
+  },
+  { img: '/images/krafthaus/haus-06.jpg',     hoch: true,  pille: 'Haus',      titel: 'Feierabend',         alt: 'Mehrere Personen an Biertischen vor einem Lokal, eine Person lacht in die Kamera' },
+  { img: '/images/krafthaus/haus-drohne.jpg', hoch: false, pille: 'Haus',      titel: 'Rheinauhafen',       alt: 'Luftaufnahme des Krafthauses im Rheinauhafen: Backsteinbau mit Schieferdach, daneben Kopfsteinpflaster und die Nachbargebäude' },
 ];
 
-// Die sechs vom Kunden gelieferten Aufnahmen, unverändert in der Auswahl.
+// Die Spalte je Stück, nach derselben Regel, nach der der Browser die
+// Plätze vergibt: der Reihe nach, und was nicht mehr in die angefangene
+// Reihe passt, beginnt die nächste. Ein Textfeld belegt zwei Plätze.
 //
-// Zwei Bedingungen bestimmen die Anordnung, beide fallen sofort auf, wenn
-// sie verletzt sind:
+// Gerechnet statt eingetragen, weil der Versatz je Spalte daran hängt —
+// eine eingetragene Spaltenzahl wäre nach der ersten Umsortierung falsch,
+// ohne dass es jemandem auffiele.
 //
-// Die zwei Außenansichten des Hauses — haus-01 im Abendlicht und die
-// Drohnenaufnahme — liegen in gegenüberliegenden Ecken, oben links und
-// unten rechts. Nebeneinander läsen sie sich als ein Motiv in zwei
-// Anläufen.
-//
-// Die zwei Hochformate — haus-03 oben rechts, haus-06 unten links — stehen
-// diagonal, waagerechte Überschneidung null. Untereinander ergäben sie eine
-// Säule und brächen den Haufen auf.
-//
-// haus-03 mit dem grünen Sessel ist von x 62 auf 54 gerückt und dabei von
-// 30 auf 32 Prozent gewachsen. Vorher klaffte zwischen dem Haus oben links
-// (endet bei 44) und dem Sessel (begann bei 62) ein Streifen Hintergrund
-// über die halbe Höhe. Jetzt überbrückt die Autobahn dazwischen, und der
-// Streifen ist weg.
-//
-// Auch hier steht jedes Stück in seinem eigenen Seitenverhältnis, es wird
-// also nirgends beschnitten. Einzige Ausnahme ist die Drohnenaufnahme: Sie
-// kommt als 16:9 aus der Kamera und ist auf 3:2 zugeschnitten — 450px am
-// linken Rand, wo nur Gehweg und Durchgang stehen. Als 16:9 wäre sie in
-// der Ecke ein Streifen von 21 statt 30 Prozent Höhe.
-//
-// Verdeckt wird nur, was nichts trägt: Pflaster, Fahrbahn, Tischkante. Der
-// Sessel behält seine Sitzfläche, der Sattelzug seine linke Hälfte, das
-// Haus im Abendlicht Himmel und Fassade.
-const krafthaus = [
-  { img: '/images/krafthaus/haus-01.jpg', alt: 'Das Krafthaus im Abendlicht, dahinter das Kranhaus am Rheinauhafen',               x: 0,  y: 0,  w: 44, ar: '3 / 2', z: 1 },
-  { img: '/images/krafthaus/haus-03.jpg', alt: 'Grüner Sessel vor weißer Wand, daneben ein Sideboard mit Lampe und ein Alukoffer', x: 54, y: 2,  w: 32, ar: '2 / 3', z: 2 },
-  { img: '/images/krafthaus/haus-02.jpg', alt: 'Schwarzweiß: leere Autobahn mit Leitplanke und Waldrand',                          x: 22, y: 26, w: 40, ar: '3 / 2', z: 3 },
-  { img: '/images/krafthaus/haus-05.jpg', alt: 'Sattelzug an einer Raststätte unter blauem Himmel',                                x: 28, y: 50, w: 38, ar: '3 / 2', z: 5 },
-  { img: '/images/krafthaus/haus-06.jpg', alt: 'Mehrere Personen an Biertischen vor einem Lokal, eine Person lacht in die Kamera', x: 0,  y: 44, w: 30, ar: '2 / 3', z: 4 },
-  // Das Drohnenbild statt der Fassadenaufnahme von unten: Es zeigt denselben
-  // Bau, aber im Hafen stehend statt als Ausschnitt, und schließt den Haufen
-  // dort, wo der Absatz daneben vom Ort spricht. Quer statt quadratisch,
-  // deshalb 37 statt 30 Prozent breit — die Fläche bleibt ungefähr gleich.
-  { img: '/images/krafthaus/haus-drohne.jpg', alt: 'Luftaufnahme des Krafthauses im Rheinauhafen: Backsteinbau mit Schieferdach, daneben Kopfsteinpflaster und die Nachbargebäude', x: 55, y: 58, w: 37, ar: '3 / 2', z: 6 },
-];
+// Die laufende Nummer zählt nur die Aufnahmen; die beiden Textfelder
+// tragen keine.
+const KULISSE_SPALTEN = 4;
+let kulisseLauf = 0;
+let kulisseNr = 0;
+const kulisse = kulisseRoh.map((k) => {
+  const breite = k.text ? 2 : 1;
+  const inReihe = kulisseLauf % KULISSE_SPALTEN;
+  if (inReihe + breite > KULISSE_SPALTEN) kulisseLauf += KULISSE_SPALTEN - inReihe;
+  const spalte = (kulisseLauf % KULISSE_SPALTEN) + 1;
+  kulisseLauf += breite;
+  return { ...k, spalte, nr: k.text ? null : String(++kulisseNr).padStart(2, '0') };
+});
 
 // Vier Plätze, alle vier echt. Der Zuschnitt steckt in der Datei und
 // nicht im CSS, weil die Aufnahmen quer oder hoch sind und die Personen
@@ -571,27 +541,35 @@ const faqs = [
         ))}
       </ul>
 
-      <!-- … dann zwei Blöcke, in denen der Text von seiner Seite
-           hereinkommt und die Bilder beim Scrollen mitwandern. Der Text
-           von 01 stand vorher als breiter Absatz über die volle Breite;
-           in der schmalen Spalte neben dem Haufen trägt er besser. -->
-      <div class="team__bloecke">
-        <Streublock nr="01" seite="rechts" bilder={bts} label="Blick hinter die Kulissen">
-          <p>
-            <strong class="knapp" style="--laenge: 21.7">Erfahrung aus hunderten Produktionen:</strong> Wir
-            kombinieren ein schlagkräftiges Kernteam mit kreativen
-            Spezialisten aus verschiedenen Feldern.
-          </p>
-        </Streublock>
+      <!-- … dann die Kulisse: ein versetztes Feld aus Studio- und
+           Set-Aufnahmen, in dem die beiden Sätze auf einem Bildplatz
+           stehen statt daneben. Aufbau und Begründung im Frontmatter
+           bei kulisseRoh.
 
-        <Streublock nr="02" seite="links" bilder={krafthaus} label="Unsere Räume im Krafthaus" hoehe={0.95}>
-          <p>
-            <strong class="knapp" style="--laenge: 18.3">Based in Köln, booked worldwide:</strong> Unsere
-            Räumlichkeiten liegen im Krafthaus, im Rheinauhafen. Gedreht wird
-            in Köln, bundesweit oder auch international.
-          </p>
-        </Streublock>
-      </div>
+           Die Aufnahmen sind keine Bildunterschriften zu den Sätzen,
+           sondern eine eigene Reihe — deshalb ul mit eigenem Label und
+           nicht figure. -->
+      <ul class="kulisse" aria-label="Aus dem Studio und von unseren Sets">
+        {kulisse.map((k) => (
+          k.text ? (
+            <li class="kulisse__satz" data-spalte={k.spalte} data-reveal>
+              <p>
+                <strong class="knapp" style={`--laenge: ${k.laenge}`}>{k.vorspann}</strong>{' '}
+                {k.satz}
+              </p>
+            </li>
+          ) : (
+            <li class="kulisse__stueck" data-spalte={k.spalte} style={`--r: ${k.hoch ? '3 / 4' : '4 / 3'}`}>
+              <img src={withBase(k.img)} alt={k.alt} loading="lazy" decoding="async" />
+              <span class="kulisse__zeile">
+                <span class="kulisse__pille">{k.pille}</span>
+                <span class="kulisse__nr" aria-hidden="true">[{k.nr}]</span>
+              </span>
+              <p class="kulisse__titel">{k.titel}</p>
+            </li>
+          )
+        ))}
+      </ul>
     </div>
   </section>
 
@@ -1537,11 +1515,11 @@ const faqs = [
   .benefit__text { max-width: 62ch; color: var(--ink-muted); }
 
   /* ── 6 · Unser Kernteam ─────────────────────────────────────────────── */
-  /* Der Abschnitt kappt waagerecht. Die Streublöcke darin fahren ihren Text
-     beim Scrollen um 7rem zur Seite herein, und der rechte Block schiebt
-     ihn dabei aus dem Container heraus. Ungekappt wuchs die Seite dadurch
-     bei 1280px Fenster auf 1326px Scrollbreite — 46px waagerechtes Scrollen
-     auf jeder Unterseite mit diesem Abschnitt.
+  /* Der Abschnitt kappt waagerecht. Gebraucht wurde das von den
+     Streublöcken, die ihren Text um 7rem zur Seite hereinfuhren und die
+     Seite dabei auf 1326px Scrollbreite wachsen ließen. Die Kulisse, die
+     seit dem 6. August 2026 an ihrer Stelle steht, bewegt sich seitlich
+     nicht mehr — die Regel bleibt als Sicherung stehen.
 
      clip und nicht hidden: hidden macht aus dem Abschnitt einen
      Scrollcontainer, und da overflow-y sichtbar bleiben muss, würde der
@@ -1755,27 +1733,138 @@ const faqs = [
     }
   }
 
-  /* Die beiden Streublöcke stehen mit Abstand untereinander und mit
-     Abstand zu den Porträts darüber. Der Rest steckt in
-     src/components/Streublock.astro.
+  /* ── Die Kulisse unter den Porträts ──────────────────────────────────── */
+  /* Aufbau nach dem Culture-Abschnitt von saltandpictures.de: vier
+     Spalten, versetzte Reihen, Graustufen mit Farbe beim Überfahren,
+     unter jedem Stück eine Pille und ein Titel in der Redaktionsschrift.
+     Ohne das klebende Riesenwort — die Überschrift des Abschnitts steht
+     über den Porträts und bleibt dort.
 
-     Der obere Abstand ist von 3,5/8vw/6rem auf 5,5/11vw/8rem erhöht. Das
-     ist kein Geschmack, sondern Platzbedarf: Am Anfang der Animation
-     stehen die Stücke auseinander, das oberste ragt dabei 98px über die
-     Haufenfläche hinaus. Mit dem alten Abstand blieben nur 96px bis zur
-     Porträtreihe — das obere Stück wäre beim Hereinscrollen kurz in die
-     Gesichter gelaufen. Jetzt sind es 128px.
-
-     Der Überstand lag zwischenzeitlich bei 105px und ist gesunken, weil
-     die Haufenfläche seither auf die Bilder eingepasst wird: Der Streuweg
-     rechnet sich aus der Lage zur Flächenmitte, und die sitzt in einer
-     eng anliegenden Fläche näher an den Stücken. */
-  .team__bloecke {
+     Der Abstand nach oben trennt die Kulisse von der Porträtreihe. Er
+     stand bei 7/13vw/11rem, als darunter zwei Haufen mit auseinander
+     laufenden Stücken kamen und das oberste Stück 98px über seine Fläche
+     hinausragte. Das Feld steht jetzt still in seinen Kanten; die Hälfte
+     reicht. */
+  .kulisse {
     display: grid;
-    gap: clamp(4rem, 10vw, 8rem);
-    margin-top: clamp(7rem, 13vw, 11rem);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.75rem);
+    margin-top: clamp(3.5rem, 7vw, 6rem);
+    list-style: none;
+    padding: 0;
   }
 
+  /* Der Versatz je Spalte, wie bei Featured Work. Über data-spalte und
+     nicht über :nth-child: Ein Textfeld belegt zwei Plätze, damit zählt
+     :nth-child ab dort die Spalten falsch. Welches Stück in welcher
+     Spalte landet, rechnet das Frontmatter mit — siehe kulisse dort.
+
+     Die beiden Textfelder beginnen in Spalte 1 und 3 und stehen damit
+     ohne Versatz; das ist Absicht, sie sollen an der Reihenkante sitzen
+     und nicht mitschwimmen. */
+  .kulisse > li { align-self: start; margin-top: var(--rutsch, 0); }
+  .kulisse > li[data-spalte='2'] { --rutsch: 12vh; }
+  .kulisse > li[data-spalte='4'] { --rutsch: 6vh; }
+
+  .kulisse__stueck { display: grid; gap: 10px; }
+
+  .kulisse__stueck img {
+    width: 100%;
+    aspect-ratio: var(--r, 3 / 4);
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.08);
+    transition: filter var(--dur-slow) var(--ease-out);
+  }
+
+  .kulisse__stueck:hover img { filter: none; }
+
+  @media (hover: none) {
+    .kulisse__stueck img { filter: none; }
+  }
+
+  .kulisse__zeile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px 0.75rem;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .kulisse__pille {
+    padding: 2px 10px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .kulisse__nr {
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-muted);
+  }
+
+  .kulisse__titel {
+    font-family: var(--font-editorial);
+    font-weight: 500;
+    font-size: clamp(0.9375rem, 1.4vw, 1.25rem);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  /* Das Textfeld steht auf einem Bildplatz, nicht neben dem Feld: zwei
+     Spalten breit und in der Höhe seiner Reihe mittig. Mittig und nicht
+     oben, weil es sonst unter der höchsten Kachel der Reihe hinge; so
+     schwimmt der Satz zwischen den Aufnahmen, die zu ihm gehören.
+
+     container-type, weil der Vorspann in cqi gedeckelt ist: Er muss
+     einzeilig bleiben, und der Deckel bezieht sich auf die Breite des
+     Feldes — 100cqi geteilt durch --laenge ist genau der Grad, bei dem
+     die Zeile die Spalte ausfüllt. Der Deckel greift erst auf dem
+     Telefon.
+
+     Der Wähler steht mit .kulisse > davor, nicht als Klasse allein:
+     .kulisse > li setzt align-self: start und zählt mit dem Elementnamen
+     eine Stufe höher als eine Klasse. Ohne den Vorsatz stünde der Satz
+     oben an der Reihenkante, gemessen 18px unter ihr — die 18 kamen vom
+     Einblenden, nicht von der Ausrichtung, und genau daran war der
+     Fehler zuerst nicht zu sehen. */
+  .kulisse > li.kulisse__satz {
+    grid-column: span 2;
+    align-self: center;
+    container-type: inline-size;
+    padding-block: var(--space-2);
+  }
+
+  /* 46ch, damit die Zeile im doppelt breiten Feld nicht über 60 Zeichen
+     läuft. Ohne Deckel wären es bei 612px Feldbreite und 21,6px Schrift
+     rund 56 — noch tragbar, aber der Satz ist der einzige Fließtext
+     zwischen lauter Bildern und darf ruhig kompakt stehen. */
+  .kulisse__satz p {
+    max-width: 46ch;
+    font-size: var(--fs-lead);
+    line-height: 1.5;
+    color: var(--on-dark);
+  }
+
+  .kulisse__satz :global(strong.knapp) {
+    font-size: min(1em, calc(100cqi / var(--laenge, 18.3)));
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Zwei Spalten, sobald das Feld unter etwa 200px je Stück fällt. Der
+     Versatz entfällt dabei — zu zweit läse er sich als verrutschte
+     Kachel —, und das Textfeld nimmt beide Spalten, steht also allein in
+     seiner Reihe. */
+  @media (max-width: 859.98px) {
+    .kulisse { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .kulisse > li[data-spalte='2'],
+    .kulisse > li[data-spalte='4'] { --rutsch: 0; }
+  }
   /* ── 10 · FAQ ─────────────────────────────────────────────────────────── */
   .faq__grid {
     display: grid;
