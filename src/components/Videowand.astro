@@ -215,10 +215,18 @@ const hoehe = (ratio: Clip['ratio']) =>
     aspect-ratio: var(--ratio);
     overflow: hidden;
     border-radius: var(--radius-bild);
-    /* Kein Hintergrund — heller Platzhalter blitzt in der Rundung durch,
-       siehe .work__figure in index.astro. */
-    /* Maske gegen den hellen Saum in der Rundung, sobald das Bild bei
-       Hover wächst — ausführlich bei .work__figure in index.astro. */
+    /* Kein Hintergrund — ein heller Platzhalter blitzt in der Rundung
+       als Bogen durch: overflow: hidden schneidet das Bild dort nicht auf
+       den letzten Pixel genau ab.
+
+       Maske gegen denselben Saum, sobald das Bild bei Hover wächst: Für
+       die Bewegung legt der Browser es auf eine eigene Ebene, und der
+       abgerundete Beschnitt greift getrennt davon. Eine Maske zwingt den
+       Kasten selbst auf eine Ebene, beides wird zusammen gerastert.
+       Beide Schreibweisen, weil die alte WebKit-Form dort greift, wo die
+       neue noch nicht gilt. (Die ausführliche Fassung stand bei
+       .work__figure in index.astro und ist mit dem Umbau von Featured
+       Work am 6. August 2026 entfallen — siehe Git-Historie.) */
     -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
     mask-image: linear-gradient(#000, #000);
   }

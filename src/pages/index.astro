@@ -338,11 +338,15 @@ const faqs = [
 
     <!-- Text sitzt in der unteren linken Ecke und läuft bewusst nicht über
          die ganze Breite. Randabstand = --edge, damit er mit dem Logo im
-         Header auf einer Achse liegt. -->
+         Header auf einer Achse liegt.
+
+         Der feste Umbruch nach "studio" teilt den Satz in seine zwei
+         Hälften — Gattung vorn, Behauptung hinten. Unter 820px übernimmt
+         der natürliche Umbruch, sonst liefe die erste Zeile aus dem Bild. -->
     <div class="hero__inner">
       <h1 class="hero__statement" id="hero-title" lang="en">
-        <span class="brand">Le Werk</span> is a visual content studio crafting
-        brand content <em>worth watching.</em>
+        <span class="brand">Le Werk</span> is a visual content studio<br class="hero__br" />
+        crafting brand content <em>worth watching.</em>
       </h1>
     </div>
 
@@ -358,74 +362,73 @@ const faqs = [
            englische Positions-Satz im Hero diese Rolle, ein Manifest-Satz
            auf Deutsch steht noch aus. Dieser Absatz erklärt die Position,
            er behauptet sie nicht als Slogan. -->
-      <!-- Ein durchlaufender Absatz aus drei Stimmen: kursiver Einstieg,
-           Roman als Körper, kursiver Schluss. Das geschützte Leerzeichen
-           nach dem Auftakt hält ihn an "Le Werk" — sonst stünde
-           "Gegründet von Filmemachern." allein auf einer Zeile.
+      <!-- Der komplette Positionstext, seit dem 6. August 2026 wieder mit
+           Gattung und Ort — so war er in Entwurf 04c-XII abgenommen.
+           Kursiv (Bodoni) laufen nur noch die drei Disziplinen; Auftakt
+           und Schluss stehen aufrecht im Grotesk. Das geschützte
+           Leerzeichen nach dem Auftakt hält ihn an "Le Werk" — sonst
+           stünde "Gegründet von Filmemachern." allein auf einer Zeile.
 
-           Gekürzt: "ist ein Visual Content Studio im Kölner Rheinauhafen"
-           ist entfallen. Beides stand ohnehin woanders — die Gattung im
-           Hero direkt darüber, der Ort in Streublock 02 und im Impressum.
-           Übrig bleibt, was nur hier steht. -->
-      <p class="statement__text" id="statement-title" data-reveal>
+           Kein data-reveal an beiden Absätzen: Die Wörter stehen von
+           Anfang an, nur gedimmt, und färben sich beim Scrollen der Reihe
+           nach auf — das Skript dazu steht am Ende der Datei. Zwei
+           Mechaniken auf demselben Absatz überlagerten sich. -->
+      <p class="statement__text" id="statement-title">
         <em>Gegründet von Filmemachern.</em>{' '}
-        <span class="brand">Le Werk</span> ist spezialisiert auf
-        Storytelling, Film und Foto für <em>Social und Branded Content.</em>
+        <span class="brand">Le Werk</span> ist ein Visual Content Studio mit
+        Sitz im Rheinauhafen in Köln. Spezialisiert auf{' '}
+        <i class="statement__kursiv">Storytelling, Film und Foto</i> für{' '}
+        <em>Social und Branded Content.</em>
       </p>
-      <p class="statement__meta" data-reveal data-reveal-delay="80">
+      <p class="statement__meta">
         Konzept · Produktion · Postproduktion · Based in Köln, Booked Worldwide
       </p>
     </div>
   </section>
 
-  <!-- ═══ 3 · ARBEITEN ═══════════════════════════════════════════════════ -->
-  <section class="section section--dark work" id="arbeiten" aria-labelledby="work-title">
-    <div class="container">
-      <!-- Englisch wie der Positions-Satz im Hero, deshalb lang="en": Ohne
-           die Angabe liest eine Sprachausgabe "Featured Work" deutsch vor. -->
-      <header class="work__head" data-reveal>
-        <h2 class="headline headline--xl" id="work-title" lang="en">
-          <span class="editorial editorial--kicker">Featured</span>{' '}
-          Work
-        </h2>
-        <!-- Der frühere Einleitungstext ist entfallen. Er erklärte die
-             Formatlogik ("vom vertikalen Format aus") — die steht jetzt in
-             den Format-Zeilen der Kacheln und im FAQ. -->
-      </header>
+  <!-- ═══ 3 · FEATURED WORK ══════════════════════════════════════════════ -->
+  <!-- Aufbau nach dem Culture-Abschnitt von saltandpictures.de: Über dem
+       Raster klebt der Abschnittsname als Riesenwort und wandert beim
+       Scrollen über die Kacheln hinweg. Er invertiert dabei, was hinter
+       ihm liegt — auf dem schwarzen Grund steht er weiß, über einem Bild
+       kehrt er dessen Farbe um.
 
-      <!-- Der Kundenname steht groß im Bild, das Projekt in der Zeile
-           darunter. Vorher trug das Bild eine Gattung ("Social Video") —
-           bei echten Arbeiten ist der Kunde die stärkere Angabe. -->
-      <!-- Kein data-reveal an den Kacheln: Sie hängen an --q und laufen
-           damit nach demselben Gesetz wie die Stücke im Streublock weiter
-           unten. Beides auf einer Eigenschaft ginge nicht — data-reveal
-           setzt transform über eine Übergangszeit, --q schreibt es je Bild
-           neu. Der Abschnittskopf blendet weiterhin ein, genau wie der Text
-           neben den Streublöcken. -->
-      <div class="work__grid">
-        {arbeiten.map((a, i) => (
-          <article class={`work__item work__item--${i + 1}`}>
-            <a class="work__link" href={withBase(`/arbeiten/${a.slug}`)}>
-              <figure class="work__figure" data-format={a.ratio}>
-                <img src={withBase(a.bild)} alt={a.alt} width={a.breite} height={a.hoehe} loading="lazy" decoding="async" />
-                <figcaption class="work__tag">{a.kunde}</figcaption>
-              </figure>
-              <p class="work__caption">
-                <span class="work__titel">{a.titel}</span>
-                <!-- Die Ansage steht einmal vor der ersten Pille, nicht an
-                     jeder: "Formate 9:16 16:9" statt "Format 9:16 Format
-                     16:9". Der Plural richtet sich nach der Anzahl. -->
-                <span class="work__formate">
-                  <span class="visually-hidden">
-                    {a.formate.length > 1 ? 'Formate ' : 'Format '}
-                  </span>
-                  {a.formate.map((f) => <span class="work__format">{f}</span>)}
+       Voll bis an den Seitenrand statt im Container: Das Wort braucht die
+       Breite, und das Raster steht damit auf derselben Kante wie das Logo
+       im Header. Deshalb --edge und kein --gutter. -->
+  <section class="section work" id="arbeiten" aria-labelledby="work-title">
+    <!-- Englisch wie der Positions-Satz im Hero, deshalb lang="en": Ohne
+         die Angabe liest eine Sprachausgabe "Featured Work" deutsch vor. -->
+    <h2 class="work__wort" id="work-title" lang="en">Featured Work</h2>
+
+    <!-- Zwei Bildformate statt sechs: Die Filmprojekte stehen hochkant,
+         die beiden Fotostrecken quer. Das ist keine Vereinheitlichung um
+         der Ordnung willen, sondern folgt der Gattung — und es ist die
+         Bedingung dafür, dass die versetzten Spalten überhaupt als Muster
+         lesbar sind. Das echte Ausgabeformat steht in der Zeile darunter,
+         es geht also nichts verloren. -->
+    <div class="werke">
+      {arbeiten.map((a) => (
+        <article class="werk" style={`--r: ${a.art === 'Foto' ? '4 / 3' : '3 / 4'}`}>
+          <a class="werk__link" href={withBase(`/arbeiten/${a.slug}`)}>
+            <img src={withBase(a.bild)} alt={a.alt} width={a.breite} height={a.hoehe} loading="lazy" decoding="async" />
+            <span class="werk__zeile">
+              <span class={`werk__pille${a.art === 'Foto' ? ' werk__pille--blau' : ''}`}>{a.art}</span>
+              <!-- Die Ansage steht einmal vor der Klammer, nicht an jedem
+                   Wert: "Formate 9:16 · 16:9" statt zweimal "Format". Der
+                   Plural richtet sich nach der Anzahl. -->
+              <span class="werk__formate">
+                <span class="visually-hidden">
+                  {a.formate.length > 1 ? 'Formate ' : 'Format '}
                 </span>
-              </p>
-            </a>
-          </article>
-        ))}
-      </div>
+                [{a.formate.join(' · ')}]
+              </span>
+            </span>
+            <h3 class="werk__titel">{a.kunde}</h3>
+            <p class="werk__projekt">{a.titel}</p>
+          </a>
+        </article>
+      ))}
     </div>
   </section>
 
@@ -759,21 +762,32 @@ const faqs = [
     padding-inline: var(--edge);
   }
 
-  /* Rollentrennung wie im Rest der Seite: Die Wortmarke bleibt Poppins
-     ExtraBold (Klasse .brand, unverändert), der Satz selbst ist Redaktion
-     und damit Bodoni. Der kursive Schluss trägt die Behauptung. */
+  /* Seit dem 6. August 2026 komplett Poppins: Die Wortmarke bleibt
+     ExtraBold (.brand, unverändert), der Satz selbst läuft im
+     Medium-Schnitt mit — die Bodoni-Fassung ist verworfen. 500 und nicht
+     400, weil der Satz auf bewegtem Video steht und Regular dort zu dünn
+     auftrat. Maße aus Entwurf 04c-XII übernommen. */
   .hero__statement {
-    max-width: 30ch;
-    font-family: var(--font-editorial);
-    font-weight: 400;
-    font-size: clamp(1.625rem, 3.4vw, 3.125rem);
-    line-height: 1.14;
-    letter-spacing: -0.005em;
+    max-width: 44ch;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 3.2vw, 2.875rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     color: var(--on-dark);
     text-wrap: pretty;
   }
 
-  .hero__statement em { font-style: italic; }
+  /* Ohne die Serifenrolle entfällt auch das Kursiv — "worth watching."
+     läuft im Satz mit. Das em bleibt im Markup: Die Betonung gilt, sie
+     ist nur nicht mehr sichtbar. */
+  .hero__statement em { font-style: normal; }
+
+  /* Der feste Umbruch gilt nur, solange beide Hälften in eine Zeile
+     passen — darunter bricht der Satz frei. */
+  @media (max-width: 819.98px) {
+    .hero__br { display: none; }
+  }
 
 
   .hero__cue {
@@ -926,60 +940,65 @@ const faqs = [
   /* ── 2 · Positionierung ───────────────────────────────────────────────── */
   .statement { padding-block: clamp(4.5rem, 10vw, 8.5rem); }
 
-  .statement__inner { text-align: center; }
+  /* Linksbündig statt zentriert — der Absatz beginnt auf derselben Kante
+     wie Logo und Hero-Satz. Bis 1440px ist das exakt --edge; darüber
+     wandert der zentrierte Container mit, die Kante bleibt aber die
+     linkeste der Seite. Übernommen aus Entwurf 04c-XII. */
+  .statement__inner { text-align: left; }
 
-  /* Rollentrennung wie im Hero: Wortmarke Poppins ExtraBold (.brand),
-     der Satz selbst Bodoni, der kursive Schluss trägt die Behauptung.
-     Der Text ist länger als der Satz davor, deshalb etwas kleiner und
-     breiter gesetzt — die Wirkung kommt hier aus der Staffelung. */
+  /* Poppins Medium in Blau statt Bodoni in Tinte — Satzbild nach
+     salt & pictures, Maße aus Entwurf 04c-XII: 60px bei 1440er Fenster,
+     Durchschuss 1.1, der Block läuft fast über die volle Seitenbreite.
+     Der negative Rand zieht ihn aus dem Container auf die --edge-Kante
+     von Logo und Hero-Satz; unter 1440px sind beide Ränder gleich groß
+     und der Rand damit null oder kleiner. */
   .statement__text {
-    margin-inline: auto;
-    max-width: 34ch;
-    font-family: var(--font-editorial);
-    font-weight: 400;
-    /* Die Untergrenze ist auf 1.5rem gesetzt, damit "Filmemachern. Le Werk"
-       als unteilbarer Block auf schmalen Schirmen Luft in der Spalte hat.
-       Bei 1.625rem waren es gemessen 2px — ein Gerät mit etwas breiterer
-       Schriftwiedergabe hätte den Block aus der Spalte laufen lassen. */
-    font-size: clamp(1.5rem, 4.2vw, 3.25rem);
-    /* 1.1 war der Display-Durchschuss des alten Kurzsatzes. Auf dem Handy
-       stehen hier mehr Zeilen — das braucht etwas mehr Luft. */
-    line-height: 1.16;
-    letter-spacing: -0.005em;
-    /* Auf schmalen Schirmen sind es acht Zeilen. Dort greift balance nicht
-       mehr — Chrome wendet es nur bis etwa sechs Zeilen an, gemessen blieb
-       "Content." als Schusterjunge mit 28% Zeilenbreite allein stehen.
-       pretty kennt diese Grenze nicht und füllt die Schlusszeile auf 58%.
-       Ab 48rem übernimmt balance, weil es die vier Zeilen gleichmäßig
-       ausgleicht. */
-    text-wrap: pretty;
+    margin-inline: calc(var(--edge) - var(--gutter));
+    max-width: none;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: clamp(1.5rem, 4.35vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.022em;
+    color: #2451d8;
     /* In dieser Größe ist eine Silbentrennung deutlich sichtbar und wirkt
        wie ein Fehler — der Satz darf lieber eine Zeile länger werden. */
     hyphens: none;
   }
 
-  .statement__text em { font-style: italic; }
+  /* Auftakt und Schluss laufen aufrecht mit — die em bleiben als
+     Betonung im Markup, sichtbar kursiv sind nur die drei Disziplinen. */
+  .statement__text em { font-style: normal; }
 
-  /* AUSNAHME von der Wortmarken-Regel, ausdrücklich so gewünscht: In
-     diesem einen Absatz läuft "Le Werk" komplett in der Schrift des
-     Absatzes mit — Bodoni Moda, aufrecht, im selben Schnitt und derselben
-     Laufweite wie der Text drumherum. Der Hero direkt darüber trägt die
-     Marke bereits in Poppins ExtraBold; hier soll der Satz ohne Bruch
-     durchlaufen. Der Weg war Poppins 800 → 600 → 400 → Absatzschrift.
-     Gilt nur in diesem Absatz — überall sonst bleibt .brand die Wortmarke
-     in Poppins ExtraBold, siehe die Regel in global.css.
-     Was aus .brand bleibt: white-space: nowrap, damit "Le" und "Werk"
-     nie auf zwei Zeilen fallen. */
-  .statement__text .brand {
-    font-family: inherit;
-    font-weight: inherit;
-    font-style: inherit;
-    letter-spacing: inherit;
+  /* Die drei Disziplinen als kursive Bodoni-Einlage, wie bei
+     salt & pictures: eine Spur größer, damit die Serife gegen das
+     Grotesk drumherum nicht abfällt. */
+  .statement__kursiv {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.05em;
+    letter-spacing: 0;
   }
 
-  /* Gesperrte Versalzeile als Gegengewicht zur großen Serifenschrift */
+  /* Die Wörter erzeugt das Skript am Ende der Datei — deshalb :global,
+     Astros Geltungsstempel bekämen sie sonst nie. Sie stehen von Anfang
+     an, nur auf ein Fünftel der Deckung gedimmt, und färben sich beim
+     Scrollen der Reihe nach auf das volle Blau. */
+  .statement__text :global(.wort) {
+    color: rgba(36, 81, 216, 0.2);
+    transition: color 450ms var(--ease-out);
+  }
+
+  .statement__text :global(.wort.is-an) { color: #2451d8; }
+
+  /* Gesperrte Versalzeile als Gegengewicht — auf derselben Kante wie der
+     Absatz. Sie blendet erst ein, wenn der Absatz weitgehend aufgefärbt
+     ist; die Deckung schreibt das Skript. Der Startwert 0 gilt nur mit
+     Skript — ohne bleibt die Zeile sichtbar. */
   .statement__meta {
     margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    margin-inline: calc(var(--edge) - var(--gutter));
     font-family: var(--font-ui);
     font-size: var(--fs-label);
     font-weight: 600;
@@ -989,70 +1008,323 @@ const faqs = [
     color: var(--ink-muted);
   }
 
-  /* ── 4 · Arbeiten ─────────────────────────────────────────────────────── */
-  /* Kappt waagerecht, aus demselben Grund wie .team: Die Kacheln fahren
-     seitlich auf ihren Platz zu und stehen bei --q = 0 bis zu 48px außerhalb
-     des Rasters. Ungekappt wüchse die Seite und ließe sich seitwärts
-     scrollen. */
-  .work { overflow-x: clip; }
-
-  /* Nur noch die Überschrift im Kopf: Der Kasten war zweispaltig angelegt
-     (Überschrift links, Einleitung rechts). Ohne die Einleitung hätte die
-     Überschrift in einer 1,35fr-Spalte gesessen und rechts wäre eine leere
-     Spalte offen geblieben. */
-  .work__head { margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
-
-  /* Eine Spalte. Zwischenzeitlich standen die beiden Hochformate hier zu
-     zweit nebeneinander, weil sie über die volle Breite je 690px hoch
-     sind und direkt hintereinander lagen. Seit Video und Foto abwechseln,
-     liegt zwischen ihnen ein Querformat — der Scrollweg ist damit
-     gebrochen und jedes Reel darf voll stehen. */
-  .work__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(2.5rem, 6vw, 4rem);
+  @media (scripting: enabled) {
+    .statement__meta { opacity: 0; }
   }
+
+  /* ── 3 · Schwarzwechsel ───────────────────────────────────────────────── */
+  /* Ab "Featured Work" läuft die Startseite auf Schwarz — eine Fläche
+     für alles darunter, wie in Entwurf 04c-XII abgenommen. Die Sektionen
+     behalten ihre Klassen (--dark, --sand); überschrieben werden nur die
+     Token, damit Labels, Linien und Fließtexte überall mitwechseln.
+     .section davor, weil .section--sand sonst gleichrangig wäre und die
+     Reihenfolge im Bündel entschiede. */
+  .section.work,
+  .section.trust,
+  .section.services,
+  .section.team,
+  .section.benefits,
+  .section.faq,
+  .section.cta {
+    background: #0d0d0d;
+    color: #fff;
+    --ink: #fff;
+    --ink-muted: rgba(255, 255, 255, 0.65);
+    --on-dark: #fff;
+    --on-dark-muted: rgba(255, 255, 255, 0.65);
+    --line: rgba(255, 255, 255, 0.15);
+    --line-strong: rgba(255, 255, 255, 0.3);
+    --line-dark: rgba(255, 255, 255, 0.15);
+    /* Die Marken-Akzente im Inneren — Ziffern der Gründe, das Plus im FAQ —
+       greifen auf --petrol zu. Auf #0d0d0d käme das auf 1.9:1 und wäre
+       nicht mehr zu sehen; die helle Schwester steht bei 9.6:1. */
+    --petrol: var(--petrol-light);
+  }
+
+  /* Petrol als Fokusfarbe ist auf Schwarz nicht mehr zu sehen (1.6:1) —
+     im schwarzen Teil zeichnet Weiß den Ring. */
+  .section.work :focus-visible,
+  .section.trust :focus-visible,
+  .section.services :focus-visible,
+  .section.team :focus-visible,
+  .section.benefits :focus-visible,
+  .section.faq :focus-visible,
+  .section.cta :focus-visible { outline-color: #fff; }
+
+  /* Die Logodateien sind schwarz — auf Schwarz kehrt der Filter sie auf
+     Weiß um; die Deckungsstufen der Leiste bleiben unverändert. */
+  .trust .marquee__logo img { filter: invert(1); }
+
+  /* Der weiße Knopf behält seine Fläche, die Schrift wechselt vom tiefen
+     Petrol auf das Schwarz des Grundes; der Hover dimmt die Fläche statt
+     sie einzufärben — Petrol-Hell gehört nicht mehr in diese Welt. */
+  .cta .btn--on-dark { color: #0d0d0d; }
+  .cta .btn--on-dark:hover { background: rgba(255, 255, 255, 0.82); color: #0d0d0d; }
+
+  /* Der Footer liegt eine Stufe tiefer als die Abschnitte — dieselbe
+     Logik wie vorher Petrol-Deep zu Petrol-Deeper. Er steht im Layout,
+     deshalb :global; die Regel lädt nur mit der Startseite. */
+  :global(.footer) { background: #070707; }
+
+  /* Alle Bilder eckig: Der Token gilt für Kacheln, Porträts und
+     Haufenstücke gleichermaßen — auf body gesetzt, damit auch der
+     Streublock ihn erbt. Knöpfe und Pillen behalten ihre Form. */
+  :global(body) { --radius-bild: 0px; }
+
+  /* Der feste Header folgt dem Schnitt: Sobald "Featured Work" unter ihm
+     ansteht, wird die solide Fläche schwarz statt weiß — die Klasse
+     setzt das Skript am Ende der Datei. Dreifach, um die is-solid-Regeln
+     aus global.css sicher zu schlagen. */
+  :global(.header.is-solid.is-dunkel) {
+    background: rgba(13, 13, 13, 0.94);
+    color: #fff;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  :global(.header.is-solid.is-dunkel .logo) { color: #fff; }
+
+  /* ── 4 · Featured Work ────────────────────────────────────────────────── */
+  /* Nach dem Culture-Abschnitt von saltandpictures.de. Die frühere
+     Fassung — ein Reißverschluss aus drei Paaren im Zwölfspaltigen, jede
+     Kachel in ihrem eigenen Format, Kundenname im Bild, Kacheln laufen
+     beim Scrollen seitlich auf ihren Platz zu — ist damit vollständig
+     abgelöst. Die Maße dieser Anordnung stehen in der Git-Historie.
+
+     Voll bis an den Seitenrand: Das Raster steht auf --edge, derselben
+     Kante wie Logo und Hero-Satz, statt im 1440er Container. */
+  .work {
+    padding-block: clamp(4rem, 12vh, 9rem) clamp(3.5rem, 10vh, 8rem);
+    padding-inline: var(--edge);
+  }
+
+  /* Das Riesenwort klebt oben und wandert beim Scrollen über die Kacheln.
+
+     mix-blend-mode: difference macht die Umkehrung: Auf dem schwarzen
+     Grund (13,13,13) bleibt Weiß praktisch Weiß, über einem Bild kehrt
+     es dessen Farbe um. Ein weißes Wort mit Schatten täte das nicht — es
+     würde über hellen Bildstellen schlicht verschwinden.
+
+     pointer-events: none ist Bedingung, nicht Kosmetik: Das Wort liegt
+     über den Kacheln und würde deren Links sonst abfangen.
+
+     Der negative Fußabstand zieht das Raster unter das Wort. Ohne ihn
+     stünde eine Zeilenhöhe Leerraum dazwischen, und der Kleber liefe ins
+     Nichts.
+
+     GRÖSSE: 10,7vw und nicht die 15,5vw der Vorlage. Dort steht ein Wort
+     mit sieben Zeichen, hier sind es dreizehn. Im Browser nachgemessen
+     misst "FEATURED WORK" in Poppins ExtraBold bei −0.035em Laufweite
+     8,109 Geviert; die größte Schrift, die zwischen die beiden Ränder
+     passt, ist also (100vw − 2 × --edge) / 8,109. Ausgerechnet über die
+     Fensterbreiten:
+
+       320px   10,79vw      1440px   11,71vw
+       375     11,02        1920     11,82
+       768     11,69        2560     11,95
+
+     Das schmalste Fenster setzt die Grenze. 10,7vw liegt darunter und
+     füllt oben 91 Prozent der freien Breite — voll genug, dass das Wort
+     die Seite trägt, mit Luft genug, dass es nicht klemmt.
+
+     Die Untergrenze steht bei 1,25rem und nicht höher: rem hängt an der
+     Grundschrift des Browsers, und bei 20px statt 16 wären aus 1,75rem
+     35px geworden — genau der Wert, der bei 320px Fenster gerade noch
+     passt. Kein Spielraum. */
+  .work__wort {
+    position: sticky;
+    top: 4vh;
+    z-index: 2;
+    pointer-events: none;
+    margin-bottom: -0.35em;
+    text-align: center;
+    font-family: var(--font-ui);
+    font-weight: 800;
+    font-size: clamp(1.25rem, 10.7vw, 13rem);
+    line-height: 0.8;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    text-wrap: nowrap;
+    color: #fff;
+    mix-blend-mode: difference;
+  }
+
+  /* Drei Spalten für sechs Projekte — zwei volle Reihen. Die Vorlage
+     steht auf vier Spalten, hat dort aber acht Kacheln; vier Spalten
+     ließen hier die zweite Reihe halb leer stehen. */
+  .werke {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.75rem);
+  }
+
+  /* Der Versatz je Spalte ist das, was das Raster zum Muster macht: Die
+     linke Spalte steht oben, die beiden anderen hängen. Dadurch
+     überschneiden sich die Reihen, und das Riesenwort läuft nie über
+     eine gerade Kante.
+
+     margin-top und nicht transform: Die Kachel soll den Platz, den sie
+     einnimmt, auch beanspruchen — sonst liefe die Reihe darunter hinein.
+
+     In vh und nicht in vw, wie in der Vorlage: Der Versatz ist ein Weg
+     beim Scrollen, kein Maß der Fläche.
+
+     WARUM DIE RECHTE SPALTE AM TIEFSTEN HÄNGT. Dort stehen beide
+     Fotostrecken und damit beide Querformate — 324px hoch gegen 576 der
+     Hochformate. Die Reihe ist so hoch wie ihre höchste Kachel; ohne
+     Versatz klaffte unter der Querformatkachel der ganze Rest der Reihe.
+     Gemessen bei 1440 x 900:
+
+       5vh    45px über der Kachel, 315 darunter
+       18vh  162px über der Kachel, 198 darunter
+
+     Der Versatz verteilt die Lücke also, statt sie zu erzeugen. Wer die
+     Reihenfolge in arbeiten.ts ändert, muss das nachrechnen: Landen die
+     Querformate in einer anderen Spalte, gehört der große Versatz
+     dorthin. */
+  .werk {
+    align-self: start;
+    margin-top: var(--rutsch, 0);
+  }
+
+  .werk:nth-child(3n + 2) { --rutsch: 12vh; }
+  .werk:nth-child(3n) { --rutsch: 18vh; }
+
+  .werk__link {
+    display: grid;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Graustufen, Farbe erst beim Überfahren — wie in der Vorlage und wie
+     bei Disziplinen und Porträts weiter unten. Der leichte Kontrastzug
+     fängt auf, was Graustufen an Trennung kosten.
+
+     Kein Verlauf und keine zweite Ebene mehr über dem Bild: Seit dem
+     6. August 2026 steht das Motiv frei, es liegt keine Schrift mehr
+     darauf, die einen Lesbarkeitsverlauf bräuchte. */
+  .werk__link img {
+    width: 100%;
+    aspect-ratio: var(--r, 3 / 4);
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.08);
+    transition: filter var(--dur-slow) var(--ease-out);
+  }
+
+  .werk__link:hover img,
+  .werk__link:focus-visible img { filter: none; }
+
+  /* Ohne Zeigegerät gäbe es die Farbe nie zu sehen — dieselbe Regel wie
+     bei den Disziplinen und den Porträts. */
+  @media (hover: none) {
+    .werk__link img { filter: none; }
+  }
+
+  /* Gattung links, Ausgabeformate rechts. In 12px und nicht in rem: Die
+     Zeile ist die kleinste Schrift der Seite und soll auf jedem Gerät
+     dieselbe Größe haben wie in der Vorlage.
+
+     Umbrechen darf sie: Beide Teile stehen auf nowrap, und "Formate
+     [9:16 · 16:9]" braucht neben der Pille zusammen 145px. Unterhalb von
+     rund 350px Fenster misst die Kachel weniger — gemessen 132px bei
+     320 —, und die Zeile lief in den Spaltenabstand hinaus. Mit Umbruch
+     rutschen die Formate unter die Pille. Oberhalb greift das nie. */
+  .werk__zeile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px 0.75rem;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .werk__pille {
+    padding: 2px 10px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* Die beiden Fotostrecken tragen die gefüllte Pille — sie sind die
+     Ausnahme unter sechs Projekten, und die Farbe ist dieselbe wie im
+     Positionsabsatz oben. Vier gefüllte Pillen für Video wären keine
+     Auszeichnung mehr, sondern der Normalfall. */
+  .werk__pille--blau {
+    background: #2451d8;
+    border-color: #2451d8;
+    color: #fff;
+  }
+
+  .werk__formate {
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: var(--ink-muted);
+  }
+
+  /* Der Kunde trägt die Kachel und steht deshalb in der Redaktionsschrift
+     — dieselbe Rolle wie der Kampagnentitel in der Vorlage. Versal und
+     leicht gesperrt, weil Bodoni in Versalien sonst zu eng läuft. */
+  .werk__titel {
+    font-family: var(--font-editorial);
+    font-weight: 500;
+    font-size: clamp(1rem, 1.6vw, 1.375rem);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  /* Was für den Kunden entstanden ist. Steht unter dem Namen und im
+     selben Ton wie die Zeile über dem Bild, damit die Kachel oben und
+     unten von derselben kleinen Schrift eingefasst wird. */
+  .werk__projekt {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  /* Zwei Spalten und ohne Versatz, sobald die Kachel unter etwa 270px
+     fällt. Der Versatz braucht Reihen, die breit genug sind, um sich zu
+     überschneiden; zu zweit läse er sich als verrutschte Kachel — und
+     bei zwei Spalten zählt 3n ohnehin nicht mehr die Spalten ab.
+
+     Beide Wähler noch einmal, nicht nur .werk: :nth-child zählt in der
+     Spezifität wie eine zweite Klasse und gewinnt gegen .werk, egal in
+     welcher Medienabfrage es steht. Genau das ist hier zuerst passiert —
+     der Versatz stand bei 375px Fenster weiter bei 146px. */
+  @media (max-width: 859.98px) {
+    .werke { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .werk:nth-child(3n + 2),
+    .werk:nth-child(3n) { --rutsch: 0; }
+  }
+
+  /* ── 5 · Disziplinen ──────────────────────────────────────────────────── */
+  /* Kappt waagerecht wie .team: Die drei Kacheln fahren beim Scrollen
+     seitlich auf ihren Platz zu und stehen bei --q = 0 außerhalb des
+     Rasters. */
+  .services { overflow-x: clip; }
 
   /* Die Kacheln laufen beim Scrollen auf ihren Platz zu — dasselbe
      Bewegungsgesetz wie die Stücke im Streublock, nur auf die andere
-     Anordnung gelegt.
+     Anordnung gelegt. Der Weg steht je Kachel als --dx darunter, --q
+     schreibt das Skript am Ende der Datei.
 
-     Im Haufen laufen die Stücke radial auf die Mitte der Fläche zu. Hier
-     ist die Anordnung ein Reißverschluss aus drei Paaren, und seine Achse
-     ist die senkrechte Mittellinie des Rasters: Die linken Kacheln kommen
-     von links, die rechten von rechts, und der Verschluss schließt sich
-     beim Scrollen. Radial wäre hier falsch — der Abschnitt ist 2400px hoch,
-     die senkrechte Komponente würde alles überlagern.
-
-     --dx ist der Weg in Einheiten von --zug, ausgerechnet aus der Lage im
-     Raster: Mitte der Kachel minus Mitte des Rasters, geteilt durch die
-     halbe Rasterbreite. Die Werte stehen weiter unten bei den Spalten, weil
-     sie von ihnen abhängen. Was weiter außen sitzt, läuft weiter — genau
-     wie im Haufen.
-
-     --dy zieht alle Kacheln zusätzlich ein Stück von unten herauf. Ohne
-     das stünde einspaltig, wo es kein Links und Rechts gibt, fast alles
-     still.
-
-     Der Maßstab ist deutlich kleiner als im Haufen: 32px Weg und 2,2
-     Prozent Größe gegen 165px und 12 Prozent. Die Stücke dort sind
-     Schnipsel, hier sind es Kacheln bis 633 x 792px — derselbe Weg sähe an
-     ihnen nicht lebendig aus, sondern lose.
-
-     In zwei Schritten zurückgenommen. Der Weg lag zuerst bei 63px und die
-     Größe bei 4,5 Prozent, die Kachelmitte wanderte damit 43 bis 55px:
-
-       63px / 4,5 %    →   43 bis 55px Weg der Mitte
-       42px / 3,0 %    →   29 bis 37px
-       32px / 2,2 %    →   22 bis 28px
+     Der Maßstab ist bewusst klein: 32px Weg und 2,2 Prozent Größe gegen
+     165px und 12 Prozent im Haufen. Die Stücke dort sind Schnipsel, hier
+     sind es Kacheln bis 641 x 801px — derselbe Weg sähe an ihnen nicht
+     lebendig aus, sondern lose.
 
      Weg und Größe ziehen gegeneinander: Bei --q = 0 steht die Kachel
      weiter außen, ist aber kleiner — die Außenkante läuft deshalb weniger
      weit als der Mittelpunkt. Das ist gewollt, sonst risse der Rand auf.
 
-     Dieselben Werte gelten für die Disziplinen weiter unten; sie stehen
-     deshalb als --zug-bild an :root-Ersatz hier oben, nicht zweimal. */
-  .work__item.is-aktiv,
+     Featured Work lief bis zum 6. August 2026 nach demselben Gesetz und
+     teilte sich diese Regel; dort trägt jetzt der Versatz der Spalten. */
   .disziplin.is-aktiv {
     --zug: clamp(0.75rem, 2.2vw, 2.15rem);
     transform:
@@ -1064,215 +1336,9 @@ const faqs = [
       scale(calc(0.978 + 0.022 * var(--q, 1)));
   }
 
-  /* Einspaltig gibt es keine linke und keine rechte Spalte. Damit der
-     Reißverschluss-Gedanke trotzdem trägt, wechseln die Kacheln sich ab —
-     dieselbe Bewegung, nur aus der Reihenfolge statt aus dem Raster.
-
-     Ausdrücklich nur unterhalb von 768px, wo das Raster eine Spalte hat.
-     Ohne die Begrenzung schlüge diese Regel die Rasterwerte weiter unten:
-     :nth-child zählt in der Spezifität wie eine zweite Klasse und gewinnt
-     damit gegen .work__item--1, egal in welcher Reihenfolge beide stehen.
-
-     Die Grenze muss mit der des Rasters zusammenfallen. Als das
-     Zwölfspaltige von 1024 auf 768 rückte und dieser Block bei 1023.98
-     stehen blieb, galten zwischen 768 und 1024 beide — und weil
-     :nth-child spezifischer ist, lief der Reißverschluss dort in die
-     falsche Richtung. */
-  @media (max-width: 767.98px) {
-    .work__item:nth-child(odd) { --dx: -0.5; }
-    .work__item:nth-child(even) { --dx: 0.5; }
-  }
-
-  .work__link { display: block; text-decoration: none; color: inherit; }
-
-  /* Kein Hintergrund. Er stand hier als Platzhalter fürs Laden, mit 6 %
-     Weiß — und war damit heller als der Abschnitt darunter. In den
-     abgerundeten Ecken schneidet overflow: hidden das Bild nicht auf den
-     letzten Pixel genau ab, und genau dort blitzte dieser helle
-     Hintergrund als Bogen durch. Nachgestellt und im Vergleich bestätigt.
-
-     Ein Platzhalter wird auch nicht gebraucht: Die Bilder tragen width und
-     height, die Fläche steht also von Anfang an. */
-  .work__figure {
-    position: relative;
-    margin: 0;
-    overflow: hidden;
-    border-radius: var(--radius-bild);
-    /* Die Maske ist der Grund, warum die Rundung beim Überfahren sauber
-       bleibt.
-
-       Das Bild wächst bei Hover um 3,5 Prozent. Für diese Bewegung legt
-       der Browser es auf eine eigene Ebene, und der abgerundete Beschnitt
-       des Kastens wird dann getrennt davon angewendet. In den Ecken passt
-       beides nicht auf den Pixel zusammen — dort blitzte ein heller Saum
-       auf, solange die Bewegung lief.
-
-       Eine Maske zwingt den Kasten selbst auf eine Ebene, und der
-       Beschnitt wird mit ihm zusammen gerastert. Beide Schreibweisen,
-       weil die alte WebKit-Form dort greift, wo die neue noch nicht
-       gilt. Der Inhalt der Maske ist gleichgültig — sie ist überall
-       deckend; gebraucht wird nur der Weg, den sie erzwingt.
-
-       Durchprobiert und am Bildschirm verglichen: isolation, overflow:
-       clip und eine eigene Ebene am Kasten helfen alle nicht, die Maske
-       schon. */
-    -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
-    mask-image: linear-gradient(#000, #000);
-  }
-
-    /* border-radius: inherit an Bild und Verlauf.
-
-       Ohne das beschneidet nur der Kasten, und zwar jede Ebene für sich.
-       In der Rundung bleibt dabei ein Bruchteil eines Pixels frei, in dem
-       der abdunkelnde Verlauf das Bild nicht mehr erwischt — dort kam es
-       ungedimmt durch. Bei den drei Reels fiel das auf, weil ihre linke
-       untere Ecke im Bild hell ist: Allianz 213, BVB 205, Street One 178
-       von 255, während die Fotostrecken dort bei 8 bis 82 liegen.
-
-       Mit eigener Rundung an beiden Ebenen fällt die Fuge weg. Am
-       Bildschirm gegengeprüft, vorher und nachher. */
-  .work__figure img {
-    border-radius: inherit;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    aspect-ratio: 16 / 9;
-    transition: transform 600ms var(--ease-out);
-  }
-
-  .work__figure[data-format='4:3'] img { aspect-ratio: 4 / 3; }
-  .work__figure[data-format='4:5'] img { aspect-ratio: 4 / 5; }
-  .work__figure[data-format='9:16'] img { aspect-ratio: 9 / 16; }
-  .work__figure[data-format='3:2'] img { aspect-ratio: 3 / 2; }
-
-  .work__link:hover .work__figure img { transform: scale(1.035); }
-
-  /* Lesbarkeitsverlauf unter den Kundennamen. Vorher trug der Schatten
-     allein, und der zählt für den Kontrast nicht — er ist weich, keine
-     deckende Fläche. Ohne Verlauf lagen drei von vier Namen unter der
-     Grenze von 3.0 für große fette Schrift.
-
-     ABGESCHWÄCHT IN ZWEI SCHRITTEN: 0.95/0.66 → 0.82/0.58 → 0.66/0.46
-     Der Verlauf deckte unten praktisch in der Farbe des Abschnitts. Die
-     Kachel ging dort ohne sichtbare Kante in den Hintergrund über, und
-     die Bildzeile darunter wirkte dadurch verrutscht: Man sah nicht,
-     worauf sie sich ausrichtet.
-
-     Er beginnt weiterhin an der Unterkante und läuft von dort nach oben
-     aus — ein ausgenommener Streifen ganz unten war der erste Versuch
-     und sah wie ein Leuchtstreifen aus. Auch die Stufen bleiben, nur
-     ihre Deckung sinkt; das hält die Kurve monoton.
-
-     Nachgemessen an den untersten zwei Bildzeilen, Abschnitt ist
-     rgb(4, 37, 44):
-
-       Siemens   Bild ( 48,  50,  41)   0.82 → ( 12, 39, 43)   0.66 → (19, 41, 43)
-       BVB       Bild (175, 164, 106)   0.82 → ( 35, 60, 55)   0.66 → (62, 80, 65)
-       Allianz   Bild (185,  97, 107)   0.82 → ( 37, 48, 55)   0.66 → (66, 57, 65)
-
-     Weiter herunter geht es, kostet aber an den drei Reels: Deren linke
-     untere Bildecke ist hell — gemessen 213 (Allianz), 205 (BVB) und 178
-     (Street One) von 255, während die Fotostrecken dort bei 8 bis 82
-     liegen. Je schwächer der Verlauf, desto deutlicher kommt diese Ecke
-     durch. Das ist das Bild und keine Fuge in der Rundung: Mit einer
-     dunklen Fläche statt des Bildes bleibt die Ecke sauber,
-     gegengeprüft am Bildschirm.
-
-     Der Name bleibt weit über der Grenze. Nachgerechnet über alle sechs
-     Kacheln auf dem Zeilenkasten der Schrift, 32px über der Unterkante:
-     schlechtester Wert 7.94 (BVB) gegen 10.77 bei 0.82 und 13.45 zu
-     Anfang. Schwelle ist 4.5. Selbst 0.49/0.35 läge mit 5.80 noch
-     darüber — der Verlauf hält die Schrift, nicht umgekehrt. */
-  .work__figure::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(
-      0deg,
-      rgba(4, 37, 44, 0.66) 0%,
-      rgba(4, 37, 44, 0.46) 32%,
-      rgba(4, 37, 44, 0) 60%
-    );
-  }
-
-  .work__tag { z-index: 1; }
-
-  .work__tag {
-    position: absolute;
-    left: clamp(1rem, 3vw, 2rem);
-    bottom: clamp(1rem, 3vw, 2rem);
-    font-family: var(--font-ui);
-    font-weight: 800;
-    font-size: clamp(1.25rem, 3vw, 2.25rem);
-    line-height: 1;
-    letter-spacing: var(--track-display);
-    text-transform: uppercase;
-    color: #fff;
-    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
-  }
-
-  /* Projektname links, Formate rechts. Der Kunde steht groß im Bild
-     darüber. baseline statt center: Die Pillen sind kleiner gesetzt als
-     der Titel, an der Mittelachse ausgerichtet stünden sie sichtbar zu
-     hoch.
-
-     Die Zeile schließt links und rechts mit dem Bild ab, ohne Einzug.
-     Sie war zwischenzeitlich auf den Einzug von .work__tag gesetzt,
-     damit Kundenname und Projektname auf einer Linie beginnen — das war
-     nicht gewollt. Die Kachelkante ist der Bezug, nicht der Kundenname. */
-  .work__caption {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.4rem;
-    margin-top: var(--space-2);
-    font-size: var(--fs-small);
-  }
-
-  .work__titel { font-weight: 600; }
-
-  /* margin-left: auto drückt die Pillen an die rechte Kante der Kachel —
-     dadurch stehen sie über alle sechs Kacheln hinweg bündig, obwohl die
-     Titel unterschiedlich lang sind.
-
-     Die Gruppe trägt das auto und nicht die einzelne Pille: Bei zwei
-     Formaten säße sonst nur die erste rechts und die zweite hinge daran.
-     Der Zeilenumbruch innerhalb der Gruppe ist erlaubt — bei schmalen
-     Kacheln rutscht das zweite Format unter das erste, statt den Titel
-     zu quetschen. */
-  .work__formate {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    align-items: baseline;
-    gap: 0.3rem;
-    margin-left: auto;
-  }
-
-  .work__format {
-    padding: 0.15rem 0.55rem;
-    border: 1px solid var(--line-dark);
-    border-radius: 999px;
-    font-size: 0.6875rem;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.06em;
-    line-height: 1.6;
-    white-space: nowrap;
-    color: var(--on-dark-muted);
-  }
-
-  /* ── 5 · Disziplinen ──────────────────────────────────────────────────── */
-  /* Kappt waagerecht wie .work und .team: Die drei Kacheln fahren beim
-     Scrollen seitlich auf ihren Platz zu und stehen bei --q = 0 außerhalb
-     des Rasters. */
-  .services { overflow-x: clip; }
-
-  /* Der Weg jeder Kachel, nach derselben Rechnung wie bei Featured Work:
-     Mitte der Kachel minus Mitte des Rasters, geteilt durch die halbe
-     Rasterbreite. Video sitzt links auf Spalte 3,5, Konzept und Foto
-     rechts auf 10 und 9,5.
+  /* Der Weg jeder Kachel: Mitte der Kachel minus Mitte des Rasters,
+     geteilt durch die halbe Rasterbreite. Video sitzt links auf Spalte
+     3,5, Konzept und Foto rechts auf 10 und 9,5.
 
      Zwei von drei laufen also nach rechts. Das ist keine Unsauberkeit,
      sondern die Anordnung: eine große Kachel links, zwei gestapelte
@@ -1306,25 +1372,24 @@ const faqs = [
      Auch die Hülle um Bild und Text ist entfallen: Seit der Text in der
      Kachel liegt, ist die Kachel das Bild. */
 
-  /* Kein Hintergrund — siehe .work__figure. Hier war der Platzhalter
-     dunkel und der Abschnitt hell, der Bogen in der Rundung entsprechend
-     dunkel statt hell. Dieselbe Ursache. */
   /* Die Kachel ist ihr eigener Bezug. Name und Textblock müssen in das
      untere Band passen, und wie groß das ist, hängt an der Kachel — nicht
      am Fenster. Bei 1024px Fensterbreite ist die Konzept-Kachel nur
      344 x 229px, während 4.4vw dort noch 45px Schrift ergeben hätten:
      "Idee & Konzept" brach zweizeilig um und der Block reichte bis 73 %
      der Kachelhöhe. */
+  /* Ohne Maske und ohne Filter: Die Maske hielt den Rundungssaum fern
+     (Rundung ist jetzt null), Graustufen und Lesbarkeitsverläufe sind
+     auf Simons Ansage vom 6. August 2026 entfallen — die Motive stehen
+     roh und von Anfang an in Farbe. Die Kontrastmessungen zu den
+     früheren Verläufen stehen in der Git-Historie; ohne sie trägt die
+     Schrift im Bild nur noch ihren Schatten. */
   .disziplin__bild {
     position: relative;
     container-type: inline-size;
     margin: 0;
     overflow: hidden;
     border-radius: var(--radius-bild);
-    /* Maske gegen den hellen Saum in der Rundung, sobald das Bild bei
-       Hover wächst — ausführlich bei .work__figure in index.astro. */
-    -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
-    mask-image: linear-gradient(#000, #000);
   }
 
   .disziplin__bild img {
@@ -1334,110 +1399,7 @@ const faqs = [
     /* Jede Disziplin in ihrem eigenen Format — kommt aus den Daten */
     aspect-ratio: var(--ratio);
     object-fit: cover;
-    filter: grayscale(1) contrast(1.05);
-    transition: filter var(--dur-slow) var(--ease-out);
   }
-
-  /* Der Farbwechsel beim Überfahren bleibt, obwohl die Kachel kein Link
-     mehr ist. Das Vergrößern um 3,5 Prozent ist dagegen entfallen: Eine
-     Fläche, die unter dem Zeiger wächst, liest sich als Knopf. Ein
-     Farbwechsel tut das nicht — er zeigt her, was da ist, statt etwas
-     anzukündigen.
-
-     Am li und nicht mehr am Link: Der ist weg, und die Fläche, auf die es
-     ankommt, ist ohnehin die ganze Kachel. */
-  .disziplin:hover .disziplin__bild img {
-    filter: grayscale(0) contrast(1);
-  }
-
-  /* Ohne Zeigegerät gäbe es die Farbe nie zu sehen — auf dem Handy stehen
-     die Aufnahmen deshalb von vornherein farbig. Dieselbe Regel steht
-     weiter unten bei den Team-Porträts, aus demselben Grund.
-
-     filter: none und nicht grayscale(0) contrast(1): Beides ist dasselbe
-     Bild — grayscale(0) und contrast(1) verändern nichts —, und none sagt
-     das kürzer. */
-  @media (hover: none) {
-    .disziplin__bild img { filter: none; }
-  }
-
-  /* Lesbarkeitsverlauf, auf den echten Motiven gemessen statt geschätzt:
-     Bild im Cover-Zuschnitt samt Graustufenfilter im Canvas nachgebaut,
-     Verlauf darüber, dann der schlechteste Wert auf den Zeilenkästen der
-     Schrift. Nach dem Umbau auf zwei Spalten sind die rechten Kästen
-     kleiner, die Schrift liegt über anderen Bildstellen und der Fuß von
-     0.88 reichte nur noch für 4.36:1 bei Foto. Mit 0.92 sind es
-     Foto 5.54, Idee & Konzept 7.87, Video 11.20 — wieder über der
-     strengeren Schwelle von 4.5 und mit Reserve für andere Motive.
-
-     ER BLEIBT AUCH BEIM ÜBERFAHREN UNVERÄNDERT. Das war nicht zu erwarten:
-     Dann steht das Bild in Farbe statt in Graustufen, und der Name rückt
-     nach oben, weil die Beschreibung unter ihm Platz braucht. Beides macht
-     es schwerer. Nachgerechnet auf den Farbfassungen, je Band an der
-     hellsten 12px-Säule statt am Mittelwert:
-
-                        Beschreibung   Name
-       Video               10.34       7.76
-       Idee & Konzept      10.94       6.88
-       Foto                 8.78       5.88
-
-     Bei 1440px stimmt das. Eng wird es bei 1024: Dort ist die Foto-Kachel
-     nur 418 x 279px, der Name steht zwischen 36 und 50 % der Höhe und
-     bekommt 3.54. Für große fette Schrift genügt das (Schwelle 3.0), für
-     den Anspruch hier nicht. Deshalb die zweite Lage an ::before, die
-     ausschließlich beim Überfahren einblendet — siehe dort. */
-  .disziplin__bild::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(
-      0deg,
-      rgba(4, 37, 44, 0.92) 0%,
-      rgba(4, 37, 44, 0.58) 30%,
-      rgba(4, 37, 44, 0) 55%
-    );
-  }
-
-  /* Die zweite Lage, nur beim Überfahren. Sie tut genau so viel, wie der
-     angehobene Name braucht, und keinen Deut mehr.
-
-     Vier Kandidaten durchgerechnet, über beide Bänder und alle drei Motive
-     in ihren Kachelgrößen bei 1024 und 1440px. Der schlechteste Wert je
-     Kandidat:
-
-       ohne   3.54      unter der Schwelle
-       z1     4.79      genommen
-       z2     5.55
-       z3     6.67
-
-     z1 ist die leichteste Lage, die 4.5 hält. Unten am Fuß kommen zu den
-     0.92 noch 0.35 dazu — zusammen 0.948, also praktisch dasselbe. Sichtbar
-     wird sie nur im mittleren Teil des Bandes, wo sie aus 0.35 rund 0.56
-     macht. Über 60 % der Höhe ist sie null: Der obere Teil des Motivs
-     bleibt beim Überfahren unangetastet, und genau darum ging es.
-
-     Als eigene Lage und nicht als getauschter Verlauf: Ein Hintergrundbild
-     lässt sich nicht weich überblenden, eine Deckkraft schon. */
-  .disziplin__bild::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity var(--dur-slow) var(--ease-out);
-    background: linear-gradient(
-      0deg,
-      rgba(4, 37, 44, 0.35) 0%,
-      rgba(4, 37, 44, 0.32) 34%,
-      rgba(4, 37, 44, 0) 60%
-    );
-  }
-
-  .disziplin:hover .disziplin__bild::before { opacity: 1; }
 
   /* Name und Beschreibung stehen zusammen im unteren Band, am Boden der
      Kachel verankert. Geht die Beschreibung auf, schiebt sie den Namen nach
@@ -1534,33 +1496,6 @@ const faqs = [
       grid-template-rows: 1fr;
       margin-top: 0.625rem;
       opacity: 1;
-    }
-
-    /* Und weil er dort immer steht, muss der Verlauf ihn auch immer tragen.
-       Auf dem Telefon sind die Kacheln kurz — die Foto-Kachel misst bei
-       375px Fenster nur 308 x 205px, und der Block reicht dann bis 58 % der
-       Höhe statt bis 41 % auf dem Desktop.
-
-       Das kostet hier nichts: Ohne Zeigegerät gibt es kein Vorher, mit dem
-       man den stärkeren Verlauf vergleichen könnte. Auf dem Desktop wäre
-       genau das der Einwand — dort bleibt er deshalb unangetastet. */
-    .disziplin__bild::before { opacity: 1; }
-
-    /* Zusätzlich zur zweiten Lage: Auf dem Telefon sind die Kacheln kurz —
-       die Foto-Kachel misst bei 375px Fenster nur 308 x 205px, und der Block
-       reicht bis 57 % der Höhe statt bis 41 % auf dem Desktop. Der
-       Grundverlauf muss deshalb weiter hinaufreichen.
-
-       Das kostet hier nichts: Ohne Zeigegerät gibt es kein Vorher, mit dem
-       man den stärkeren Verlauf vergleichen könnte. Auf dem Desktop wäre
-       genau das der Einwand. */
-    .disziplin__bild::after {
-      background: linear-gradient(
-        0deg,
-        rgba(4, 37, 44, 0.94) 0%,
-        rgba(4, 37, 44, 0.78) 38%,
-        rgba(4, 37, 44, 0) 80%
-      );
     }
   }
 
@@ -1671,115 +1606,25 @@ const faqs = [
      Disziplinen: Die Team-Kacheln sind schmal, und eine rem-Größe wäre auf
      ihnen je nach Browser-Grundschrift mal knapp und mal zu breit.
 
-     Maske gegen den hellen Saum in der Rundung — ausführlich bei
-     .work__figure. */
+     Ohne Maske und ohne Filter, wie bei Arbeiten und Disziplinen: Die
+     Rundung ist null, und die Porträts stehen roh in Farbe. Die
+     Graustufen, die die vier Aufnahmen zu einer Reihe banden, sind auf
+     Simons Ansage vom 6. August 2026 entfallen. */
   .team__bild {
     position: relative;
     container-type: inline-size;
     margin: 0;
     overflow: hidden;
     border-radius: var(--radius-bild);
-    -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
-    mask-image: linear-gradient(#000, #000);
   }
 
-  /* Graustufen, Farbe erst bei Hover. Die vier Aufnahmen stammen aus
-     verschiedenen Situationen — Studio, Sofa, Loft — und haben jede einen
-     eigenen Farbstich. Grau bindet sie zu einer Reihe; die Farbe kommt
-     zurück, sobald jemand hinsieht. */
   .team__portrait {
     display: block;
     width: 100%;
     aspect-ratio: 4 / 5;
     object-fit: cover;
     border-radius: inherit;
-    filter: grayscale(1);
-    transition: filter var(--dur) var(--ease-out);
   }
-
-  .team__member:hover .team__portrait,
-  .team__member:focus-within .team__portrait { filter: grayscale(0); }
-
-  /* Ohne Zeigegerät gäbe es die Farbe nie zu sehen — auf dem Handy stehen
-     die Porträts deshalb von vornherein farbig. */
-  @media (hover: none) {
-    .team__portrait { filter: none; }
-  }
-
-  /* Lesbarkeitsverlauf, auf den echten Porträts gemessen statt geschätzt:
-     4:5-Zuschnitt in Kachelgröße, Graustufen wie Farbe, Verlauf darüber,
-     dann der schlechteste Wert auf den Zeilenkästen — je Band an der
-     hellsten 12px-Säule, nicht am Mittelwert.
-
-     ER IST DÜNNER ALS DER BEI DEN DISZIPLINEN, und zwar aus Messung, nicht
-     aus Geschmack. Deren Werte übernommen (0.92 / 0.62 / 0 bei 62 %) ergab
-     im schlechtesten Fall 9,3:1 — doppelt so viel wie nötig, und jeder
-     Punkt darüber ist verdecktes Bild. Der Grund ist der Zuschnitt: Bei
-     4:5 liegt das Schriftband über Schultern und Kleidung, nicht über
-     hellem Hintergrund wie bei den Disziplinen.
-
-     Vier leichtere Fassungen durchgerechnet, über alle vier Porträts, beide
-     Kachelgrößen und alle drei Bänder. Der schlechteste Wert je Fassung:
-
-       .92 / .62 / 0 @ 62 %      9.28     doppelt so viel wie nötig
-       .78 / .46 / 0 @ 52 %      5.73     genommen
-       .66 / .36 / 0 @ 48 %      4.40     unter der Schwelle
-       .55 / .28 / 0 @ 44 %      3.53     unter der Schwelle
-
-     Der enge Fall ist Philipp im offenen Zustand: Sein Studiohintergrund
-     reicht bis ins Schriftband, und der Name steht dann am höchsten. Cem
-     kommt an derselben Stelle auf 12,2 — der Verlauf richtet sich nach dem
-     schwierigsten der vier, nicht nach dem Schnitt.
-
-     Gerechnet ist mit zwei Rollenzeilen auf allen vier Kacheln. Das ist
-     seit dem Stapeln der Fall (siehe .team__zeile) und hat die Reserve
-     gekostet: Mit ein und zwei Zeilen gemischt stand K1 noch bei 6,77.
-
-     Die Zahlen erzeugt scratchpad/team-kontrast.js. */
-  .team__bild::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(
-      0deg,
-      rgba(4, 37, 44, 0.78) 0%,
-      rgba(4, 37, 44, 0.46) 32%,
-      rgba(4, 37, 44, 0) 52%
-    );
-  }
-
-  /* Zweite Lage, nur beim Überfahren — dieselbe Begründung wie bei den
-     Disziplinen: Dann steht das Bild in Farbe, und der Name rückt nach
-     oben, weil die Rolle unter ihm Platz braucht. Beides macht es
-     schwerer. Sie steckt in derselben Rechnung wie der Grundverlauf oben;
-     die 6,77 gelten für beide Lagen zusammen.
-
-     Über 52 % der Höhe ist sie null. Der offene Block reicht bis 28 % —
-     das Gesicht bleibt in jedem Zustand unangetastet.
-
-     Als eigene Lage und nicht als getauschter Verlauf: Ein Hintergrundbild
-     lässt sich nicht weich überblenden, eine Deckkraft schon. */
-  .team__bild::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity var(--dur-slow) var(--ease-out);
-    background: linear-gradient(
-      0deg,
-      rgba(4, 37, 44, 0.26) 0%,
-      rgba(4, 37, 44, 0.22) 34%,
-      rgba(4, 37, 44, 0) 52%
-    );
-  }
-
-  .team__member:hover .team__bild::before,
-  .team__member:focus-within .team__bild::before { opacity: 1; }
 
   /* Alles in cqi, also in Prozent der Kachelbreite. Bei 243px Kachel sind
      das 14,6px Rand, 18,5px Name und 13,9px Rolle. Weil Rand und Schrift
@@ -1857,17 +1702,14 @@ const faqs = [
     opacity: 1;
   }
 
-  /* Ohne Zeigegerät gibt es kein Überfahren — dort steht die Rolle immer,
-     und der Verlauf muss sie immer tragen. Dieselbe Entscheidung wie bei
-     den Disziplinen. */
+  /* Ohne Zeigegerät gibt es kein Überfahren — dort steht die Rolle immer.
+     Dieselbe Entscheidung wie bei den Disziplinen. */
   @media (hover: none) {
     .team__role {
       grid-template-rows: 1fr;
       margin-top: 3.4cqi;
       opacity: 1;
     }
-
-    .team__bild::before { opacity: 1; }
   }
 
   /* UNTERHALB VON 560px ZURÜCK UNTER DAS BILD.
@@ -1885,21 +1727,9 @@ const faqs = [
      In px und nicht in rem, wie alle Umbruchstellen hier: rem hängt in
      Medienabfragen an der Browser-Grundschrift, nicht an der Seite. */
   @media (max-width: 559.98px) {
-    .team__bild::after,
-    .team__bild::before { content: none; }
-
-    /* Rundung und Kappen wandern von der Figur auf das Bild. Steht die
-       Beschriftung im Fluss statt darüber, ist sie Teil der Figur — ihre
-       letzte Zeile sitzt dann bündig auf deren Unterkante, und die 9px
-       Rundung schnitte die Unterlängen an. */
-    .team__bild {
-      overflow: visible;
-      border-radius: 0;
-      -webkit-mask-image: none;
-      mask-image: none;
-    }
-
-    .team__portrait { border-radius: var(--radius-bild); }
+    /* Kappen aus: Steht die Beschriftung im Fluss statt darüber, ist sie
+       Teil der Figur und würde an deren Unterkante beschnitten. */
+    .team__bild { overflow: visible; }
 
     .team__fuss {
       position: static;
@@ -2011,7 +1841,6 @@ const faqs = [
 
   /* ── Breakpoints ──────────────────────────────────────────────────────── */
   @media (min-width: 768px) {
-    .statement__text { text-wrap: balance; }
     .hero__cue { display: inline-flex; }
   }
 
@@ -2075,134 +1904,6 @@ const faqs = [
       grid-template-columns: repeat(4, minmax(0, 1fr));
       column-gap: clamp(26px, 15.18vw - 124.6px, 94px);
     }
-  }
-
-  /* Der Reißverschluss steht ab 768 und nicht erst ab 1024.
-
-     Einspaltig ist jede Kachel so breit wie der Container. Siemens läuft
-     als 4:5 dann mit: 866px hoch bei 768er Fenster, 1011 bei 900, 1120 bei
-     1000 — eine einzelne Kachel, höher als der Bildschirm, und darunter
-     die nächste. Zu zweit sind es an derselben Stelle 320 x 400px.
-
-     Die Versätze sind alle in vw gerechnet und wachsen deshalb mit; es
-     musste kein einziger Wert nachgezogen werden. */
-  @media (min-width: 768px) {
-    .work__grid {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      column-gap: clamp(1.5rem, 3vw, 3rem);
-      row-gap: clamp(3rem, 6vw, 5rem);
-    }
-
-    /* Drei Paare im Reißverschluss. Links steht immer die breitere
-       Kachel, rechts die schmalere, und keine zwei teilen sich eine
-       Kante oder eine Höhe. Die Reihenfolge der Projekte steht in
-       src/data/arbeiten.ts, dort auch die Begründung der Gattungsfolge.
-
-       Gemessen bei 1440px Fenster, Raster 1310px breit, Spalte 69.6,
-       Spaltenabstand 43.2:
-
-         Siemens     633 x 792   links    x    0 …  633    y    0 …  792
-         Allianz     408 x 725   rechts   x  789 … 1197    y  140 …  865
-         Revitive    746 x 497   links    x    0 …  746    y  894 … 1391
-         Street One  408 x 725   rechts   x  902 … 1310    y  967 … 1692
-         BVB         408 x 725   links    x    0 …  408    y 1493 … 2218
-         Formel D    746 x 497   rechts   x  564 … 1310    y 1793 … 2291
-
-       DIE GEWICHTE
-       Siemens zu Allianz stand als Fläche bei 70 zu 30 und war damit zu
-       kopflastig. Siemens ist deshalb von sieben auf sechs Spalten
-       zurück, das ergibt 63 zu 37.
-
-       Genauer geht es auf zwölf Spalten nicht: Die nächsten möglichen
-       Kombinationen liegen bei 70/30 (Siemens sieben Spalten) und 59/41
-       (Allianz fünf) — dazwischen gibt es keine Rasterbreite. 65/35
-       bräuchte Siemens auf 6,4 Spalten.
-
-       Revitive ist von acht auf sieben Spalten zurück, war als
-       breiteste Kachel der Seite zu schwer. Street One von drei auf
-       vier: Mit 295px stand es in einem schmalen Streifen am rechten
-       Rand, jetzt sind es 408px.
-
-       DIE LINKE UND DIE RECHTE SPALTE BERÜHREN SICH NIE
-       Links endet spätestens bei 746, rechts beginnt frühestens bei
-       564 — aber nie auf derselben Höhe. Dadurch sind die beiden
-       Hälften vertikal frei gegeneinander verschiebbar, und genau das
-       machen die negativen Ränder unten.
-
-       ALLE DREI SENKRECHTEN FUGEN SIND GLEICH BREIT
-       Zwischen Siemens und Allianz, zwischen Revitive und Street One,
-       zwischen BVB und Formel D: je 156px, also genau eine Spalte plus
-       ihre beiden Abstände. Das ist die einzige Größe, die sich in der
-       Anordnung wiederholt, und sie ist der Grund, warum die drei Paare
-       trotz sechs verschiedener Höhen zusammengehören.
-
-       DIE VERSÄTZE
-       Der Zeilenabstand von 80px plus die Bildunterschrift von 42px
-       stapeln sich sonst zu Löchern zwischen den Paaren. Jede Kachel
-       wird deshalb einzeln gesetzt, bezogen auf die Kachel, die sie
-       tatsächlich blockiert — nicht auf die ganze Zeile. Zwischen einer
-       Bildzeile und der nächsten Kachel darunter stehen dadurch überall
-       110px.
-
-       Der Wert lag zwischenzeitlich bei 60px, und das war zu eng. Er
-       war nicht gewählt, sondern übrig: Street One ist von drei auf
-       vier Spalten gewachsen und damit 200px höher, und die rechte
-       Spalte hatte danach keine Luft mehr zu verteilen. Vorher standen
-       dort 237px zwischen Allianz und Street One und 164px zwischen
-       Street One und Formel D.
-
-       Die 110px kommen jetzt aus dem einzigen freien Maß, das der
-       Aufbau noch hat: Formel D darf nach unten wandern. Damit liegt
-       der Abschnitt bei 2433px und damit fast genau auf der Höhe von
-       vorher (2475px), obwohl alle Kacheln kleiner geworden sind.
-
-       Flächendeckung 66,9 Prozent, nachgemessen auch bei 1024 und
-       1920px Fensterbreite. Der engste Abstand liegt dort bei 82px.
-
-       Die Reihen entstehen von selbst — Astro setzt die Kacheln der
-       Reihe nach, und wo sich Spalten überschneiden, rutscht die
-       nächste eine Reihe tiefer. Kein grid-row, das würde brechen,
-       sobald ein Projekt dazukommt. */
-    .work__item--1 { grid-column: 1 / span 6; }                   /* Siemens 4:5 */
-    .work__item--2 { grid-column: 8 / span 4; }                   /* Allianz 9:16 */
-
-    .work__item--3 { grid-column: 1 / span 7; }                   /* Revitive 3:2 */
-    .work__item--4 { grid-column: 9 / span 4; }                   /* Street One 9:16 */
-
-    .work__item--5 { grid-column: 1 / span 4; }                   /* BVB 9:16 */
-    .work__item--6 { grid-column: 6 / span 7; }                   /* Formel D 3:2 */
-
-    /* Der Weg jeder Kachel, siehe .work__item.is-aktiv weiter oben:
-
-         Mitte der Kachel − 6,5        Spalten 1…12, Mitte also 6,5
-         ─────────────────────         geteilt durch die halbe Breite
-                  6
-
-       Siemens sitzt auf 3,5 und läuft damit eine halbe Einheit nach links,
-       Street One auf 10,5 und zwei Drittel nach rechts. Die drei Paare
-       ergeben −0,50/+0,50, −0,42/+0,67 und −0,67/+0,42: Jedes Paar zieht
-       gegeneinander, und die Beträge sind ungleich, weil die Kacheln es
-       auch sind. Gleiche Beträge sähen nach Mechanik aus. */
-    .work__item--1 { --dx: -0.50; }
-    .work__item--2 { --dx:  0.50; }
-    .work__item--3 { --dx: -0.42; }
-    .work__item--4 { --dx:  0.67; }
-    .work__item--5 { --dx: -0.67; }
-    .work__item--6 { --dx:  0.42; }
-
-    /* Die Versätze. margin-top und nicht transform — die Kacheln sollen
-       den Platz, den sie einnehmen, auch beanspruchen, sonst liefe die
-       Kachel darunter in sie hinein.
-
-       Alles in vw gerechnet, damit die Versätze mit den Kachelhöhen
-       mitwachsen: die sind über aspect-ratio ebenfalls an die Breite
-       gekoppelt. */
-    .work__item--2 { margin-top: clamp(3rem, 9.7vw, 8.75rem); }
-    .work__item--3 { margin-top: calc(-1 * clamp(1rem, 3vw, 3rem)); }
-    .work__item--4 { margin-top: clamp(0.75rem, 2.08vw, 2rem); }
-    .work__item--5 { margin-top: calc(-1 * clamp(5rem, 18.8vw, 17rem)); }
-    .work__item--6 { margin-top: clamp(0.75rem, 2.08vw, 2rem); }
-
   }
 
   /* Das Disziplinenfeld erst ab 1200 nebeneinander.
@@ -2303,30 +2004,147 @@ const faqs = [
        mehr auf, sondern steht sofort. Ihn ganz wegzulassen wäre falsch:
        Reduzierte Bewegung heißt weniger Bewegung, nicht weniger Inhalt. */
     .disziplin__text { transition: opacity var(--dur-fast) linear; }
-    .disziplin__bild::before { transition: opacity var(--dur-fast) linear; }
 
     /* Dasselbe für die Rollen im Team-Abschnitt — gleicher Aufklapper,
        gleiche Entscheidung. */
     .team__role { transition: opacity var(--dur-fast) linear; }
-    .team__bild::before { transition: opacity var(--dur-fast) linear; }
+
+    /* Der Positionsabsatz steht vollständig aufgefärbt, ohne Scrollverlauf;
+       die Meta-Zeile bekommt ihre Deckung zurück. Das Skript prüft
+       dieselbe Abfrage und rührt beide dann nicht mehr an. */
+    .statement__text :global(.wort) { color: #2451d8; transition: none; }
+    .statement__meta { opacity: 1; }
   }
 </style>
 
 <script>
-  // Die Kacheln in "Featured Work" laufen beim Scrollen auf ihren Platz zu.
+  // Die Disziplinen-Kacheln laufen beim Scrollen auf ihren Platz zu.
   //
   // Dieselbe Rechnung wie die Streublöcke weiter unten, aus einem Modul:
   // gleiche Zeitkonstante, gleicher Nachlauf, gleiches Verhalten beim
   // Verlassen des Fensters. Nur der Weg unterscheidet sich, und der steht
   // im CSS bei --dx.
   //
-  // Je Kachel und nicht je Abschnitt: Der Abschnitt ist 2433px hoch. Ein
-  // gemeinsamer Wert hieße, dass die unteren Kacheln längst stehen, bevor
-  // sie jemand sieht. Der Haufen ist ein kompakter Block und kommt deshalb
-  // mit einem Wert aus.
+  // Je Kachel und nicht je Abschnitt: Ein gemeinsamer Wert hieße, dass
+  // die unteren Kacheln längst stehen, bevor sie jemand sieht. Der Haufen
+  // ist ein kompakter Block und kommt deshalb mit einem Wert aus.
+  //
+  // Featured Work hing bis zum 6. August 2026 mit hier drin; dort trägt
+  // jetzt das klebende Riesenwort die Bewegung.
   import { nachlaufBinden } from '../scripts/nachlauf';
 
-  nachlaufBinden(document.querySelectorAll<HTMLElement>('.work__item, .disziplin'));
+  nachlaufBinden(document.querySelectorAll<HTMLElement>('.disziplin'));
+</script>
+
+<script>
+  // Der Positionsabsatz färbt sich beim Scrollen Wort für Wort auf.
+  //
+  // Die Wörter stehen von Anfang an — nichts blendet ein, nichts
+  // verschiebt sich. Nur die Schriftfarbe läuft von einem Fünftel Deckung
+  // auf volles Blau, und zwar der Reihe nach: Wie weit der Absatz durch
+  // den Bildschirm gewandert ist, bestimmt, wie viele Wörter schon
+  // stehen. Das Aufteilen muss das Skript machen, weil CSS keinen
+  // Zugriff auf einzelne Wörter hat.
+  //
+  // Rekursiv über die Kindknoten und nicht über innerHTML: Der Absatz
+  // enthält em, i und die Wortmarke; ein Ersetzen der Zeichenkette
+  // zerstörte sie. So bleibt jedes Element erhalten und bekommt seine
+  // Wörter einzeln verpackt.
+  const absatz = document.querySelector<HTMLElement>('.statement__text');
+  const metaZeile = document.querySelector<HTMLElement>('.statement__meta');
+  const ruhigerAbsatz = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (absatz && !ruhigerAbsatz) {
+    const zerlegen = (knoten: Node) => {
+      Array.from(knoten.childNodes).forEach((kind) => {
+        if (kind.nodeType === Node.TEXT_NODE) {
+          const teil = document.createDocumentFragment();
+          // Der Trenner steht in der Klammer, damit die Leerzeichen im
+          // Ergebnis bleiben — sonst klebten die Wörter aneinander.
+          (kind.textContent ?? '').split(/(\s+)/).forEach((stueck) => {
+            if (!stueck) return;
+            if (/^\s+$/.test(stueck)) {
+              teil.appendChild(document.createTextNode(stueck));
+            } else {
+              const wort = document.createElement('span');
+              wort.className = 'wort';
+              wort.textContent = stueck;
+              teil.appendChild(wort);
+            }
+          });
+          knoten.replaceChild(teil, kind);
+        } else if (kind.nodeType === Node.ELEMENT_NODE) {
+          zerlegen(kind);
+        }
+      });
+    };
+
+    zerlegen(absatz);
+    const woerter = Array.from(absatz.querySelectorAll<HTMLElement>('.wort'));
+
+    // Der Lauf beginnt, wenn der Absatz auf 82 Prozent der Fensterhöhe
+    // steht, und ist kurz vor der Mitte fertig. Die Strecke ist seine
+    // eigene Höhe plus 42 Prozent Fensterhöhe — dadurch dauert ein langer
+    // Absatz länger als ein kurzer, statt beide gleich schnell
+    // durchzulaufen.
+    let angefordert = 0;
+
+    const rechnen = () => {
+      angefordert = 0;
+      const kasten = absatz.getBoundingClientRect();
+      const strecke = kasten.height + window.innerHeight * 0.42;
+      const anteil = Math.min(1, Math.max(0, (window.innerHeight * 0.82 - kasten.top) / strecke));
+      const stehen = Math.round(anteil * woerter.length);
+
+      woerter.forEach((wort, i) => wort.classList.toggle('is-an', i < stehen));
+
+      // Die Meta-Zeile kommt zum Schluss: Sie blendet über das letzte
+      // Viertel des Laufs ein und steht damit sichtbar nach dem Absatz.
+      if (metaZeile) {
+        metaZeile.style.opacity = String(Math.min(1, Math.max(0, (anteil - 0.72) / 0.28)));
+      }
+    };
+
+    const anstossen = () => {
+      if (!angefordert) angefordert = requestAnimationFrame(rechnen);
+    };
+
+    window.addEventListener('scroll', anstossen, { passive: true });
+    window.addEventListener('resize', anstossen, { passive: true });
+    rechnen();
+  }
+</script>
+
+<script>
+  // Der Header folgt dem Hell-Dunkel-Schnitt.
+  //
+  // Ab "Featured Work" läuft die Seite auf Schwarz. Die solide Fläche des
+  // Headers ist bis dahin weiß und muss ab dem Schnitt schwarz werden,
+  // sonst steht ein weißer Balken über schwarzem Grund.
+  //
+  // Bezug ist die Oberkante des Abschnitts gegen die Höhe des Headers:
+  // Sobald sie darunter liegt, steht schwarzer Grund hinter dem Header.
+  const kopf = document.getElementById('site-header');
+  const schnitt = document.querySelector('.section.work');
+
+  if (kopf && schnitt) {
+    let angefordertKopf = 0;
+
+    const kopfPruefen = () => {
+      angefordertKopf = 0;
+      kopf.classList.toggle('is-dunkel', schnitt.getBoundingClientRect().top <= kopf.offsetHeight);
+    };
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!angefordertKopf) angefordertKopf = requestAnimationFrame(kopfPruefen);
+      },
+      { passive: true }
+    );
+
+    kopfPruefen();
+  }
 </script>
 
 <script>

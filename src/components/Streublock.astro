@@ -271,8 +271,7 @@ const gestreut = eingepasst.map((b) => {
     /* Kein Hintergrund: Als Platzhalter mit 6 % Weiß war er heller als
        der Abschnitt und blitzte in den abgerundeten Ecken als Bogen
        durch — overflow: hidden schneidet das Bild dort nicht auf den
-       letzten Pixel genau ab. Ausführlich bei .work__figure in
-       index.astro. */
+       letzten Pixel genau ab. */
     /* Kräftiger Schatten, weil die Stücke sich stark überlappen: Ohne ihn
        verschmelzen zwei dunkle Setfotos zu einer Fläche und der Stapel
        verliert seine Tiefe. */
@@ -281,7 +280,9 @@ const gestreut = eingepasst.map((b) => {
 
   .haufen__stueck img {
     /* Eigene Rundung, damit die Kante nicht allein am Beschnitt des
-       Kastens hängt — siehe .work__figure img in index.astro. */
+       Kastens hängt: Beschneidet nur der Kasten, bleibt in der Rundung
+       ein Bruchteil eines Pixels frei, in dem das Bild ungedimmt
+       durchkommt. */
     border-radius: inherit;
     display: block;
     width: 100%;
