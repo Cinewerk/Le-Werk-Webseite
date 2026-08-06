@@ -3,36 +3,34 @@
  * Orten gebraucht werden: als Kacheln auf der Startseite und als
  * Unterseiten unter /arbeiten/<slug>.
  *
- * Die Reihenfolge ist ein Reißverschluss aus drei Paaren. Jedes Paar hat
- * eine linke und eine rechte Kachel, und die beiden greifen ineinander
- * statt nebeneinanderzustehen — keine zwei Kacheln teilen sich eine
- * Oberkante, eine Unterkante oder eine Höhe.
+ * DIE REIHENFOLGE ist zugleich der Platz im Raster: drei Spalten, zwei
+ * Reihen, und die mittlere Spalte hängt tiefer als die beiden äußeren.
+ * Beide Reihen laufen deshalb nach demselben Muster
  *
- *   PAAR 1   Siemens links, breit und als einziges 4:5. Es eröffnet.
- *            Allianz rechts daneben, tiefer angesetzt.
+ *      Video          Foto           Video
+ *      oben           tief           halbhoch
  *
- *   PAAR 2   Revitive links unter Siemens, quer und über die Mitte
- *            hinausragend. Street One rechts daneben, die kleinste Kachel.
+ * und das ist keine Sortierung nach Geschmack, sondern nach Höhe: Die
+ * beiden Fotostrecken stehen quer und sind damit die kürzesten Kacheln
+ * (4:3 gegen 3:4). In der hängenden Mitte nimmt der Versatz genau das
+ * auf — die Lücke, die eine kurze Kachel in ihrer Reihe sonst unter sich
+ * ließe, steht dann über ihr und ist der Versatz selbst.
  *
- *   PAAR 3   BVB links unten, hochkant. Formel D rechts daneben, quer
- *            und bis an den rechten Rand.
+ * Daraus folgt für jede Umsortierung: Was auf Platz 2 und 5 steht, sollte
+ * quer sein. Steht dort ein Hochformat, hängt die höchste Kachel der
+ * Reihe auch noch am tiefsten, und die beiden äußeren stehen auf halber
+ * Höhe in der Luft.
  *
- * Zwei Regeln halten das zusammen:
+ * Siemens eröffnet. Es ist als einziges 4:5 aufgenommen — weder quer noch
+ * hochkant — und setzt damit den Maßstab, gegen den die drei Reels
+ * gelesen werden.
  *
- *   GATTUNG  Die beiden Fotostrecken liegen über Kreuz — Revitive links
- *            in der Mitte, Formel D rechts unten. Dadurch steht in
- *            jedem der unteren Paare ein Film neben einer Fotostrecke.
- *            Vorher lagen beide Strecken in der unteren Hälfte, und die
- *            Seite zerfiel in einen Film- und einen Fototeil.
+ * Der Versatz je Spalte steht in index.astro bei .werk.
  *
- *   FORMAT   Kein 9:16 steht neben einem 9:16. Allianz, Street One und
- *            BVB sind so gesetzt, dass sich ihre Höhenbereiche kaum
- *            überschneiden; nebeneinander lesen sich zwei Hochformate
- *            als ein Motiv in zwei Anläufen. Was neben ihnen steht, ist
- *            entweder quer oder — bei Siemens — 4:5.
- *
- * Die Spaltenzahl und die Versätze je Platz stehen in index.astro und
- * sind auf die Formate gerechnet. Wer umsortiert, muss beides mitdenken.
+ * Bis zum 6. August 2026 lag hier ein Reißverschluss aus drei Paaren im
+ * Zwölfspaltigen, mit eigenen Spaltenbreiten und Versätzen je Kachel. Er
+ * ist mit dem Umbau auf das Rasterfeld entfallen; seine Maße und seine
+ * Begründung stehen in der Git-Historie.
  */
 /** Ausgabeformate, wie sie in den Pillen stehen */
 export type Format = '16:9' | '4:3' | '4:5' | '3:2' | '9:16';
@@ -77,10 +75,7 @@ export interface Arbeit {
 
 export const arbeiten: Arbeit[] = [
   {
-    // Steht vorn und ist die breiteste Kachel. Das ist keine Rangfolge,
-    // sondern Statik: 4:5 ist das einzige Format, das weder quer noch
-    // hochkant ist, und als Auftakt setzt es den Maßstab, gegen den die
-    // drei Hochformate danach gelesen werden.
+    // Der Auftakt, siehe Kopf der Datei.
     //
     // ACHTUNG: Die Datei ist 1920x1080. Der 4:5-Beschnitt behält davon nur
     // die mittleren 45 % der Breite — es passt, weil die Frau fast genau
@@ -99,26 +94,10 @@ export const arbeiten: Arbeit[] = [
     eigeneSeite: true,
   },
   {
-    // Rechts neben Siemens, tiefer angesetzt. Von den drei Hochformaten
-    // steht dieses am höchsten, weil es das hellste ist — die Kletterwand
-    // trägt den oberen Rand, an dem der Abschnitt aus dem Dunkel kommt.
-    slug: 'allianz-instagram-reel',
-    kunde: 'Allianz × Olympia',
-    titel: 'Social Videos',
-    bild: '/images/work/allianz.webp',
-    breite: 540,
-    hoehe: 960,
-    ratio: '9:16',
-    formate: ['9:16', '16:9'],
-    alt: 'Lachende junge Frau vor einer Kletterwand, im Hochformat aufgenommen',
-    art: 'Video',
-    eigeneSeite: true,
-  },
-  {
-    // Die Fotostrecke direkt unter Siemens. Von den beiden ist es die
-    // hellere, und sie steht deshalb hier und nicht unten: Formel D wäre
-    // an dieser Stelle ein zweites schweres Bild unter einem ohnehin
-    // dunklen Auftakt.
+    // Die hängende Mitte der oberen Reihe. Von den beiden Fotostrecken
+    // die hellere, und sie steht deshalb oben: Formel D wäre an dieser
+    // Stelle ein zweites schweres Bild neben einem ohnehin dunklen
+    // Auftakt.
     slug: 'revitive-fotogalerie',
     kunde: 'Revitive',
     titel: 'Fotografie und Web Content',
@@ -132,12 +111,26 @@ export const arbeiten: Arbeit[] = [
     eigeneSeite: true,
   },
   {
+    // Schließt die obere Reihe rechts ab. Von den drei Reels das
+    // hellste — die Kletterwand trägt die Kante, an der der Abschnitt
+    // aus dem Dunkel kommt.
+    slug: 'allianz-instagram-reel',
+    kunde: 'Allianz × Olympia',
+    titel: 'Social Videos',
+    bild: '/images/work/allianz.webp',
+    breite: 540,
+    hoehe: 960,
+    ratio: '9:16',
+    formate: ['9:16', '16:9'],
+    alt: 'Lachende junge Frau vor einer Kletterwand, im Hochformat aufgenommen',
+    art: 'Video',
+    eigeneSeite: true,
+  },
+  {
     // Der Slug heißt weiter …-instagram-reel: Die Adresse ist vergeben,
     // eine Umbenennung würde bestehende Links ins Leere laufen lassen.
     //
-    // Die kleinste Kachel der Seite. Klein, weil sie zwischen zwei großen
-    // Nachbarn sitzt und in voller Breite nur eine zweite Reelspur unter
-    // Allianz wäre.
+    // Eröffnet die untere Reihe, unter Siemens.
     slug: 'street-one-instagram-reel',
     kunde: 'Street One',
     titel: 'Social Content',
@@ -151,25 +144,9 @@ export const arbeiten: Arbeit[] = [
     eigeneSeite: true,
   },
   {
-    // Links unten, und damit an der Stelle, an der die Seite endet. Die
-    // Kachel reicht als einzige unter alles andere — das gelbe Trikot ist
-    // der letzte Farbwert vor dem Abschnittsende.
-    slug: 'bvb-ea-sports-social-ad',
-    kunde: 'BVB × EA Sports',
-    titel: 'Social Ad',
-    bild: '/images/work/bvb-ea-sports.webp',
-    breite: 1080,
-    hoehe: 1920,
-    ratio: '9:16',
-    formate: ['9:16'],
-    alt: 'Nahaufnahme von Marco Reus im gelben BVB-Trikot, hellblond gefärbtes Haar, leicht zur Kamera geneigt',
-    art: 'Video',
-    eigeneSeite: true,
-  },
-  {
-    // Die zweite Fotostrecke, über Kreuz zu Revitive gesetzt. Die dunkle
-    // Werkhalle trägt das Gewicht der unteren rechten Ecke und schließt
-    // den Abschnitt zum Rasterrand hin ab.
+    // Die hängende Mitte der unteren Reihe — dieselbe Rolle wie Revitive
+    // darüber. Die dunkle Werkhalle trägt das Gewicht der Reihe von
+    // innen.
     slug: 'formel-d-fotogalerie',
     kunde: 'Formel D',
     titel: 'Fotografie',
@@ -180,6 +157,22 @@ export const arbeiten: Arbeit[] = [
     formate: ['3:2'],
     alt: 'Dunkler SUV frontal unter einem aufgeklappten Lichtdach mit Leuchtstoffröhren in einer Werkhalle',
     art: 'Foto',
+    eigeneSeite: true,
+  },
+  {
+    // Schließt die untere Reihe rechts ab und damit den Abschnitt — das
+    // gelbe Trikot ist der letzte Farbwert vor dem Schnitt zur
+    // Kundenleiste.
+    slug: 'bvb-ea-sports-social-ad',
+    kunde: 'BVB × EA Sports',
+    titel: 'Social Ad',
+    bild: '/images/work/bvb-ea-sports.webp',
+    breite: 1080,
+    hoehe: 1920,
+    ratio: '9:16',
+    formate: ['9:16'],
+    alt: 'Nahaufnahme von Marco Reus im gelben BVB-Trikot, hellblond gefärbtes Haar, leicht zur Kamera geneigt',
+    art: 'Video',
     eigeneSeite: true,
   },
 ];

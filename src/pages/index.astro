@@ -1135,10 +1135,15 @@ const faqs = [
     gap: clamp(1rem, 2vw, 1.75rem);
   }
 
-  /* Der Versatz je Spalte ist das, was das Raster zum Muster macht: Die
-     linke Spalte steht oben, die beiden anderen hängen. Dadurch
-     überschneiden sich die Reihen, und das Riesenwort läuft nie über
-     eine gerade Kante.
+  /* Der Versatz je Spalte ist das, was das Raster zum Muster macht. Er
+     läuft als Zickzack: links oben, in der Mitte tief hinunter, rechts
+     wieder ein Stück herauf. Beide Reihen folgen ihm, dadurch
+     überschneiden sie sich, und das Riesenwort läuft nie über eine
+     gerade Kante.
+
+       Spalte 1     0        Siemens        Street One
+       Spalte 2    18vh      Revitive       Formel D
+       Spalte 3     7vh      Allianz        BVB
 
      margin-top und nicht transform: Die Kachel soll den Platz, den sie
      einnimmt, auch beanspruchen — sonst liefe die Reihe darunter hinein.
@@ -1146,26 +1151,23 @@ const faqs = [
      In vh und nicht in vw, wie in der Vorlage: Der Versatz ist ein Weg
      beim Scrollen, kein Maß der Fläche.
 
-     WARUM DIE RECHTE SPALTE AM TIEFSTEN HÄNGT. Dort stehen beide
-     Fotostrecken und damit beide Querformate — 324px hoch gegen 576 der
-     Hochformate. Die Reihe ist so hoch wie ihre höchste Kachel; ohne
-     Versatz klaffte unter der Querformatkachel der ganze Rest der Reihe.
-     Gemessen bei 1440 x 900:
+     IN DER MITTE STEHT JEWEILS EINE FOTOSTRECKE, und das gehört zum
+     Versatz. Die beiden Strecken sind quer aufgenommen und damit die
+     kürzesten Kacheln — 324px gegen 576 der Hochformate. Eine Reihe ist
+     so hoch wie ihre höchste Kachel; ohne Versatz klaffte unter der
+     kurzen der ganze Rest der Reihe. Hängt sie dagegen tief, steht die
+     Lücke über ihr und ist der Versatz selbst. Gemessen bei 1440 x 900
+     liegen dann 162px über und 153 unter ihr.
 
-       5vh    45px über der Kachel, 315 darunter
-       18vh  162px über der Kachel, 198 darunter
-
-     Der Versatz verteilt die Lücke also, statt sie zu erzeugen. Wer die
-     Reihenfolge in arbeiten.ts ändert, muss das nachrechnen: Landen die
-     Querformate in einer anderen Spalte, gehört der große Versatz
-     dorthin. */
+     Wer in arbeiten.ts umsortiert, muss das mitdenken — die Regel steht
+     dort im Kopf der Datei. */
   .werk {
     align-self: start;
     margin-top: var(--rutsch, 0);
   }
 
-  .werk:nth-child(3n + 2) { --rutsch: 12vh; }
-  .werk:nth-child(3n) { --rutsch: 18vh; }
+  .werk:nth-child(3n + 2) { --rutsch: 18vh; }
+  .werk:nth-child(3n) { --rutsch: 7vh; }
 
   .werk__link {
     display: grid;
