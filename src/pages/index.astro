@@ -453,7 +453,7 @@ const faqs = [
     </div>
   </section>
 
-  <!-- ═══ 5 · LEISTUNGEN ═════════════════════════════════════════════════ -->
+  <!-- ═══ 5 · SERVICES ═══════════════════════════════════════════════════ -->
   <section class="section section--sand services" aria-labelledby="services-title">
     <div class="container container--breit">
       <!-- Marginalienstil wie bei "Warum Le Werk", nicht die große
@@ -468,16 +468,10 @@ const faqs = [
            "Content, holistisch gedacht" stand hier früher als Headline,
            davor zusätzlich ein Fließtext, der die Disziplinen abstufte
            ("Hauptdisziplin", "klare Zweite"). Beides ist entfallen. -->
-      <!-- "Was wir machen" trug den Abschnitt bis zum 6. August 2026 als
-           einzige Zeile in Marginalienschrift. Jetzt steht darunter die
-           Überschrift wie in den anderen Abschnitten: kleine Zeile oben,
-           Wort in Poppins darunter.
-
-           Die Überschrift ist "Services" und die Marginalie "Was wir
-           machen" — nicht umgekehrt. Der Abschnitt heißt damit im
-           Vorlesen wie im Menü und in der Fußzeile. -->
+      <!-- Ein Wort, sonst nichts. "Was wir machen" stand hier als
+           Marginalie darüber und ist entfallen — der Abschnitt heißt jetzt
+           im Vorlesen wie im Menü und in der Fußzeile. -->
       <header class="sec-head sec-head--knapp" data-reveal>
-        <p class="label">Was wir machen</p>
         <h2 class="headline" id="services-title">Services</h2>
       </header>
 
@@ -512,20 +506,16 @@ const faqs = [
     </div>
   </section>
 
-  <!-- ═══ 6 · UNSER KERNTEAM ═════════════════════════════════════════════ -->
+  <!-- ═══ 6 · STUDIO ═════════════════════════════════════════════════════ -->
   <section class="section section--dark team" aria-labelledby="team-title">
     <div class="container container--breit">
+      <!-- Ein Wort wie bei Services. Der Abschnitt hieß "Unser Kernteam"
+           mit der Marginalie "Wer dahintersteht" darüber; beides ist
+           entfallen. "Studio" benennt, was hier steht — die Menschen und
+           die Räume —, und reiht sich in die Kapitelwörter der Seite:
+           Featured Work, Services, Studio. -->
       <header class="sec-head sec-head--knapp" data-reveal>
-        <p class="label">Wer dahintersteht</p>
-        <!-- "Unser" stand als kursiver Bodoni-Kicker in einer eigenen
-             Zeile darüber. Es läuft jetzt in der Zeile mit, in Poppins
-             Bold und eine Stufe kleiner als "Kernteam" — die Überschrift
-             ist damit eine Zeile statt zweier, wie das Riesenwort über
-             Featured Work. -->
-        <h2 class="headline" id="team-title">
-          <span class="headline__vor">Unser</span>{' '}
-          Kernteam
-        </h2>
+        <h2 class="headline" id="team-title">Studio</h2>
       </header>
 
       <!-- Erst die Gesichter … Name und Rolle stehen auf dem Bild, wie bei
@@ -1600,7 +1590,7 @@ const faqs = [
      Spalten 266 bis 399px breit. */
   .benefit__text { max-width: 62ch; color: var(--ink-muted); }
 
-  /* ── 6 · Unser Kernteam ─────────────────────────────────────────────── */
+  /* ── 6 · Studio ───────────────────────────────────────────────────────── */
   /* Der Abschnitt kappt waagerecht. Gebraucht wurde das von den
      Streublöcken, die ihren Text um 7rem zur Seite hereinfuhren und die
      Seite dabei auf 1326px Scrollbreite wachsen ließen. Die Kulisse, die
@@ -1616,27 +1606,8 @@ const faqs = [
 
   /* Der Kopf steht enger, wo die Überschrift kurz ist und das Bildfeld
      direkt darunter die Fläche übernimmt — bei "SERVICES" wie bei
-     "UNSER KERNTEAM". */
+     "STUDIO". Beide tragen nur noch ein Wort, keine Marginalie. */
   .sec-head--knapp { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
-
-  /* Das Vorwort in der Überschriftenzeile, an der Stelle des früheren
-     Kickers. Poppins wie die Überschrift selbst, nur einen Schnitt
-     leichter — Bold gegen ExtraBold —, damit "Kernteam" die Zeile trägt
-     und "Unser" sie nur anführt.
-
-     0.65em und nicht clamp: Der frühere Kicker stand bei 40px neben 60px
-     Überschrift, also auf zwei Dritteln. In em bleibt das Verhältnis in
-     jeder Fensterbreite gleich, statt an einer zweiten vw-Rechnung zu
-     hängen, die sich mit der ersten kreuzt.
-
-     Die Laufweite ist die der Überschrift, sonst stünden zwei
-     Sperrungen in einer Zeile. Versal wird das Wort von .headline. */
-  .headline__vor {
-    font-family: var(--font-ui);
-    font-weight: 700;
-    font-size: 0.65em;
-    letter-spacing: inherit;
-  }
 
   /* Vier Porträts: zwei Spalten auf dem Handy, vier ab 992px.
 
