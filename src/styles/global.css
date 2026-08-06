@@ -48,6 +48,15 @@
 
   --fs-display: clamp(2.75rem, 11vw, 9rem);
   --fs-h1: clamp(2.25rem, 7.5vw, 5.5rem);
+  /* Die Kapitelwörter der Startseite — Featured Work, Services, Studio —
+     stehen alle in derselben Größe. Nicht jedes füllt damit die Breite:
+     Das längste tut es, die kürzeren laufen entsprechend kürzer aus, und
+     genau daraus entsteht die Gliederung.
+
+     10,7vw ist der größte Grad, bei dem das längste der drei Wörter auch
+     im schmalsten Fenster zwischen die beiden Ränder passt. Die Rechnung
+     steht bei .work__wort in index.astro. */
+  --fs-kapitel: clamp(1.25rem, 10.7vw, 13rem);
   --fs-h2: clamp(1.875rem, 5vw, 3.75rem);
   --fs-h3: clamp(1.25rem, 2.4vw, 1.875rem);
   --fs-statement: clamp(1.5rem, 4vw, 3rem);

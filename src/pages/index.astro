@@ -490,7 +490,7 @@ const faqs = [
            Marginalie darüber und ist entfallen — der Abschnitt heißt jetzt
            im Vorlesen wie im Menü und in der Fußzeile. -->
       <header class="sec-head sec-head--knapp" data-reveal>
-        <h2 class="headline" id="services-title">Services</h2>
+        <h2 class="headline kapitel" id="services-title">Services</h2>
       </header>
 
       <!-- Eine Indexliste statt dreier Bildkacheln, übernommen aus
@@ -534,7 +534,7 @@ const faqs = [
            die Räume —, und reiht sich in die Kapitelwörter der Seite:
            Featured Work, Services, Studio. -->
       <header class="sec-head sec-head--knapp" data-reveal>
-        <h2 class="headline" id="team-title">Studio</h2>
+        <h2 class="headline kapitel" id="team-title">Studio</h2>
       </header>
 
       <!-- Erst die Gesichter … Name und Rolle stehen auf dem Bild, wie bei
@@ -1288,7 +1288,7 @@ const faqs = [
     text-align: center;
     font-family: var(--font-ui);
     font-weight: 800;
-    font-size: clamp(1.25rem, 10.7vw, 13rem);
+    font-size: var(--fs-kapitel);
     line-height: 0.8;
     letter-spacing: -0.035em;
     text-transform: uppercase;
@@ -1454,6 +1454,31 @@ const faqs = [
     .werk:nth-child(3n) { --rutsch: 0; }
   }
 
+  /* ── Die Kapitelwörter ──────────────────────────────────────────────── */
+  /* "Services" und "Studio" stehen in derselben Größe wie das klebende
+     "Featured Work" darüber — 154px bei 1440er Fenster statt der 60px
+     einer gewöhnlichen Überschrift.
+
+     Gleiche Größe heißt nicht gleiche Breite, und das ist der Punkt: Bei
+     10,7vw misst das längste Wort 1250px und füllt die Zeile, "Services"
+     kommt auf 687 und "Studio" auf 542. Die drei Kapitel stehen also in
+     einer Reihe und sind trotzdem auf den ersten Blick zu unterscheiden
+     — die Länge des Wortes ist die Gliederung. Übernommen aus
+     Entwurf 04c-XII.
+
+     Der Deckel von .sec-head fällt hier weg: 46rem sind bei 16px
+     Grundschrift 736px, und "SERVICES" stünde damit knapp davor —
+     bei einer anderen Ersatzschrift aber dahinter und würde umbrechen.
+
+     nowrap, weil ein Kapitelwort nie in zwei Zeilen fällt. */
+  .kapitel {
+    font-size: var(--fs-kapitel);
+    line-height: 0.85;
+    text-wrap: nowrap;
+  }
+
+  .sec-head--knapp { max-width: none; }
+
   /* ── 5 · Services ─────────────────────────────────────────────────────── */
   /* Eine Indexliste nach Entwurf 04c-XII. Die frühere Fassung — drei
      Bildkacheln im Zwölfspaltigen, Name und Text im unteren Band, zwei
@@ -1585,6 +1610,45 @@ const faqs = [
     .dienst::before,
     .dienst__nr { transition: none; }
   }
+
+  /* ── 6 · Vorteile ─────────────────────────────────────────────────────── */
+  /* Dieser Block ist am 6. August 2026 versehentlich mit dem
+     Disziplinenfeld entfernt worden — er lag zwischen dessen Regeln und
+     denen des Studio-Abschnitts, und der Schnitt lief einmal zu weit.
+     Sichtbar wurde es als Liste mit Browser-Aufzählung: "1. 01", "2. 02". */
+  .benefits__list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 3.5rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .benefit { border-top: 1px solid var(--line); padding-top: var(--space-3); }
+
+  .benefit__num {
+    display: block;
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--petrol);
+    margin-bottom: var(--space-2);
+  }
+
+  .benefit__title {
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-1);
+    text-wrap: balance;
+  }
+
+  /* Gedeckelt, damit die Zeile über die volle Breite nicht auf rund 90
+     Zeichen läuft. Nebeneinander greift der Deckel nicht — dort sind die
+     Spalten 266 bis 399px breit. */
+  .benefit__text { max-width: 62ch; color: var(--ink-muted); }
 
   /* ── 6 · Studio ───────────────────────────────────────────────────────── */
   /* Der Abschnitt kappt waagerecht. Gebraucht wurde das von den
