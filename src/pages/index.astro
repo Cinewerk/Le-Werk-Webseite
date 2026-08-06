@@ -380,7 +380,7 @@ const faqs = [
     <div class="werke">
       {arbeiten.map((a) => (
         <article class="werk" style={`--r: ${a.art === 'Foto' ? '4 / 3' : '3 / 4'}`}>
-          <a class="werk__link" href={withBase(`/arbeiten/${a.slug}`)}>
+          <a class="werk__link" href={withBase(`/arbeiten/${a.slug}`)} data-zeiger="View">
             <img src={withBase(a.bild)} alt={a.alt} width={a.breite} height={a.hoehe} loading="lazy" decoding="async" />
             <span class="werk__zeile">
               <span class={`werk__pille${a.art === 'Foto' ? ' werk__pille--blau' : ''}`}>{a.art}</span>
@@ -669,6 +669,15 @@ const faqs = [
     </div>
   </section>
 
+  <!-- Der Zeiger. Er ersetzt den Mauspfeil auf dieser Seite: eine kleine
+       Scheibe, die dem Zeiger mit Nachlauf folgt, und die über den
+       Arbeiten zu einer Fläche mit Beschriftung aufgeht.
+
+       aria-hidden und ohne eigenen Inhalt in der Gliederung: Er zeigt
+       nichts an, was nicht ohnehin dasteht — die Kacheln sind Links und
+       als solche angekündigt. -->
+  <div class="zeiger" aria-hidden="true"><span></span></div>
+
 </BaseLayout>
 
 <style>
@@ -764,6 +773,12 @@ const faqs = [
      läuft im Satz mit. Das em bleibt im Markup: Die Betonung gilt, sie
      ist nur nicht mehr sichtbar. */
   .hero__statement em { font-style: normal; }
+
+  /* Beide blenden beim Scrollen aus — das Skript am Ende der Datei
+     schreibt Deckkraft und Weg. will-change, weil es an jedem Bild
+     geschieht. */
+  .hero__statement,
+  .hero__cue { will-change: opacity, transform; }
 
   /* Der feste Umbruch gilt nur, solange beide Hälften in eine Zeile
      passen — darunter bricht der Satz frei. */
@@ -2134,11 +2149,16 @@ const faqs = [
        eine Lücke, kein Abstand. */
     .team__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
-    /* Das Porträt füllt seine Spalte nicht aus, sondern steht auf drei
-       Vierteln davon, linksbündig. Rechts bleibt bei jedem Gesicht
-       derselbe Streifen frei — viermal gleich, also Rhythmus und nicht
-       Zufall. */
-    .team__member { width: 75%; }
+    /* Das Porträt füllt seine Spalte. Es stand einen Tag lang auf drei
+       Vierteln davon, linksbündig — gedacht als Rhythmus, gelesen als
+       Fehler: Am vierten Gesicht fiel das freie Viertel mit dem
+       Seitenrand zusammen, und die Reihe stand links auf 36px, rechts
+       auf 115. Alles andere auf der Seite schließt beidseitig bündig ab.
+
+       Damit ist die Reihe wieder so breit wie die Kulisse darunter —
+       317px je Kachel bei 1440. Bündig und auf einem Raster geht nur
+       zusammen: Kleiner ginge es nur über einen größeren Abstand, und
+       der verschöbe die Spalten wieder gegen die Kulisse. */
   }
 
   /* Das Disziplinenfeld erst ab 1200 nebeneinander.
@@ -2220,6 +2240,73 @@ const faqs = [
   @media (min-width: 1024px) {
     .faq__grid { grid-template-columns: 0.8fr 1.2fr; gap: clamp(3rem, 6vw, 6rem); }
     .faq__head { position: sticky; top: 7rem; }
+  }
+
+  /* ── Der Zeiger ───────────────────────────────────────────────────────── */
+  /* Aus Entwurf 21 (julienpianetti.com): Der Mauspfeil verschwindet, an
+     seiner Stelle läuft eine Scheibe mit Nachlauf mit. Über einer Arbeit
+     geht sie zu einer Fläche auf und trägt "View".
+
+     mix-blend-mode: difference — deshalb ist sie weiß und trotzdem auf
+     jedem Grund zu sehen: Auf dem schwarzen Teil bleibt sie weiß, auf
+     der hellen Positionsfläche kehrt sie sich zu Schwarz um. Eine feste
+     Farbe wäre auf einer der beiden Flächen verschwunden.
+
+     Drei Bedingungen, alle drei nötig:
+
+       hover: hover        Ein Touchgerät hat keinen Zeiger, den man
+                           ersetzen könnte — dort bliebe nur eine
+                           Scheibe in der Bildmitte stehen.
+       pointer: fine       Ein grober Zeiger (Fernbedienung, Stift)
+                           trifft eine 10px-Scheibe nicht.
+       no-preference       Wer weniger Bewegung angefordert hat, behält
+                           den Mauspfeil des Systems. Ein Zeiger mit
+                           Nachlauf ist Bewegung, und zwar dauernde.
+
+     z-index über dem Menü: Bei 200 lag die Scheibe hinter dem
+     geöffneten Menü — und weil der Mauspfeil ausgeblendet ist, hätte
+     man dort gar keinen Zeiger mehr gehabt. */
+  .zeiger { display: none; }
+
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    :global(body),
+    :global(a),
+    :global(button),
+    :global(summary) { cursor: none; }
+
+    .zeiger {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: calc(var(--z-overlay) + 100);
+      display: grid;
+      place-items: center;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fff;
+      mix-blend-mode: difference;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: width 300ms var(--ease-out), height 300ms var(--ease-out);
+      will-change: left, top;
+    }
+
+    /* Schwarz auf der weißen Scheibe: Durch die Umkehrung wird daraus
+       auf dunklem Grund weiße Schrift auf weißer Scheibe — und die ist
+       schwarz, weil die Scheibe selbst schon umgekehrt ist. */
+    .zeiger span {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      color: #000;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 200ms linear;
+    }
+
+    .zeiger.is-gross { width: 92px; height: 92px; }
+    .zeiger.is-gross span { opacity: 1; }
   }
 
   /* ── Reduced Motion ───────────────────────────────────────────────────── */
@@ -2405,5 +2492,98 @@ const faqs = [
 
     anwenden();
     ruhig.addEventListener('change', anwenden);
+  }
+</script>
+
+<script>
+  // Der Satz auf der Bühne blendet beim Scrollen aus — übernommen aus
+  // Entwurf 04c-XII.
+  //
+  // Der Weg ist eine knappe halbe Fensterhöhe: Nach 45 Prozent ist der
+  // Satz weg, und das ist genau die Strecke, nach der der Positionsabsatz
+  // darunter ins Bild kommt. Zwei Aussagen sollen sich nicht überlagern.
+  //
+  // Der Pfeil geht doppelt so schnell (p * 2). Er ist eine Aufforderung
+  // zu scrollen und hat sich erledigt, sobald jemand scrollt.
+  const buehnenSatz = document.querySelector<HTMLElement>('.hero__statement');
+  const buehnenPfeil = document.querySelector<HTMLElement>('.hero__cue');
+
+  if (buehnenSatz) {
+    const sanft = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let angefordert = 0;
+
+    const buehnenBild = () => {
+      angefordert = 0;
+      const p = Math.max(0, Math.min(1, window.scrollY / (window.innerHeight * 0.45)));
+      buehnenSatz.style.opacity = (1 - p).toFixed(3);
+      // Der Weg nur ohne Bewegungsvorbehalt; das Ausblenden bleibt, denn
+      // es ist kein Weg, sondern ein Übergang.
+      if (sanft) buehnenSatz.style.transform = `translateY(${(-p * 28).toFixed(1)}px)`;
+      if (buehnenPfeil) buehnenPfeil.style.opacity = (1 - Math.min(1, p * 2)).toFixed(3);
+    };
+
+    window.addEventListener(
+      'scroll',
+      () => { if (!angefordert) angefordert = requestAnimationFrame(buehnenBild); },
+      { passive: true }
+    );
+
+    buehnenBild();
+  }
+</script>
+
+<script>
+  // Der Zeiger — übernommen aus Entwurf 21 (julienpianetti.com).
+  //
+  // Eine Scheibe folgt dem Zeiger mit Nachlauf und geht über einer Arbeit
+  // zu einer Fläche mit Beschriftung auf. Welche Beschriftung, steht am
+  // Element in data-zeiger; damit hängt das Wort am Inhalt und nicht im
+  // Skript.
+  //
+  // Die Bedingung ist dieselbe wie im Stylesheet und muss es auch sein:
+  // Ohne sie liefe die Schleife auf einem Telefon dauerhaft mit, während
+  // die Scheibe dort gar nicht sichtbar ist.
+  const zeiger = document.querySelector<HTMLElement>('.zeiger');
+  const zeigerWort = zeiger?.querySelector('span');
+  const zeigerErlaubt = window.matchMedia(
+    '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)'
+  );
+
+  if (zeiger && zeigerWort && zeigerErlaubt.matches) {
+    // Ziel ist die Position des echten Zeigers, x und y laufen ihr nach.
+    // 0.28 je Bild ist der Wert aus der Vorlage: schnell genug, dass die
+    // Scheibe nicht hinterherhinkt, langsam genug, dass man den Nachlauf
+    // sieht.
+    let zielX = window.innerWidth / 2;
+    let zielY = window.innerHeight / 2;
+    let x = zielX;
+    let y = zielY;
+
+    window.addEventListener(
+      'pointermove',
+      (e) => { zielX = e.clientX; zielY = e.clientY; },
+      { passive: true }
+    );
+
+    const laufen = () => {
+      x += (zielX - x) * 0.28;
+      y += (zielY - y) * 0.28;
+      zeiger.style.left = `${x}px`;
+      zeiger.style.top = `${y}px`;
+      requestAnimationFrame(laufen);
+    };
+
+    requestAnimationFrame(laufen);
+
+    // pointerenter/-leave und nicht mouseover/-out: Die beiden steigen
+    // nicht auf, die Scheibe bliebe sonst groß, sobald der Zeiger über
+    // ein Kindelement der Kachel fährt.
+    document.querySelectorAll<HTMLElement>('[data-zeiger]').forEach((el) => {
+      el.addEventListener('pointerenter', () => {
+        zeigerWort.textContent = el.dataset.zeiger ?? '';
+        zeiger.classList.add('is-gross');
+      });
+      el.addEventListener('pointerleave', () => zeiger.classList.remove('is-gross'));
+    });
   }
 </script>
