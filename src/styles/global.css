@@ -16,6 +16,17 @@
   --petrol-light: #5CC2D6;     /* Akzent AUF dunklem Grund — 7.8:1 */
   --petrol-tint: #E8F2F4;      /* sehr helle Fläche */
 
+  /* Der Akzent des schwarzen Seitenteils, von Simon gesetzt. Er trägt den
+     Positionsabsatz, die Pillen der Fotostrecken, die Ziffern der Gründe
+     und das Plus im FAQ.
+
+     Nachgemessen: auf #0d0d0d kommt er auf 3.00:1, auf Weiß auf 6.47.
+     Für Flächen mit weißer Schrift und für Bedienelemente (Schwelle 3.0)
+     reicht das; für kleinen Fließtext auf Schwarz nicht — dort steht er
+     deshalb nirgends. Die Ziffern der Gründe sind aria-hidden und
+     Schmuck, das Plus im FAQ ein Bedienelement genau auf der Schwelle. */
+  --akzent: #2451D8;
+
   /* --- Farben: Flächen --- */
   --paper: #FFFFFF;
   --sand: #F4F2EE;             /* warme Zweitfläche für helle Sektionen */

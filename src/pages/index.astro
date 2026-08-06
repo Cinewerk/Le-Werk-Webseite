@@ -508,8 +508,13 @@ const faqs = [
     <div class="container container--breit">
       <header class="sec-head sec-head--knapp" data-reveal>
         <p class="label">Wer dahintersteht</p>
+        <!-- "Unser" stand als kursiver Bodoni-Kicker in einer eigenen
+             Zeile darüber. Es läuft jetzt in der Zeile mit, in Poppins
+             Bold und eine Stufe kleiner als "Kernteam" — die Überschrift
+             ist damit eine Zeile statt zweier, wie das Riesenwort über
+             Featured Work. -->
         <h2 class="headline" id="team-title">
-          <span class="editorial editorial--kicker">Unser</span>{' '}
+          <span class="headline__vor">Unser</span>{' '}
           Kernteam
         </h2>
       </header>
@@ -938,7 +943,7 @@ const faqs = [
     font-size: clamp(1.5rem, 4.35vw, 3.5rem);
     line-height: 1.1;
     letter-spacing: -0.022em;
-    color: #2451d8;
+    color: var(--akzent);
     /* In dieser Größe ist eine Silbentrennung deutlich sichtbar und wirkt
        wie ein Fehler — der Satz darf lieber eine Zeile länger werden. */
     hyphens: none;
@@ -964,11 +969,11 @@ const faqs = [
      an, nur auf ein Fünftel der Deckung gedimmt, und färben sich beim
      Scrollen der Reihe nach auf das volle Blau. */
   .statement__text :global(.wort) {
-    color: rgba(36, 81, 216, 0.2);
+    color: color-mix(in srgb, var(--akzent) 20%, transparent);
     transition: color 450ms var(--ease-out);
   }
 
-  .statement__text :global(.wort.is-an) { color: #2451d8; }
+  .statement__text :global(.wort.is-an) { color: var(--akzent); }
 
   /* Gesperrte Versalzeile als Gegengewicht — auf derselben Kante wie der
      Absatz. Sie blendet erst ein, wenn der Absatz weitgehend aufgefärbt
@@ -1014,9 +1019,16 @@ const faqs = [
     --line-strong: rgba(255, 255, 255, 0.3);
     --line-dark: rgba(255, 255, 255, 0.15);
     /* Die Marken-Akzente im Inneren — Ziffern der Gründe, das Plus im FAQ —
-       greifen auf --petrol zu. Auf #0d0d0d käme das auf 1.9:1 und wäre
-       nicht mehr zu sehen; die helle Schwester steht bei 9.6:1. */
-    --petrol: var(--petrol-light);
+       greifen auf --petrol zu. Im schwarzen Teil steht dort der Akzent
+       aus dem Positionsabsatz, damit die Seite eine Akzentfarbe hat und
+       nicht zwei.
+
+       Petrol selbst ginge hier ohnehin nicht: #006377 käme auf #0d0d0d
+       auf 1.9:1. Die helle Schwester stand bei 9.4, der Akzent steht bei
+       3.00 — die Ziffern verlieren dadurch an Auffälligkeit. Sie sind
+       aria-hidden und Schmuck, und das Plus im FAQ ist ein
+       Bedienelement, für die gilt 3.0. Details am Token in global.css. */
+    --petrol: var(--akzent);
   }
 
   /* Petrol als Fokusfarbe ist auf Schwarz nicht mehr zu sehen (1.6:1) —
@@ -1242,8 +1254,8 @@ const faqs = [
      Positionsabsatz oben. Vier gefüllte Pillen für Video wären keine
      Auszeichnung mehr, sondern der Normalfall. */
   .werk__pille--blau {
-    background: #2451d8;
-    border-color: #2451d8;
+    background: var(--akzent);
+    border-color: var(--akzent);
     color: #fff;
   }
 
@@ -1540,11 +1552,28 @@ const faqs = [
      ohnehin sähe. */
   .team { overflow-x: clip; }
 
-  /* Kopf ohne Fließtext — der steht jetzt als breiter Absatz unter den
-     Porträts, deshalb hier weniger Abstand nach unten. */
-  /* Der Team-Kopf steht enger, weil "UNSER TEAM" kurz ist und die
+  /* Der Team-Kopf steht enger, weil "UNSER KERNTEAM" kurz ist und die
      Porträts direkt darunter die Fläche übernehmen. */
   .sec-head--knapp { margin-bottom: clamp(1.75rem, 4vw, 3rem); }
+
+  /* Das Vorwort in der Überschriftenzeile, an der Stelle des früheren
+     Kickers. Poppins wie die Überschrift selbst, nur einen Schnitt
+     leichter — Bold gegen ExtraBold —, damit "Kernteam" die Zeile trägt
+     und "Unser" sie nur anführt.
+
+     0.65em und nicht clamp: Der frühere Kicker stand bei 40px neben 60px
+     Überschrift, also auf zwei Dritteln. In em bleibt das Verhältnis in
+     jeder Fensterbreite gleich, statt an einer zweiten vw-Rechnung zu
+     hängen, die sich mit der ersten kreuzt.
+
+     Die Laufweite ist die der Überschrift, sonst stünden zwei
+     Sperrungen in einer Zeile. Versal wird das Wort von .headline. */
+  .headline__vor {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 0.65em;
+    letter-spacing: inherit;
+  }
 
   /* Vier Porträts: zwei Spalten auf dem Handy, vier ab 992px.
 
@@ -2126,7 +2155,7 @@ const faqs = [
     /* Der Positionsabsatz steht vollständig aufgefärbt, ohne Scrollverlauf;
        die Meta-Zeile bekommt ihre Deckung zurück. Das Skript prüft
        dieselbe Abfrage und rührt beide dann nicht mehr an. */
-    .statement__text :global(.wort) { color: #2451d8; transition: none; }
+    .statement__text :global(.wort) { color: var(--akzent); transition: none; }
     .statement__meta { opacity: 1; }
   }
 </style>
