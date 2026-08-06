@@ -61,6 +61,17 @@
   --space-6: 4rem;
   --space-7: 6rem;
   --section-y: clamp(4.5rem, 10vw, 9rem);
+  /* Höhe des festen Kopfes: 48px Schaltfläche plus Polsterung. Am
+     Seitenanfang sind das zweimal --space-3, gescrollt zweimal --space-2;
+     hier steht der größere der beiden Werte, denn wer darunter Platz
+     lässt, hat in beiden Zuständen genug.
+
+     Gebraucht von allem, was sich beim Scrollen unter den Kopf schiebt
+     und dort nicht verschwinden darf — dem Riesenwort über Featured Work
+     etwa. Gerechnet und nicht eingetragen, weil die Polsterung in rem
+     steht und damit an der Grundschrift des Browsers hängt: bei 16px
+     sind es 96px, bei 20px 108. */
+  --kopf-hoehe: calc(48px + 2 * var(--space-3));
   /* Seitlicher Innenabstand des Containers.
      Von 4vw/64px auf 6vw/88px erhöht. Der Grund steht am Zusammenspiel mit
      --container direkt darunter. */

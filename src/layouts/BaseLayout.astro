@@ -165,7 +165,13 @@ const year = new Date().getFullYear();
     </main>
 
     <footer class="footer">
-      <div class="container">
+      <!-- Volle Fensterbreite wie die Startseite ab der Kundenleiste: Die
+           Rubriken beginnen damit auf --edge, derselben Kante wie das Logo
+           im Kopf. Gilt für alle Seiten — die Fußzeile steht im Layout und
+           darf nicht je Seite anders sitzen. Auf den Unterseiten steht der
+           Inhalt darüber noch in der gedeckelten Spalte; sie ziehen nach,
+           sobald sie umgebaut werden. -->
+      <div class="container container--breit">
         <div class="footer__grid">
           <div class="footer__col">
             <h2>Navigation</h2>

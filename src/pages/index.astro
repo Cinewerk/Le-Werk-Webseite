@@ -1107,10 +1107,20 @@ const faqs = [
      Die Untergrenze steht bei 1,25rem und nicht höher: rem hängt an der
      Grundschrift des Browsers, und bei 20px statt 16 wären aus 1,75rem
      35px geworden — genau der Wert, der bei 320px Fenster gerade noch
-     passt. Kein Spielraum. */
+     passt. Kein Spielraum.
+
+     KLEBEHÖHE: unter dem Kopf, nicht darunter hindurch. Bei 4vh — dem
+     Wert der Vorlage — stand das Wort 36px unter der Fensterkante,
+     während der feste Kopf 96px hoch ist: 60 der 123px Worthöhe waren
+     verdeckt, also fast die Hälfte. Die Vorlage hat keinen mitlaufenden
+     Kopf und kann sich das leisten.
+
+     Jetzt --kopf-hoehe plus ein Abstand. Der Wert hängt an derselben
+     Polsterung wie der Kopf selbst — wer den Kopf ändert, zieht das Wort
+     mit. */
   .work__wort {
     position: sticky;
-    top: 4vh;
+    top: calc(var(--kopf-hoehe) + var(--space-2));
     z-index: 2;
     pointer-events: none;
     margin-bottom: -0.35em;
